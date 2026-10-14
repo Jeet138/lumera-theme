@@ -677,122 +677,201 @@
     "176241402580841a4b": {
       "type": "_blocks",
       "blocks": {
-        "ai_gen_block_1885f6f_YADfqb": {
-          "type": "ai_gen_block_1885f6f",
+        "shape_u_slider": {
+          "type": "ring_style_carousel",
           "settings": {
-            "heading": "Shop by Shape",
-            "subheading": "Discover your perfect diamond shape",
-            "heading_alignment": "center",
-            "heading_size": 38,
-            "heading_weight": "400",
-            "heading_transform": "none",
-            "heading_color": "#1a1a1a",
-            "subheading_size": 16,
-            "subheading_color": "#666666",
-            "heading_spacing": 40,
-            "subheading_spacing": 5,
-            "desktop_width_percent": 100,
-            "container_width": 1600,
+            "main_title": "Shop by Shape",
+            "main_subtitle": "Discover your perfect diamond shape",
+            "title_size": 38,
+            "subtitle_size": 16,
+            "curve_depth": 60,
+            "autoplay": true,
+            "autoplay_speed": 4,
+            "slide_size": 55,
+            "slide_spacing": 115,
+            "edge_fade": 16,
+            "product_title_size": 22,
+            "product_subtitle_size": 14,
+            "arrow_size": 60,
+            "arrow_bg_color": "#fef8f1",
+            "arrow_border_color": "#000000",
+            "arrow_icon_color": "#000000",
+            "arrow_hover_bg": "#fef8f1",
+            "text_color": "#000000",
             "section_padding": 60,
-            "background_color": "#fef8f1",
-            "items_to_show": 8,
-            "items_to_show_tablet": 5,
-            "items_to_show_mobile": 4,
-            "item_width": 150,
-            "grid_gap": 10,
-            "grid_spacing": 30,
-            "arrow_size": 45,
-            "arrow_offset": 20,
-            "arrow_background": "#ffffff",
-            "arrow_color": "#1a1a1a",
-            "arrow_hover_background": "#1a1a1a",
-            "arrow_hover_color": "#ffffff",
-            "arrow_border_width": 1,
-            "arrow_border_color": "#e0e0e0",
-            "item_background": "#fef8f1",
-            "item_border_radius": 8,
-            "item_border_width": 0,
-            "item_border_color": "#fef8f1",
-            "item_padding": 15,
-            "hover_lift": 5,
-            "image_background": "#fef8f1",
-            "image_border_radius": 4,
-            "image_size": 70,
-            "image_spacing": 10,
-            "shape_name_size": 14,
-            "shape_name_weight": "500",
-            "shape_name_transform": "capitalize",
-            "shape_name_color": "#1a1a1a",
-            "shape_1_enabled": true,
-            "shape_1_name": "Round",
-            "shape_1_image": "shopify://shop_images/round.png",
-            "shape_1_link": "shopify://collections/round",
-            "shape_2_enabled": true,
-            "shape_2_name": "Princess",
-            "shape_2_image": "shopify://shop_images/PRINCESS_1.webp",
-            "shape_2_link": "shopify://collections/princess",
-            "shape_3_enabled": true,
-            "shape_3_name": "Cushion",
-            "shape_3_image": "shopify://shop_images/120x120.png",
-            "shape_3_link": "shopify://collections/cushion",
-            "shape_4_enabled": true,
-            "shape_4_name": "Emerald",
-            "shape_4_image": "shopify://shop_images/emerald_2.png",
-            "shape_4_link": "shopify://collections/emerald",
-            "shape_5_enabled": true,
-            "shape_5_name": "Oval",
-            "shape_5_image": "shopify://shop_images/oval_png.webp",
-            "shape_5_link": "shopify://collections/oval",
-            "shape_6_enabled": true,
-            "shape_6_name": "Pear",
-            "shape_6_image": "shopify://shop_images/pear_png.webp",
-            "shape_6_link": "shopify://collections/pear",
-            "shape_7_enabled": true,
-            "shape_7_name": "Marquise",
-            "shape_7_image": "shopify://shop_images/marquise_png.webp",
-            "shape_7_link": "shopify://collections/marquise-1",
-            "shape_8_enabled": true,
-            "shape_8_name": "Radiant",
-            "shape_8_image": "shopify://shop_images/radiant_png.webp",
-            "shape_8_link": "shopify://collections/radiant-1",
-            "shape_9_enabled": true,
-            "shape_9_name": "Asscher",
-            "shape_9_image": "shopify://shop_images/asscher-cut.png",
-            "shape_9_link": "shopify://collections/asscher",
-            "shape_10_enabled": true,
-            "shape_10_name": "Heart",
-            "shape_10_image": "shopify://shop_images/images.png",
-            "shape_10_link": "shopify://collections/heart",
-            "shape_11_enabled": true,
-            "shape_11_name": "Trillion",
-            "shape_11_image": "shopify://shop_images/ChatGPT_Image_Aug_7_2026_11_07_18_AM.png",
-            "shape_11_link": "shopify://collections/trillion",
-            "shape_12_enabled": true,
-            "shape_12_name": "Baguette",
-            "shape_12_image": "shopify://shop_images/Baguette_Diamond.png",
-            "shape_12_link": "shopify://collections/baguette",
-            "shape_13_enabled": true,
-            "shape_13_name": "Half moon",
-            "shape_13_image": "shopify://shop_images/half_moon_1100e365-2154-4d50-8488-42e053d2893f.png",
-            "shape_13_link": "shopify://collections/half-mooon",
-            "shape_14_enabled": true,
-            "shape_14_name": "Cadillac",
-            "shape_14_image": "shopify://shop_images/cadillac.png",
-            "shape_14_link": "shopify://collections/cadillac",
-            "shape_15_enabled": true,
-            "shape_15_name": "Trapezoid",
-            "shape_15_image": "shopify://shop_images/trapzoid.png",
-            "shape_15_link": "shopify://collections/trapezoid",
-            "shape_16_enabled": true,
-            "shape_16_name": "Antique cut",
-            "shape_16_image": "shopify://shop_images/Lily-Loose-Diamond.png",
-            "shape_16_link": "shopify://collections/antique-cut"
+            "shadow_offset": 15,
+            "shadow_blur": 30,
+            "shadow_color": "#00000026",
+            "desktop_width_percent": 100
           },
-          "blocks": {}
+          "blocks": {
+            "shape_slide_1": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/round.png",
+                "title": "Round",
+                "subtitle": "",
+                "link": "shopify://collections/round"
+              }
+            },
+            "shape_slide_2": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/PRINCESS_1.webp",
+                "title": "Princess",
+                "subtitle": "",
+                "link": "shopify://collections/princess"
+              }
+            },
+            "shape_slide_3": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/120x120.png",
+                "title": "Cushion",
+                "subtitle": "",
+                "link": "shopify://collections/cushion"
+              }
+            },
+            "shape_slide_4": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/emerald_2.png",
+                "title": "Emerald",
+                "subtitle": "",
+                "link": "shopify://collections/emerald"
+              }
+            },
+            "shape_slide_5": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/oval_png.webp",
+                "title": "Oval",
+                "subtitle": "",
+                "link": "shopify://collections/oval"
+              }
+            },
+            "shape_slide_6": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/pear_png.webp",
+                "title": "Pear",
+                "subtitle": "",
+                "link": "shopify://collections/pear"
+              }
+            },
+            "shape_slide_7": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/marquise_png.webp",
+                "title": "Marquise",
+                "subtitle": "",
+                "link": "shopify://collections/marquise-1"
+              }
+            },
+            "shape_slide_8": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/radiant_png.webp",
+                "title": "Radiant",
+                "subtitle": "",
+                "link": "shopify://collections/radiant-1"
+              }
+            },
+            "shape_slide_9": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/asscher-cut.png",
+                "title": "Asscher",
+                "subtitle": "",
+                "link": "shopify://collections/asscher"
+              }
+            },
+            "shape_slide_10": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/images.png",
+                "title": "Heart",
+                "subtitle": "",
+                "link": "shopify://collections/heart"
+              }
+            },
+            "shape_slide_11": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/ChatGPT_Image_Aug_7_2026_11_07_18_AM.png",
+                "title": "Trillion",
+                "subtitle": "",
+                "link": "shopify://collections/trillion"
+              }
+            },
+            "shape_slide_12": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/Baguette_Diamond.png",
+                "title": "Baguette",
+                "subtitle": "",
+                "link": "shopify://collections/baguette"
+              }
+            },
+            "shape_slide_13": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/half_moon_1100e365-2154-4d50-8488-42e053d2893f.png",
+                "title": "Half moon",
+                "subtitle": "",
+                "link": "shopify://collections/half-mooon"
+              }
+            },
+            "shape_slide_14": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/cadillac.png",
+                "title": "Cadillac",
+                "subtitle": "",
+                "link": "shopify://collections/cadillac"
+              }
+            },
+            "shape_slide_15": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/trapzoid.png",
+                "title": "Trapezoid",
+                "subtitle": "",
+                "link": "shopify://collections/trapezoid"
+              }
+            },
+            "shape_slide_16": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/Lily-Loose-Diamond.png",
+                "title": "Antique cut",
+                "subtitle": "",
+                "link": "shopify://collections/antique-cut"
+              }
+            }
+          },
+          "block_order": [
+            "shape_slide_1",
+            "shape_slide_2",
+            "shape_slide_3",
+            "shape_slide_4",
+            "shape_slide_5",
+            "shape_slide_6",
+            "shape_slide_7",
+            "shape_slide_8",
+            "shape_slide_9",
+            "shape_slide_10",
+            "shape_slide_11",
+            "shape_slide_12",
+            "shape_slide_13",
+            "shape_slide_14",
+            "shape_slide_15",
+            "shape_slide_16"
+          ]
         }
       },
       "block_order": [
-        "ai_gen_block_1885f6f_YADfqb"
+        "shape_u_slider"
       ],
       "name": "Shop by Shape",
       "settings": {}

@@ -17,7 +17,9 @@
   data-autoplay="{{ s.autoplay }}"
   data-speed="{{ s.autoplay_speed | times: 1000 }}"
   data-depth="{{ s.curve_depth }}"
-  style="--urs-w:{{ s.desktop_width_percent }}%;--urs-pad:{{ s.section_padding }}px;--urs-text:{{ s.text_color }};--urs-title:{{ s.title_size }}px;--urs-sub:{{ s.subtitle_size }}px;--urs-ptitle:{{ s.product_title_size }}px;--urs-psub:{{ s.product_subtitle_size }}px;--urs-arrow:{{ s.arrow_size }}px;--urs-arrow-bg:{{ s.arrow_bg_color }};--urs-arrow-bd:{{ s.arrow_border_color }};--urs-arrow-ic:{{ s.arrow_icon_color }};--urs-arrow-hover:{{ s.arrow_hover_bg }};--urs-shadow:{{ s.shadow_color }};--urs-shadow-y:{{ s.shadow_offset }}px;--urs-shadow-blur:{{ s.shadow_blur }}px;--urs-fade-set:{{ s.edge_fade }}%;"
+  data-scale="{{ s.slide_size }}"
+  data-spacing="{{ s.slide_spacing }}"
+  style="--urs-w:{{ s.desktop_width_percent }}%;--urs-pad:{{ s.section_padding }}px;--urs-text:{{ s.text_color }};--urs-title:{{ s.title_size }}px;--urs-sub:{{ s.subtitle_size }}px;--urs-ptitle:{{ s.product_title_size }}px;--urs-psub:{{ s.product_subtitle_size }}px;--urs-arrow:{{ s.arrow_size }}px;--urs-arrow-bg:{{ s.arrow_bg_color }};--urs-arrow-bd:{{ s.arrow_border_color }};--urs-arrow-ic:{{ s.arrow_icon_color }};--urs-arrow-hover:{{ s.arrow_hover_bg }};--urs-shadow:{{ s.shadow_color }};--urs-shadow-y:{{ s.shadow_offset }}px;--urs-shadow-blur:{{ s.shadow_blur }}px;--urs-fade-set:{{ s.edge_fade }}%;--urs-scale:{{ s.slide_size | divided_by: 100.0 }};"
 >
   {%- if s.main_title != blank or s.main_subtitle != blank -%}
     <div class="urs__head">
@@ -53,7 +55,7 @@
 
 {% stylesheet %}
   .urs {
-    --urs-size: clamp(180px, 15vw + 140px, 440px);
+    --urs-size: calc(clamp(180px, 15vw + 140px, 440px) * var(--urs-scale, 1));
     display: block;
     width: var(--urs-w, 100%);
     max-width: 100%;
@@ -191,7 +193,7 @@
   .urs__psub { margin: 0; font-size: min(var(--urs-psub), calc(12px + 0.5vw)); opacity: 0.75; }
 
   @media (max-width: 699px) {
-    .urs { --urs-size: min(60vw, 300px); }
+    .urs { --urs-size: calc(min(60vw, 300px) * var(--urs-scale, 1)); }
     /* Phones: side slides are already cut by the screen edge, so fade a slightly wider band. */
     .urs__stage { --urs-fade: clamp(0px, calc(var(--urs-fade-set, 15%) * 1.3), 30%); }
   }
@@ -223,6 +225,8 @@
         this.cSub = this.querySelector('[data-csub]');
         this.reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         this.depth = (parseFloat(this.dataset.depth) || 0) / 100;
+        this.scaleSet = (parseFloat(this.dataset.scale) || 100) / 100;
+        this.spacing = (parseFloat(this.dataset.spacing) || 78) / 100;
         this.speed = parseInt(this.dataset.speed, 10) || 4000;
         this.autoplay = this.dataset.autoplay === 'true' && !this.reduce && this.n > 1 && !(window.Shopify && Shopify.designMode);
 
@@ -258,9 +262,9 @@
       /* ---------- geometry ---------- */
       layout() {
         var W = this.stage.clientWidth || window.innerWidth;
-        var size = W < 700 ? Math.min(W * 0.6, 300) : Math.min(440, 0.15 * W + 140);
-        var sp = size * 0.78;
-        var vis = Math.max(1, Math.min(3, Math.round(W / 2 / sp)));
+        var size = (W < 700 ? Math.min(W * 0.6, 300) : Math.min(440, 0.15 * W + 140)) * this.scaleSet;
+        var sp = size * this.spacing;
+        var vis = Math.max(1, Math.min(5, Math.round(W / 2 / sp)));
         this.vis = Math.max(0, Math.min(vis, Math.floor((this.n - 1) / 2)));
         this.size = size;
         this.sp = sp;
@@ -581,6 +585,28 @@
       "step": 1,
       "unit": "s",
       "default": 4
+    },
+    {
+      "type": "range",
+      "id": "slide_size",
+      "label": "Slide size",
+      "info": "Lower it for small images, e.g. diamond shapes.",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "slide_spacing",
+      "label": "Slide spacing",
+      "info": "Distance between slides. Raise it if images touch or overlap.",
+      "min": 60,
+      "max": 160,
+      "step": 5,
+      "unit": "%",
+      "default": 80
     },
     {
       "type": "range",
