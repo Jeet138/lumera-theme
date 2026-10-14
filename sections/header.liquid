@@ -70,6 +70,9 @@
     top: 0;
     z-index: 99999;
   }
+  /* Mobile menu drawer (#NavDrawer, z-index 9999) and its backdrop must cover the sticky header while open. */
+  .js-drawer-open .drawer { z-index: 100001; }
+  .js-drawer-open .page-container:after { z-index: 100000; }
   .site-header {
     position: relative !important;
     top: auto !important;
