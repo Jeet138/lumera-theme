@@ -68,11 +68,73 @@
             text-transform:inherit;
             letter-spacing:0;
         }
-        #announcement-topbar .col-right .topbar-block{
+        #announcement-topbar .tb__right .topbar-block{
             padding-right: 2.5rem;
         }
-        #announcement-topbar .col-right .topbar-block:last-child{
+        #announcement-topbar .tb__right .topbar-block:last-child{
             padding-right: 0rem;
+        }
+
+        /* =========================================================
+           TOP BAR LAYOUT (grid) - koi negative margin nahi,
+           har screen par left/right content poora dikhega.
+           Side padding header (.lh-container) jaisa hi hai,
+           taaki top bar aur header ke edges line me rahe.
+           ========================================================= */
+        .announcement-bar .tb-container{
+          width: 100% !important;
+          max-width: 100% !important;
+          padding-left: clamp(14px, 2.5vw, 40px) !important;
+          padding-right: clamp(14px, 2.5vw, 40px) !important;
+        }
+        #announcement-topbar .tb{
+          display: grid;
+          grid-template-columns: auto minmax(0, 1fr) auto;
+          align-items: center;
+          column-gap: clamp(16px, 2.5vw, 40px);
+          line-height: 1.35;
+        }
+        #announcement-topbar .tb__left{
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 4px;
+          min-width: 0;
+        }
+        #announcement-topbar .tb__line{
+          display: flex;
+          align-items: center;
+          gap: 4px 20px;
+          white-space: nowrap;
+        }
+        #announcement-topbar .tb__line a{
+          color: var(--color-body-text);
+        }
+        #announcement-topbar .tb__line svg{
+          width: 16px;
+          height: 16px;
+          flex-shrink: 0;
+        }
+        #announcement-topbar .tb__center{
+          min-width: 0;
+          text-align: center;
+        }
+        #announcement-topbar .tb__right{
+          align-items: center;
+          justify-content: flex-end;
+          white-space: nowrap;
+        }
+
+        /* Tablet / mobile: sirf offers ticker (left/right d-none hai) */
+        @media (max-width: 991.98px){
+          #announcement-topbar .tb{
+            grid-template-columns: minmax(0, 1fr);
+          }
+        }
+        @media (max-width: 480px){
+          .announcement-bar .tb-container{
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+          }
         }
         #announcement-topbar .disclosure__list-wrapper{
             z-index: 9999;
@@ -166,65 +228,57 @@
   </style>
   <announcement-bar>
     <div class="announcement-bar" data-aos="{{ section.settings.animation }}">
-      <div class="{{ section.settings.setwidth }}">
+      <div class="tb-container">
         <div id="announcement-topbar">
-          <div class="row align-items-center">
-            <div class="col-4 d-none d-lg-flex gap-4"  >
-              {%- if enable_social_topbar -%}
-                <div class="topbar-block">
-                  {%- render 'block-social' -%}
-                </div>
-              {%- endif -%}
-              {%- if enable_block_link -%}
-                {% if section.settings.topbar_phone != blank %}
-                  <div class="d-flex" style="margin-top: -20px; margin-left: -185px;">
-                    <a href="tel:{{ section.settings.topbar_phone | strip }}" class="d-inline-flex align-items-center">
+          <div class="tb">
+            {%- comment -%} LEFT: line 1 = contact links, line 2 = left text {%- endcomment -%}
+            <div class="tb__left d-none d-lg-flex">
+              {%- capture tb_contact -%}
+                {%- if enable_social_topbar -%}
+                  <div class="topbar-block">
+                    {%- render 'block-social' -%}
+                  </div>
+                {%- endif -%}
+                {%- if enable_block_link -%}
+                  {%- if section.settings.topbar_phone != blank -%}
+                    <a href="tel:{{ section.settings.topbar_phone | remove: ' ' }}" class="d-inline-flex align-items-center">
                       {% render 'icon-mobile-phone' %}
                       <span class="pl-2">{{ section.settings.topbar_phone }}</span>
                     </a>
-                  </div>
-                {% endif %}
-                {% if section.settings.topbar_email != blank %}
-                  <div class="d-flex" >
+                  {%- endif -%}
+                  {%- if section.settings.topbar_email != blank -%}
                     <a href="mailto:{{ section.settings.topbar_email }}" class="d-inline-flex align-items-center">
                       {% render 'icon-email' %}
                       <span class="pl-2">{{ section.settings.topbar_email }}</span>
                     </a>
-                  </div>
-                {% endif %}
-                {% if section.settings.topbar_store != blank %}
-                  <div class="d-flex">
-                    <a href="{{ topbar_store_link | default:"/pages/store" }}" class="d-inline-flex align-items-center">
+                  {%- endif -%}
+                  {%- if section.settings.topbar_store != blank -%}
+                    <a href="{{ topbar_store_link | default: '/pages/store' }}" class="d-inline-flex align-items-center">
                       {% render 'icon-location' %}
                       <span class="pl-2">{{ section.settings.topbar_store }}</span>
                     </a>
-                  </div>
-                {% endif %}
-                {% if section.settings.topbar_appointment != blank %}
-                  <div class="d-flex" style="margin-top: -20px;">
+                  {%- endif -%}
+                  {%- if section.settings.topbar_appointment != blank -%}
                     <a
-                      href="{{ topbar_page_appointment | default:"/pages/appointment" }}"
+                      href="{{ topbar_page_appointment | default: '/pages/appointment' }}"
                       class="d-inline-flex align-items-center"
                     >
                       {% render 'icon-calendar' %}
                       <span class="pl-2">{{ section.settings.topbar_appointment }}</span>
                     </a>
-                  </div>
-                {% endif %}
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endcapture -%}
+
+              {%- if tb_contact != blank -%}
+                <div class="tb__line">{{ tb_contact }}</div>
               {%- endif -%}
 
               {%- if left_text != blank -%}
-                <div class="d-flex">
-                  <a
-                    href="{{ left_link | default:'#' }}"
-                    class="left-custom-link d-inline-flex align-items-center"
-                    style="
-                      margin-bottom: -22px;
-    margin-left: -282px;
-                    "
-                  >
+                <div class="tb__line">
+                  <a href="{{ left_link | default: '#' }}" class="left-custom-link d-inline-flex align-items-center">
                     {%- if left_icon != blank -%}
-                      <span class="pr-2">{{ left_icon | raw }}</span>
+                      <span class="pr-2">{{ left_icon }}</span>
                     {%- endif -%}
                     {{ left_text }}
                   </a>
@@ -232,7 +286,7 @@
               {%- endif -%}
             </div>
 
-            <div class="col-lg-4 col-center col-12 text-center">
+            <div class="tb__center">
               {% if enable_marquee %}
                 <div class="marquee-wrapper">
                   <div class="marquee-track">
@@ -285,12 +339,12 @@
                 </div>
               {% endif %}
             </div>
-            <div class="col-4 col-right text-right d-none d-lg-flex justify-content-end">
+            <div class="tb__right d-none d-lg-flex">
               {%- if right_text != blank -%}
                 <div class="topbar-block d-flex align-items-center">
                   <a href="{{ right_link | default:'#' }}" class="right-custom-link d-inline-flex align-items-center">
                     {%- if right_icon != blank -%}
-                      <span class="pr-2">{{ right_icon | raw }}</span>
+                      <span class="pr-2">{{ right_icon }}</span>
                     {%- endif -%}
                     {{ right_text }}
                   </a>
@@ -331,7 +385,7 @@
                   {% else %}
                     {% if template != 'customers/login' %}
                       {% comment %} {% endcomment %}
-                      <div class="header--acount d-none d-lg-inline-block topbar-block pr-3">
+                      <div class="header--acount d-none d-lg-inline-block topbar-block">
                         <a
                           href="javascript:void(0)"
                           data-toggle="modal"

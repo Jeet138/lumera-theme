@@ -486,6 +486,12 @@
     }
   },
   "sections": {
+    "ring_slider": {
+      "previous": "Vorige stijl",
+      "next": "Volgende stijl",
+      "label": "Ringstijlen",
+      "carousel": "carrousel"
+    },
     "map": {
       "get_directions": "De weg vragen",
       "address_error": "Fout bij het opzoeken van dat adres",

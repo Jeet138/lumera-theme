@@ -99,64 +99,19 @@
     max-width: 100%;
     box-sizing: border-box;
   }
-  .site-header img,
-  .site-header svg { max-width: 100%; }
+  /* sirf img: svg par max-width:100% lagane se header ke icons 0px tak shrink ho jaate the */
+  .site-header img { max-width: 100%; }
 
-  /* ===== LAPTOP / DESKTOP (992px+) ===== */
+  /* Layout, logo size aur menu font: snippets/header-logo-center-split.liquid me */
   @media (min-width: 992px) {
     .site-header .header-bottom {
       padding-top: 6px;
       padding-bottom: 6px;
     }
-    /* logo screen ke hisaab se chhota/bada */
-    .site-header .header-logo img {
-      width: auto;
-      max-height: 42px;
-      max-width: clamp(90px, 11vw, 190px);
-      object-fit: contain;
-    }
-    /* menu links: font aur gap screen ke saath adjust (laptop pe cut na ho) */
-    .site-header .menudesk-left > ul > li > a,
-    .site-header .menudesk-right > ul > li > a,
-    .site-header .site-nav > li > a {
-      font-size: clamp(11.5px, 1.05vw, 15px) !important;
-      letter-spacing: 0.02em !important;
-      padding-left: clamp(6px, 0.8vw, 16px) !important;
-      padding-right: clamp(6px, 0.8vw, 16px) !important;
-      white-space: nowrap;
-    }
   }
 
-  /* chhote laptop (992 - 1199px): aur compact */
-  @media (min-width: 992px) and (max-width: 1199px) {
-    .site-header .header-logo img { max-height: 36px; }
-    .site-header .menudesk-left > ul > li > a,
-    .site-header .menudesk-right > ul > li > a,
-    .site-header .site-nav > li > a {
-      font-size: 11.5px !important;
-      padding-left: 5px !important;
-      padding-right: 5px !important;
-    }
-    /* currency ka country naam chhupao, sirf flag + code rahe */
-    .site-header [class*="currency"] [class*="name"] { display: none; }
-  }
-
-  /* ===== TABLET / MOBILE (991px tak) ===== */
   @media (max-width: 991px) {
-    .site-header .header-bottom {
-      padding-top: 6px;
-      padding-bottom: 6px;
-    }
-    .site-header .header-logo img {
-      width: auto;
-      max-height: 34px;
-      max-width: min(150px, 38vw);
-      object-fit: contain;
-    }
     .meganav-preview { display: none !important; }
-  }
-  @media (max-width: 480px) {
-    .site-header .header-logo img { max-height: 30px; max-width: min(120px, 34vw); }
   }
 </style>
 

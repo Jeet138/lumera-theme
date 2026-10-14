@@ -486,6 +486,12 @@
     }
   },
   "sections": {
+    "ring_slider": {
+      "previous": "Stile precedente",
+      "next": "Stile successivo",
+      "label": "Stili di anelli",
+      "carousel": "carosello"
+    },
     "map": {
       "get_directions": "Ottenere indicazioni",
       "address_error": "Errore durante la ricerca dell'indirizzo",

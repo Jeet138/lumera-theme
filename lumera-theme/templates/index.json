@@ -443,66 +443,6 @@
             "main_subtitle": "Find the perfect engagement ring style that reflects your personality, crafted with exceptional artistry and brilliant diamonds for life's most cherished moments.",
             "title_size": 48,
             "subtitle_size": 16,
-            "ring_image_1": "shopify://shop_images/style-slider.png",
-            "ring_title_1": "Classic Solitaire",
-            "ring_subtitle_1": "Timeless elegance",
-            "ring_link_1": "shopify://collections/solitaire",
-            "ring_image_2": "shopify://shop_images/styles-slider-halo_2.png",
-            "ring_title_2": "Halo Design",
-            "ring_subtitle_2": "Halo brilliance",
-            "ring_link_2": "shopify://collections/halo",
-            "ring_image_3": "shopify://shop_images/style-slider-vintage.png",
-            "ring_title_3": "Vintage Style",
-            "ring_subtitle_3": "Classic romance",
-            "ring_link_3": "shopify://collections/vintage",
-            "ring_image_4": "shopify://shop_images/three_stone_2.png",
-            "ring_title_4": "Three Stone",
-            "ring_subtitle_4": "Past, present, future",
-            "ring_link_4": "shopify://collections/three-stone",
-            "ring_image_5": "shopify://shop_images/styles-slider-pave.png",
-            "ring_title_5": "Pave Band",
-            "ring_subtitle_5": "Sparkling detail",
-            "ring_link_5": "shopify://collections/pave",
-            "ring_image_6": "shopify://shop_images/styles-slider-nature_1.png",
-            "ring_title_6": "Modern nature",
-            "ring_subtitle_6": "Contemporary chic",
-            "ring_link_6": "shopify://collections/nature-inspired",
-            "ring_image_7": "shopify://shop_images/styles-slider-hidden-halo.png",
-            "ring_title_7": "Hidden halo",
-            "ring_subtitle_7": "Unique design",
-            "ring_link_7": "shopify://collections/hidden-halo",
-            "ring_image_8": "shopify://shop_images/open_gap.png",
-            "ring_title_8": "Open gap",
-            "ring_subtitle_8": "Architectural beauty",
-            "ring_link_8": "shopify://collections/open-gap",
-            "ring_image_9": "shopify://shop_images/color_stone_cream_bg.png",
-            "ring_title_9": "Color Stone",
-            "ring_subtitle_9": "Modern innovation",
-            "ring_link_9": "shopify://collections/color-stone-ring",
-            "ring_image_10": "shopify://shop_images/toi_et_moi_6d0cf73e-2a51-4591-8346-198e7a4693d9.png",
-            "ring_title_10": "toi et moi",
-            "ring_subtitle_10": "Dazzling arrangement",
-            "ring_link_10": "shopify://collections/toi-et-moi-ring",
-            "ring_image_11": "shopify://shop_images/bezel_3bed43a9-cdae-4358-86d4-42109c9e60c9.png",
-            "ring_title_11": "Bezel",
-            "ring_subtitle_11": "Eternal love",
-            "ring_link_11": "",
-            "ring_image_12": "shopify://shop_images/bypasss_cream.png",
-            "ring_title_12": "Bypass",
-            "ring_subtitle_12": "Geometric glamour",
-            "ring_link_12": "shopify://collections/bypass",
-            "ring_image_13": "shopify://shop_images/multi_row_cream.png",
-            "ring_title_13": "multi Row",
-            "ring_subtitle_13": "Eternal love",
-            "ring_link_13": "shopify://collections/multi-row-pave",
-            "ring_image_14": "shopify://shop_images/half_bezel_1_cream.png",
-            "ring_title_14": "half bazel",
-            "ring_subtitle_14": "Eternal love",
-            "ring_link_14": "shopify://collections/half-bezel",
-            "ring_image_15": "shopify://shop_images/side_stone_a5515593-4dc7-4ab0-976d-20c3664691e2.png",
-            "ring_title_15": "Side stone",
-            "ring_subtitle_15": "Eternal love",
-            "ring_link_15": "shopify://collections/side-stone",
             "product_title_size": 24,
             "product_subtitle_size": 16,
             "arrow_size": 60,
@@ -517,7 +457,160 @@
             "shadow_color": "#00000026",
             "desktop_width_percent": 100
           },
-          "blocks": {}
+          "blocks": {
+            "ring_slide_1": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/style-slider.png",
+                "title": "Classic Solitaire",
+                "subtitle": "Timeless elegance",
+                "link": "shopify://collections/solitaire"
+              }
+            },
+            "ring_slide_2": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/styles-slider-halo_2.png",
+                "title": "Halo Design",
+                "subtitle": "Halo brilliance",
+                "link": "shopify://collections/halo"
+              }
+            },
+            "ring_slide_3": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/style-slider-vintage.png",
+                "title": "Vintage Style",
+                "subtitle": "Classic romance",
+                "link": "shopify://collections/vintage"
+              }
+            },
+            "ring_slide_4": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/three_stone_2.png",
+                "title": "Three Stone",
+                "subtitle": "Past, present, future",
+                "link": "shopify://collections/three-stone"
+              }
+            },
+            "ring_slide_5": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/styles-slider-pave.png",
+                "title": "Pave Band",
+                "subtitle": "Sparkling detail",
+                "link": "shopify://collections/pave"
+              }
+            },
+            "ring_slide_6": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/styles-slider-nature_1.png",
+                "title": "Modern nature",
+                "subtitle": "Contemporary chic",
+                "link": "shopify://collections/nature-inspired"
+              }
+            },
+            "ring_slide_7": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/styles-slider-hidden-halo.png",
+                "title": "Hidden halo",
+                "subtitle": "Unique design",
+                "link": "shopify://collections/hidden-halo"
+              }
+            },
+            "ring_slide_8": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/open_gap.png",
+                "title": "Open gap",
+                "subtitle": "Architectural beauty",
+                "link": "shopify://collections/open-gap"
+              }
+            },
+            "ring_slide_9": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/color_stone_cream_bg.png",
+                "title": "Color Stone",
+                "subtitle": "Modern innovation",
+                "link": "shopify://collections/color-stone-ring"
+              }
+            },
+            "ring_slide_10": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/toi_et_moi_6d0cf73e-2a51-4591-8346-198e7a4693d9.png",
+                "title": "toi et moi",
+                "subtitle": "Dazzling arrangement",
+                "link": "shopify://collections/toi-et-moi-ring"
+              }
+            },
+            "ring_slide_11": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/bezel_3bed43a9-cdae-4358-86d4-42109c9e60c9.png",
+                "title": "Bezel",
+                "subtitle": "Eternal love",
+                "link": ""
+              }
+            },
+            "ring_slide_12": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/bypasss_cream.png",
+                "title": "Bypass",
+                "subtitle": "Geometric glamour",
+                "link": "shopify://collections/bypass"
+              }
+            },
+            "ring_slide_13": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/multi_row_cream.png",
+                "title": "multi Row",
+                "subtitle": "Eternal love",
+                "link": "shopify://collections/multi-row-pave"
+              }
+            },
+            "ring_slide_14": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/half_bezel_1_cream.png",
+                "title": "half bazel",
+                "subtitle": "Eternal love",
+                "link": "shopify://collections/half-bezel"
+              }
+            },
+            "ring_slide_15": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/side_stone_a5515593-4dc7-4ab0-976d-20c3664691e2.png",
+                "title": "Side stone",
+                "subtitle": "Eternal love",
+                "link": "shopify://collections/side-stone"
+              }
+            }
+          },
+          "block_order": [
+            "ring_slide_1",
+            "ring_slide_2",
+            "ring_slide_3",
+            "ring_slide_4",
+            "ring_slide_5",
+            "ring_slide_6",
+            "ring_slide_7",
+            "ring_slide_8",
+            "ring_slide_9",
+            "ring_slide_10",
+            "ring_slide_11",
+            "ring_slide_12",
+            "ring_slide_13",
+            "ring_slide_14",
+            "ring_slide_15"
+          ]
         }
       },
       "block_order": [

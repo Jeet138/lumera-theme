@@ -486,6 +486,12 @@
     }
   },
   "sections": {
+    "ring_slider": {
+      "previous": "前のスタイル",
+      "next": "次のスタイル",
+      "label": "リングスタイル",
+      "carousel": "カルーセル"
+    },
     "map": {
       "get_directions": "行き方を調べる",
       "address_error": "そのアドレスの検索中にエラーが発生しました",

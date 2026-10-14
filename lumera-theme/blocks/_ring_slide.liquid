@@ -1,0 +1,77 @@
+{%- comment -%}
+  One slide of the ring style U-slider (blocks/ring_style_carousel.liquid).
+  Positioned and animated by the parent <u-ring-slider>.
+{%- endcomment -%}
+{%- liquid
+  assign s = block.settings
+  if s.link != blank
+    assign tag = 'a'
+  else
+    assign tag = 'div'
+  endif
+-%}
+<{{ tag }}
+  class="urs__item"
+  data-item
+  data-block-id="{{ block.id }}"
+  {% if s.link != blank %}href="{{ s.link }}"{% endif %}
+  data-title="{{ s.title | escape }}"
+  data-sub="{{ s.subtitle | escape }}"
+  aria-label="{{ s.title | escape }}"
+  tabindex="-1"
+  draggable="false"
+  {{ block.shopify_attributes }}
+>
+  <span class="urs__media">
+    {%- if s.image != blank -%}
+      {{
+        s.image
+        | image_url: width: 900
+        | image_tag:
+          widths: '300, 450, 600, 900',
+          sizes: '(min-width: 1200px) 440px, (min-width: 750px) 34vw, 60vw',
+          loading: 'lazy',
+          class: 'urs__img',
+          alt: s.title,
+          draggable: 'false'
+      }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'urs__img' }}
+    {%- endif -%}
+  </span>
+</{{ tag }}>
+
+{% schema %}
+{
+  "name": "Ring slide",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Classic Solitaire"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Timeless elegance"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Collection link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ring slide"
+    }
+  ]
+}
+{% endschema %}

@@ -486,6 +486,12 @@
     }
   },
   "sections": {
+    "ring_slider": {
+      "previous": "Forrige stil",
+      "next": "Næste stil",
+      "label": "Ringstile",
+      "carousel": "karrusel"
+    },
     "map": {
       "get_directions": "Få vejledninger",
       "address_error": "Fejl ved at finde den adresse",

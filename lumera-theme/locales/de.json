@@ -426,6 +426,12 @@
     "year": "TODO"
   },
   "sections": {
+    "ring_slider": {
+      "previous": "Vorheriger Stil",
+      "next": "Nächster Stil",
+      "label": "Ringstile",
+      "carousel": "Karussell"
+    },
     "map": {
       "get_directions": "Richtungen",
       "address_error": "Kann die Adresse nicht finden",

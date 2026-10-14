@@ -421,6 +421,12 @@
     "year": "TODO"
   },
   "sections": {
+    "ring_slider": {
+      "previous": "Estilo anterior",
+      "next": "Estilo siguiente",
+      "label": "Estilos de anillo",
+      "carousel": "carrusel"
+    },
     "map": {
       "get_directions": "Obtener las direcciones",
       "address_error": "No se puede encontrar esa dirección",

@@ -491,6 +491,12 @@
     }
   },
   "sections": {
+    "ring_slider": {
+      "previous": "Previous style",
+      "next": "Next style",
+      "label": "Ring styles",
+      "carousel": "carousel"
+    },
     "map": {
       "get_directions": "Get directions",
       "address_error": "Error looking up that address",

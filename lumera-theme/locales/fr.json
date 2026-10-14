@@ -486,6 +486,12 @@
     }
   },
   "sections": {
+    "ring_slider": {
+      "previous": "Style précédent",
+      "next": "Style suivant",
+      "label": "Styles de bagues",
+      "carousel": "carrousel"
+    },
     "map": {
       "get_directions": "Obtenir des directions",
       "address_error": "Erreur lors de la recherche de cette adresse",
