@@ -1,0 +1,1526 @@
+{% doc %}
+  @prompt
+    Create a “Shop Rings by Shape” section for a jewelry website.
+    
+    Layout Requirements:
+    
+    Section title: editable text field (default: “Shop Rings by Shape”).
+    
+    Below the title, add two toggle buttons or tabs (default labels: “Lab-Grown Diamond” and “Moissanite”).
+    
+    When a user clicks on one, it switches the displayed ring shapes.
+    
+    Both button labels and links should be editable.
+    
+    Below the toggle buttons, add a horizontal image carousel showing ring shapes.
+    
+    Carousel Features:
+    
+    Each item should include:
+    
+    Uploadable image (default placeholder: diamond shape).
+    
+    Editable text label below (e.g., “Round”, “Radiant”, “Oval”).
+    
+    Optional link field for each image (to link to product collections or pages).
+    
+    Include navigation arrows on both sides for desktop, and swipe gestures for mobile.
+    
+    Show 6–10 shapes per row on desktop, and 3–4 per row on mobile.
+    
+    Ensure consistent image size and spacing.
+    
+    Design Style:
+    
+    Clean, luxury-inspired design suitable for a jewelry brand.
+    
+    Background: white.
+    
+    Text color: deep navy blue (#01305A).
+    
+    Active button: filled navy-blue background with white text.
+    
+    Inactive button: transparent background with navy-blue border and text.
+    
+    Arrow buttons: circular navy-blue background with white arrow icon.
+    
+    Customization Options:
+    
+    Editable heading text and alignment (center or left).
+    
+    Editable toggle button labels and links.
+    
+    Ability to upload, reorder, or delete ring shape images.
+    
+    Adjustable image size, spacing, and number of items per row.
+    
+    Adjustable colors for text, background, and buttons.
+    
+    Option to add a hover effect (e.g., zoom or glow).
+    
+    Responsive Behavior:
+    
+    Automatically converts to horizontal scroll on mobile.
+    
+    Buttons and images scale gracefully for small screens.
+    
+    Goal:
+    A sleek, interactive section that allows customers to browse and switch between ring shapes by category (lab-grown vs moissanite), with smooth slider navigation and full design flexibility., give me option to how many shape i want to add  like give me max 20 shapes but if i select 12 shapes then only show option 12 shapes to add image ad link etc do you get it, put arrow size outside and in center also only show 1 arrow until and unless user scroll that then show and arrow, give option of image background hide
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+#shopify-section-{{ section.id }} {
+  margin-top: {{ block.settings.section_margin_top | default: 0 }}px !important;
+  margin-bottom: {{ block.settings.section_margin_bottom | default: 0 }}px !important;
+},
+
+  .ai-ring-shapes-{{ ai_gen_id }} {
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.section_padding }}px 0;
+  }
+
+  .ai-ring-shapes-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.container_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-ring-shapes-header-{{ ai_gen_id }} {
+    text-align: {{ block.settings.heading_alignment }};
+    margin-bottom: 40px;
+  }
+
+  .ai-ring-shapes-title-{{ ai_gen_id }} {
+    color: {{ block.settings.heading_color }};
+    font-size: {{ block.settings.heading_size }}px;
+    margin: 35px 0 30px;
+    font-weight: 500;
+  }
+
+  .ai-ring-shapes-toggle-{{ ai_gen_id }} {
+    display: inline-flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: {{ block.settings.heading_alignment }};
+  }
+
+  .ai-ring-shapes-toggle-btn-{{ ai_gen_id }} {
+    padding: 12px 32px;
+    border: 2px solid {{ block.settings.button_border_color }};
+    background-color: transparent;
+    color: {{ block.settings.button_text_color }};
+    font-size: {{ block.settings.button_font_size }}px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-weight: 500;
+  }
+
+  .ai-ring-shapes-toggle-btn-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_bg }};
+    color: {{ block.settings.button_hover_text }};
+    border-color: {{ block.settings.button_hover_bg }};
+  }
+
+  .ai-ring-shapes-toggle-btn-{{ ai_gen_id }}.active {
+    background-color: {{ block.settings.button_active_bg }};
+    color: {{ block.settings.button_active_text }};
+    border-color: {{ block.settings.button_active_bg }};
+  }
+
+  .ai-ring-shapes-carousel-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    margin-top: 40px;
+    {% comment %} padding: 0 {{ block.settings.arrow_size | plus: 20 }}px; {% endcomment %}
+    padding: 0px;
+  }
+
+  .ai-ring-shapes-carousel-{{ ai_gen_id }} {
+    overflow: hidden;
+    position: relative;
+  }
+
+  .ai-ring-shapes-track-{{ ai_gen_id }} {
+    display: flex;
+    transition: transform 0.4s ease;
+    gap: {{ block.settings.item_spacing }}px;
+  }
+
+  .ai-ring-shapes-category-{{ ai_gen_id }} {
+    display: none;
+    width: 100%;
+  }
+
+  .ai-ring-shapes-category-{{ ai_gen_id }}.active {
+    display: flex;
+  }
+
+  .ai-ring-shapes-item-{{ ai_gen_id }} {
+    flex: 0 0 calc((100% - ({{ block.settings.items_per_row_desktop | minus: 1 }} * {{ block.settings.item_spacing }}px)) / {{ block.settings.items_per_row_desktop }});
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .ai-ring-shapes-item-{{ ai_gen_id }}:hover {
+    transform: {{ block.settings.hover_effect }};
+  }
+
+  .ai-ring-shapes-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    {% if block.settings.show_image_bg %}
+      background-color: {{ block.settings.image_bg_color }};
+    {% else %}
+      background-color: transparent;
+    {% endif %}
+    border-radius: {{ block.settings.image_border_radius }}px;
+    overflow: hidden;
+    flex: 1 1 auto;
+  }
+
+  .ai-ring-shapes-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: {{ block.settings.image_fit }};
+  }
+
+  .ai-ring-shapes-placeholder-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-ring-shapes-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .ai-ring-shapes-label-{{ ai_gen_id }} {
+    color: {{ block.settings.label_color }};
+    font-size: {{ block.settings.label_font_size }}px;
+    font-weight: 400;
+  }
+
+  .ai-ring-shapes-nav-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: {{ block.settings.arrow_size }}px;
+    height: {{ block.settings.arrow_size }}px;
+    background-color: {{ block.settings.arrow_bg_color }};
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: all 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .ai-ring-shapes-nav-{{ ai_gen_id }}.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .ai-ring-shapes-nav-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.arrow_hover_bg }};
+  }
+
+  .ai-ring-shapes-nav-{{ ai_gen_id }} svg {
+    width: 20px;
+    height: 20px;
+    fill: {{ block.settings.arrow_icon_color }};
+  }
+
+  .ai-ring-shapes-nav-prev-{{ ai_gen_id }} {
+    left: 0;
+  }
+
+  .ai-ring-shapes-nav-next-{{ ai_gen_id }} {
+    right: 0;
+  }
+
+  .ai-ring-shapes-nav-{{ ai_gen_id }}:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    visibility: hidden;
+  }
+  @media screen and (max-width: 992px){
+    .ai-ring-shapes-header-{{ ai_gen_id }} {
+      text-align: left;
+    }
+  }
+  
+
+  @media screen and (max-width: 768px) {
+    .ai-ring-shapes-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.7 }}px;
+    }
+
+    .ai-ring-shapes-carousel-wrapper-{{ ai_gen_id }} {
+      padding: 0;
+    }
+
+    .ai-ring-shapes-item-{{ ai_gen_id }} {
+      flex: 0 0 calc((100% - ({{ block.settings.items_per_row_mobile | minus: 1 }} * {{ block.settings.item_spacing }}px)) / {{ block.settings.items_per_row_mobile }});
+    }
+
+    .ai-ring-shapes-nav-{{ ai_gen_id }} {
+      display: none;
+    }
+
+    .ai-ring-shapes-carousel-{{ ai_gen_id }} {
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .ai-ring-shapes-carousel-{{ ai_gen_id }}::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ai-ring-shapes-track-{{ ai_gen_id }} {
+      transition: none;
+    }
+  }
+
+  @media screen and (max-width: 425px){
+    .ai-ring-shapes-toggle-btn-{{ ai_gen_id }} {
+      padding: 10px 20px;
+      font-size: smaller;
+    }
+  }
+
+  
+{% endstyle %}
+
+<ring-shapes-carousel-{{ ai_gen_id }} class="ai-ring-shapes-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-ring-shapes-container-{{ ai_gen_id }}">
+    <div class="ai-ring-shapes-header-{{ ai_gen_id }}">
+      {% if block.settings.section_title != blank %}
+        <h2 class="ai-ring-shapes-title-{{ ai_gen_id }}">{{ block.settings.section_title }}</h2>
+      {% endif %}
+
+      <div class="ai-ring-shapes-toggle-{{ ai_gen_id }}">
+        <button
+          class="ai-ring-shapes-toggle-btn-{{ ai_gen_id }} active"
+          data-category="category1"
+          aria-label="{{ block.settings.toggle_label_1 }}"
+        >
+          {{ block.settings.toggle_label_1 }}
+        </button>
+        <button
+          class="ai-ring-shapes-toggle-btn-{{ ai_gen_id }}"
+          data-category="category2"
+          aria-label="{{ block.settings.toggle_label_2 }}"
+        >
+          {{ block.settings.toggle_label_2 }}
+        </button>
+      </div>
+    </div>
+
+    <div class="ai-ring-shapes-carousel-wrapper-{{ ai_gen_id }}">
+      <button
+        class="ai-ring-shapes-nav-{{ ai_gen_id }} ai-ring-shapes-nav-prev-{{ ai_gen_id }}"
+        aria-label="Previous"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+        </svg>
+      </button>
+
+      <div class="ai-ring-shapes-carousel-{{ ai_gen_id }}">
+        <div class="ai-ring-shapes-category-{{ ai_gen_id }} active" data-category="category1">
+          <div class="ai-ring-shapes-track-{{ ai_gen_id }}">
+            {% for i in (1..block.settings.cat1_shape_count) %}
+              {% liquid
+                assign image_key = 'cat1_image_' | append: i
+                assign label_key = 'cat1_label_' | append: i
+                assign link_key = 'cat1_link_' | append: i
+                assign image = block.settings[image_key]
+                assign label = block.settings[label_key]
+                assign link = block.settings[link_key]
+              %}
+
+              <div class="ai-ring-shapes-item-{{ ai_gen_id }}">
+                {% if link != blank %}
+                  <a href="{{ link }}">
+                {% endif %}
+                  <div class="ai-ring-shapes-image-wrapper-{{ ai_gen_id }}">
+                    {% if image != blank %}
+                      <img
+                        src="{{ image | image_url: width: 400 }}"
+                        alt="{{ label | escape }}"
+                        class="ai-ring-shapes-image-{{ ai_gen_id }}"
+                        loading="lazy"
+                        width="400"
+                        height="400"
+                      >
+                    {% else %}
+                      <div class="ai-ring-shapes-placeholder-{{ ai_gen_id }}">
+                        {{ 'product-1' | placeholder_svg_tag }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  {% if label != blank %}
+                    <div class="ai-ring-shapes-label-{{ ai_gen_id }}">{{ label }}</div>
+                  {% endif %}
+                {% if link != blank %}
+                  </a>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="ai-ring-shapes-category-{{ ai_gen_id }}" data-category="category2">
+          <div class="ai-ring-shapes-track-{{ ai_gen_id }}">
+            {% for i in (1..block.settings.cat2_shape_count) %}
+              {% liquid
+                assign image_key = 'cat2_image_' | append: i
+                assign label_key = 'cat2_label_' | append: i
+                assign link_key = 'cat2_link_' | append: i
+                assign image = block.settings[image_key]
+                assign label = block.settings[label_key]
+                assign link = block.settings[link_key]
+              %}
+
+              <div class="ai-ring-shapes-item-{{ ai_gen_id }}">
+                {% if link != blank %}
+                  <a href="{{ link }}">
+                {% endif %}
+                  <div class="ai-ring-shapes-image-wrapper-{{ ai_gen_id }}">
+                    {% if image != blank %}
+                      <img
+                        src="{{ image | image_url: width: 400 }}"
+                        alt="{{ label | escape }}"
+                        class="ai-ring-shapes-image-{{ ai_gen_id }}"
+                        loading="lazy"
+                        width="400"
+                        height="400"
+                      >
+                    {% else %}
+                      <div class="ai-ring-shapes-placeholder-{{ ai_gen_id }}">
+                        {{ 'product-1' | placeholder_svg_tag }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  {% if label != blank %}
+                    <div class="ai-ring-shapes-label-{{ ai_gen_id }}">{{ label }}</div>
+                  {% endif %}
+                {% if link != blank %}
+                  </a>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <button
+        class="ai-ring-shapes-nav-{{ ai_gen_id }} ai-ring-shapes-nav-next-{{ ai_gen_id }} visible"
+        aria-label="Next"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+          <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</ring-shapes-carousel-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class RingShapesCarousel{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.currentCategory = 'category1';
+        this.currentIndex = 0;
+        this.itemsPerView = {{ block.settings.items_per_row_desktop }};
+      }
+
+      connectedCallback() {
+        this.toggleButtons = this.querySelectorAll('.ai-ring-shapes-toggle-btn-{{ ai_gen_id }}');
+        this.categories = this.querySelectorAll('.ai-ring-shapes-category-{{ ai_gen_id }}');
+        this.prevButton = this.querySelector('.ai-ring-shapes-nav-prev-{{ ai_gen_id }}');
+        this.nextButton = this.querySelector('.ai-ring-shapes-nav-next-{{ ai_gen_id }}');
+        this.carousel = this.querySelector('.ai-ring-shapes-carousel-{{ ai_gen_id }}');
+
+        this.setupToggleButtons();
+        this.setupNavigation();
+        this.updateNavigationState();
+        this.setupTouchScroll();
+      }
+
+      setupToggleButtons() {
+        this.toggleButtons.forEach(button => {
+          button.addEventListener('click', () => {
+            const category = button.dataset.category;
+            this.switchCategory(category);
+          });
+        });
+      }
+
+      switchCategory(category) {
+        this.currentCategory = category;
+        this.currentIndex = 0;
+
+        this.toggleButtons.forEach(btn => {
+          if (btn.dataset.category === category) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+
+        this.categories.forEach(cat => {
+          if (cat.dataset.category === category) {
+            cat.classList.add('active');
+          } else {
+            cat.classList.remove('active');
+          }
+        });
+
+        this.updateNavigationState();
+      }
+
+      setupNavigation() {
+        if (this.prevButton) {
+          this.prevButton.addEventListener('click', () => this.navigate(-1));
+        }
+        if (this.nextButton) {
+          this.nextButton.addEventListener('click', () => this.navigate(1));
+        }
+      }
+
+      navigate(direction) {
+        const activeCategory = this.querySelector('.ai-ring-shapes-category-{{ ai_gen_id }}.active');
+        const track = activeCategory.querySelector('.ai-ring-shapes-track-{{ ai_gen_id }}');
+        const items = activeCategory.querySelectorAll('.ai-ring-shapes-item-{{ ai_gen_id }}');
+        const totalItems = items.length;
+        const maxIndex = Math.max(0, totalItems - this.itemsPerView);
+
+        this.currentIndex = Math.max(0, Math.min(maxIndex, this.currentIndex + direction));
+
+        const itemWidth = items[0].offsetWidth;
+        const gap = {{ block.settings.item_spacing }};
+        const offset = this.currentIndex * (itemWidth + gap);
+
+        track.style.transform = `translateX(-${offset}px)`;
+        this.updateNavigationState();
+      }
+
+      updateNavigationState() {
+        const activeCategory = this.querySelector('.ai-ring-shapes-category-{{ ai_gen_id }}.active');
+        const items = activeCategory.querySelectorAll('.ai-ring-shapes-item-{{ ai_gen_id }}');
+        const totalItems = items.length;
+        const maxIndex = Math.max(0, totalItems - this.itemsPerView);
+
+        if (this.prevButton) {
+          if (this.currentIndex === 0) {
+            this.prevButton.disabled = true;
+            this.prevButton.classList.remove('visible');
+          } else {
+            this.prevButton.disabled = false;
+            this.prevButton.classList.add('visible');
+          }
+        }
+
+        if (this.nextButton) {
+          if (this.currentIndex >= maxIndex) {
+            this.nextButton.disabled = true;
+            this.nextButton.classList.remove('visible');
+          } else {
+            this.nextButton.disabled = false;
+            this.nextButton.classList.add('visible');
+          }
+        }
+      }
+
+      setupTouchScroll() {
+        if (window.innerWidth <= 768) {
+          this.categories.forEach(category => {
+            const track = category.querySelector('.ai-ring-shapes-track-{{ ai_gen_id }}');
+            track.style.transform = 'translateX(0)';
+          });
+        }
+      }
+    }
+
+    customElements.define('ring-shapes-carousel-{{ ai_gen_id }}', RingShapesCarousel{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Shop rings by shape",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section settings"
+    },
+    {
+  "type": "range",
+  "id": "section_margin_top",
+  "min": 0,
+  "max": 200,
+  "step": 5,
+  "label": "Margin top",
+  "default": 0
+},
+{
+  "type": "range",
+  "id": "section_margin_bottom",
+  "min": 0,
+  "max": 200,
+  "step": 5,
+  "label": "Margin bottom",
+  "default": 60
+},
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section title",
+      "default": "Shop Rings by Shape"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Container width",
+      "default": 1300
+    },
+    {
+      "type": "header",
+      "content": "Toggle buttons"
+    },
+    {
+      "type": "text",
+      "id": "toggle_label_1",
+      "label": "Button 1 label",
+      "default": "Lab-Grown Diamond"
+    },
+    {
+      "type": "text",
+      "id": "toggle_label_2",
+      "label": "Button 2 label",
+      "default": "Moissanite"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Button font size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Button border radius",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Carousel layout"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row_desktop",
+      "min": 4,
+      "max": 10,
+      "step": 1,
+      "label": "Items per row (desktop)",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "items_per_row_mobile",
+      "min": 2,
+      "max": 15,
+      "step": 1,
+      "label": "Items per row (mobile)",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "item_spacing",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Item spacing",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Contain"
+        },
+        {
+          "value": "cover",
+          "label": "Cover"
+        }
+      ],
+      "default": "contain"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image_bg",
+      "label": "Show image background",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Image border radius",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "hover_effect",
+      "label": "Hover effect",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "scale(1.05)",
+          "label": "Zoom"
+        },
+        {
+          "value": "translateY(-5px)",
+          "label": "Lift"
+        }
+      ],
+      "default": "scale(1.05)"
+    },
+    {
+      "type": "header",
+      "content": "Navigation arrows"
+    },
+    {
+      "type": "range",
+      "id": "arrow_size",
+      "min": 30,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Arrow size",
+      "default": 45
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#01305A"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#01305A"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button border",
+      "default": "#01305A"
+    },
+    {
+      "type": "color",
+      "id": "button_active_bg",
+      "label": "Active button background",
+      "default": "#01305A"
+    },
+    {
+      "type": "color",
+      "id": "button_active_text",
+      "label": "Active button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg",
+      "label": "Hover button background",
+      "default": "#01305A"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text",
+      "label": "Hover button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "image_bg_color",
+      "label": "Image background",
+      "default": "#f6f4f3"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label text",
+      "default": "#01305A"
+    },
+    {
+      "type": "range",
+      "id": "label_font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Label font size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "arrow_bg_color",
+      "label": "Arrow background",
+      "default": "#01305A"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_bg",
+      "label": "Arrow hover background",
+      "default": "#051333"
+    },
+    {
+      "type": "color",
+      "id": "arrow_icon_color",
+      "label": "Arrow icon",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Lab-Grown Diamond"
+    },
+    {
+      "type": "range",
+      "id": "cat1_shape_count",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "label": "Number of shapes",
+      "default": 10
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_1",
+      "label": "Shape 1 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_1",
+      "label": "Shape 1 label",
+      "default": "Round"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_1",
+      "label": "Shape 1 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_2",
+      "label": "Shape 2 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_2",
+      "label": "Shape 2 label",
+      "default": "Radiant"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_2",
+      "label": "Shape 2 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_3",
+      "label": "Shape 3 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_3",
+      "label": "Shape 3 label",
+      "default": "Oval"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_3",
+      "label": "Shape 3 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_4",
+      "label": "Shape 4 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_4",
+      "label": "Shape 4 label",
+      "default": "Emerald"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_4",
+      "label": "Shape 4 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_5",
+      "label": "Shape 5 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_5",
+      "label": "Shape 5 label",
+      "default": "Cushion"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_5",
+      "label": "Shape 5 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_6",
+      "label": "Shape 6 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_6",
+      "label": "Shape 6 label",
+      "default": "Pear"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_6",
+      "label": "Shape 6 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_7",
+      "label": "Shape 7 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_7",
+      "label": "Shape 7 label",
+      "default": "Marquise"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_7",
+      "label": "Shape 7 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_8",
+      "label": "Shape 8 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_8",
+      "label": "Shape 8 label",
+      "default": "Princess"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_8",
+      "label": "Shape 8 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_9",
+      "label": "Shape 9 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_9",
+      "label": "Shape 9 label",
+      "default": "Asscher"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_9",
+      "label": "Shape 9 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_10",
+      "label": "Shape 10 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_10",
+      "label": "Shape 10 label",
+      "default": "Heart"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_10",
+      "label": "Shape 10 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_11",
+      "label": "Shape 11 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_11",
+      "label": "Shape 11 label"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_11",
+      "label": "Shape 11 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_12",
+      "label": "Shape 12 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_12",
+      "label": "Shape 12 label"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_12",
+      "label": "Shape 12 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_13",
+      "label": "Shape 13 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_13",
+      "label": "Shape 13 label"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_13",
+      "label": "Shape 13 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_14",
+      "label": "Shape 14 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_14",
+      "label": "Shape 14 label"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_14",
+      "label": "Shape 14 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_15",
+      "label": "Shape 15 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_15",
+      "label": "Shape 15 label"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_15",
+      "label": "Shape 15 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_16",
+      "label": "Shape 16 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_16",
+      "label": "Shape 16 label"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_16",
+      "label": "Shape 16 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_17",
+      "label": "Shape 17 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_17",
+      "label": "Shape 17 label"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_17",
+      "label": "Shape 17 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_18",
+      "label": "Shape 18 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_18",
+      "label": "Shape 18 label"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_18",
+      "label": "Shape 18 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_19",
+      "label": "Shape 19 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_19",
+      "label": "Shape 19 label"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_19",
+      "label": "Shape 19 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat1_image_20",
+      "label": "Shape 20 image"
+    },
+    {
+      "type": "text",
+      "id": "cat1_label_20",
+      "label": "Shape 20 label"
+    },
+    {
+      "type": "url",
+      "id": "cat1_link_20",
+      "label": "Shape 20 link"
+    },
+    {
+      "type": "header",
+      "content": "Moissanite"
+    },
+    {
+      "type": "range",
+      "id": "cat2_shape_count",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "label": "Number of shapes",
+      "default": 10
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_1",
+      "label": "Shape 1 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_1",
+      "label": "Shape 1 label",
+      "default": "Round"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_1",
+      "label": "Shape 1 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_2",
+      "label": "Shape 2 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_2",
+      "label": "Shape 2 label",
+      "default": "Radiant"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_2",
+      "label": "Shape 2 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_3",
+      "label": "Shape 3 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_3",
+      "label": "Shape 3 label",
+      "default": "Oval"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_3",
+      "label": "Shape 3 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_4",
+      "label": "Shape 4 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_4",
+      "label": "Shape 4 label",
+      "default": "Emerald"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_4",
+      "label": "Shape 4 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_5",
+      "label": "Shape 5 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_5",
+      "label": "Shape 5 label",
+      "default": "Cushion"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_5",
+      "label": "Shape 5 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_6",
+      "label": "Shape 6 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_6",
+      "label": "Shape 6 label",
+      "default": "Pear"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_6",
+      "label": "Shape 6 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_7",
+      "label": "Shape 7 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_7",
+      "label": "Shape 7 label",
+      "default": "Marquise"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_7",
+      "label": "Shape 7 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_8",
+      "label": "Shape 8 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_8",
+      "label": "Shape 8 label",
+      "default": "Princess"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_8",
+      "label": "Shape 8 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_9",
+      "label": "Shape 9 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_9",
+      "label": "Shape 9 label",
+      "default": "Asscher"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_9",
+      "label": "Shape 9 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_10",
+      "label": "Shape 10 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_10",
+      "label": "Shape 10 label",
+      "default": "Heart"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_10",
+      "label": "Shape 10 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_11",
+      "label": "Shape 11 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_11",
+      "label": "Shape 11 label"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_11",
+      "label": "Shape 11 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_12",
+      "label": "Shape 12 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_12",
+      "label": "Shape 12 label"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_12",
+      "label": "Shape 12 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_13",
+      "label": "Shape 13 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_13",
+      "label": "Shape 13 label"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_13",
+      "label": "Shape 13 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_14",
+      "label": "Shape 14 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_14",
+      "label": "Shape 14 label"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_14",
+      "label": "Shape 14 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_15",
+      "label": "Shape 15 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_15",
+      "label": "Shape 15 label"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_15",
+      "label": "Shape 15 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_16",
+      "label": "Shape 16 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_16",
+      "label": "Shape 16 label"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_16",
+      "label": "Shape 16 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_17",
+      "label": "Shape 17 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_17",
+      "label": "Shape 17 label"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_17",
+      "label": "Shape 17 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_18",
+      "label": "Shape 18 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_18",
+      "label": "Shape 18 label"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_18",
+      "label": "Shape 18 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_19",
+      "label": "Shape 19 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_19",
+      "label": "Shape 19 label"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_19",
+      "label": "Shape 19 link"
+    },
+    {
+      "type": "image_picker",
+      "id": "cat2_image_20",
+      "label": "Shape 20 image"
+    },
+    {
+      "type": "text",
+      "id": "cat2_label_20",
+      "label": "Shape 20 label"
+    },
+    {
+      "type": "url",
+      "id": "cat2_link_20",
+      "label": "Shape 20 link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop rings by shape"
+    }
+  ]
+}
+{% endschema %}

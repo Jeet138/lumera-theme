@@ -1,0 +1,435 @@
+{% doc %}
+  @prompt
+    Create a custom section that looks exactly like this reference design: Left side has two jewelry/ring images displayed side by side in a 2-column grid layout taking up about 65% of the section width. Right side (35% width) has a small uppercase label text "SHOP DIAMOND", a large bold serif heading "ENGAGEMENT RINGS" in 2 lines, and a bordered rectangular "SHOP NOW →" button below. The overall layout is a horizontal split — images on left, text+CTA on right, vertically centered. Background is white/light. The section should be fully customizable with editable images, heading text, label text, button text, and button link. Make it responsive for mobile (stack vertically on mobile).
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-engagement-section-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.section_padding }}px 0;
+  }
+  
+  .ai-engagement-container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .ai-engagement-images-{{ ai_gen_id }} {
+    flex: 0 0 65%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: {{ block.settings.image_gap }}px;
+  }
+
+  .ai-engagement-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: {{ block.settings.image_border_radius }}px;
+  }
+
+  .ai-engagement-image-wrapper-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ai-engagement-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: {{ block.settings.image_border_radius }}px;
+  }
+
+  .ai-engagement-image-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .ai-engagement-content-{{ ai_gen_id }} {
+    flex: 0 0 35%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .ai-engagement-label-{{ ai_gen_id }} {
+    font-size: {{ block.settings.label_font_size }}px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: {{ block.settings.label_color }};
+    margin: 0;
+  }
+
+  .ai-engagement-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_font_size }}px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: {{ block.settings.heading_color }};
+    margin: 0;
+    font-family: serif;
+  }
+
+  .ai-engagement-button-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 32px;
+    background-color: {{ block.settings.button_background }};
+    color: {{ block.settings.button_text_color }};
+    border: 2px solid {{ block.settings.button_border_color }};
+    border-radius: {{ block.settings.button_border_radius }}px;
+    text-decoration: none;
+    font-size: {{ block.settings.button_font_size }}px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    width: fit-content;
+  }
+
+  .ai-engagement-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_background }};
+    color: {{ block.settings.button_hover_text_color }};
+    border-color: {{ block.settings.button_hover_border_color }};
+  }
+
+  .ai-engagement-button-arrow-{{ ai_gen_id }} {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-engagement-button-{{ ai_gen_id }}:hover .ai-engagement-button-arrow-{{ ai_gen_id }} {
+    transform: translateX(4px);
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-engagement-container-{{ ai_gen_id }} {
+      flex-direction: column;
+      gap: 32px;
+      padding: 0 20px;
+    }
+
+    .ai-engagement-images-{{ ai_gen_id }} {
+      flex: 1 1 100%;
+      width: 100%;
+    }
+
+    .ai-engagement-content-{{ ai_gen_id }} {
+      flex: 1 1 100%;
+      width: 100%;
+      text-align: center;
+      align-items: center;
+    }
+
+    .ai-engagement-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_font_size_mobile }}px;
+    }
+
+    .ai-engagement-label-{{ ai_gen_id }} {
+      font-size: {{ block.settings.label_font_size_mobile }}px;
+    }
+
+    .ai-engagement-button-{{ ai_gen_id }} {
+      width: 100%;
+    }
+  }
+{% endstyle %}
+
+<engagement-rings-section-{{ ai_gen_id }} class="ai-engagement-section-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-engagement-container-{{ ai_gen_id }}">
+    <div class="ai-engagement-images-{{ ai_gen_id }}">
+      <div class="ai-engagement-image-wrapper-{{ ai_gen_id }}">
+        {% if block.settings.image_1 %}
+          <img
+            src="{{ block.settings.image_1 | image_url: width: 600 }}"
+            alt="{{ block.settings.image_1.alt | escape }}"
+            loading="lazy"
+            width="{{ block.settings.image_1.width }}"
+            height="{{ block.settings.image_1.height }}"
+          >
+        {% else %}
+          <div class="ai-engagement-image-placeholder-{{ ai_gen_id }}">
+            {{ 'product-1' | placeholder_svg_tag }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="ai-engagement-image-wrapper-{{ ai_gen_id }}">
+        {% if block.settings.image_2 %}
+          <img
+            src="{{ block.settings.image_2 | image_url: width: 600 }}"
+            alt="{{ block.settings.image_2.alt | escape }}"
+            loading="lazy"
+            width="{{ block.settings.image_2.width }}"
+            height="{{ block.settings.image_2.height }}"
+          >
+        {% else %}
+          <div class="ai-engagement-image-placeholder-{{ ai_gen_id }}">
+            {{ 'product-1' | placeholder_svg_tag }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="ai-engagement-content-{{ ai_gen_id }}">
+      {% if block.settings.label_text != blank %}
+        <p class="ai-engagement-label-{{ ai_gen_id }}">{{ block.settings.label_text }}</p>
+      {% endif %}
+
+      {% if block.settings.heading_text != blank %}
+        <h2 class="ai-engagement-heading-{{ ai_gen_id }}">{{ block.settings.heading_text }}</h2>
+      {% endif %}
+
+      {% if block.settings.button_text != blank %}
+        <a
+          href="{{ block.settings.button_link }}"
+          class="ai-engagement-button-{{ ai_gen_id }}"
+        >
+          {{ block.settings.button_text }}
+          <span class="ai-engagement-button-arrow-{{ ai_gen_id }}">→</span>
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</engagement-rings-section-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class EngagementRingsSection{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+      }
+    }
+
+    customElements.define('engagement-rings-section-{{ ai_gen_id }}', EngagementRingsSection{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Engagement rings showcase",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "range",
+      "id": "image_gap",
+      "label": "Gap between images",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Image border radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Label"
+    },
+    {
+      "type": "text",
+      "id": "label_text",
+      "label": "Label text",
+      "default": "SHOP DIAMOND"
+    },
+    {
+      "type": "range",
+      "id": "label_font_size",
+      "label": "Font size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "label_font_size_mobile",
+      "label": "Font size (mobile)",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading text",
+      "default": "ENGAGEMENT RINGS"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Font size",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size_mobile",
+      "label": "Font size (mobile)",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Font size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Border color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Hover background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Hover text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border_color",
+      "label": "Hover border color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Section"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    }
+  ],
+  "presets": [
+    {
+      "name": "Engagement rings showcase"
+    }
+  ],
+  "tag": null
+}
+{% endschema %}

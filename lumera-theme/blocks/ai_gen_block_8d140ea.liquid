@@ -1,0 +1,1000 @@
+
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-faq-section-{{ ai_gen_id }} {
+    width: 100%;
+    max-width: 100%;
+    padding: {{ block.settings.section_padding }}px 20px;
+    background-color: {{ block.settings.background_color }};
+    display: block;
+  }
+
+  .ai-faq-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.content_max_width }}px;
+    margin: 0 auto;
+  }
+
+  .ai-faq-heading-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 40px;
+    color: {{ block.settings.heading_color }};
+    font-size: {{ block.settings.heading_size }}px;
+  }
+
+  .ai-faq-tabs-{{ ai_gen_id }} {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .ai-faq-tab-{{ ai_gen_id }} {
+    padding: 12px 24px;
+    background-color: {{ block.settings.tab_bg_color }};
+    color: {{ block.settings.tab_text_color }};
+    border: 1px solid {{ block.settings.tab_border_color }};
+    border-radius: {{ block.settings.tab_border_radius }}px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: {{ block.settings.tab_font_size }}px;
+    font-weight: 500;
+  }
+
+  .ai-faq-tab-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.tab_hover_bg_color }};
+    color: {{ block.settings.tab_hover_text_color }};
+  }
+
+  .ai-faq-tab-{{ ai_gen_id }}.active {
+    background-color: {{ block.settings.tab_active_bg_color }};
+    color: {{ block.settings.tab_active_text_color }};
+    border-color: {{ block.settings.tab_active_border_color }};
+  }
+
+  .ai-faq-content-{{ ai_gen_id }} {
+    display: none;
+  }
+
+  .ai-faq-content-{{ ai_gen_id }}.active {
+    display: block;
+  }
+
+  .ai-faq-item-{{ ai_gen_id }} {
+    border-bottom: 1px solid {{ block.settings.item_border_color }};
+    margin-bottom: 0;
+  }
+
+  .ai-faq-question-{{ ai_gen_id }} {
+    width: 100%;
+    padding: 20px 0;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: {{ block.settings.question_font_size }}px;
+    font-weight: 600;
+    color: {{ block.settings.question_color }};
+  }
+
+  .ai-faq-question-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.question_hover_color }};
+  }
+
+  .ai-faq-icon-{{ ai_gen_id }} {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 15px;
+  }
+
+  .ai-faq-item-{{ ai_gen_id }}.active .ai-faq-icon-{{ ai_gen_id }} {
+    transform: rotate(180deg);
+  }
+
+  .ai-faq-answer-{{ ai_gen_id }} {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .ai-faq-answer-content-{{ ai_gen_id }} {
+    padding: 0 0 20px 0;
+    color: {{ block.settings.answer_color }};
+    font-size: {{ block.settings.answer_font_size }}px;
+    line-height: 1.6;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-faq-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.7 }}px;
+    }
+
+    .ai-faq-tab-{{ ai_gen_id }} {
+      font-size: {{ block.settings.tab_font_size | times: 0.9 }}px;
+      padding: 10px 16px;
+    }
+  }
+{% endstyle %}
+
+<faq-section-{{ ai_gen_id }} class="ai-faq-section-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-faq-container-{{ ai_gen_id }}">
+    <h2 class="ai-faq-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+
+    <div class="ai-faq-tabs-{{ ai_gen_id }}">
+      <button class="ai-faq-tab-{{ ai_gen_id }} active" data-tab="general">{{ block.settings.tab_general }}</button>
+      <button class="ai-faq-tab-{{ ai_gen_id }}" data-tab="shipping">{{ block.settings.tab_shipping }}</button>
+      <button class="ai-faq-tab-{{ ai_gen_id }}" data-tab="payment">{{ block.settings.tab_payment }}</button>
+      <button class="ai-faq-tab-{{ ai_gen_id }}" data-tab="returns">{{ block.settings.tab_returns }}</button>
+    </div>
+
+    <div class="ai-faq-content-{{ ai_gen_id }} active" data-content="general">
+      {% for i in (1..10) %}
+        {% assign question_key = 'general_q' | append: i %}
+        {% assign answer_key = 'general_a' | append: i %}
+        {% if block.settings[question_key] != blank %}
+          <div class="ai-faq-item-{{ ai_gen_id }}">
+            <button class="ai-faq-question-{{ ai_gen_id }}" aria-expanded="false">
+              <span>{{ block.settings[question_key] }}</span>
+              <svg class="ai-faq-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="ai-faq-answer-{{ ai_gen_id }}">
+              <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+                {{ block.settings[answer_key] }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="ai-faq-content-{{ ai_gen_id }}" data-content="shipping">
+      {% for i in (1..10) %}
+        {% assign question_key = 'shipping_q' | append: i %}
+        {% assign answer_key = 'shipping_a' | append: i %}
+        {% if block.settings[question_key] != blank %}
+          <div class="ai-faq-item-{{ ai_gen_id }}">
+            <button class="ai-faq-question-{{ ai_gen_id }}" aria-expanded="false">
+              <span>{{ block.settings[question_key] }}</span>
+              <svg class="ai-faq-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="ai-faq-answer-{{ ai_gen_id }}">
+              <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+                {{ block.settings[answer_key] }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="ai-faq-content-{{ ai_gen_id }}" data-content="payment">
+      {% for i in (1..10) %}
+        {% assign question_key = 'payment_q' | append: i %}
+        {% assign answer_key = 'payment_a' | append: i %}
+        {% if block.settings[question_key] != blank %}
+          <div class="ai-faq-item-{{ ai_gen_id }}">
+            <button class="ai-faq-question-{{ ai_gen_id }}" aria-expanded="false">
+              <span>{{ block.settings[question_key] }}</span>
+              <svg class="ai-faq-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="ai-faq-answer-{{ ai_gen_id }}">
+              <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+                {{ block.settings[answer_key] }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="ai-faq-content-{{ ai_gen_id }}" data-content="returns">
+      {% for i in (1..10) %}
+        {% assign question_key = 'returns_q' | append: i %}
+        {% assign answer_key = 'returns_a' | append: i %}
+        {% if block.settings[question_key] != blank %}
+          <div class="ai-faq-item-{{ ai_gen_id }}">
+            <button class="ai-faq-question-{{ ai_gen_id }}" aria-expanded="false">
+              <span>{{ block.settings[question_key] }}</span>
+              <svg class="ai-faq-icon-{{ ai_gen_id }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="ai-faq-answer-{{ ai_gen_id }}">
+              <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+                {{ block.settings[answer_key] }}
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</faq-section-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class FaqSection{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.tabs = this.querySelectorAll('.ai-faq-tab-{{ ai_gen_id }}');
+        this.contents = this.querySelectorAll('.ai-faq-content-{{ ai_gen_id }}');
+        this.questions = this.querySelectorAll('.ai-faq-question-{{ ai_gen_id }}');
+
+        this.setupTabs();
+        this.setupAccordion();
+      }
+
+      setupTabs() {
+        this.tabs.forEach(tab => {
+          tab.addEventListener('click', () => {
+            const targetTab = tab.getAttribute('data-tab');
+
+            this.tabs.forEach(t => t.classList.remove('active'));
+            this.contents.forEach(c => c.classList.remove('active'));
+
+            tab.classList.add('active');
+            const targetContent = this.querySelector(`[data-content="${targetTab}"]`);
+            if (targetContent) {
+              targetContent.classList.add('active');
+            }
+
+            const openItems = this.querySelectorAll('.ai-faq-item-{{ ai_gen_id }}.active');
+            openItems.forEach(item => {
+              item.classList.remove('active');
+              const answer = item.querySelector('.ai-faq-answer-{{ ai_gen_id }}');
+              const question = item.querySelector('.ai-faq-question-{{ ai_gen_id }}');
+              if (answer) answer.style.maxHeight = null;
+              if (question) question.setAttribute('aria-expanded', 'false');
+            });
+          });
+        });
+      }
+
+      setupAccordion() {
+        this.questions.forEach(question => {
+          question.addEventListener('click', () => {
+            const item = question.closest('.ai-faq-item-{{ ai_gen_id }}');
+            const answer = item.querySelector('.ai-faq-answer-{{ ai_gen_id }}');
+            const isActive = item.classList.contains('active');
+
+            if (isActive) {
+              item.classList.remove('active');
+              answer.style.maxHeight = null;
+              question.setAttribute('aria-expanded', 'false');
+            } else {
+              item.classList.add('active');
+              answer.style.maxHeight = answer.scrollHeight + 'px';
+              question.setAttribute('aria-expanded', 'true');
+            }
+          });
+        });
+      }
+    }
+
+    customElements.define('faq-section-{{ ai_gen_id }}', FaqSection{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "FAQ section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Have Any Questions?"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Tabs"
+    },
+    {
+      "type": "text",
+      "id": "tab_general",
+      "label": "General tab",
+      "default": "General"
+    },
+    {
+      "type": "text",
+      "id": "tab_shipping",
+      "label": "Shipping tab",
+      "default": "Shipping"
+    },
+    {
+      "type": "text",
+      "id": "tab_payment",
+      "label": "Payment tab",
+      "default": "Payment"
+    },
+    {
+      "type": "text",
+      "id": "tab_returns",
+      "label": "Returns tab",
+      "default": "Returns and Exchanges"
+    },
+    {
+      "type": "range",
+      "id": "tab_font_size",
+      "label": "Tab font size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "tab_border_radius",
+      "label": "Tab border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "color",
+      "id": "tab_bg_color",
+      "label": "Tab background",
+      "default": "#f4f4f4"
+    },
+    {
+      "type": "color",
+      "id": "tab_text_color",
+      "label": "Tab text",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "tab_border_color",
+      "label": "Tab border",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "color",
+      "id": "tab_hover_bg_color",
+      "label": "Tab hover background",
+      "default": "#e8e8e8"
+    },
+    {
+      "type": "color",
+      "id": "tab_hover_text_color",
+      "label": "Tab hover text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_bg_color",
+      "label": "Active tab background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_text_color",
+      "label": "Active tab text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_border_color",
+      "label": "Active tab border",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "General FAQs"
+    },
+    {
+      "type": "text",
+      "id": "general_q1",
+      "label": "Question 1",
+      "default": "What is your return policy?"
+    },
+    {
+      "type": "richtext",
+      "id": "general_a1",
+      "label": "Answer 1",
+      "default": "<p>We offer a 30-day return policy on all items.</p>"
+    },
+    {
+      "type": "text",
+      "id": "general_q2",
+      "label": "Question 2",
+      "default": "How do I track my order?"
+    },
+    {
+      "type": "richtext",
+      "id": "general_a2",
+      "label": "Answer 2",
+      "default": "<p>You will receive a tracking number via email once your order ships.</p>"
+    },
+    {
+      "type": "text",
+      "id": "general_q3",
+      "label": "Question 3",
+      "default": "Do you ship internationally?"
+    },
+    {
+      "type": "richtext",
+      "id": "general_a3",
+      "label": "Answer 3",
+      "default": "<p>Yes, we ship to most countries worldwide.</p>"
+    },
+    {
+      "type": "text",
+      "id": "general_q4",
+      "label": "Question 4",
+      "default": "How can I contact customer service?"
+    },
+    {
+      "type": "richtext",
+      "id": "general_a4",
+      "label": "Answer 4",
+      "default": "<p>You can reach us via email or phone during business hours.</p>"
+    },
+    {
+      "type": "text",
+      "id": "general_q5",
+      "label": "Question 5",
+      "default": "What payment methods do you accept?"
+    },
+    {
+      "type": "richtext",
+      "id": "general_a5",
+      "label": "Answer 5",
+      "default": "<p>We accept all major credit cards, PayPal, and more.</p>"
+    },
+    {
+      "type": "text",
+      "id": "general_q6",
+      "label": "Question 6",
+      "default": "Can I change my order after placing it?"
+    },
+    {
+      "type": "richtext",
+      "id": "general_a6",
+      "label": "Answer 6",
+      "default": "<p>Please contact us immediately if you need to make changes.</p>"
+    },
+    {
+      "type": "text",
+      "id": "general_q7",
+      "label": "Question 7",
+      "default": "Do you offer gift wrapping?"
+    },
+    {
+      "type": "richtext",
+      "id": "general_a7",
+      "label": "Answer 7",
+      "default": "<p>Yes, gift wrapping is available at checkout.</p>"
+    },
+    {
+      "type": "text",
+      "id": "general_q8",
+      "label": "Question 8",
+      "default": "Are your products authentic?"
+    },
+    {
+      "type": "richtext",
+      "id": "general_a8",
+      "label": "Answer 8",
+      "default": "<p>All our products are 100% authentic and certified.</p>"
+    },
+    {
+      "type": "text",
+      "id": "general_q9",
+      "label": "Question 9",
+      "default": "How do I care for my jewelry?"
+    },
+    {
+      "type": "richtext",
+      "id": "general_a9",
+      "label": "Answer 9",
+      "default": "<p>Store in a cool, dry place and clean with a soft cloth.</p>"
+    },
+    {
+      "type": "text",
+      "id": "general_q10",
+      "label": "Question 10",
+      "default": "Do you offer custom designs?"
+    },
+    {
+      "type": "richtext",
+      "id": "general_a10",
+      "label": "Answer 10",
+      "default": "<p>Yes, please contact us to discuss custom design options.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Shipping FAQs"
+    },
+    {
+      "type": "text",
+      "id": "shipping_q1",
+      "label": "Question 1",
+      "default": "How long does shipping take?"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_a1",
+      "label": "Answer 1",
+      "default": "<p>Standard shipping takes 5-7 business days.</p>"
+    },
+    {
+      "type": "text",
+      "id": "shipping_q2",
+      "label": "Question 2",
+      "default": "Do you offer express shipping?"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_a2",
+      "label": "Answer 2",
+      "default": "<p>Yes, express shipping is available at checkout.</p>"
+    },
+    {
+      "type": "text",
+      "id": "shipping_q3",
+      "label": "Question 3",
+      "default": "What are the shipping costs?"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_a3",
+      "label": "Answer 3",
+      "default": "<p>Shipping costs vary by location and are calculated at checkout.</p>"
+    },
+    {
+      "type": "text",
+      "id": "shipping_q4",
+      "label": "Question 4",
+      "default": "Do you offer free shipping?"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_a4",
+      "label": "Answer 4",
+      "default": "<p>Free shipping on orders over $100.</p>"
+    },
+    {
+      "type": "text",
+      "id": "shipping_q5",
+      "label": "Question 5",
+      "default": "Can I change my shipping address?"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_a5",
+      "label": "Answer 5",
+      "default": "<p>Contact us immediately if you need to update your address.</p>"
+    },
+        {
+      "type": "text",
+      "id": "shipping_q6",
+      "label": "Question 6",
+      "default": "Is my package insured during shipping?"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_a6",
+      "label": "Answer 6",
+      "default": "<p>Yes, every order is fully insured until it is delivered to you.</p>"
+    },
+    {
+      "type": "text",
+      "id": "shipping_q7",
+      "label": "Question 7",
+      "default": "Is signature required on delivery?"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_a7",
+      "label": "Answer 7",
+      "default": "<p>Yes, a signature is required for all jewelry deliveries for your security.</p>"
+    },
+    {
+      "type": "text",
+      "id": "shipping_q8",
+      "label": "Question 8",
+      "default": "Can I track my order?"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_a8",
+      "label": "Answer 8",
+      "default": "<p>Yes, a tracking link is sent to your email as soon as your order ships.</p>"
+    },
+    {
+      "type": "text",
+      "id": "shipping_q9",
+      "label": "Question 9",
+      "default": "Do you ship to PO boxes?"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_a9",
+      "label": "Answer 9",
+      "default": "<p>We do not ship to PO boxes. Please provide a physical address.</p>"
+    },
+    {
+      "type": "text",
+      "id": "shipping_q10",
+      "label": "Question 10",
+      "default": "What if my package is delayed or lost?"
+    },
+    {
+      "type": "richtext",
+      "id": "shipping_a10",
+      "label": "Answer 10",
+      "default": "<p>Please contact us and we will work with the courier to resolve it quickly.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Payment FAQs"
+    },
+    {
+      "type": "text",
+      "id": "payment_q1",
+      "label": "Question 1",
+      "default": "Is my payment information secure?"
+    },
+    {
+      "type": "richtext",
+      "id": "payment_a1",
+      "label": "Answer 1",
+      "default": "<p>Yes, we use secure encryption for all transactions.</p>"
+    },
+    {
+      "type": "text",
+      "id": "payment_q2",
+      "label": "Question 2",
+      "default": "Do you accept installment payments?"
+    },
+    {
+      "type": "richtext",
+      "id": "payment_a2",
+      "label": "Answer 2",
+      "default": "<p>Yes, we offer installment options through select providers.</p>"
+    },
+    {
+      "type": "text",
+      "id": "payment_q3",
+      "label": "Question 3",
+      "default": "Can I pay with cryptocurrency?"
+    },
+    {
+      "type": "richtext",
+      "id": "payment_a3",
+      "label": "Answer 3",
+      "default": "<p>Currently, we do not accept cryptocurrency.</p>"
+    },
+    {
+      "type": "text",
+      "id": "payment_q4",
+      "label": "Question 4",
+      "default": "What if my payment fails?"
+    },
+    {
+      "type": "richtext",
+      "id": "payment_a4",
+      "label": "Answer 4",
+      "default": "<p>Please check your payment details and try again or contact your bank.</p>"
+    },
+    {
+      "type": "text",
+      "id": "payment_q5",
+      "label": "Question 5",
+      "default": "Do you store my payment information?"
+    },
+    {
+      "type": "richtext",
+      "id": "payment_a5",
+      "label": "Answer 5",
+      "default": "<p>We do not store payment information on our servers.</p>"
+    },
+        {
+      "type": "text",
+      "id": "payment_q6",
+      "label": "Question 6",
+      "default": "Which credit and debit cards do you accept?"
+    },
+    {
+      "type": "richtext",
+      "id": "payment_a6",
+      "label": "Answer 6",
+      "default": "<p>We accept Visa, Mastercard, American Express and more.</p>"
+    },
+    {
+      "type": "text",
+      "id": "payment_q7",
+      "label": "Question 7",
+      "default": "Can I pay via UPI or net banking?"
+    },
+    {
+      "type": "richtext",
+      "id": "payment_a7",
+      "label": "Answer 7",
+      "default": "<p>Yes, UPI and net banking are available at checkout.</p>"
+    },
+    {
+      "type": "text",
+      "id": "payment_q8",
+      "label": "Question 8",
+      "default": "Do you offer Cash on Delivery?"
+    },
+    {
+      "type": "richtext",
+      "id": "payment_a8",
+      "label": "Answer 8",
+      "default": "<p>Cash on Delivery is not available for high-value jewelry orders.</p>"
+    },
+    {
+      "type": "text",
+      "id": "payment_q9",
+      "label": "Question 9",
+      "default": "Will I get an invoice for my purchase?"
+    },
+    {
+      "type": "richtext",
+      "id": "payment_a9",
+      "label": "Answer 9",
+      "default": "<p>Yes, a detailed invoice is emailed to you after your payment is confirmed.</p>"
+    },
+    {
+      "type": "text",
+      "id": "payment_q10",
+      "label": "Question 10",
+      "default": "When will my card be charged?"
+    },
+    {
+      "type": "richtext",
+      "id": "payment_a10",
+      "label": "Answer 10",
+      "default": "<p>Your card is charged at the time you place the order.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Returns and exchanges FAQs"
+    },
+    {
+      "type": "text",
+      "id": "returns_q1",
+      "label": "Question 1",
+      "default": "How do I initiate a return?"
+    },
+    {
+      "type": "richtext",
+      "id": "returns_a1",
+      "label": "Answer 1",
+      "default": "<p>Contact our customer service team to start the return process.</p>"
+    },
+    {
+      "type": "text",
+      "id": "returns_q2",
+      "label": "Question 2",
+      "default": "Can I exchange an item?"
+    },
+    {
+      "type": "richtext",
+      "id": "returns_a2",
+      "label": "Answer 2",
+      "default": "<p>Yes, exchanges are available within 30 days of purchase.</p>"
+    },
+    {
+      "type": "text",
+      "id": "returns_q3",
+      "label": "Question 3",
+      "default": "Who pays for return shipping?"
+    },
+    {
+      "type": "richtext",
+      "id": "returns_a3",
+      "label": "Answer 3",
+      "default": "<p>Return shipping costs are the responsibility of the customer.</p>"
+    },
+    {
+      "type": "text",
+      "id": "returns_q4",
+      "label": "Question 4",
+      "default": "How long does a refund take?"
+    },
+    {
+      "type": "richtext",
+      "id": "returns_a4",
+      "label": "Answer 4",
+      "default": "<p>Refunds are processed within 5-10 business days.</p>"
+    },
+    {
+      "type": "text",
+      "id": "returns_q5",
+      "label": "Question 5",
+      "default": "Can I return custom items?"
+    },
+    {
+      "type": "richtext",
+      "id": "returns_a5",
+      "label": "Answer 5",
+      "default": "<p>Custom items are non-returnable unless defective.</p>"
+    },
+        {
+      "type": "text",
+      "id": "returns_q6",
+      "label": "Question 6",
+      "default": "What condition should the item be in for return?"
+    },
+    {
+      "type": "richtext",
+      "id": "returns_a6",
+      "label": "Answer 6",
+      "default": "<p>The item must be unused, undamaged and returned with original packaging and certificates.</p>"
+    },
+    {
+      "type": "text",
+      "id": "returns_q7",
+      "label": "Question 7",
+      "default": "Can I return or exchange a resized ring?"
+    },
+    {
+      "type": "richtext",
+      "id": "returns_a7",
+      "label": "Answer 7",
+      "default": "<p>Resized or engraved items cannot be returned, as they are customized for you.</p>"
+    },
+    {
+      "type": "text",
+      "id": "returns_q8",
+      "label": "Question 8",
+      "default": "What if I receive a damaged or wrong item?"
+    },
+    {
+      "type": "richtext",
+      "id": "returns_a8",
+      "label": "Answer 8",
+      "default": "<p>Contact us within 48 hours of delivery with photos and we will arrange a replacement or refund.</p>"
+    },
+    {
+      "type": "text",
+      "id": "returns_q9",
+      "label": "Question 9",
+      "default": "How will I receive my refund?"
+    },
+    {
+      "type": "richtext",
+      "id": "returns_a9",
+      "label": "Answer 9",
+      "default": "<p>Refunds are credited to your original payment method.</p>"
+    },
+    {
+      "type": "text",
+      "id": "returns_q10",
+      "label": "Question 10",
+      "default": "Can I exchange for a different size or design?"
+    },
+    {
+      "type": "richtext",
+      "id": "returns_a10",
+      "label": "Answer 10",
+      "default": "<p>Yes, exchanges for a different size or design are possible within 30 days, subject to availability.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content max width",
+      "min": 600,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "default": 900
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Question and answer style"
+    },
+    {
+      "type": "range",
+      "id": "question_font_size",
+      "label": "Question font size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "question_color",
+      "label": "Question color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "question_hover_color",
+      "label": "Question hover color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "answer_font_size",
+      "label": "Answer font size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "answer_color",
+      "label": "Answer color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "item_border_color",
+      "label": "Item border",
+      "default": "#e0e0e0"
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ section"
+    }
+  ]
+}
+{% endschema %}

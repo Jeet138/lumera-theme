@@ -1,0 +1,1526 @@
+{{ 'nouislider.min.css' | asset_url | stylesheet_tag }}
+{{ 'template-collection.css' | asset_url | stylesheet_tag }}
+{{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+
+{{ 'component-rte.css' | asset_url | stylesheet_tag: preload: true }}
+
+<script src="{{ 'ajaxinate.min.js' | asset_url }}" defer="defer"></script>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign size_image_grid = settings.size_image_grid
+  assign cover_contain = section.settings.cover_contain
+  assign type_pagi = section.settings.type_pagination
+  assign productPerrow = section.settings.collection_perrow
+  assign filter_type = section.settings.filter_type
+
+  if productPerrow == '2'
+    assign gridProduct = 'js-col col-sm-6 col-6'
+  elsif productPerrow == '3'
+    assign gridProduct = 'js-col col-sm-6 col-6 col-lg-4'
+  elsif productPerrow == '4'
+    assign gridProduct = 'js-col col-sm-6 col-6 col-lg-3'
+  elsif productPerrow == '5'
+    assign gridProduct = 'js-col col-sm-6 col-6 col-lg-2-4'
+  elsif productPerrow == '6'
+    assign gridProduct = 'js-col col-sm-6 col-6 col-lg-2'
+  endif
+
+  case filter_type
+    when 'drawer'
+      assign filter_type = 'drawer'
+    when 'drawer-slide-left'
+      assign filter_type = 'drawer'
+    when 'vertical'
+      assign filter_type = 'vertical'
+    when 'horizontal'
+      assign filter_type = 'horizontal'
+    when 'drawer-collapse-left'
+      assign filter_type = 'vertical'
+      assign filter_check = 'drawer-collapse-left'
+    when 'drawer-collapse-right'
+      assign filter_type = 'vertical'
+      assign filter_check = 'drawer-collapse-left'
+    else
+      assign filter_type = 'vertical'
+  endcase
+-%}
+
+<div
+  class="main-collection section-{{ section.id }}-padding {{ section.settings.collection_width }} collection-{{ section.settings.filter_type }} {% if section.settings.filter_type == 'drawer-collapse-right' %} collection-drawer-collapse-left collection-drawer-collapse-right {% endif %}"
+>
+  {% comment %} Sort is the first tabbable element when filter type is vertical {% endcomment %}
+  {%- if section.settings.enable_sorting and filter_type == 'vertical' -%}
+    <!--
+      =========================================================
+      DIAMOND SHAPE NAVIGATION
+      LIGHTWEIGHT SHOPIFY FILTER VERSION
+      =========================================================
+    -->
+
+    {% assign shape_filter = blank %}
+
+    {% for filter in collection.filters %}
+      {% assign filter_label = filter.label | downcase | strip %}
+
+      {% if filter_label == 'diamond shape' or filter_label == 'stone shape' %}
+        {% assign shape_filter = filter %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+
+    {% if shape_filter != blank and shape_filter.values.size > 0 %}
+      <div
+        class="diamond-shape-wrapper"
+        data-diamond-shape-navigation
+      >
+        <!-- PREVIOUS -->
+        <button
+          type="button"
+          class="diamond-shape-arrow diamond-shape-prev"
+          aria-label="Previous shapes"
+        >
+          ‹
+        </button>
+
+        <!-- SHAPE SLIDER -->
+        <div class="diamond-shape-slider">
+          <div class="diamond-shape-track">
+            {% for matched_value in shape_filter.values %}
+              {% assign shape = matched_value.label | strip %}
+              {% assign shape_handle = shape | handleize %}
+
+              <a
+                href="{% if matched_value.active %}{{ matched_value.url_to_remove }}{% else %}{{ matched_value.url_to_add }}{% endif %}"
+                class="
+                  diamond-shape-item
+                  {% if matched_value.active %}active{% endif %}
+                "
+                data-shape="{{ shape_handle }}"
+                data-active="{% if matched_value.active %}true{% else %}false{% endif %}"
+              >
+                <div class="diamond-shape-image">
+                  <img
+                    src="{{ shape_handle | append: '.png' | asset_url }}"
+                    alt="{{ shape | escape }}"
+                    width="60"
+                    height="60"
+                    loading="lazy"
+                  >
+                </div>
+
+                <span>
+                  {{ shape }}
+                </span>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- NEXT -->
+        <button
+          type="button"
+          class="diamond-shape-arrow diamond-shape-next"
+          aria-label="Next shapes"
+        >
+          ›
+        </button>
+      </div>
+
+      <style>
+        /* MAIN */
+        .diamond-shape-wrapper {
+          width: 100%;
+          display: flex;
+          align-items: center;
+          gap: 18px;
+          padding: 28px 45px 25px;
+          background: #fef8f1;
+          box-sizing: border-box;
+          overflow: hidden;
+        }
+
+        /* SLIDER */
+        .diamond-shape-slider {
+          flex: 1;
+          min-width: 0;
+          overflow: hidden;
+        }
+
+        .diamond-shape-track {
+          display: flex;
+          align-items: stretch;
+          gap: 30px;
+          width: max-content;
+          transition: transform .25s ease;
+          will-change: transform;
+        }
+
+        /* ITEM */
+        .diamond-shape-item {
+          width: 92px;
+          min-width: 92px;
+          height: 106px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          padding: 7px 5px;
+          box-sizing: border-box;
+          text-decoration: none !important;
+          color: #062f57;
+          background: transparent;
+          transition: background .2s ease, transform .2s ease;
+        }
+
+        /* HOVER */
+        .diamond-shape-item:hover {
+          background: #f1f7fa;
+          text-decoration: none !important;
+        }
+
+        /* ACTIVE */
+        .diamond-shape-item.active {
+          background: #e8f2f6;
+        }
+
+        .diamond-shape-item.active .diamond-shape-image {
+          transform: scale(1.05);
+        }
+
+        .diamond-shape-item.active span {
+          font-weight: 600;
+        }
+
+        /* IMAGE */
+        .diamond-shape-image {
+          width: 65px;
+          height: 65px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 6px;
+          transition: transform .2s ease;
+        }
+
+        .diamond-shape-image img {
+          display: block;
+          width: 104px !important;
+          height: 90px !important;
+          max-width: 111px !important;
+          max-height: 137px !important;
+          object-fit: contain;
+          margin: 0 !important;
+          padding: 0 !important;
+          border: 0 !important;
+          box-shadow: none !important;
+        }
+
+        /* TEXT */
+        .diamond-shape-item span {
+          display: block;
+          width: 100%;
+          font-size: 14px;
+          line-height: 18px;
+          font-weight: 400;
+          color: #062f57;
+          text-align: center;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        /* ARROWS */
+        .diamond-shape-arrow {
+          width: 36px;
+          height: 36px;
+          min-width: 36px;
+          flex: 0 0 36px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0;
+          border: 1px solid #111;
+          border-radius: 50%;
+          background: #fff;
+          color: #111;
+          font-size: 30px;
+          line-height: 1;
+          font-family: Arial, sans-serif;
+          cursor: pointer;
+          box-sizing: border-box;
+          z-index: 2;
+        }
+
+        .diamond-shape-arrow:hover {
+          background: #062f57;
+          color: #fff;
+        }
+
+        .diamond-shape-arrow:disabled {
+          opacity: .35;
+          cursor: default;
+        }
+
+        /* DESKTOP */
+        @media screen and (min-width: 1200px) {
+          .diamond-shape-wrapper {
+            padding-left: 0px;
+            padding-right: 0px;
+          }
+
+          .diamond-shape-item {
+            width: 92px;
+            min-width: 92px;
+          }
+        }
+
+        /* TABLET */
+        @media screen and (max-width: 1199px) {
+          .diamond-shape-wrapper {
+            padding-left: 25px;
+            padding-right: 25px;
+            gap: 12px;
+          }
+
+          .diamond-shape-item {
+            width: 85px;
+            min-width: 85px;
+          }
+        }
+
+        /* MOBILE */
+        @media screen and (max-width: 749px) {
+          .diamond-shape-wrapper {
+            padding: 14px 19px;
+            gap: 31px;
+          }
+
+          .diamond-shape-item {
+            width: 78px;
+            min-width: 78px;
+            height: 95px;
+          }
+
+          .diamond-shape-image {
+            width: 52px;
+            height: 52px;
+          }
+
+          .diamond-shape-image img {
+            width: 91px !important;
+            height: 91px !important;
+            max-width: 80px !important;
+            max-height: 86px !important;
+          }
+
+          .diamond-shape-item span {
+            font-size: 12px;
+            line-height: 16px;
+          }
+
+          .diamond-shape-arrow {
+            width: 30px;
+            height: 30px;
+            min-width: 30px;
+            flex-basis: 30px;
+            font-size: 24px;
+          }
+        }
+      </style>
+
+      <script>
+        (function () {
+          function initDiamondShapeNavigation() {
+            var wrappers = document.querySelectorAll('[data-diamond-shape-navigation]');
+
+            if (!wrappers.length) return;
+
+            wrappers.forEach(function (wrapper) {
+              if (wrapper.dataset.initialized === 'true') {
+                return;
+              }
+
+              wrapper.dataset.initialized = 'true';
+
+              var slider = wrapper.querySelector('.diamond-shape-slider');
+              var track = wrapper.querySelector('.diamond-shape-track');
+              var prev = wrapper.querySelector('.diamond-shape-prev');
+              var next = wrapper.querySelector('.diamond-shape-next');
+
+              if (!slider || !track || !prev || !next) {
+                return;
+              }
+
+              var position = 0;
+
+              /* ITEM WIDTH */
+              function getItemWidth() {
+                var item = track.querySelector('.diamond-shape-item');
+
+                if (!item) return 0;
+
+                var style = window.getComputedStyle(track);
+                var gap = parseFloat(style.columnGap || style.gap) || 0;
+
+                return item.getBoundingClientRect().width + gap;
+              }
+
+              /* UPDATE SLIDER */
+              function updateSlider() {
+                var max = Math.max(0, track.scrollWidth - slider.clientWidth);
+
+                position = Math.max(0, Math.min(position, max));
+
+                track.style.transform = 'translate3d(-' + position + 'px,0,0)';
+
+                prev.disabled = position <= 0;
+                next.disabled = position >= max;
+
+                if (max <= 1) {
+                  prev.style.display = 'none';
+                  next.style.display = 'none';
+                } else {
+                  prev.style.display = 'flex';
+                  next.style.display = 'flex';
+                }
+              }
+
+              /* NEXT */
+              next.addEventListener(
+                'click',
+                function () {
+                  var width = getItemWidth();
+
+                  if (!width) return;
+
+                  position += width * 4;
+
+                  updateSlider();
+                },
+                { passive: true }
+              );
+
+              /* PREVIOUS */
+              prev.addEventListener(
+                'click',
+                function () {
+                  var width = getItemWidth();
+
+                  if (!width) return;
+
+                  position -= width * 4;
+
+                  updateSlider();
+                },
+                { passive: true }
+              );
+
+              /* RESIZE */
+              var resizeTimer;
+
+              window.addEventListener('resize', function () {
+                clearTimeout(resizeTimer);
+
+                resizeTimer = setTimeout(updateSlider, 100);
+              });
+
+              updateSlider();
+            });
+          }
+
+          /* INITIAL LOAD */
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initDiamondShapeNavigation);
+          } else {
+            initDiamondShapeNavigation();
+          }
+
+          /* SHOPIFY THEME EDITOR */
+          document.addEventListener('shopify:section:load', function () {
+            initDiamondShapeNavigation();
+          });
+        })();
+      </script>
+    {% endif %}
+    <facet-filters-form class="facets facets-vertical-sort small-hide no-js-hidden d-none d-lg-block">
+      <form
+        class="facets-vertical-form {% unless section.settings.enable_filtering %} facets-disable {% endunless %} "
+        id="FacetSortForm"
+      >
+        {%- if filter_check == 'drawer-collapse-left' -%}
+          <div class="mobile-facets__open-wrapper focus-offset drawer-collapse-btn">
+            <span class="mobile-facets__open">
+              {% render 'icon-filter' %}
+              <span class="mobile-facets__open-label button-label small-hide">
+                {{ 'products.facets.filter_button' | t }}
+              </span>
+            </span>
+          </div>
+        {%- endif -%}
+
+        {% comment %}
+          <div class="d-flex align-items-center gap-2 h-100 {% unless section.settings.enable_viewcolumn %} hide {% endunless %} orview-wrap">
+            <span class="js-btn-view btn-view-2 {% if productPerrow == '2' %}active{% endif %}" data-col="2"></span>
+            <span class="js-btn-view btn-view-3 {% if productPerrow == '3' %}active{% endif %}" data-col="3"></span>
+            <span class="js-btn-view btn-view-4 {% if productPerrow == '4' %}active{% endif %}" data-col="4"></span>
+          </div>
+        {% endcomment %}
+        <div class="d-flex align-items-center">
+          <div class="facet-filters sorting caption">
+            <div class="facet-filters__field">
+              <h2 class="facet-filters__label caption-large text-body">
+                <label for="SortBy-sidebar">{{ 'products.facets.sort_by_label' | t }}</label>
+              </h2>
+              <div class="select">
+                {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+                <select
+                  name="sort_by"
+                  class="facet-filters__sort select__select caption-large"
+                  id="SortBy-sidebar"
+                  aria-describedby="a11y-refresh-page-message"
+                >
+                  {%- for option in collection.sort_options -%}
+                    <option
+                      value="{{ option.value | escape }}"
+                      {% if option.value == sort_by %}
+                        selected="selected"
+                      {% endif %}
+                    >
+                      {{ option.name | escape }}
+                    </option>
+                  {%- endfor -%}
+                </select>
+                {% render 'icon-caret' %}
+              </div>
+            </div>
+            <noscript>
+              <button type="submit" class="facets__button-no-js button button--secondary">
+                {{ 'products.facets.sort_button' | t }}
+              </button>
+            </noscript>
+          </div>
+
+          <div class="product-count-vertical light" role="status">
+            <h2 id="ProductCountDesktop" class="product-count__text text-body font-family-2">
+              <span>
+                {%- if collection.results_count -%}
+                  {{
+                    'templates.search.results_with_count'
+                    | t: terms: collection.terms, count: collection.results_count
+                  }}
+                {%- elsif collection.products_count == collection.all_products_count -%}
+                  {{ 'products.facets.product_count_simple' | t: count: collection.products_count }}
+                {%- else -%}
+                  {{
+                    'products.facets.product_count'
+                    | t: product_count: collection.products_count, count: collection.all_products_count
+                  }}
+                {%- endif -%}
+              </span>
+            </h2>
+            <div class="loading-overlay__spinner">
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                role="presentation"
+                class="spinner"
+                viewBox="0 0 66 66"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </form>
+    </facet-filters-form>
+  {%- endif -%}
+  <div class="{% if filter_type == 'vertical' %} facets-vertical {% if section.settings.enable_filtering  %} {% if  filter_check == 'drawer-collapse-left'  %} row mx-0 {% else%} row{% endif %} {% endif %}{% endif %}">
+    {{ 'component-facets.css' | asset_url | stylesheet_tag }}
+    {%- if section.settings.enable_filtering or section.settings.enable_sorting -%}
+      <aside
+        aria-labelledby="verticalTitle"
+        class="
+          facets-wrapper
+          {% if filter_check == 'drawer-collapse-left' %} sidebar-collapse-left {% endif %}
+          {% unless section.settings.enable_filtering %} facets-wrapper--no-filters{% endunless %}
+          {% if filter_type == 'horizontal' or filter_type == 'drawer' %}
+            horizontal
+          {% else %}
+            {% if filter_check == 'drawer-collapse-left' %}
+              sidebar-collapse-left
+            {% else %}
+              col-md-3 v-col
+            {% endif %}
+          {% endif %}
+        "
+        id="main-collection-filters"
+        data-id="{{ section.id }}"
+      >
+        {% render 'facets',
+          results: collection,
+          enable_filtering: section.settings.enable_filtering,
+          enable_sorting: section.settings.enable_sorting,
+          filter_type: section.settings.filter_type,
+          first_group: section.settings.first_group,
+          open_group: section.settings.open_group,
+          productPerrow: productPerrow
+        %}
+
+        {%- comment -%}
+          WHY LUMERA box.
+          Sirf ek collection pe chahiye to poore div ko wrap karo:
+          {% if collection.handle == 'your-collection-handle' %} ... {% endif %}
+          JS is box ko last filter group ke turant baad (same flow me) laga deta hai.
+        {%- endcomment -%}
+        <div class="why-lumera" id="why-lumera-box">
+          <h3 class="why-lumera__title">Why Lumera?</h3>
+
+          <div class="why-lumera__item">
+            <span class="why-lumera__icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="6"/><path d="M8.5 14.5 7 22l5-3 5 3-1.5-7.5"/></svg>
+            </span>
+            <div>
+              <h4>Quality guaranteed</h4>
+              <p>Our team works hard to exceed your expectations but if for some reason we fall short, simply return or choose another size product.</p>
+            </div>
+          </div>
+
+          <div class="why-lumera__item">
+            <span class="why-lumera__icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z"/></svg>
+            </span>
+            <div>
+              <h4>Contact us for anything</h4>
+              <p>Can't find the perfect ring or need assistance? Our team is ready to help with recommendations, orders, and any inquiries you may have.</p>
+              <div class="why-lumera__links">
+                <a href="/pages/contact">Request a call back</a>
+                <a href="mailto:info@yourstore.com">Email us</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <style>
+        .why-lumera{
+          position: relative;
+          clear: both;
+          margin: 24px 0 0;
+          padding: 20px 18px;
+          background: #e6f0ea;
+          border-radius: 4px;
+          color: #0b3d2e;
+          box-sizing: border-box;
+          /* JS sahi jagah pe rakhne tak chhupa rahe, taaki jump na dikhe */
+          visibility: hidden;
+        }
+        .why-lumera.is-ready{ visibility: visible; }
+        .why-lumera__title{text-align:center;font-size:17px;font-weight:700;margin:0 0 18px}
+        .why-lumera__item{display:flex;gap:12px;margin-bottom:20px}
+        .why-lumera__item:last-child{margin-bottom:0}
+        .why-lumera__icon{
+          flex:0 0 36px;width:36px;height:36px;border-radius:50%;
+          background:#fff;display:flex;align-items:center;justify-content:center;color:#0b3d2e;
+        }
+        .why-lumera__item h4{margin:0 0 6px;font-size:16px;font-weight:600}
+        .why-lumera__item p{margin:0;font-size:13.5px;line-height:1.45;color:#28483c}
+        .why-lumera__links{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+        .why-lumera__links a{font-size:14px;font-weight:600;color:#0b3d2e;text-decoration:none}
+        .why-lumera__links a:hover{text-decoration:underline}
+
+        /* mobile pe nahi dikhana */
+        @media (max-width: 749px){
+          .why-lumera{display:none}
+        }
+      </style>
+
+      <script>
+        (function () {
+          var raf;
+
+          function placeWhyLumera() {
+            var aside = document.getElementById('main-collection-filters');
+            var box = document.getElementById('why-lumera-box');
+            if (!aside || !box) return;
+
+            /* sabse neeche wala top-level filter group (nested wale ignore) */
+            var groups = aside.querySelectorAll('.facets__disclosure-vertical');
+            var last = null;
+            for (var i = groups.length - 1; i >= 0; i--) {
+              var g = groups[i];
+              if (box.contains(g)) continue;
+              if (g.parentElement && g.parentElement.closest('.facets__disclosure-vertical')) continue;
+              last = g;
+              break;
+            }
+
+            if (last) {
+              var anchor = last;
+              if (anchor.parentElement && anchor.parentElement.tagName === 'UL') {
+                anchor = anchor.parentElement;
+              }
+              /* box ko last filter ke turant baad, usi flow me rakho */
+              if (anchor.nextElementSibling !== box) {
+                anchor.insertAdjacentElement('afterend', box);
+              }
+            }
+
+            box.classList.add('is-ready');
+          }
+
+          function schedule() {
+            cancelAnimationFrame(raf);
+            raf = requestAnimationFrame(placeWhyLumera);
+          }
+
+          function init() {
+            var aside = document.getElementById('main-collection-filters');
+            if (!aside) return;
+
+            placeWhyLumera();
+
+            /* AJAX filter se sidebar re-render ho to box wapas sahi jagah */
+            new MutationObserver(schedule).observe(aside, { childList: true });
+            var container = aside.querySelector('.facets-container') || aside;
+            new MutationObserver(schedule).observe(container, { childList: true, subtree: true });
+
+            /* agar kabhi placement fail ho, box chhupa na rahe */
+            setTimeout(function () {
+              var box = document.getElementById('why-lumera-box');
+              if (box) box.classList.add('is-ready');
+            }, 1500);
+          }
+
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+          } else {
+            init();
+          }
+
+          document.addEventListener('shopify:section:load', init);
+        })();
+      </script>
+
+      <style>
+        /* =========================================================
+           DESKTOP FILTER SIDEBAR - STICKY
+           ========================================================= */
+        @media screen and (min-width: 750px) {
+          /* MAIN COLLECTION WRAPPER */
+          .facets-vertical {
+            position: relative !important;
+            overflow: visible !important;
+            align-items: flex-start !important;
+            transform: none !important;
+          }
+
+          /* FILTER SIDEBAR */
+          .facets-vertical > #main-collection-filters {
+            align-self: flex-start !important;
+            height: auto !important;
+            min-height: 0 !important;
+          }
+
+          #main-collection-filters {
+            position: -webkit-sticky !important;
+            position: sticky !important;
+            top: 80px !important;
+            align-self: flex-start !important;
+            width: 100% !important;
+            height: auto !important;
+            min-height: 0 !important;
+            max-height: none !important;
+            overflow: visible !important;
+            overflow-y: visible !important;
+            overflow-x: visible !important;
+            z-index: 20 !important;
+            box-sizing: border-box !important;
+            transform: none !important;
+          }
+
+          /* FACETS CONTAINER */
+          #main-collection-filters .facets-container {
+            position: relative !important;
+            width: 100% !important;
+            height: auto !important;
+            min-height: 0 !important;
+            max-height: none !important;
+            overflow: visible !important;
+            overflow-y: visible !important;
+            overflow-x: visible !important;
+            margin: 0 !important;
+            padding-top: 0 !important;
+            transform: none !important;
+          }
+
+          /* FILTER HEADER */
+          #main-collection-filters #filter-by-header {
+            position: relative !important;
+            top: auto !important;
+            left: auto !important;
+            right: auto !important;
+            bottom: auto !important;
+            background: #fef8f1 !important;
+            z-index: 25 !important;
+            box-sizing: border-box !important;
+          }
+
+          /* IMPORTANT PARENTS */
+          .main-collection,
+          .facets-vertical,
+          .facets-vertical > *,
+          .page-width,
+          .container {
+            overflow: visible !important;
+          }
+
+          /* REMOVE TRANSFORM CONFLICT */
+          .main-collection,
+          .facets-vertical,
+          .facets-vertical > * {
+            transform: none !important;
+          }
+
+          /* PRODUCT GRID */
+          .facets-vertical .product-grid-container {
+            min-width: 0 !important;
+          }
+
+          .facets-vertical .product-grid {
+            min-width: 0 !important;
+          }
+        }
+
+        /* TABLET */
+        @media screen and (min-width: 750px) and (max-width: 989px) {
+          #main-collection-filters {
+            top: 70px !important;
+          }
+        }
+
+        /* =========================================================
+           MOBILE - FILTER DRAWER RESET (0 - 749px)
+           ========================================================= */
+        @media screen and (max-width: 749px) {
+          #main-collection-filters {
+            position: static !important;
+            top: auto !important;
+            bottom: auto !important;
+            left: auto !important;
+            right: auto !important;
+            width: 100% !important;
+            min-width: 0 !important;
+            height: auto !important;
+            min-height: 0 !important;
+            max-height: none !important;
+            overflow: visible !important;
+            overflow-y: visible !important;
+            overflow-x: visible !important;
+            transform: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            z-index: auto !important;
+            display: block !important;
+          }
+
+          #main-collection-filters .facets-container {
+            position: static !important;
+            width: 100% !important;
+            height: auto !important;
+            min-height: 0 !important;
+            max-height: none !important;
+            overflow: visible !important;
+            overflow-y: visible !important;
+            overflow-x: visible !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            transform: none !important;
+            display: block !important;
+          }
+
+          #main-collection-filters #filter-by-header {
+            position: relative !important;
+            top: auto !important;
+            bottom: auto !important;
+            left: auto !important;
+            right: auto !important;
+            width: 100% !important;
+            margin: 0 !important;
+            padding: 12px 15px !important;
+            box-sizing: border-box !important;
+            background: #fef8f1 !important;
+            z-index: 2 !important;
+          }
+
+          #main-collection-filters #filter-toggle-btn {
+            position: relative !important;
+            width: auto !important;
+            height: auto !important;
+            margin: 0 !important;
+            padding: 2px 8px !important;
+            background: none !important;
+            cursor: pointer !important;
+          }
+
+          #main-collection-filters .facets-vertical {
+            position: static !important;
+            width: 100% !important;
+            height: auto !important;
+            max-height: none !important;
+            overflow: visible !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            transform: none !important;
+          }
+
+          #main-collection-filters .facets__disclosure-vertical {
+            position: relative !important;
+            width: 100% !important;
+            margin: 0 !important;
+          }
+
+          #main-collection-filters > * {
+            margin: 0 !important;
+          }
+
+          /* MOBILE PRODUCT GRID */
+          .facets-vertical .product-grid-container,
+          #ProductGridContainer {
+            width: 100% !important;
+            max-width: 100% !important;
+            min-width: 0 !important;
+            flex: 0 0 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+          }
+
+          #ProductGridContainer .product-grid {
+            width: 100% !important;
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+          }
+
+          /* ALWAYS 2 PRODUCTS */
+          #ProductGridContainer .product-grid > li,
+          #ProductGridContainer .product-grid > .grid__item {
+            width: 50% !important;
+            max-width: 50% !important;
+            flex: 0 0 50% !important;
+            box-sizing: border-box !important;
+          }
+
+          /* RESET DESKTOP CLASSES */
+          #ProductGridContainer.col-md-9,
+          #ProductGridContainer.col-md-12 {
+            width: 100% !important;
+            max-width: 100% !important;
+            flex: 0 0 100% !important;
+          }
+
+          #ProductGridContainer.pl-lg-5 {
+            padding-left: 0 !important;
+          }
+
+          #main-collection-filters #filter-by-header {
+            margin: 0 !important;
+          }
+        }
+      </style>
+    {%- endif -%}
+
+    <div
+      id="ProductGridContainer"
+      {% if filter_type == 'vertical' and section.settings.enable_filtering %}
+        {% if filter_check == 'drawer-collapse-left' %}
+          class="col-12 px-0"
+        {% else %}
+          class="col-md-9 pl-lg-5"
+        {% endif %}
+      {% endif %}
+    >
+      {%- paginate collection.products by section.settings.products_per_page -%}
+        {%- if collection.products.size == 0 -%}
+          <div class="collection collection--empty" id="product-grid" data-id="{{ section.id }}">
+            <div class="loading-overlay gradient"></div>
+            <div class="title-wrapper text-center">
+              <h2 class="title title--primary h3">
+                {{ 'sections.collection_template.empty' | t -}}
+                <br>
+                {{
+                  'sections.collection_template.use_fewer_filters_html'
+                  | t: link: collection.url, class: 'underlined-link link'
+                }}
+              </h2>
+            </div>
+          </div>
+        {%- else -%}
+          {% comment %} <div class="collection {% if filter_type == 'vertical' %} pt-4 {% endif %}"> {% endcomment %}
+          <div class="loading-overlay gradient"></div>
+
+          <ul
+            id="product-grid-{{ section.id }}"
+            data-id="{{ section.id }}"
+            class="
+              grid grid--2-col product-grid row AjaxinateLoop
+              {% if collection.products_count < 4 %} grid--{{ collection.products_count }}-col-tablet{% else %}
+                {% if collection.products_count == 4 %} grid--4-col-desktop{% else %} grid--3-col-tablet grid--one-third-max grid--4-col-desktop grid--quarter-max{% endif %}
+              {% endif %}
+            "
+          >
+            {%- assign visible_product_count = 0 -%}
+
+            {%- for product in collection.products -%}
+              {%- assign is_premium_product = false -%}
+
+              {%- for product_collection in product.collections -%}
+                {%- if product_collection.handle == 'home-page-all' -%}
+                  {%- assign is_premium_product = true -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+
+              {%- unless is_premium_product and collection.handle != 'home-page-all' and customer == null -%}
+                <li class="grid__item {{ gridProduct }}" data-product-id="{{ product.id }}">
+                  {%- liquid
+                    assign enable_edit_item = section.settings.enable_edit_item
+                    assign select_item = section.settings.select_item
+                  -%}
+
+                  {%- render 'product-card',
+                    product: product,
+                    size_image_grid: size_image_grid,
+                    cover_contain: cover_contain,
+                    enable_edit_item: enable_edit_item,
+                    select_item: select_item,
+                    collection: collection
+                  -%}
+                </li>
+              {%- endunless -%}
+            {%- endfor -%}
+          </ul>
+          {% case type_pagi %}
+            {% when 'click' %}
+              <div
+                id="AjaxinatePagination-{{ section.id }}"
+                class="AjaxinatePagination text-center"
+                data-pagination="click"
+              >
+                {%- liquid
+                  assign numberitem = section.settings.products_per_page | times: paginate.current_page
+                  assign getpage = numberitem | times: 100 | divided_by: paginate.items
+                -%}
+                {%- if numberitem <= paginate.items -%}
+                  <div class="d-flex justify-content-center flex-column mb-4">
+                    <p class="txt-body-60">
+                      {{ 'general.pagination.viewed' | t: perpage: numberitem, numberitem: paginate.items }}
+                    </p>
+
+                    <div class="pagi-click mx-auto ">
+                      <span
+                        class="pagi-click-percent"
+                        data-percent="{{ getpage }}"
+                        style="width:{{ getpage }}%;"
+                      ></span>
+                    </div>
+                  </div>
+                {%- endif -%}
+                {%- if paginate.next -%}
+                  <a href="{{ paginate.next.url }}" class="btn btn-outline">
+                    {{- 'general.pagination.load_more' | t -}}
+                  </a>
+                {%- endif -%}
+              </div>
+            {% when 'scroll' %}
+              <div
+                id="AjaxinatePagination-{{ section.id }}"
+                class="AjaxinatePagination text-center"
+                data-pagination="scroll"
+              >
+                {%- if paginate.next -%}
+                  <a href="{{ paginate.next.url }}" class="btn btn-outline">
+                    {{- 'general.pagination.load_more' | t -}}
+                  </a>
+                {%- endif -%}
+              </div>
+            {% else %}
+              {%- if paginate.pages > 1 -%}
+                {% render 'pagination', paginate: paginate, anchor: '' %}
+              {%- endif -%}
+          {% endcase %}
+          </div>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+  </div>
+</div>
+
+{% javascript %}
+  (function () {
+    window.removeDuplicateCollectionProducts = function () {
+      var grid = document.querySelector('#ProductGridContainer .AjaxinateLoop');
+
+      if (!grid) {
+        return;
+      }
+
+      var seen = {};
+
+      grid.querySelectorAll('[data-product-id]').forEach(function (item) {
+        var productId = item.getAttribute('data-product-id');
+
+        if (!productId) {
+          return;
+        }
+
+        if (seen[productId]) {
+          item.remove();
+        } else {
+          seen[productId] = true;
+        }
+      });
+    };
+
+    /* AJAXINATE STATE */
+    window.collectionAjaxinateInstance = window.collectionAjaxinateInstance || null;
+
+    /* DESTROY OLD AJAXINATE */
+    window.destroyCollectionAjaxinate = function () {
+      var instance = window.collectionAjaxinateInstance;
+
+      if (!instance) {
+        return;
+      }
+
+      try {
+        if (typeof instance.destroy === 'function') {
+          instance.destroy();
+        }
+
+        if (typeof instance.remove === 'function') {
+          instance.remove();
+        }
+      } catch (error) {
+        console.warn('Ajaxinate destroy warning:', error);
+      }
+
+      window.collectionAjaxinateInstance = null;
+
+      document.querySelectorAll('.AjaxinatePagination[data-ajaxinate-initialized]').forEach(function (pagination) {
+        pagination.removeAttribute('data-ajaxinate-initialized');
+      });
+    };
+
+    /* INITIALIZE AJAXINATE */
+    window.initCollectionAjaxinate = function () {
+      if (typeof Ajaxinate === 'undefined') {
+        return;
+      }
+
+      window.destroyCollectionAjaxinate();
+
+      var productGridContainer = document.getElementById('ProductGridContainer');
+
+      if (!productGridContainer) {
+        return;
+      }
+
+      var pagination = productGridContainer.querySelector('.AjaxinatePagination[data-pagination]');
+
+      if (!pagination) {
+        return;
+      }
+
+      var container = productGridContainer.querySelector('.AjaxinateLoop');
+
+      if (!container || !container.id) {
+        return;
+      }
+
+      var paginationId = pagination.id;
+
+      if (!paginationId) {
+        return;
+      }
+
+      var type = pagination.getAttribute('data-pagination');
+
+      try {
+        var instance = new Ajaxinate({
+          container: '#' + container.id,
+
+          pagination: '#' + paginationId,
+
+          loadingText: '<span class="loader-line"></span>',
+
+          method: type === 'scroll' ? 'scroll' : 'click',
+
+          callback: function () {
+            /*
+             * Naye AJAX se load hue products (13th product se aage)
+             * par premium lock JS re-run karna zaroori hai,
+             * warna wo products bina lock ke reh jate hain.
+             */
+            if (typeof window.initPremiumProductLock === 'function') {
+              window.initPremiumProductLock();
+            }
+
+            if (typeof window.removeDuplicateCollectionProducts === 'function') {
+              window.removeDuplicateCollectionProducts();
+            }
+          },
+        });
+
+        window.collectionAjaxinateInstance = instance;
+
+        pagination.setAttribute('data-ajaxinate-initialized', 'true');
+      } catch (error) {
+        console.warn('Ajaxinate initialization error:', error);
+
+        window.collectionAjaxinateInstance = null;
+      }
+    };
+
+    /* INITIAL LOAD */
+    function startCollectionAjaxinate() {
+      setTimeout(function () {
+        window.initCollectionAjaxinate();
+      }, 300);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', startCollectionAjaxinate);
+    } else {
+      startCollectionAjaxinate();
+    }
+
+    /* SHOPIFY THEME EDITOR */
+    document.addEventListener('shopify:section:load', function () {
+      setTimeout(function () {
+        window.initCollectionAjaxinate();
+      }, 300);
+    });
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Product Grid",
+  "class": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "collection_width",
+      "label": "Set Width Collection",
+      "default": "container",
+      "options": [
+        {
+          "value": "container",
+          "label": "Container"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Container Fluid"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 8,
+      "max": 32,
+      "step": 1,
+      "default": 16,
+      "label": "Products per page"
+    },
+    {
+      "type": "select",
+      "id": "collection_perrow",
+      "label": "Products per row",
+      "default": "3",
+      "options": [
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ]
+    },
+
+    {
+      "type": "select",
+      "id": "type_pagination",
+      "label": "Type Pagination",
+      "default": "pagi",
+      "options": [
+        {
+          "value": "pagi",
+          "label": "Pagination"
+        },
+        {
+          "value": "scroll",
+          "label": "Infinite scrolling "
+        },
+        {
+          "value": "click",
+          "label": "Click Load more"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_viewcolumn",
+      "default": true,
+      "label": "Enable View Mode "
+    },
+    {
+      "type": "header",
+      "content": "Filter"
+    },
+
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "default": true,
+      "label": "Enable filtering",
+      "info": "Customize [filters](/admin/menus)"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "default": true,
+      "label": "Enable sorting"
+    },
+    {
+      "type": "select",
+      "id": "filter_type",
+      "options": [
+        {
+          "value": "horizontal",
+          "label": "Horizontal "
+        },
+        {
+          "value": "vertical",
+          "label": "Vertical"
+        },
+        {
+          "value": "drawer",
+          "label": "Drawer Slide Right"
+        },
+        {
+          "value": "drawer-slide-left",
+          "label": "Drawer Slide Left"
+        },
+        {
+          "value": "drawer-collapse-left",
+          "label": "Drawer Collapse Left"
+        },
+        {
+          "value": "drawer-collapse-right",
+          "label": "Drawer Collapse Right"
+        }
+      ],
+      "default": "horizontal",
+      "label": "Desktop filter layout",
+      "info": "Drawer is the default mobile layout."
+    },
+    {
+      "type": "header",
+      "content": " Vertical Filter"
+    },
+    {
+      "type": "checkbox",
+      "id": "first_group",
+      "default": true,
+      "label": "Open first group by default"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_group",
+      "default": false,
+      "label": "Open all group"
+    },
+    {
+      "type": "header",
+      "content": "Style Color"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_color",
+      "default": true,
+      "label": "Enable Color Filter"
+    },
+    {
+      "type": "checkbox",
+      "id": "type_color",
+      "default": true,
+      "label": "Enable Circle Style",
+      "info": "If disable color is style Square"
+    },
+    {
+      "type": "select",
+      "id": "style_color",
+      "label": "Style Color Filter",
+      "default": "color_list",
+      "options": [
+        {
+          "value": "color_list",
+          "label": "List Color"
+        },
+        {
+          "value": "color_grid",
+          "label": "Grid Color"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": " Style Size"
+    },
+    {
+      "type": "select",
+      "id": "style_size",
+      "label": "Style Size Filter",
+      "default": "list",
+      "options": [
+        {
+          "value": "list",
+          "label": "List Size"
+        },
+        {
+          "value": "grid",
+          "label": "Grid Size"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Customize Item Hover"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_edit_item",
+      "default": false,
+      "label": "Enable Select Item",
+      "info": "If disable Item Hover This page gets config in Theme settings / Product card => Item Hover Style"
+    },
+    {
+      "type": "select",
+      "id": "select_item",
+      "label": "Item Hover Style ",
+      "default": "product-7",
+      "options": [
+        {
+          "value": "product-1",
+          "label": "Style - 1"
+        },
+        {
+          "value": "product-2",
+          "label": "Style - 2"
+        },
+        {
+          "value": "product-3",
+          "label": "Style - 3"
+        },
+        {
+          "value": "product-4",
+          "label": "Style - 4"
+        },
+        {
+          "value": "product-5",
+          "label": "Style - 5"
+        },
+        {
+          "value": "product-6",
+          "label": "Style - 6"
+        },
+        {
+          "value": "product-7",
+          "label": "Style - 7"
+        },
+        {
+          "value": "product-8",
+          "label": "Style - 8"
+        },
+        {
+          "value": "product-9",
+          "label": "Style - 9"
+        },
+        {
+          "value": "product-10",
+          "label": "Style - 10"
+        },
+        {
+          "value": "product-11",
+          "label": "Style - 11"
+        },
+        {
+          "value": "product-12",
+          "label": "Style - 12"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Link List Collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_list_collection",
+      "default": false,
+      "label": "Link Collection Sidebar"
+    },
+    {
+      "id": "link_list_head",
+      "type": "link_list",
+      "label": "Menu"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ]
+}
+{% endschema %}

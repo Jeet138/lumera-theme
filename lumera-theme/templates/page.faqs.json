@@ -1,0 +1,184 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+      }
+    },
+    "9ad78513-f48a-4eed-affd-30f6d370be1c": {
+      "type": "faq-accordion",
+      "blocks": {
+        "template--16736981942590__9ad78513-f48a-4eed-affd-30f6d370be1c-1666772143a4c26d1e-0": {
+          "type": "faq",
+          "settings": {
+            "faq_title": "How do I make a purchase?",
+            "faq_des": "<p>This is an example of a response that you might give. It's good to be as thorough as possible in responses as that has a tendency to improve trust overall.<\/p>"
+          }
+        },
+        "template--16736981942590__9ad78513-f48a-4eed-affd-30f6d370be1c-1666772143a4c26d1e-1": {
+          "type": "faq",
+          "settings": {
+            "faq_title": "How do I know if my order is confirmed?",
+            "faq_des": "<p>This is an example of a response that you might give. It's good to be as thorough as possible in responses as that has a tendency to improve trust overall.<\/p>"
+          }
+        },
+        "template--16736981942590__9ad78513-f48a-4eed-affd-30f6d370be1c-1666772143a4c26d1e-2": {
+          "type": "faq",
+          "settings": {
+            "faq_title": "Can I change my shipping address after my order is placed?",
+            "faq_des": "<p>This is an example of a response that you might give. It's good to be as thorough as possible in responses as that has a tendency to improve trust overall.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "template--16736981942590__9ad78513-f48a-4eed-affd-30f6d370be1c-1666772143a4c26d1e-0",
+        "template--16736981942590__9ad78513-f48a-4eed-affd-30f6d370be1c-1666772143a4c26d1e-1",
+        "template--16736981942590__9ad78513-f48a-4eed-affd-30f6d370be1c-1666772143a4c26d1e-2"
+      ],
+      "settings": {
+        "animation": "fade-up",
+        "setwidth": "container",
+        "bgsection": "#ffffff",
+        "e_size": "auto",
+        "e_repeat": "no-repeat",
+        "e_pos": "center center",
+        "title_top": "",
+        "title": "Orders",
+        "des": "Below are some of are common questions about orders",
+        "align-heading": "center",
+        "title_size": "h6",
+        "e_first_open": false,
+        "e_reverse": true,
+        "e_small": true,
+        "left_html": "",
+        "e_right": false,
+        "paddingsection": "48px 0px 60px 0px",
+        "paddingmobile": "40px 0px 40px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "062df5dc-f552-45ec-89c4-08fb863777b7": {
+      "type": "faq-accordion",
+      "blocks": {
+        "template--16736981942590__062df5dc-f552-45ec-89c4-08fb863777b7-1666772143a4c26d1e-0": {
+          "type": "faq",
+          "settings": {
+            "faq_title": "Do you ship internationally?",
+            "faq_des": "<p>This is an example of a response that you might give. It's good to be as thorough as possible in responses as that has a tendency to improve trust overall.<\/p>"
+          }
+        },
+        "template--16736981942590__062df5dc-f552-45ec-89c4-08fb863777b7-1666772143a4c26d1e-1": {
+          "type": "faq",
+          "settings": {
+            "faq_title": "When will my order be shipped?",
+            "faq_des": "<p>This is an example of a response that you might give. It's good to be as thorough as possible in responses as that has a tendency to improve trust overall.<\/p>"
+          }
+        },
+        "template--16736981942590__062df5dc-f552-45ec-89c4-08fb863777b7-1666772143a4c26d1e-2": {
+          "type": "faq",
+          "settings": {
+            "faq_title": "What is your return policy?",
+            "faq_des": "<p>This is an example of a response that you might give. It's good to be as thorough as possible in responses as that has a tendency to improve trust overall.<\/p>"
+          }
+        },
+        "c3fd023b-88d4-4be1-b635-a8d461da7f4c": {
+          "type": "faq",
+          "settings": {
+            "faq_title": "How long will it take until I receive my order?",
+            "faq_des": "<p>This is an example of a response that you might give. It's good to be as thorough as possible in responses as that has a tendency to improve trust overall.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "template--16736981942590__062df5dc-f552-45ec-89c4-08fb863777b7-1666772143a4c26d1e-0",
+        "template--16736981942590__062df5dc-f552-45ec-89c4-08fb863777b7-1666772143a4c26d1e-1",
+        "template--16736981942590__062df5dc-f552-45ec-89c4-08fb863777b7-1666772143a4c26d1e-2",
+        "c3fd023b-88d4-4be1-b635-a8d461da7f4c"
+      ],
+      "settings": {
+        "animation": "fade-up",
+        "setwidth": "container",
+        "bgsection": "#ffffff",
+        "e_size": "auto",
+        "e_repeat": "no-repeat",
+        "e_pos": "center center",
+        "title_top": "",
+        "title": "Shipping & Returns",
+        "des": "Below are some common questions about shipping, returns, and exchanges",
+        "align-heading": "center",
+        "title_size": "h6",
+        "e_first_open": false,
+        "e_reverse": true,
+        "e_small": true,
+        "left_html": "",
+        "e_right": false,
+        "paddingsection": "0px 0px 80px 0px",
+        "paddingmobile": "40px 0px 40px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "e3f9b59b-307f-4380-8307-f05ffecaaef0": {
+      "type": "rich-text",
+      "blocks": {
+        "a48bdf20-667c-4450-8cfc-ab5ff5d1dd70": {
+          "type": "heading",
+          "settings": {
+            "title": "Didn't find your answer?",
+            "size_text": "h3"
+          }
+        },
+        "367e94fc-6596-45ac-a2ce-0ca3e3f4c096": {
+          "type": "paragraph",
+          "settings": {
+            "subtext": "Don't hestitate to contact us"
+          }
+        },
+        "9a37e0ea-8786-4c9d-8b46-47a4c56f625d": {
+          "type": "button",
+          "settings": {
+            "button": "Contact us",
+            "link": "#",
+            "style_btn": "btn-theme"
+          }
+        }
+      },
+      "block_order": [
+        "a48bdf20-667c-4450-8cfc-ab5ff5d1dd70",
+        "367e94fc-6596-45ac-a2ce-0ca3e3f4c096",
+        "9a37e0ea-8786-4c9d-8b46-47a4c56f625d"
+      ],
+      "settings": {
+        "animation": "fade-up",
+        "setwidth": "container",
+        "bgsection": "#ffffff",
+        "gradient_bg": "",
+        "title_color": "rgba(0,0,0,0)",
+        "title_top": "",
+        "title": "",
+        "text": "",
+        "align-heading": "center",
+        "paddingsection": "10px 0px 100px 0px",
+        "paddingmobile": "40px 0px 40px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "9ad78513-f48a-4eed-affd-30f6d370be1c",
+    "062df5dc-f552-45ec-89c4-08fb863777b7",
+    "e3f9b59b-307f-4380-8307-f05ffecaaef0"
+  ]
+}

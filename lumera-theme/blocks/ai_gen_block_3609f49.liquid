@@ -1,0 +1,538 @@
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-responsibility-section-{{ ai_gen_id }} {
+    padding: {{ block.settings.section_padding_top }}px 0 {{ block.settings.section_padding_bottom }}px;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-responsibility-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.container_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-responsibility-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: {{ block.settings.header_spacing }}px;
+  }
+
+  .ai-responsibility-icon-wrapper-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: {{ block.settings.icon_size }}px;
+    height: {{ block.settings.icon_size }}px;
+    background-color: {{ block.settings.icon_bg_color }};
+    border-radius: 50%;
+    margin-bottom: 20px;
+  }
+
+  .ai-responsibility-icon-wrapper-{{ ai_gen_id }} svg {
+    width: calc({{ block.settings.icon_size }}px * 0.5);
+    height: calc({{ block.settings.icon_size }}px * 0.5);
+    fill: {{ block.settings.icon_color }};
+  }
+
+  .ai-responsibility-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 16px;
+    font-weight: 600;
+  }
+
+  .ai-responsibility-intro-{{ ai_gen_id }} {
+    font-size: {{ block.settings.intro_size }}px;
+    color: {{ block.settings.text_color }};
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .ai-responsibility-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: {{ block.settings.card_gap }}px;
+    margin-top: {{ block.settings.grid_spacing }}px;
+  }
+
+  .ai-responsibility-card-{{ ai_gen_id }} {
+    background-color: {{ block.settings.card_bg_color }};
+    border-radius: {{ block.settings.card_border_radius }}px;
+    padding: {{ block.settings.card_padding }}px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid {{ block.settings.card_border_color }};
+  }
+
+  .ai-responsibility-card-{{ ai_gen_id }}:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-responsibility-card-icon-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: {{ block.settings.card_icon_size }}px;
+    height: {{ block.settings.card_icon_size }}px;
+    background-color: {{ block.settings.card_icon_bg }};
+    border-radius: 50%;
+    margin-bottom: 20px;
+  }
+
+  .ai-responsibility-card-icon-{{ ai_gen_id }} svg {
+    width: calc({{ block.settings.card_icon_size }}px * 0.5);
+    height: calc({{ block.settings.card_icon_size }}px * 0.5);
+    fill: {{ block.settings.card_icon_color }};
+  }
+
+  .ai-responsibility-card-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.card_title_size }}px;
+    color: {{ block.settings.card_title_color }};
+    margin: 0 0 12px;
+    font-weight: 600;
+  }
+
+  .ai-responsibility-card-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.card_text_size }}px;
+    color: {{ block.settings.text_color }};
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-responsibility-grid-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: {{ block.settings.card_gap | times: 0.7 }}px;
+    }
+
+    .ai-responsibility-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.7 }}px;
+    }
+
+    .ai-responsibility-intro-{{ ai_gen_id }} {
+      font-size: {{ block.settings.intro_size | times: 0.9 }}px;
+    }
+
+    .ai-responsibility-card-{{ ai_gen_id }} {
+      padding: {{ block.settings.card_padding | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-responsibility-section-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-responsibility-container-{{ ai_gen_id }}">
+    <div class="ai-responsibility-header-{{ ai_gen_id }}">
+      {% if block.settings.show_icon %}
+        <div class="ai-responsibility-icon-wrapper-{{ ai_gen_id }}">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+        </div>
+      {% endif %}
+      
+      {% if block.settings.title != blank %}
+        <h2 class="ai-responsibility-title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+      {% endif %}
+      
+      {% if block.settings.intro_text != blank %}
+        <div class="ai-responsibility-intro-{{ ai_gen_id }}">
+          {{ block.settings.intro_text }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="ai-responsibility-grid-{{ ai_gen_id }}">
+      {% if block.settings.card_1_enabled %}
+        <div class="ai-responsibility-card-{{ ai_gen_id }}">
+          <div class="ai-responsibility-card-icon-{{ ai_gen_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66.95-2.3c.48.17.98.3 1.34.3C19 20 22 3 22 3c-1 2-8 2.25-13 3.25S2 11.5 2 13.5s1.75 3.75 1.75 3.75C7 8 17 8 17 8z"/>
+            </svg>
+          </div>
+          <h3 class="ai-responsibility-card-title-{{ ai_gen_id }}">{{ block.settings.card_1_title }}</h3>
+          <div class="ai-responsibility-card-text-{{ ai_gen_id }}">{{ block.settings.card_1_text }}</div>
+        </div>
+      {% endif %}
+
+      {% if block.settings.card_2_enabled %}
+        <div class="ai-responsibility-card-{{ ai_gen_id }}">
+          <div class="ai-responsibility-card-icon-{{ ai_gen_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+            </svg>
+          </div>
+          <h3 class="ai-responsibility-card-title-{{ ai_gen_id }}">{{ block.settings.card_2_title }}</h3>
+          <div class="ai-responsibility-card-text-{{ ai_gen_id }}">{{ block.settings.card_2_text }}</div>
+        </div>
+      {% endif %}
+
+      {% if block.settings.card_3_enabled %}
+        <div class="ai-responsibility-card-{{ ai_gen_id }}">
+          <div class="ai-responsibility-card-icon-{{ ai_gen_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+            </svg>
+          </div>
+          <h3 class="ai-responsibility-card-title-{{ ai_gen_id }}">{{ block.settings.card_3_title }}</h3>
+          <div class="ai-responsibility-card-text-{{ ai_gen_id }}">{{ block.settings.card_3_text }}</div>
+        </div>
+      {% endif %}
+
+      {% if block.settings.card_4_enabled %}
+        <div class="ai-responsibility-card-{{ ai_gen_id }}">
+          <div class="ai-responsibility-card-icon-{{ ai_gen_id }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+          </div>
+          <h3 class="ai-responsibility-card-title-{{ ai_gen_id }}">{{ block.settings.card_4_title }}</h3>
+          <div class="ai-responsibility-card-text-{{ ai_gen_id }}">{{ block.settings.card_4_text }}</div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Our responsibility",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show icon",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "title",
+      "label": "Title",
+      "default": "Our Responsibility"
+    },
+    {
+      "type": "richtext",
+      "id": "intro_text",
+      "label": "Introduction text",
+      "default": "<p>At Carat Diamonds, our duties go far beyond simply supplying products and services. We are dedicated to the following principles:</p>"
+    },
+    {
+      "type": "header",
+      "content": "Card 1 - Environmental stewardship"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_1_enabled",
+      "label": "Enable card",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "card_1_title",
+      "label": "Title",
+      "default": "Environmental Stewardship"
+    },
+    {
+      "type": "richtext",
+      "id": "card_1_text",
+      "label": "Description",
+      "default": "<p>We commit to maintaining environmentally responsible operations that support our planet's well-being. Our efforts focus on utilizing sustainable materials and implementing processes that reduce our environmental footprint.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Card 2 - Quality assurance"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_2_enabled",
+      "label": "Enable card",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "card_2_title",
+      "label": "Title",
+      "default": "Quality Assurance"
+    },
+    {
+      "type": "richtext",
+      "id": "card_2_text",
+      "label": "Description",
+      "default": "<p>We guarantee the delivery of premium-quality products. Each item is expertly crafted to meet rigorous standards, reflecting our unyielding dedication to excellence. We recognize that our customers expect and deserve nothing but the best.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Card 3 - Community engagement"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_3_enabled",
+      "label": "Enable card",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "card_3_title",
+      "label": "Title",
+      "default": "Community Engagement"
+    },
+    {
+      "type": "richtext",
+      "id": "card_3_text",
+      "label": "Description",
+      "default": "<p>We are actively involved in enriching our community. Our commitment is reflected in our support for local initiatives, participation in charitable events, and efforts to cultivate a sense of community spirit. We believe in making a positive impact in the communities where we operate.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Card 4 - Customer satisfaction"
+    },
+    {
+      "type": "checkbox",
+      "id": "card_4_enabled",
+      "label": "Enable card",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "card_4_title",
+      "label": "Title",
+      "default": "Customer Satisfaction"
+    },
+    {
+      "type": "richtext",
+      "id": "card_4_text",
+      "label": "Description",
+      "default": "<p>We ensure that every interaction with our customers is supportive, constructive, and rewarding. Our commitment to outstanding customer service is demonstrated through attentive listening to customer feedback and ongoing enhancement of our products and services.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Container width",
+      "default": 1300
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Header spacing",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "grid_spacing",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "label": "Grid spacing",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "min": 15,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Card gap",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title",
+      "default": "#01305a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#01305a"
+    },
+    {
+      "type": "color",
+      "id": "icon_bg_color",
+      "label": "Header icon background",
+      "default": "#01305a"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Header icon",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card background",
+      "default": "#f6f4f3"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card border",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Card title",
+      "default": "#01305a"
+    },
+    {
+      "type": "color",
+      "id": "card_icon_bg",
+      "label": "Card icon background",
+      "default": "#01305a"
+    },
+    {
+      "type": "color",
+      "id": "card_icon_color",
+      "label": "Card icon",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Title size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "intro_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Introduction size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Card title size",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "card_text_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Card text size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Icon sizes"
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "min": 60,
+      "max": 120,
+      "step": 5,
+      "unit": "px",
+      "label": "Header icon size",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "card_icon_size",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Card icon size",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Card style"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding",
+      "default": 30
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our responsibility"
+    }
+  ]
+}
+{% endschema %}

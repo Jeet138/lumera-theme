@@ -1,0 +1,33 @@
+{%- comment -%}
+  Ring size dropdown 1 to 15 (quarter sizes). Variant se independent.
+{%- endcomment -%}
+<div class="ring-size-field" style="margin:18px 0;">
+  <label
+    for="RingSize-{{ section.id }}"
+    style="display:block;font-size:14px;font-weight:500;margin-bottom:10px;color:#111;"
+  >
+    Ring size
+  </label>
+
+  <div style="position:relative;width:220px;">
+    <select
+      id="RingSize-{{ section.id }}"
+      name="properties[Ring Size]"
+      required
+      style="width:100%;height:46px;padding:0 40px 0 14px;border:1px solid #d8d8d8;border-radius:6px;background:#fff;font-size:14px;color:#111;cursor:pointer;appearance:none;-webkit-appearance:none;-moz-appearance:none;"
+    >
+      <option value="" disabled selected>Select ring size</option>
+
+      {%- assign fractions = ',.25,.5,.75' | split: ',' -%}
+      {%- for n in (1..15) -%}
+        {%- for frac in fractions -%}
+          {%- if n == 15 and frac != blank -%}{%- continue -%}{%- endif -%}
+          {%- assign size = n | append: frac -%}
+          <option value="{{ size }}">{{ size }}</option>
+        {%- endfor -%}
+      {%- endfor -%}
+    </select>
+
+    <span style="position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:10px;pointer-events:none;color:#111;">▼</span>
+  </div>
+</div>

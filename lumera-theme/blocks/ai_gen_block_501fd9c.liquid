@@ -1,0 +1,584 @@
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-recent-products-{{ ai_gen_id }} {
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: {{ block.settings.section_padding }}px 0;
+    display: block;
+  }
+
+  .ai-recent-products-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.container_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-recent-products-header-{{ ai_gen_id }} {
+    text-align: {{ block.settings.heading_alignment }};
+    margin-bottom: {{ block.settings.heading_spacing }}px;
+  }
+
+  .ai-recent-products-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 8px 0;
+    font-weight: 600;
+  }
+
+  .ai-recent-products-subheading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subheading_size }}px;
+    color: {{ block.settings.subheading_color }};
+    margin: 0;
+  }
+
+  .ai-recent-products-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.products_per_row }}, 1fr);
+    gap: {{ block.settings.grid_gap }}px;
+  }
+
+  .ai-recent-product-card-{{ ai_gen_id }} {
+    position: relative;
+    background: {{ block.settings.card_background }};
+    border-radius: {{ block.settings.card_border_radius }}px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .ai-recent-product-card-{{ ai_gen_id }}:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-recent-product-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+    overflow: hidden;
+    background: #f5f5f5;
+  }
+
+  .ai-recent-product-image-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-recent-product-info-{{ ai_gen_id }} {
+    padding: {{ block.settings.card_padding }}px;
+  }
+
+  .ai-recent-product-vendor-{{ ai_gen_id }} {
+    font-size: 12px;
+    color: {{ block.settings.vendor_color }};
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .ai-recent-product-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.product_title_size }}px;
+    color: {{ block.settings.product_title_color }};
+    margin: 0 0 8px 0;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .ai-recent-product-title-{{ ai_gen_id }} a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .ai-recent-product-title-{{ ai_gen_id }} a:hover {
+    color: {{ block.settings.link_hover_color }};
+  }
+
+  .ai-recent-product-price-{{ ai_gen_id }} {
+    font-size: {{ block.settings.price_size }}px;
+    color: {{ block.settings.price_color }};
+    font-weight: 600;
+  }
+
+  .ai-recent-products-empty-{{ ai_gen_id }} {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+  }
+
+  .ai-recent-products-empty-icon-{{ ai_gen_id }} {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    opacity: 0.3;
+  }
+
+  .ai-recent-products-empty-text-{{ ai_gen_id }} {
+    font-size: 16px;
+    color: #666;
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-recent-products-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat({{ block.settings.products_per_row_tablet }}, 1fr);
+    }
+
+    .ai-recent-products-heading-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.heading_size }}px * 0.8);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-recent-products-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat({{ block.settings.products_per_row_mobile }}, 1fr);
+    }
+
+    .ai-recent-products-heading-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.heading_size }}px * 0.7);
+    }
+
+    .ai-recent-product-info-{{ ai_gen_id }} {
+      padding: 12px;
+    }
+  }
+{% endstyle %}
+
+<recently-viewed-products-{{ ai_gen_id }}
+  class="ai-recent-products-{{ ai_gen_id }}"
+  data-max-products="{{ block.settings.max_products }}"
+  data-show-vendor="{{ block.settings.show_vendor }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-recent-products-container-{{ ai_gen_id }}">
+    <div class="ai-recent-products-header-{{ ai_gen_id }}">
+      {% if block.settings.heading != blank %}
+        <h2 class="ai-recent-products-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+      {% endif %}
+      {% if block.settings.subheading != blank %}
+        <p class="ai-recent-products-subheading-{{ ai_gen_id }}">{{ block.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    <div class="ai-recent-products-grid-{{ ai_gen_id }}" data-products-container></div>
+
+    <div class="ai-recent-products-empty-{{ ai_gen_id }}" data-empty-state style="display: none;">
+      <div class="ai-recent-products-empty-icon-{{ ai_gen_id }}">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+      </div>
+      <p class="ai-recent-products-empty-text-{{ ai_gen_id }}">{{ block.settings.empty_message }}</p>
+    </div>
+  </div>
+</recently-viewed-products-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class RecentlyViewedProducts{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.storageKey = 'recentlyViewedProducts';
+        this.maxProducts = parseInt(this.dataset.maxProducts) || 8;
+        this.showVendor = this.dataset.showVendor === 'true';
+        this.productsContainer = this.querySelector('[data-products-container]');
+        this.emptyState = this.querySelector('[data-empty-state]');
+      }
+
+      connectedCallback() {
+        this.saveCurrentProduct();
+        this.loadRecentProducts();
+      }
+
+      saveCurrentProduct() {
+        if (window.location.pathname.includes('/products/')) {
+          const productHandle = window.location.pathname.split('/products/')[1].split('?')[0];
+          
+          if (productHandle) {
+            let recentProducts = this.getRecentProducts();
+            recentProducts = recentProducts.filter(handle => handle !== productHandle);
+            recentProducts.unshift(productHandle);
+            recentProducts = recentProducts.slice(0, this.maxProducts);
+            
+            try {
+              localStorage.setItem(this.storageKey, JSON.stringify(recentProducts));
+            } catch (e) {
+              console.error('Failed to save to localStorage:', e);
+            }
+          }
+        }
+      }
+
+      getRecentProducts() {
+        try {
+          const stored = localStorage.getItem(this.storageKey);
+          return stored ? JSON.parse(stored) : [];
+        } catch (e) {
+          console.error('Failed to read from localStorage:', e);
+          return [];
+        }
+      }
+
+      async loadRecentProducts() {
+        let recentProducts = this.getRecentProducts();
+        
+        if (window.location.pathname.includes('/products/')) {
+          const currentHandle = window.location.pathname.split('/products/')[1].split('?')[0];
+          recentProducts = recentProducts.filter(handle => handle !== currentHandle);
+        }
+
+        if (recentProducts.length === 0) {
+          this.showEmptyState();
+          return;
+        }
+
+        const products = await this.fetchProducts(recentProducts);
+        this.renderProducts(products);
+      }
+
+      async fetchProducts(handles) {
+        const products = [];
+        
+        for (const handle of handles) {
+          try {
+            const response = await fetch(`/products/${handle}.js`);
+            if (response.ok) {
+              const product = await response.json();
+              products.push(product);
+            }
+          } catch (e) {
+            console.error(`Failed to fetch product ${handle}:`, e);
+          }
+        }
+        
+        return products;
+      }
+
+      renderProducts(products) {
+        if (products.length === 0) {
+          this.showEmptyState();
+          return;
+        }
+
+        this.emptyState.style.display = 'none';
+        this.productsContainer.innerHTML = products.map(product => this.createProductCard(product)).join('');
+      }
+
+      createProductCard(product) {
+        const imageUrl = product.featured_image || '';
+        const price = this.formatMoney(product.price);
+        const vendor = product.vendor || '';
+        
+        return `
+          <div class="ai-recent-product-card-{{ ai_gen_id }}">
+            <a href="/products/${product.handle}" class="ai-recent-product-image-wrapper-{{ ai_gen_id }}">
+              ${imageUrl ? `<img src="${imageUrl}" alt="${this.escapeHtml(product.title)}" class="ai-recent-product-image-{{ ai_gen_id }}" loading="lazy">` : ''}
+            </a>
+            <div class="ai-recent-product-info-{{ ai_gen_id }}">
+              ${this.showVendor && vendor ? `<div class="ai-recent-product-vendor-{{ ai_gen_id }}">${this.escapeHtml(vendor)}</div>` : ''}
+              <h3 class="ai-recent-product-title-{{ ai_gen_id }}">
+                <a href="/products/${product.handle}">${this.escapeHtml(product.title)}</a>
+              </h3>
+              <div class="ai-recent-product-price-{{ ai_gen_id }}">${price}</div>
+            </div>
+          </div>
+        `;
+      }
+
+      showEmptyState() {
+        this.productsContainer.innerHTML = '';
+        this.emptyState.style.display = 'block';
+      }
+
+      formatMoney(cents) {
+        const amount = (cents / 100).toFixed(2);
+        return `{{ shop.money_format }}`.replace('{{amount}}', amount).replace('{{amount_no_decimals}}', Math.floor(cents / 100));
+      }
+
+      escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+    }
+
+    customElements.define('recently-viewed-products-{{ ai_gen_id }}', RecentlyViewedProducts{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Recently viewed products",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Recently Viewed Products"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Products you've recently browsed"
+    },
+    {
+      "type": "text",
+      "id": "empty_message",
+      "label": "Empty state message",
+      "default": "No recently viewed products yet"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "label": "Container width",
+      "min": 1000,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "Maximum products",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "products_per_row",
+      "label": "Products per row (desktop)",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_tablet",
+      "label": "Products per row (tablet)",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "products_per_row_mobile",
+      "label": "Products per row (mobile)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid gap",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Heading style"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "label": "Subheading size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "label": "Heading spacing",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Product card"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Card padding",
+      "min": 10,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Card border radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "product_title_size",
+      "label": "Product title size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "price_size",
+      "label": "Price size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "vendor_color",
+      "label": "Vendor color",
+      "default": "#999999"
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Product title color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Price color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link hover color",
+      "default": "#ad2c34"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recently viewed products"
+    }
+  ]
+}
+{% endschema %}

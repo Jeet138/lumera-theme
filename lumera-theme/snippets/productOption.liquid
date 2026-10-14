@@ -1,0 +1,1344 @@
+<!-- productOption.liquid -->
+
+{%- if product_selector == 'radio' -%}
+  {%- liquid
+    assign isColor = false
+    assign optionName = option.name
+    assign option_index = loop
+    assign keywords_1 = settings.contain_color
+    assign keywords_2 = settings.contain_color_2
+  -%}
+  {%- if optionName contains keywords_1 or optionName contains keywords_2 -%}
+    {%- assign isColor = true -%}
+  {%- endif -%}
+  <fieldset
+    class="single-option-radio {% if isColor %} {% if siblings_collection != blank and enable_sibling %} d-none {% endif %} single-color {{ size_color }} {% if type_color == 'circle' %} round-color {% elsif type_color == 'square' %} square-color {% else %} square-color-txt {% endif %} {% endif %} "
+    name="{{ option.name | handleize }}"
+    id="ProductSelect-option-{{ optionName }}-{{ forloop.index0 }}"
+  >
+    {%- for value in option.values -%}
+      {%- liquid
+        assign variant_label_state = true
+        if product.options.size == 1
+          unless product.variants[forloop.index0].available
+            assign variant_label_state = false
+          endunless
+        endif
+        for variant in product.variants
+          assign vOption = 'option' | append: option_index
+          if value == variant[vOption]
+            assign currenVariant = variant
+            break
+          endif
+        endfor
+        assign hasImage = false
+        if isColor and currenVariant.image
+          assign hasImage = true
+        endif
+      -%}
+
+      <input
+        type="radio"
+        {% if option.selected_value == value -%}
+          checked="checked"
+        {%- endif %}
+        {% unless variant_label_state -%}
+          disabled="disabled"
+        {%- endunless %}
+        value="{{ value | escape }}"
+        data-index="option{{ option_index }}"
+        name="{{ option.name | handleize }}"
+        class="single-option-selector-{{ section.id }} single-option-selector__radio{% unless variant_label_state %} disabled{% endunless %}"
+        id="ProductSelect-option-{{ option.name | handleize }}-{{ value | escape }}"
+      >
+      <label
+        {% if hasImage %}
+          title="{{ value | escape }}"
+          {%- if sw_color_product -%}
+            class="st-color-{{ value | escape | handle }} st-tooltip-top"
+            style="background-color:{{ value | escape | handle }};"
+          {% else %}
+            style="background-image:url({{ currenVariant.image.src | image_url: width: 100 }})"
+          {% endif -%}
+        {% endif %}
+        for="ProductSelect-option-{{ option.name | handleize }}-{{ value | escape }}"
+        {% unless variant_label_state %}
+          class="disabled"
+        {% endunless %}
+      >
+        {%- unless hasImage -%}{{ value | escape }}{%- endunless -%}
+        {% comment %} <span class="st-tooltip__content">{{ value | escape }}</span> {% endcomment %}
+        {%- if hasImage -%}
+          <span class="st-color-{{ value | escape | handle }} st-color"></span>
+          <span class="">{{ value | escape }}</span>
+        {%- endif -%}
+      </label>
+    {%- endfor -%}
+  </fieldset>
+{%- else -%}
+  <div class="variant-swatches-wrapper" data-index="option{{ loop }}">
+    {% if option.name == 'Diamond Shape' %}
+      <div class="variant-swatches diamond-shape-swatches" data-index="option{{ loop }}">
+        {% for value in option.values %}
+          {% assign file_name = value | downcase | replace: ' ', '-' | append: '.png' %}
+          <label class="swatch shape-swatch">
+            <input
+              type="radio"
+              name="option{{ loop }}"
+              value="{{ value }}"
+              data-index="option{{ loop }}"
+              class="single-option-selector-{{ section.id }}"
+              {% if option.selected_value == value %}
+                checked
+              {% endif %}
+            >
+            <span class="swatch-box shape-box">
+              <img
+                src="{{ file_name | file_url }}"
+                alt="{{ value }}"
+                width="40"
+                height="40"
+                onerror="this.style.display='none'"
+              >
+              {% comment %} <span class="shape-name">{{ value }}</span> {% endcomment %}
+            </span>
+          </label>
+        {% endfor %}
+      </div>
+
+    {% elsif option.name == 'Material' %}
+      {%- assign sel_val = option.selected_value -%}
+      {%- assign sel_val_down = sel_val | downcase -%}
+      {%- assign sel_top = 'Platinum' -%}
+      {%- if sel_val_down contains 'gold' -%}{%- assign sel_top = 'Gold' -%}{%- endif -%}
+      {%- if sel_val_down == 'silver' -%}{%- assign sel_top = 'Silver' -%}{%- endif -%}
+
+      <!-- Hidden native radios -->
+      {% for value in option.values %}
+        <input
+          type="radio"
+          name="option{{ loop }}"
+          value="{{ value }}"
+          data-index="option{{ loop }}"
+          class="single-option-selector-{{ section.id }} mat-hidden-radio"
+          id="mat-radio-{{ section.id }}-{{ value | handle }}"
+          {% if option.selected_value == value %}
+            checked
+          {% endif %}
+          style="position:absolute;opacity:0;pointer-events:none;width:0;height:0;"
+        >
+      {% endfor %}
+
+      <!-- Detect which metals exist -->
+      {%- assign has_silver = false -%}
+      {%- assign has_gold = false -%}
+      {%- assign has_platinum = false -%}
+      {% for value in option.values %}
+        {%- assign v = value | downcase -%}
+        {%- if v == 'silver' -%}{%- assign has_silver = true -%}{%- endif -%}
+        {%- if v contains 'gold' -%}{%- assign has_gold = true -%}{%- endif -%}
+        {%- if v == 'platinum' -%}{%- assign has_platinum = true -%}{%- endif -%}
+      {% endfor %}
+
+      <!-- Top buttons -->
+      <div class="mat-top-buttons">
+        {% if has_silver %}
+          <button
+            type="button"
+            class="mat-top-btn{% if sel_top == 'Silver' %} active{% endif %}"
+            data-metal="Silver"
+            data-section="{{ section.id }}"
+            data-loop="{{ loop }}"
+          >
+            SILVER
+          </button>
+        {% endif %}
+        {% if has_gold %}
+          <button
+            type="button"
+            class="mat-top-btn{% if sel_top == 'Gold' %} active{% endif %}"
+            data-metal="Gold"
+            data-section="{{ section.id }}"
+            data-loop="{{ loop }}"
+          >
+            GOLD
+          </button>
+        {% endif %}
+        {% if has_platinum %}
+          <button
+            type="button"
+            class="mat-top-btn{% if sel_top == 'Platinum' %} active{% endif %}"
+            data-metal="Platinum"
+            data-section="{{ section.id }}"
+            data-loop="{{ loop }}"
+          >
+            PLATINUM
+          </button>
+        {% endif %}
+      </div>
+
+      <!-- Gold sub-options - all 9 in one row -->
+      <div
+        class="mat-gold-sub"
+        id="mat-gold-sub-{{ section.id }}"
+        style="display:{% if sel_top == 'Gold' %}flex{% else %}none{% endif %};"
+      >
+        {% for value in option.values %}
+          {%- assign val_down = value | downcase -%}
+          {% if val_down contains 'gold' %}
+            {%- assign karat = value | split: ' ' | first | upcase -%}
+            {%- assign bg1 = '#e8c97a' -%}
+            {%- assign bg2 = '#c9a84c' -%}
+            {%- if val_down contains 'white' -%}
+              {%- assign bg1 = '#efefef' -%}
+              {%- assign bg2 = '#a8a8a8' -%}
+            {%- endif -%}
+            {%- if val_down contains 'rose' -%}
+              {%- assign bg1 = '#f0b8a0' -%}
+              {%- assign bg2 = '#c97a5a' -%}
+            {%- endif -%}
+            <button
+              type="button"
+              class="mat-gold-btn{% if option.selected_value == value %} active{% endif %}"
+              data-value="{{ value }}"
+              data-section="{{ section.id }}"
+              title="{{ value }}"
+            >
+              <span class="mat-circle" style="background:linear-gradient(135deg,{{ bg1 }} 50%,{{ bg2 }} 50%);">
+                <span class="mat-karat-inside">{{ karat }}</span>
+              </span>
+            </button>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <style>
+        .mat-top-buttons {
+          display: flex;
+          gap: 10px;
+          margin: 10px 0;
+          flex-wrap: nowrap;
+        }
+        .mat-top-btn {
+          padding: 8px 22px;
+          border: 1.5px solid #bbb;
+          background: #fff;
+          border-radius: 4px;
+          font-size: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          letter-spacing: 1px;
+          transition: all .2s;
+        }
+        .mat-top-btn.active {
+          background: #1a1a2e;
+          color: #fff;
+          border-color: #1a1a2e;
+        }
+        .mat-gold-sub {
+          flex-wrap: nowrap;
+          gap: 4px;
+          margin-top: 10px;
+          overflow: visible;
+          align-items: center;
+        }
+        .mat-gold-btn {
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: none;
+          border: 2.5px solid transparent;
+          border-radius: 50%;
+          padding: 2px;
+          cursor: pointer;
+          transition: border-color .2s;
+        }
+        .mat-gold-btn.active {
+          border-color: #1a1a2e;
+        }
+        .mat-circle {
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid rgba(0,0,0,0.12);
+        }
+        .mat-karat-inside {
+          font-size: 15px;
+          font-weight: 900;
+          color: #111;
+          text-shadow:
+            0 0 3px rgba(255,255,255,1),
+            0 0 6px rgba(255,255,255,0.9),
+            1px 1px 0 rgba(255,255,255,0.8);
+          letter-spacing: -0.3px;
+          line-height: 1;
+          pointer-events: none;
+        }
+        .stone-size-wrapper{
+          display:flex;
+          flex-wrap:nowrap;
+          gap:8px;
+          margin-top:10px;
+          overflow-x:100%;
+        }
+
+        .stone-size-wrapper::-webkit-scrollbar{
+          display:none;
+        }
+
+        .stone-size-item{
+          flex:0 0 auto;
+        }
+
+        .stone-size-item input{
+          display:none;
+        }
+
+        .stone-size-item span{
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          min-width:55px;
+          height:42px;
+          padding:0 12px;
+          border:1px solid #d9d9d9;
+          border-radius:4px;
+          background:#fff;
+          font-size:14px;
+          font-weight:600;
+          color:#111;
+          cursor:pointer;
+          transition:all .2s ease;
+        }
+
+        .stone-size-item:hover span{
+          border-color:#111827;
+        }
+
+        .stone-size-item input:checked + span{
+          background:#111827;
+          color:#fff;
+          border-color:#111827;
+        }
+
+        /* Mobile */
+        @media screen and (max-width: 749px){
+
+          /* Top buttons */
+          .mat-top-buttons{
+            display:flex;
+            flex-wrap:nowrap;
+            overflow-x:auto;
+            overflow-y:hidden;
+            gap:8px;
+            padding-bottom:6px;
+
+            -webkit-overflow-scrolling:touch;
+            scrollbar-width:none;
+            -ms-overflow-style:none;
+          }
+
+          .mat-top-buttons::-webkit-scrollbar{
+            display:none;
+          }
+
+          .mat-top-btn{
+            flex:0 0 auto;
+            white-space:nowrap;
+            padding:8px 18px;
+          }
+
+          /* Gold buttons */
+          .mat-gold-sub{
+            display:flex;
+            flex-wrap:nowrap;
+            overflow-x:auto;
+            overflow-y:hidden;
+            gap:8px;
+            padding-bottom:6px;
+
+            -webkit-overflow-scrolling:touch;
+            scrollbar-width:none;
+            -ms-overflow-style:none;
+          }
+
+          .mat-gold-sub::-webkit-scrollbar{
+            display:none;
+          }
+
+          .mat-gold-btn{
+            flex:0 0 auto;
+          }
+
+          .mat-circle{
+            width:42px;
+            height:42px;
+          }
+
+          .mat-karat-inside{
+            font-size:13px;
+          }
+
+        }
+      </style>
+
+      <script>
+        (function () {
+          function updateSelectedOptionDisplay(input) {
+            if (!input) {
+              return;
+            }
+
+            var value = input.value;
+
+            if (!value) {
+              return;
+            }
+
+            /*
+             * Current selector wrapper find karo
+             */
+            var wrapper = input.closest('.selector-wrapper.js.product-form__item');
+
+            if (!wrapper) {
+              return;
+            }
+
+            /*
+             * Display span find karo
+             */
+            var display = wrapper.querySelector('.option-selected-value');
+
+            if (!display) {
+              return;
+            }
+
+            /*
+             * Display selected value
+             */
+            display.textContent = value;
+          }
+
+          /*
+           * =========================================================
+           * FIND RADIO BY MATERIAL VALUE
+           * =========================================================
+           */
+
+          function matTrigger(sectionId, value) {
+            var radio = null;
+
+            var all = document.querySelectorAll('.mat-hidden-radio');
+
+            for (var i = 0; i < all.length; i++) {
+              if (all[i].value.toLowerCase().trim() === value.toLowerCase().trim()) {
+                radio = all[i];
+
+                break;
+              }
+            }
+
+            if (!radio) {
+              return;
+            }
+
+            /*
+             * Radio select karo
+             */
+            radio.checked = true;
+
+            /*
+             * Display immediately update karo
+             */
+            updateSelectedOptionDisplay(radio);
+
+            /*
+             * Theme ka variant-change event
+             */
+            if (window.jQuery) {
+              jQuery(radio).trigger('change');
+            } else {
+              radio.dispatchEvent(
+                new Event('change', {
+                  bubbles: true,
+                })
+              );
+            }
+
+            /*
+             * Theme JS ke baad dobara display update
+             */
+            setTimeout(function () {
+              updateSelectedOptionDisplay(radio);
+            }, 50);
+
+            setTimeout(function () {
+              updateSelectedOptionDisplay(radio);
+            }, 200);
+          }
+
+          /*
+           * =========================================================
+           * MATERIAL + GOLD + STONE SIZE CLICK
+           * =========================================================
+           */
+
+          document.addEventListener('click', function (e) {
+            /*
+             * -------------------------------------------------------
+             * MATERIAL TOP BUTTON
+             * -------------------------------------------------------
+             */
+
+            var topBtn = e.target.closest('.mat-top-btn');
+
+            if (topBtn) {
+              var sectionId = topBtn.dataset.section;
+              var metal = topBtn.dataset.metal;
+
+              var parent = topBtn.closest('.mat-top-buttons');
+
+              if (parent) {
+                parent.querySelectorAll('.mat-top-btn').forEach(function (btn) {
+                  btn.classList.remove('active');
+                });
+              }
+
+              topBtn.classList.add('active');
+
+              var subDiv = document.getElementById('mat-gold-sub-' + sectionId);
+
+              if (metal === 'Gold') {
+                if (subDiv) {
+                  subDiv.style.display = 'flex';
+
+                  /*
+                   * First Gold option select karo
+                   */
+                  var first = subDiv.querySelector('.mat-gold-btn');
+
+                  if (first) {
+                    first.click();
+                  }
+                }
+              } else {
+                if (subDiv) {
+                  subDiv.style.display = 'none';
+
+                  subDiv.querySelectorAll('.mat-gold-btn').forEach(function (btn) {
+                    btn.classList.remove('active');
+                  });
+                }
+
+                /*
+                 * Silver / Platinum select
+                 */
+                matTrigger(sectionId, metal);
+              }
+
+              e.preventDefault();
+
+              return;
+            }
+
+            /*
+             * -------------------------------------------------------
+             * GOLD SUB OPTION
+             * -------------------------------------------------------
+             */
+
+            var goldBtn = e.target.closest('.mat-gold-btn');
+
+            if (goldBtn) {
+              var sectionId = goldBtn.dataset.section;
+              var value = goldBtn.dataset.value;
+
+              var subDiv = document.getElementById('mat-gold-sub-' + sectionId);
+
+              if (subDiv) {
+                subDiv.querySelectorAll('.mat-gold-btn').forEach(function (btn) {
+                  btn.classList.remove('active');
+                });
+              }
+
+              goldBtn.classList.add('active');
+
+              /*
+               * Select actual hidden Material radio
+               */
+              matTrigger(sectionId, value);
+
+              e.preventDefault();
+
+              return;
+            }
+
+            /*
+             * -------------------------------------------------------
+             * STONE SIZE (Diamond size / Wrist size etc.)
+             * -------------------------------------------------------
+             */
+
+            var stoneLabel = e.target.closest('.stone-size-item');
+
+            if (stoneLabel) {
+              var radio = stoneLabel.querySelector('input[type="radio"]');
+
+              if (radio) {
+                radio.checked = true;
+
+                updateSelectedOptionDisplay(radio);
+
+                /*
+                 * Trigger Shopify/theme change
+                 */
+                if (window.jQuery) {
+                  jQuery(radio).trigger('change');
+                } else {
+                  radio.dispatchEvent(
+                    new Event('change', {
+                      bubbles: true,
+                    })
+                  );
+                }
+
+                setTimeout(function () {
+                  updateSelectedOptionDisplay(radio);
+                }, 50);
+
+                setTimeout(function () {
+                  updateSelectedOptionDisplay(radio);
+                }, 200);
+              }
+
+              e.preventDefault();
+
+              return;
+            }
+          });
+
+          /*
+           * =========================================================
+           * NORMAL RADIO CHANGE
+           * =========================================================
+           */
+
+          document.addEventListener('change', function (e) {
+            var input = e.target;
+
+            if (input.matches('.single-option-selector-' + '{{ section.id }}')) {
+              updateSelectedOptionDisplay(input);
+            }
+          });
+
+          /*
+           * =========================================================
+           * INITIAL VALUE
+           * =========================================================
+           */
+
+          document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.selector-wrapper.js.product-form__item').forEach(function (wrapper) {
+              var checked = wrapper.querySelector('input[type="radio"]:checked');
+
+              if (checked) {
+                updateSelectedOptionDisplay(checked);
+              }
+            });
+          });
+        })();
+      </script>
+
+    {% elsif option.name == 'Ring size' %}
+      <!-- 💍 Ring Size Dropdown -->
+      <div style="margin:18px 0;">
+        <label
+          for="RingSize-{{ section.id }}"
+          style="
+            display:block;
+            font-size:14px;
+            font-weight:500;
+            margin-bottom:10px;
+            color:#111;
+          "
+        >
+          Ring size
+        </label>
+
+        <div style="position:relative; width:220px;">
+          <select
+            id="RingSize-{{ section.id }}"
+            name="properties[Ring Size]"
+            style="
+              width:100%;
+              height:46px;
+              padding:0 40px 0 14px;
+              border:1px solid #d8d8d8;
+              border-radius:6px;
+              background:#fff;
+              font-size:14px;
+              color:#111;
+              cursor:pointer;
+              appearance:none;
+              -webkit-appearance:none;
+              -moz-appearance:none;
+            "
+          >
+            {% for value in option.values %}
+              <option value="{{ value }}">
+                {{ value }}
+              </option>
+            {% endfor %}
+          </select>
+
+          <span
+            style="
+              position:absolute;
+              right:14px;
+              top:50%;
+              transform:translateY(-50%);
+              font-size:10px;
+              pointer-events:none;
+              color:#111;
+            "
+          >
+            ▼
+          </span>
+        </div>
+      </div>
+
+    {% elsif option.name == 'Wrist Size' or option.name == 'Diamond size' or option.name == 'Diamond Size' %}
+      <!-- Wrist Size / Diamond Size Buttons -->
+
+      <div class="stone-size-wrapper">
+        {% for value in option.values %}
+          <label class="stone-size-item">
+            <input
+              type="radio"
+              name="option{{ loop }}"
+              value="{{ value }}"
+              data-index="option{{ loop }}"
+              class="single-option-selector-{{ section.id }}"
+              {% if option.selected_value == value %}
+                checked
+              {% endif %}
+            >
+
+            <span>{{ value }}</span>
+          </label>
+        {% endfor %}
+      </div>
+
+    {% elsif option.name == 'Select Inches' %}
+      <div class="stone-size-wrapper">
+        {% for value in option.values %}
+          <label class="stone-size-item">
+            <input
+              type="radio"
+              name="option{{ loop }}"
+              value="{{ value }}"
+              data-index="option{{ loop }}"
+              class="single-option-selector-{{ section.id }}"
+              {% if option.selected_value == value %}
+                checked
+              {% endif %}
+            >
+
+            <span>{{ value }}</span>
+          </label>
+        {% endfor %}
+      </div>
+
+    {% elsif option.name == 'Stone size' %}
+      <!-- Stone Size Buttons -->
+
+      <div class="stone-size-wrapper">
+        {% for value in option.values %}
+          <label class="stone-size-item">
+            <input
+              type="radio"
+              name="option{{ loop }}"
+              value="{{ value }}"
+              data-index="option{{ loop }}"
+              class="single-option-selector-{{ section.id }}"
+              {% if option.selected_value == value %}
+                checked
+              {% endif %}
+            >
+
+            <span>{{ value }}</span>
+          </label>
+        {% endfor %}
+      </div>
+
+    {% else %}
+      <!-- 🔘 Other Options -->
+      <div
+        class="variant-swatches custom-option-swatches"
+        data-index="option{{ loop }}"
+      >
+        {% for value in option.values %}
+          <label class="swatch custom-swatch">
+            <input
+              type="radio"
+              name="option{{ loop }}"
+              value="{{ value }}"
+              data-index="option{{ loop }}"
+              class="single-option-selector-{{ section.id }}"
+              {% if option.selected_value == value %}
+                checked
+              {% endif %}
+            >
+            <span class="swatch-box">
+              {{ value }}
+            </span>
+          </label>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{%- endif -%}
+<script>
+(function () {
+
+  /*
+   * =========================================================
+   * LUMERA PRODUCT REQUIRED VALIDATION
+   * Material + Diamond Size + Ring Size
+   * =========================================================
+   */
+
+  var validationState = {
+    material: false,
+    diamondSize: false,
+    ringSize: false
+  };
+
+
+  /*
+   * =========================================================
+   * FIND PRODUCT FORM
+   * =========================================================
+   */
+
+  function getProductForm() {
+    return document.querySelector(
+      'form[id^="AddToCartForm-"]'
+    );
+  }
+
+
+  /*
+   * =========================================================
+   * ERROR MESSAGE
+   * =========================================================
+   */
+
+  function showError(wrapper, message) {
+
+    if (!wrapper) return;
+
+    var error = wrapper.querySelector(
+      '.lumera-validation-error'
+    );
+
+    if (!error) {
+
+      error = document.createElement('div');
+
+      error.className = 'lumera-validation-error';
+
+      error.style.cssText = `
+        color:#e53935;
+        font-size:14px;
+        line-height:20px;
+        margin-top:8px;
+        display:block;
+      `;
+
+      wrapper.appendChild(error);
+    }
+
+    error.textContent = message;
+    error.style.display = 'block';
+  }
+
+
+  /*
+   * =========================================================
+   * REMOVE ERROR
+   * =========================================================
+   */
+
+  function removeError(wrapper) {
+
+    if (!wrapper) return;
+
+    var error = wrapper.querySelector(
+      '.lumera-validation-error'
+    );
+
+    if (error) {
+      error.style.display = 'none';
+    }
+  }
+
+
+  /*
+   * =========================================================
+   * FIND MATERIAL WRAPPER
+   * =========================================================
+   */
+
+  function getMaterialWrapper() {
+
+    return document.querySelector(
+      '.mat-top-buttons'
+    )?.closest(
+      '.selector-wrapper.js.product-form__item'
+    );
+  }
+
+
+  /*
+   * =========================================================
+   * FIND DIAMOND SIZE WRAPPER
+   * =========================================================
+   */
+
+  function getDiamondWrapper() {
+
+    var wrappers = document.querySelectorAll(
+      '.selector-wrapper.js.product-form__item'
+    );
+
+    for (var i = 0; i < wrappers.length; i++) {
+
+      var text = (
+        wrappers[i].innerText || ''
+      ).toLowerCase();
+
+      if (
+        text.indexOf('diamond size') !== -1
+      ) {
+        return wrappers[i];
+      }
+    }
+
+    return null;
+  }
+
+
+  /*
+   * =========================================================
+   * FIND RING SIZE WRAPPER
+   * =========================================================
+   */
+
+  function getRingWrapper() {
+
+    var select = document.querySelector(
+      '#RingSize-{{ section.id }}'
+    );
+
+    if (!select) return null;
+
+    return select.closest(
+      '.selector-wrapper.js.product-form__item'
+    ) || select.parentElement.parentElement.parentElement;
+  }
+
+
+  /*
+   * =========================================================
+   * VALIDATE MATERIAL
+   * =========================================================
+   */
+
+  function validateMaterial(showMessage) {
+
+    var wrapper = getMaterialWrapper();
+
+    if (!wrapper) {
+      return true;
+    }
+
+    /*
+     * IMPORTANT:
+     * Material tab ko customer ne manually click kiya hai
+     * ya nahi — ye check hoga.
+     */
+
+    if (!validationState.material) {
+
+      if (showMessage) {
+
+        showError(
+          wrapper,
+          'Please select a Metal Type'
+        );
+
+      }
+
+      return false;
+    }
+
+    /*
+     * Agar Gold selected hai to Gold karat bhi required
+     */
+
+    var activeTop = wrapper.querySelector(
+      '.mat-top-btn.active'
+    );
+
+    if (
+      activeTop &&
+      activeTop.dataset.metal === 'Gold'
+    ) {
+
+      var goldSelected = wrapper.querySelector(
+        '.mat-gold-btn.active'
+      );
+
+      if (!goldSelected) {
+
+        if (showMessage) {
+
+          showError(
+            wrapper,
+            'Please select a Gold Type'
+          );
+
+        }
+
+        return false;
+      }
+    }
+
+    removeError(wrapper);
+
+    return true;
+  }
+
+
+  /*
+   * =========================================================
+   * VALIDATE DIAMOND SIZE
+   * =========================================================
+   */
+
+  function validateDiamondSize(showMessage) {
+
+    var wrapper = getDiamondWrapper();
+
+    if (!wrapper) {
+      return true;
+    }
+
+    if (!validationState.diamondSize) {
+
+      if (showMessage) {
+
+        showError(
+          wrapper,
+          'Please select a Diamond Size'
+        );
+
+      }
+
+      return false;
+    }
+
+    removeError(wrapper);
+
+    return true;
+  }
+
+
+  /*
+   * =========================================================
+   * VALIDATE RING SIZE
+   * =========================================================
+   */
+
+  function validateRingSize(showMessage) {
+
+    var select = document.querySelector(
+      '#RingSize-{{ section.id }}'
+    );
+
+    var wrapper = getRingWrapper();
+
+    if (!select) {
+      return true;
+    }
+
+    if (
+      !validationState.ringSize ||
+      !select.value
+    ) {
+
+      if (showMessage) {
+
+        showError(
+          wrapper,
+          'Please select a Ring size'
+        );
+
+        select.style.borderColor = '#e53935';
+      }
+
+      return false;
+    }
+
+    removeError(wrapper);
+
+    select.style.borderColor = '#d8d8d8';
+
+    return true;
+  }
+
+
+  /*
+   * =========================================================
+   * VALIDATE EVERYTHING
+   * =========================================================
+   */
+
+  function validateAll(showMessage) {
+
+    var materialOK = validateMaterial(showMessage);
+
+    var diamondOK = validateDiamondSize(showMessage);
+
+    var ringOK = validateRingSize(showMessage);
+
+    return (
+      materialOK &&
+      diamondOK &&
+      ringOK
+    );
+  }
+
+
+  /*
+   * =========================================================
+   * MATERIAL CLICK
+   * =========================================================
+   */
+
+  document.addEventListener(
+    'click',
+    function (event) {
+
+      var topButton = event.target.closest(
+        '.mat-top-btn'
+      );
+
+      var goldButton = event.target.closest(
+        '.mat-gold-btn'
+      );
+
+      if (topButton || goldButton) {
+
+        validationState.material = true;
+
+        /*
+         * Error immediately remove
+         */
+
+        var wrapper = getMaterialWrapper();
+
+        removeError(wrapper);
+
+      }
+
+    },
+    false
+  );
+
+
+  /*
+   * =========================================================
+   * DIAMOND SIZE CLICK
+   * =========================================================
+   */
+
+  document.addEventListener(
+    'click',
+    function (event) {
+
+      var stone = event.target.closest(
+        '.stone-size-item'
+      );
+
+      if (!stone) return;
+
+      var wrapper = stone.closest(
+        '.selector-wrapper.js.product-form__item'
+      );
+
+      if (!wrapper) return;
+
+      var text = (
+        wrapper.innerText || ''
+      ).toLowerCase();
+
+      /*
+       * Sirf Diamond Size ko count karo
+       */
+
+      if (
+        text.indexOf('diamond size') !== -1
+      ) {
+
+        validationState.diamondSize = true;
+
+        removeError(wrapper);
+      }
+
+    },
+    false
+  );
+
+
+  /*
+   * =========================================================
+   * RING SIZE CHANGE
+   * =========================================================
+   */
+
+  document.addEventListener(
+    'change',
+    function (event) {
+
+      var select = event.target;
+
+      if (
+        !select ||
+        select.id !== 'RingSize-{{ section.id }}'
+      ) {
+        return;
+      }
+
+      if (select.value) {
+
+        validationState.ringSize = true;
+
+        select.style.borderColor = '#d8d8d8';
+
+        removeError(
+          getRingWrapper()
+        );
+
+      }
+
+    },
+    false
+  );
+
+
+  /*
+   * =========================================================
+   * ADD TO CART CLICK
+   * =========================================================
+   *
+   * IMPORTANT:
+   * Theme AJAX cart se pehle validation chalegi.
+   */
+
+  document.addEventListener(
+    'click',
+    function (event) {
+
+      var addButton = event.target.closest(
+        '#AddToCart-{{ section.id }}'
+      );
+
+      if (!addButton) {
+        return;
+      }
+
+      /*
+       * Agar validation fail hui
+       * to AJAX cart ko start hi nahi hone denge.
+       */
+
+      var valid = validateAll(true);
+
+      if (!valid) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        event.stopImmediatePropagation();
+
+        /*
+         * First error par scroll
+         */
+
+        var firstError = document.querySelector(
+          '.lumera-validation-error[style*="display: block"]'
+        );
+
+        if (firstError) {
+
+          firstError.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+          });
+
+        }
+
+        return false;
+      }
+
+    },
+    true
+  );
+
+
+  /*
+   * =========================================================
+   * ALSO BLOCK FORM SUBMIT
+   * =========================================================
+   */
+
+  document.addEventListener(
+    'submit',
+    function (event) {
+
+      var form = event.target;
+
+      if (
+        !form ||
+        !form.matches('form[id^="AddToCartForm-"]')
+      ) {
+        return;
+      }
+
+      var valid = validateAll(true);
+
+      if (!valid) {
+
+        event.preventDefault();
+
+        event.stopPropagation();
+
+        event.stopImmediatePropagation();
+
+        return false;
+      }
+
+    },
+    true
+  );
+
+
+})();
+</script>

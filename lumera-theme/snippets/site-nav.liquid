@@ -1,0 +1,103 @@
+<ul class="meganav__list">
+  {% for childlink in link.links %}
+
+  <li class="mega-column">
+
+    {% assign childlink_url = childlink.url %}
+    {% assign handle = childlink_url | split: '/collections/' | last | split: '?' | first %}
+    {% assign collection = collections[handle] %}
+
+    <!-- Heading -->
+    <h5 class="mega-heading">
+      <a href="{{ childlink_url }}">
+        {% render 'processMenuTitle', itemName: childlink.title %}
+      </a>
+    </h5>
+
+    {% if childlink.links != blank %}
+      <ul class="mega-links">
+
+        {% for grandchildlink in childlink.links %}
+
+          {% assign handle = grandchildlink.url | split: '/collections/' | last | split: '?' | first %}
+          {% assign collection = collections[handle] %}
+
+          <li>
+
+            <a href="{{ grandchildlink.url }}">
+
+              {% if collection and collection.metafields.custom.menu_icon %}
+                <img
+                  src="{{ collection.metafields.custom.menu_icon | image_url: width: 40 }}"
+                  width="24"
+                  height="24"
+                  alt="{{ grandchildlink.title }}"
+                  class="mega-icon">
+              {% endif %}
+
+              {% render 'processMenuTitle', itemName: grandchildlink.title %}
+
+            </a>
+
+          </li>
+
+        {% endfor %}
+
+      </ul>
+    {% endif %}
+
+  </li>
+
+  {% endfor %}
+</ul>
+<style>
+.meganav__list{
+    display:flex;
+    gap:25px;   /* ya 20px */
+    align-items:flex-start;
+}
+
+.mega-column{
+    min-width:200px;
+}
+
+.mega-column{
+    list-style:none;
+    min-width:220px;
+}
+
+.mega-heading{
+    margin-bottom:15px;
+    font-size:20px;
+    font-weight:600;
+}
+
+.mega-heading a{
+    text-decoration:none;
+    color:#1f3d3d;
+}
+
+.mega-links{
+    padding:0;
+    margin:0;
+}
+
+.mega-links li{
+    list-style:none;
+    margin-bottom:12px;
+}
+
+.mega-links li a{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    color:#444;
+}
+
+.mega-icon{
+    width:40px;
+    height:30px;
+    object-fit:contain;
+}
+</style>

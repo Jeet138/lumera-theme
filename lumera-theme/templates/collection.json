@@ -1,0 +1,274 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "collection-banner": {
+      "type": "main-collection-banner",
+      "settings": {
+        "show_breadcrumb": true,
+        "width_breadcrumb": "container",
+        "show_collection_description": true,
+        "show_collection_image": true,
+        "save_allproducts": true,
+        "img_bannercollection": "shopify://shop_images/3_7aef2202-a6d8-47de-b65f-3e03a14f4901.png",
+        "title_all": "All Products",
+        "des_all": "<p>Shop now, not later. Browse the best of our favorite sale styles and brands.</p>",
+        "style_banner": "split",
+        "heading_size": "h1",
+        "img_height": "350px",
+        "bg_color": "#e8e8e8",
+        "image_text_color": "#041c07",
+        "image_overlay_color": "#000000",
+        "image_overlay_opacity": 20,
+        "enable_collection": true,
+        "enable_count": false,
+        "link_list_head": ""
+      }
+    },
+    "3718e2cb-5821-407b-acec-0f519cf8d4b4": {
+      "type": "rich-text-hoz",
+      "blocks": {
+        "4aae42f0-8564-4ba9-bf69-e0db437bad2b": {
+          "type": "heading",
+          "settings": {
+            "title": "Summer Saving",
+            "size_text": "h4"
+          }
+        },
+        "05fa68df-6d3c-4ed2-afd2-39d1c6945a8a": {
+          "type": "paragraph",
+          "settings": {
+            "subtext": "Save an additional 10% on all clearance items."
+          }
+        },
+        "71224ca7-db08-44d5-8f55-df529ccb46af": {
+          "type": "button",
+          "settings": {
+            "button": "Shop now",
+            "link": "#",
+            "style_btn": "btn-outline"
+          }
+        }
+      },
+      "block_order": [
+        "4aae42f0-8564-4ba9-bf69-e0db437bad2b",
+        "05fa68df-6d3c-4ed2-afd2-39d1c6945a8a",
+        "71224ca7-db08-44d5-8f55-df529ccb46af"
+      ],
+      "disabled": true,
+      "settings": {
+        "animation": "fade",
+        "setwidth": "container",
+        "bgsection": "rgba(0,0,0,0)",
+        "gradient_bg": "linear-gradient(270deg, rgba(247, 247, 247, 1), rgba(247, 247, 247, 1) 100%)",
+        "paddingsection": "40px 0px 20px 0px",
+        "paddingmobile": "40px 0px 20px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-template",
+      "settings": {
+        "collection_width": "container",
+        "products_per_page": 12,
+        "collection_perrow": "3",
+        "type_pagination": "scroll",
+        "enable_viewcolumn": true,
+        "enable_filtering": true,
+        "enable_sorting": true,
+        "filter_type": "vertical",
+        "first_group": true,
+        "open_group": false,
+        "enable_color": true,
+        "type_color": true,
+        "style_color": "color_list",
+        "style_size": "list",
+        "enable_edit_item": true,
+        "select_item": "product-1",
+        "enable_list_collection": true,
+        "link_list_head": "",
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    },
+    "1781092655b3bcf77a": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_f71fe07_kBfwcd": {
+          "type": "ai_gen_block_f71fe07",
+          "settings": {
+            "collection_1": "engagement-ring",
+            "image_1": "shopify://shop_images/15_6f25c8a0-78b7-47f1-8b77-daf2ba4e32eb.jpg",
+            "collection_2": "wedding-band",
+            "image_2": "shopify://shop_images/band_2_67f122cb-b2ed-4a80-b49a-1c20767165c9.png",
+            "collection_3": "necklace",
+            "image_3": "shopify://shop_images/half_bezel_1.webp",
+            "collection_4": "pendants",
+            "image_4": "shopify://shop_images/pendant_63cb82c3-c7a4-4736-8306-1a6a5bd7f299.webp",
+            "collection_5": "earrings",
+            "image_5": "shopify://shop_images/23_1df00873-ebec-483a-9b4e-4535310f2310.webp",
+            "collection_6": "bracelets",
+            "image_6": "shopify://shop_images/WhatsApp_Image_2026-04-02_at_11.57.23_AM_4b9fe4b3-d207-420e-a125-109a1d6e61b5.jpg",
+            "heading": "Explore Other Categories",
+            "subheading": "Discover more collections",
+            "heading_alignment": "center",
+            "show_overlay": true,
+            "grid_gap": 20,
+            "image_aspect_ratio": 120,
+            "item_border_radius": 0,
+            "background_color": "#fef8f1",
+            "heading_color": "#1a1a1a",
+            "subheading_color": "#666666",
+            "item_background": "#f7f7f7",
+            "category_name_color": "#ffffff",
+            "heading_size": 36,
+            "subheading_size": 16,
+            "heading_weight": "600",
+            "category_name_size": 18,
+            "category_name_weight": "600"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_f71fe07_kBfwcd"
+      ],
+      "settings": {}
+    },
+    "1779186365c125afdb": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_cb3e713_WcCBEF": {
+          "type": "ai_gen_block_cb3e713",
+          "settings": {
+            "desktop_width_percent": 100,
+            "section_padding": 50,
+            "content_max_width": 800,
+            "background_color": "#ffffff",
+            "heading": "Frequently Asked Questions",
+            "subheading": "<p>Find answers to common questions about our products and services</p>",
+            "heading_alignment": "center",
+            "heading_spacing": 40,
+            "heading_size": 36,
+            "heading_weight": "600",
+            "heading_color": "#1a1a1a",
+            "subheading_size": 16,
+            "subheading_color": "#666666",
+            "item_padding": 20,
+            "border_color": "#e0e0e0",
+            "question_size": 18,
+            "question_weight": "500",
+            "question_color": "#1a1a1a",
+            "question_hover_color": "#0d3404",
+            "icon_color": "#1a1a1a",
+            "answer_size": 14,
+            "answer_color": "#666666",
+            "question_1": "What is a wedding band?",
+            "answer_1": "<p>A wedding band is a ring exchanged during the wedding ceremony to symbolize love, commitment, and a lifelong partnership. It is typically worn alongside an engagement ring.</p>",
+            "question_2": "What is the difference between a wedding band and an engagement ring?",
+            "answer_2": "<p>An engagement ring is given during the proposal and usually features a center diamond, while a wedding band is exchanged during the wedding ceremony and often has a simpler design.</p>",
+            "question_3": "Can you wear a wedding band without an engagement ring?",
+            "answer_3": "<p>Yes. Many people choose to wear only a wedding band for its simplicity, comfort, and timeless style.</p>",
+            "question_4": "Should a wedding band match the engagement ring?",
+            "answer_4": "<p>Not necessarily. While many couples choose matching metals or styles, mixing different metals, textures, or designs has become increasingly popular.</p>",
+            "question_5": "What is the best metal for a wedding band?",
+            "answer_5": "<p>Platinum is known for its durability, while 14K and 18K gold in white, yellow, and rose gold are popular choices for their beauty, strength, and versatility.</p>",
+            "question_6": "How do I choose the right wedding band?",
+            "answer_6": "<p>Consider your lifestyle, preferred metal, ring width, comfort fit, durability, and whether you want the band to complement your engagement ring.</p>",
+            "question_7": "What is the most popular wedding band style?",
+            "answer_7": "<p>Classic plain bands, diamond eternity bands, half-eternity bands, and minimalist gold bands are among the most popular wedding band styles.</p>",
+            "question_8": "What is the difference between a full eternity band and a half eternity band?",
+            "answer_8": "<p>A full eternity band features diamonds around the entire ring, while a half eternity band has diamonds only across the top, making it easier to resize and often more comfortable for daily wear.</p>",
+            "question_9": "Can wedding bands be resized?",
+            "answer_9": "<p>Most plain metal and half eternity wedding bands can be resized. Full eternity bands are generally more difficult or sometimes impossible to resize because diamonds encircle the entire band.</p>",
+            "question_10": "Can men wear diamond wedding bands?",
+            "answer_10": "<p>Yes. Diamond wedding bands for men have become increasingly popular, offering a modern look while maintaining durability and everyday comfort.</p>"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_cb3e713_WcCBEF"
+      ],
+      "settings": {}
+    },
+    "1776330284fb91c013": {
+      "type": "_blocks",
+      "settings": {}
+    },
+    "featured_collections_1_xcBPkJ": {
+      "type": "featured-collections-1",
+      "blocks": {
+        "collection_zBpeVT": {
+          "type": "collection",
+          "settings": {
+            "collection": "engagement-ring"
+          }
+        },
+        "collection_3d7riM": {
+          "type": "collection",
+          "settings": {
+            "collection": ""
+          }
+        },
+        "collection_Rt9pWK": {
+          "type": "collection",
+          "settings": {
+            "collection": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_zBpeVT",
+        "collection_3d7riM",
+        "collection_Rt9pWK"
+      ],
+      "disabled": true,
+      "name": "Collection list",
+      "settings": {
+        "animation": "",
+        "setwidth": "container",
+        "bgsection": "#ffffff",
+        "title_top": "Sub Title Top",
+        "title": "Collection list",
+        "des": "",
+        "align-heading": "center",
+        "size_image": "auto",
+        "radius": 0,
+        "space": 15,
+        "size_text": "h4",
+        "enable_carousel": true,
+        "arrows": false,
+        "draggable": true,
+        "dots": true,
+        "infinite": true,
+        "paddingsection": "0px 0px 0px 0px",
+        "paddingmobile": "40px 0px 40px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "1775639203656545f9": {
+      "type": "_blocks",
+      "settings": {}
+    }
+  },
+  "order": [
+    "collection-banner",
+    "3718e2cb-5821-407b-acec-0f519cf8d4b4",
+    "product-grid",
+    "1781092655b3bcf77a",
+    "1779186365c125afdb",
+    "1776330284fb91c013",
+    "featured_collections_1_xcBPkJ",
+    "1775639203656545f9"
+  ]
+}

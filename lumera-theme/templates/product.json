@@ -1,0 +1,517 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product-template-1",
+      "blocks": {
+        "989bce2f-7961-4267-8e6c-40ff4bb0ed64": {
+          "type": "title",
+          "settings": {
+            "e_label": true
+          }
+        },
+        "judge_me_reviews_preview_badge_LwkmLf": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "judge_me_reviews_preview_badge_DNdty4": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "disabled": true,
+          "settings": {}
+        },
+        "c5c11045-e3b5-47e4-80d1-25e86ec844cc": {
+          "type": "price",
+          "settings": {}
+        },
+        "8288910a-1ad6-47df-b127-118bc1d2ce24": {
+          "type": "buttons",
+          "settings": {
+            "enable_local_pickup": true,
+            "enable_hurrify": true,
+            "enable_payment_button": true,
+            "waitlist": true,
+            "enable_question": true,
+            "enable_sibling": true,
+            "product_selector": "select",
+            "sw_color_product": false,
+            "type_color": "square",
+            "size_color": "normal-48"
+          }
+        },
+        "8d4704f6-d81d-4390-9ec5-af58698bef51": {
+          "type": "salepoint",
+          "settings": {
+            "icon": "globe",
+            "free_word": "Worldwide Shipping"
+          }
+        },
+        "b7034bf2-48fd-492f-a089-3169873730db": {
+          "type": "salepoint",
+          "settings": {
+            "icon": "truck",
+            "free_word": "Free and Secure Shipping"
+          }
+        },
+        "salepoint_JJd3Pe": {
+          "type": "salepoint",
+          "settings": {
+            "icon": "package",
+            "free_word": "30 Day Return or Exchange"
+          }
+        },
+        "13c388e5-8dd3-4462-9284-ec3f2c9aabc6": {
+          "type": "salepoint",
+          "settings": {
+            "icon": "shield",
+            "free_word": "100% Diamond Value Guarantee"
+          }
+        },
+        "1431e891-e819-4fa1-8416-0cb3956f0e39": {
+          "type": "description",
+          "settings": {
+            "enable_tab": true,
+            "title_tab": "Description"
+          }
+        },
+        "883720d7-3346-4495-85a0-add8b3d7a51f": {
+          "type": "trust-badge",
+          "settings": {
+            "trust-heading": "Guarantee safe checkout",
+            "width_image": 66
+          }
+        }
+      },
+      "block_order": [
+        "989bce2f-7961-4267-8e6c-40ff4bb0ed64",
+        "judge_me_reviews_preview_badge_LwkmLf",
+        "judge_me_reviews_preview_badge_DNdty4",
+        "c5c11045-e3b5-47e4-80d1-25e86ec844cc",
+        "8288910a-1ad6-47df-b127-118bc1d2ce24",
+        "8d4704f6-d81d-4390-9ec5-af58698bef51",
+        "b7034bf2-48fd-492f-a089-3169873730db",
+        "salepoint_JJd3Pe",
+        "13c388e5-8dd3-4462-9284-ec3f2c9aabc6",
+        "1431e891-e819-4fa1-8416-0cb3956f0e39",
+        "883720d7-3346-4495-85a0-add8b3d7a51f"
+      ],
+      "settings": {
+        "setwidth": "container",
+        "media_style": "media-grid",
+        "media_size": "normal",
+        "image_size": "square",
+        "enable_video_looping": true,
+        "stock_enable": true,
+        "sizeguide_enable": true,
+        "sizeguide_title": "Size guide",
+        "sizeguide_page": "",
+        "crosssell_title": "Cross-selling",
+        "upsell_accept": "Yes, let me select variants",
+        "upsell_decline": "No, thanks",
+        "upsell_time": 3,
+        "enable": true,
+        "mix_1": "#fef8f1",
+        "mix_2": "#c0c0c0",
+        "text_cl": "#ffffff",
+        "cart_bg": "#0d3404",
+        "cart_cl": "#ffffff",
+        "cart_cl_hover": "#ffffff"
+      }
+    },
+    "17839421892876c962": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_d204a7b_M3RNHr": {
+          "type": "ai_gen_block_d204a7b",
+          "disabled": true,
+          "settings": {
+            "heading": "You may also like",
+            "recommendation_type": "tags",
+            "products_to_show": 4,
+            "show_vendor": true,
+            "show_price": true,
+            "products_per_row_desktop": 4,
+            "products_per_row_tablet": 3,
+            "products_per_row_mobile": "2",
+            "grid_gap": 20,
+            "heading_alignment": "center",
+            "heading_size": 36,
+            "heading_transform": "none",
+            "heading_spacing": 30,
+            "card_padding": 15,
+            "card_border_radius": 0,
+            "product_title_size": 16,
+            "price_size": 14,
+            "section_padding_top": 50,
+            "section_padding_bottom": 50,
+            "background_color": "#ffffff",
+            "heading_color": "#1a1a1a",
+            "card_background": "#ffffff",
+            "vendor_color": "#666666",
+            "product_title_color": "#1a1a1a",
+            "link_hover_color": "#132010",
+            "price_color": "#1a1a1a",
+            "sale_price_color": "#132010"
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_458c713_MHRHQb": {
+          "type": "ai_gen_block_458c713",
+          "settings": {
+            "heading": "You may also like",
+            "products_limit": 4,
+            "login_text": "Login to view",
+            "login_button_text": "Login to view",
+            "empty_message": "No related products available.",
+            "no_metafield_message": "No related products selected.",
+            "show_premium_badge": true,
+            "premium_badge_text": "Premium",
+            "premium_overlay_opacity": 10,
+            "lock_icon_size": 18,
+            "lock_circle_color": "#777777",
+            "lock_icon_color": "#ffffff",
+            "login_text_background": "#000000",
+            "login_text_color": "#ffffff",
+            "login_message_color": "#777777",
+            "premium_badge_background": "#000000",
+            "premium_badge_text_color": "#ffffff",
+            "desktop_width_percent": 100,
+            "products_per_row_desktop": 4,
+            "products_per_row_mobile": "2",
+            "grid_gap": 20,
+            "section_padding": 40,
+            "heading_alignment": "center",
+            "heading_size": 28,
+            "heading_spacing": 30,
+            "heading_color": "#1a1a1a",
+            "show_vendor": true,
+            "show_price": true,
+            "show_sale_badge": false,
+            "sale_badge_text": "Sale",
+            "show_quick_view": true,
+            "button_text": "View product",
+            "card_padding": 16,
+            "card_border_radius": 8,
+            "product_title_size": 16,
+            "price_size": 16,
+            "background_color": "#fef8f1",
+            "card_background": "#fef8f1",
+            "product_title_color": "#1a1a1a",
+            "vendor_color": "#666666",
+            "price_color": "#1a1a1a",
+            "compare_price_color": "#999999",
+            "sale_price_color": "#132010",
+            "link_hover_color": "#132010",
+            "badge_background": "#eb7025",
+            "badge_text_color": "#ffffff",
+            "button_background": "#000000",
+            "button_text_color": "#ffffff",
+            "button_hover_background": "#0d3404",
+            "button_border_radius": 4
+          },
+          "blocks": {}
+        },
+        "judge_me_reviews_review_widget_wFpjep": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "real_data",
+            "max_width": 1200,
+            "show_shop_reviews": true,
+            "empty_state": "other_products_reviews"
+          }
+        },
+        "ai_gen_block_22123c6_kpxmED": {
+          "type": "ai_gen_block_22123c6",
+          "settings": {
+            "heading": "Recently Viewed",
+            "heading_alignment": "center",
+            "heading_transform": "capitalize",
+            "heading_size": 36,
+            "section_padding": 40,
+            "max_products": 12,
+            "products_per_row_desktop": 6,
+            "products_per_row_tablet": 3,
+            "grid_gap": 30,
+            "product_border_radius": 0,
+            "product_title_size": 16,
+            "price_size": 16,
+            "background_color": "#fef8f1",
+            "product_bg_color": "#f7f7f7",
+            "heading_color": "#1a1a1a",
+            "vendor_color": "#666666",
+            "product_title_color": "#1a1a1a",
+            "price_color": "#1a1a1a",
+            "sale_price_color": "#000000",
+            "link_hover_color": "#000000",
+            "empty_message": "No recently viewed products"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_d204a7b_M3RNHr",
+        "ai_gen_block_458c713_MHRHQb",
+        "judge_me_reviews_review_widget_wFpjep",
+        "ai_gen_block_22123c6_kpxmED"
+      ],
+      "settings": {}
+    },
+    "17839384792fc401e4": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_8d140ea_YQcHzw": {
+          "type": "ai_gen_block_8d140ea",
+          "settings": {
+            "heading": "Have Any Questions?",
+            "heading_size": 36,
+            "heading_color": "#000000",
+            "tab_general": "General",
+            "tab_shipping": "Shipping",
+            "tab_payment": "Payment",
+            "tab_returns": "Returns and Exchanges",
+            "tab_font_size": 14,
+            "tab_border_radius": 4,
+            "tab_bg_color": "#f4f4f4",
+            "tab_text_color": "#666666",
+            "tab_border_color": "#e0e0e0",
+            "tab_hover_bg_color": "#e8e8e8",
+            "tab_hover_text_color": "#132010",
+            "tab_active_bg_color": "#132010",
+            "tab_active_text_color": "#ffffff",
+            "tab_active_border_color": "#132010",
+            "general_q1": "Can You Provide Lab-Grown Diamonds?",
+            "general_a1": "<p><strong>Of course!</strong> We offer high-quality lab-grown diamonds, crafted with meticulous attention to detail and exceptional quality standards.</p>",
+            "general_q2": "Do You Offer Custom & Personalised Jewellery?",
+            "general_a2": "<p><strong>Absolutely!</strong> We offer custom and personalised jewellery. Share your design ideas, preferences, and requirements with our team, and we’ll help create a piece tailored especially for you.</p>",
+            "general_q3": "How Can I Track My Order?",
+            "general_a3": "<p>Once your order has been dispatched, tracking details will be sent to your email so you can easily track your shipment.</p>",
+            "general_q4": "Do You Offer International Shipping?",
+            "general_a4": "<p><strong>Definitely!</strong> We offer international shipping to selected destinations. Delivery times and any applicable customs duties, import taxes, or local charges may vary by destination and are the customer’s responsibility.</p>",
+            "general_q5": "What Payment Methods Do You Accept?",
+            "general_a5": "<p>We accept PayPal as a secure and convenient payment method for your purchase.</p>",
+            "general_q6": "Do You Offer Moissanite & Gemstone Jewellery?",
+            "general_a6": "<p>Yes, we offer a selection of Moissanite and Gemstone Jewellery, crafted with attention to quality and detail.</p>",
+            "general_q7": "Do You Offer Gift Wrapping?",
+            "general_a7": "<p><strong>Of course!</strong> Gift wrapping is available for selected orders. Please check availability when placing your order.</p>",
+            "general_q8": "Are Your Diamonds IGI or GIA Certified?",
+            "general_a8": "<p><strong>Absolutely!</strong> Eligible diamond jewellery can be accompanied by IGI or GIA certification, providing important details about the diamond’s characteristics, quality, and authenticity.</p>",
+            "general_q9": "",
+            "general_a9": "",
+            "general_q10": "",
+            "general_a10": "",
+            "shipping_q1": "How long does custom jewellery manufacturing take?",
+            "shipping_a1": "<p>Custom jewellery typically requires 10–12 business days for manufacturing. We may request your confirmation before dispatch.</p>",
+            "shipping_q2": "How long will my order take to arrive?",
+            "shipping_a2": "<p>Yes, we offer an express shipping option. Express delivery typically takes 5–7 business days once your order is ready for dispatch. Availability may vary depending on your location and will be shown at checkout.</p>",
+            "shipping_q3": "What can cause delivery delays?",
+            "shipping_a3": "<p>Delays caused by severe weather, courier services, or unforeseen circumstances are beyond our control.<br/><br/>If the customer changes the delivery address directly with the courier while the parcel is in transit, any resulting delay is the customer’s responsibility.</p>",
+            "shipping_q4": "Do you ship to PO Box addresses?",
+            "shipping_a4": "<p>No. We do not ship to PO Box addresses.</p>",
+            "shipping_q5": "Is delivery free?",
+            "shipping_a5": "<p>Yes. We offer free delivery to your address.<br/>However, any applicable customs duties, import taxes, or local charges are the customer’s responsibility.</p>",
+            "shipping_q6": "What happens if I request changes to my product before shipment?",
+            "shipping_a6": "<p>Any product changes requested before shipment will restart the manufacturing timeline from day one.</p>",
+            "shipping_q7": "Do you offer urgent processing?",
+            "shipping_a7": "<p>We prioritize timely delivery and may offer urgent processing where possible. However, Lumera Fine Jewellery is not responsible for delays caused by shipping partners.</p>",
+            "shipping_q8": "How will I track my order?",
+            "shipping_a8": "<p>Once your order has been dispatched, tracking details will be sent to your email so you can easily track your shipment.</p>",
+            "shipping_q9": "Who should I contact for tracking or delivery assistance?",
+            "shipping_a9": "<p>For tracking or delivery assistance, please contact:<br/>info@lumerafinejewellery.com</p>",
+            "shipping_q10": "",
+            "shipping_a10": "",
+            "payment_q1": "Is my payment information secure?",
+            "payment_a1": "<p>Absolutely! Your security is our top priority. All transactions are protected with advanced encryption technology to ensure a safe and secure payment experience.</p>",
+            "payment_q2": "Can I pay using cryptocurrency?",
+            "payment_a2": "<p>Currently, we do not support cryptocurrency payments. However, we offer several secure and convenient payment methods for your ease.</p>",
+            "payment_q3": "What should I do if my payment fails?",
+            "payment_a3": "<p>If your payment is unsuccessful, please verify your payment details and try again. If the issue continues, kindly contact your bank or our customer support team for assistance.</p>",
+            "payment_q4": "Do you store my payment information?",
+            "payment_a4": "<p>Your privacy matters to us. We do not store sensitive payment information on our servers. All payment transactions are processed through secure payment systems to protect your personal and financial details.</p>",
+            "payment_q5": "",
+            "payment_a5": "",
+            "payment_q6": "",
+            "payment_a6": "",
+            "payment_q7": "",
+            "payment_a7": "",
+            "payment_q8": "",
+            "payment_a8": "",
+            "payment_q9": "",
+            "payment_a9": "",
+            "payment_q10": "",
+            "payment_a10": "",
+            "returns_q1": "Can I cancel my order?",
+            "returns_a1": "<p>Yes. Orders can be cancelled within 24 hours.<br/>After 24 hours, the following cancellation fees apply:<br/>Moissanite Jewellery: 20%<br/>Lab-Grown Diamond Jewellery: 30%<br/>For cancellation requests, contact info@lumerafinejewellery.com.</p>",
+            "returns_q2": "What is your return policy?",
+            "returns_a2": "<p>Returns are accepted within 14 days of delivery.<br/>Items must be:<br/>Unused and unworn<br/>In original condition<br/>With original packaging<br/>With proof of purchase<br/>Restocking fees apply:<br/>Moissanite Jewellery: 20%<br/>Lab-Grown Diamond Jewellery: 30%<br/>Please contact us before returning any item.</p>",
+            "returns_q3": "Who pays for return shipping?",
+            "returns_a3": "<p>Return shipping costs are the responsibility of the customer.</p>",
+            "returns_q4": "How long does a refund take?",
+            "returns_a4": "<p>Refunds are processed within 5-10 business days.</p>",
+            "returns_q5": "Can I return custom items?",
+            "returns_a5": "<p>Custom items are non-returnable unless defective.</p>",
+            "returns_q6": "What condition should the item be in for return?",
+            "returns_a6": "<p>The item must be unused, undamaged and returned with original packaging and certificates.</p>",
+            "returns_q7": "Can I return or exchange a resized ring?",
+            "returns_a7": "<p>Resized or engraved items cannot be returned, as they are customized for you.</p>",
+            "returns_q8": "What if I receive a damaged or wrong item?",
+            "returns_a8": "<p>Contact us within 48 hours of delivery with photos and we will arrange a replacement or refund.</p>",
+            "returns_q9": "How will I receive my refund?",
+            "returns_a9": "<p>Refunds are credited to your original payment method.</p>",
+            "returns_q10": "Can I exchange for a different size or design?",
+            "returns_a10": "<p>Yes, exchanges for a different size or design are possible within 30 days, subject to availability.</p>",
+            "content_max_width": 900,
+            "section_padding": 40,
+            "background_color": "#fef8f1",
+            "question_font_size": 16,
+            "question_color": "#000000",
+            "question_hover_color": "#666666",
+            "answer_font_size": 14,
+            "answer_color": "#666666",
+            "item_border_color": "#e0e0e0"
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_75d0a0d_kidmMK": {
+          "type": "ai_gen_block_75d0a0d",
+          "disabled": true,
+          "settings": {
+            "heading": "Frequently Asked Questions",
+            "heading_size": 36,
+            "heading_color": "#1a1a1a",
+            "subheading": "<p>Find answers to common questions about our jewelry collections, shipping, and care instructions.</p>",
+            "subheading_size": 16,
+            "subheading_color": "#666666",
+            "subheading_spacing": 12,
+            "text_alignment": "center",
+            "question_1": "What materials are your jewelry pieces made from?",
+            "answer_1": "<p>Our jewelry is crafted from premium materials including 14K and 18K gold, platinum, and ethically sourced diamonds and gemstones. Each piece is carefully selected to ensure the highest quality and lasting beauty.</p>",
+            "question_2": "Do you offer international shipping?",
+            "answer_2": "<p>Yes, we ship worldwide. Shipping times and costs vary by location. All international orders are fully insured and require a signature upon delivery for your security.</p>",
+            "question_3": "What is your return policy?",
+            "answer_3": "<p>We offer a 30-day return policy on all non-custom pieces. Items must be in original condition with all packaging and certificates. Custom and engraved pieces are final sale.</p>",
+            "question_4": "How should I care for my jewelry?",
+            "answer_4": "<p>Store pieces separately in soft pouches, avoid contact with chemicals and cosmetics, and clean regularly with a soft cloth. We recommend professional cleaning annually for diamond pieces.</p>",
+            "question_5": "",
+            "answer_5": "",
+            "question_6": "",
+            "answer_6": "",
+            "question_7": "",
+            "answer_7": "",
+            "question_8": "",
+            "answer_8": "",
+            "question_9": "",
+            "answer_9": "",
+            "question_10": "",
+            "answer_10": "",
+            "allow_multiple_open": false,
+            "open_first_item": false,
+            "question_size": 18,
+            "question_color": "#1a1a1a",
+            "question_hover_color": "#000000",
+            "answer_size": 14,
+            "answer_color": "#666666",
+            "icon_color": "#1a1a1a",
+            "divider_color": "#e5e5e5",
+            "background_color": "#ffffff",
+            "section_padding_top": 60,
+            "section_padding_bottom": 60,
+            "header_spacing": 40,
+            "item_padding": 20,
+            "content_max_width": 900,
+            "desktop_width_percent": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_8d140ea_YQcHzw",
+        "ai_gen_block_75d0a0d_kidmMK"
+      ],
+      "settings": {}
+    },
+    "blocks_m3DbPD": {
+      "type": "_blocks",
+      "name": "FAQ accordion",
+      "settings": {}
+    },
+    "product-content": {
+      "type": "product-content",
+      "blocks": {
+        "6889c9ba-caef-4edd-9757-6711505cb095": {
+          "type": "description",
+          "settings": {
+            "title_tab": "Description"
+          }
+        },
+        "b69a53cf-5bc1-4b18-add3-92af436f966c": {
+          "type": "content",
+          "settings": {
+            "title_tab": "Material",
+            "answer_content": "<p><strong>14k and 18k Solid Gold</strong></p><p>We recommend 14k or 18k solid recycled gold if you're looking for your jewelry to last generations to come.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "6889c9ba-caef-4edd-9757-6711505cb095",
+        "b69a53cf-5bc1-4b18-add3-92af436f966c"
+      ],
+      "disabled": true,
+      "settings": {
+        "animation": "fade-up",
+        "setwidth": "container",
+        "tab_size": "large",
+        "enable_left": true,
+        "paddingsection": "48px 0px 20px 0px",
+        "paddingmobile": "32px 0px 32px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "ring-details-section": {
+      "type": "ring-details",
+      "settings": {}
+    },
+    "178048571463fe2137": {
+      "type": "apps",
+      "settings": {
+        "animation": "",
+        "setwidth": "container",
+        "paddingsection": "0px 0px 0px 0px",
+        "paddingmobile": "60px 0px 60px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px",
+        "bgsection": "#ffffff"
+      }
+    },
+    "178487651713bfa556": {
+      "type": "apps",
+      "settings": {
+        "animation": "",
+        "setwidth": "container",
+        "paddingsection": "0px 0px 0px 0px",
+        "paddingmobile": "60px 0px 60px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px",
+        "bgsection": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "17839421892876c962",
+    "17839384792fc401e4",
+    "blocks_m3DbPD",
+    "product-content",
+    "ring-details-section",
+    "178048571463fe2137",
+    "178487651713bfa556"
+  ]
+}

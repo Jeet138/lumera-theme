@@ -1,0 +1,938 @@
+<!doctype html>
+<html class="no-js " lang="{{ shop.locale }}">
+  <style>
+      .product__description h2,
+    .rte h2,
+    .product-single__description h2 {
+        font-size: 28px !important;
+        line-height: 1.3 !important;
+        font-weight: 600 !important;
+    }
+  </style>
+  <style>
+  #site-loader{
+    position:fixed; inset:0; z-index:2147483647;
+    background:#fef8f1;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    transition:opacity .6s ease, visibility .6s ease;
+  }
+  #site-loader.loaded{ opacity:0; visibility:hidden; }
+
+  .ld-wrap{ position:relative; width:150px; height:150px; display:flex; align-items:center; justify-content:center; }
+
+  /* rotating gold ring */
+  .ld-ring{
+    position:absolute; inset:0; border-radius:50%;
+    background:conic-gradient(from 0deg, transparent 0 55%, #c9a84c 100%);
+    -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+            mask:radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+    animation:ldSpin 1.8s linear infinite;
+  }
+  .ld-ring--2{
+    inset:12px;
+    background:conic-gradient(from 180deg, transparent 0 60%, #123f3a 100%);
+    animation:ldSpin 2.6s linear infinite reverse;
+  }
+
+  /* logo + shimmer */
+  .ld-logo{ position:relative; width:96px; height:96px; border-radius:50%; overflow:hidden; animation:ldPulse 2s ease-in-out infinite; }
+  .ld-logo img{ width:100%; height:100%; object-fit:contain; display:block; mix-blend-mode:multiply; }
+  .ld-logo::after{
+    content:""; position:absolute; top:0; left:-80%; width:50%; height:100%;
+    background:linear-gradient(100deg, transparent, rgba(255,255,255,.85), transparent);
+    transform:skewX(-20deg);
+    animation:ldShine 2s ease-in-out infinite;
+  }
+
+  /* sparkles */
+  .ld-spark{
+    position:absolute; width:12px; height:12px; background:#c9a84c;
+    clip-path:polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+    opacity:0; animation:ldTwinkle 2s ease-in-out infinite;
+  }
+  .ld-spark.s1{ top:-6px;  left:70%;  animation-delay:0s; }
+  .ld-spark.s2{ top:60%;   right:-8px; animation-delay:.5s; width:9px; height:9px; }
+  .ld-spark.s3{ bottom:-6px; left:20%; animation-delay:1s; }
+  .ld-spark.s4{ top:25%;   left:-8px; animation-delay:1.5s; width:9px; height:9px; }
+
+  /* text */
+  .ld-brand{
+    margin-top:26px; font-family:Georgia,'Times New Roman',serif;
+    font-size:24px; color:#123f3a; letter-spacing:4px;
+    animation:ldSpace 2.4s ease-in-out infinite;
+  }
+  .ld-sub{ margin-top:4px; font-size:11px; letter-spacing:5px; color:#9a7b2f; }
+
+  /* progress line */
+  .ld-line{ margin-top:22px; width:140px; height:2px; background:rgba(18,63,58,.12); overflow:hidden; border-radius:2px; }
+  .ld-line span{
+    display:block; width:45%; height:100%;
+    background:linear-gradient(90deg, transparent, #c9a84c, transparent);
+    animation:ldSlide 1.2s ease-in-out infinite;
+  }
+
+  @keyframes ldSpin{ to{ transform:rotate(360deg); } }
+  @keyframes ldPulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.06); } }
+  @keyframes ldShine{ 0%{ left:-80%; } 60%,100%{ left:140%; } }
+  @keyframes ldTwinkle{ 0%,100%{ opacity:0; transform:scale(.3) rotate(0); } 50%{ opacity:1; transform:scale(1) rotate(45deg); } }
+  @keyframes ldSpace{ 0%,100%{ letter-spacing:4px; } 50%{ letter-spacing:7px; } }
+  @keyframes ldSlide{ 0%{ transform:translateX(-100%); } 100%{ transform:translateX(260%); } }
+
+  @media (max-width:767px){
+    .ld-wrap{ width:130px; height:130px; }
+    .ld-logo{ width:84px; height:84px; }
+    .ld-brand{ font-size:20px; }
+  }
+</style>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="p:domain_verify" content="7080fbb2934f14c7ea77ef2eb765914a" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+    <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
+    <meta name="theme-color" content="{{ settings.color_header_bg }}">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="google-site-verification" content="dcCTVYQuZChxB5ujJs_7SikK6ZL4-MadMleMi3dhHu0">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="dns-prefetch" href="https://{{shop.domain }}" crossorigin>
+    <link rel="dns-prefetch" href="https://{{shop.permanent_domain }}" crossorigin>
+
+    <link rel="dns-prefetch" href="https://cdn.shopify.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.shopifycdn.com" crossorigin>
+    <link rel="preconnect" href="https//fonts.shopifycdn.com/" crossorigin>
+    <link rel="preconnect" href="https//cdn.shopify.com" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- unless settings.font_family.system? -%}
+      <link rel="preload" as="font" href="{{ settings.font_family | font_url }}" type="font/woff2" crossorigin>
+      <link rel="preload" as="font" href="{{ settings.font_family | font_url: 'woff' }}" type="font/woff" crossorigin>
+    {%- endunless -%}
+    {%- if settings.font_family2.system? == false and settings.font_family2 != settings.font_family -%}
+      <link rel="preload" as="font" href="{{ settings.font_family2 | font_url }}" type="font/woff2" crossorigin>
+      <link rel="preload" as="font" href="{{ settings.font_family2 | font_url: 'woff' }}" type="font/woff" crossorigin>
+    {%- endif -%}
+    {%- if settings.favicon != blank -%}
+      <link rel="shortcut icon" href="{{ settings.favicon | image_url: width: 32, height: 32 }}" type="image/png">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      | Lumera Fine Jewellery
+    </title>
+
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% endif %}
+
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://cdn.shopify.com/s/files/1/0790/0876/0059/files/Lumea_Fine_jewellery_-_Copy.png?v=1779184355"
+    >
+
+    <!--
+      =========================================
+      LUMERA FINE JEWELLERY - SCHEMA MARKUP
+      =========================================
+    -->
+
+    {%- comment -%}
+      ORGANIZATION + WEBSITE SCHEMA
+    {%- endcomment -%}
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "{{ shop.url }}/#organization",
+            "name": "Lumera Fine Jewellery",
+            "url": "{{ shop.url }}",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "https://cdn.shopify.com/s/files/1/0790/0876/0059/files/Lumea_Fine_jewellery_-_Copy.png?v=1779184355"
+            },
+            "sameAs": ["https://www.instagram.com/lumerafinejewellery", "https://www.facebook.com/lumerafinejewellery"]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "{{ shop.url }}/#website",
+            "url": "{{ shop.url }}",
+            "name": "Lumera Fine Jewellery",
+            "publisher": {
+              "@id": "{{ shop.url }}/#organization"
+            }
+          }
+        ]
+      }
+    </script>
+
+    {%- comment -%}
+      PRODUCT SCHEMA
+    {%- endcomment -%}
+
+    {% if request.page_type == 'product' and product != blank %}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Product",
+          "@id": "{{ shop.url }}{{ product.url }}#product",
+          "name": {{ product.title | json }},
+          "url": "{{ shop.url }}{{ product.url }}",
+          "description": {{ product.description | strip_html | strip_newlines | escape | json }},
+          "sku": {{ product.selected_or_first_available_variant.sku | default: product.id | json }},
+          "brand": {
+            "@type": "Brand",
+            "name": "Lumera Fine Jewellery"
+          },
+          {% if product.featured_image %}
+          "image": [
+            "{{ product.featured_image | image_url: width: 1600 | prepend: 'https:' }}"
+          ],
+          {% endif %}
+          "offers": {
+            "@type": "Offer",
+            "url": "{{ shop.url }}{{ product.url }}",
+            "priceCurrency": "{{ cart.currency.iso_code }}",
+            "price": "{{ product.selected_or_first_available_variant.price | divided_by: 100.0 }}",
+            "availability": "https://schema.org/{% if product.selected_or_first_available_variant.available %}InStock{% else %}OutOfStock{% endif %}",
+            "itemCondition": "https://schema.org/NewCondition",
+            "seller": {
+              "@type": "Organization",
+              "name": "Lumera Fine Jewellery",
+              "url": "{{ shop.url }}"
+            }
+          }
+        }
+      </script>
+    {% endif %}
+
+    {%- comment -%}
+      COLLECTION PAGE SCHEMA
+    {%- endcomment -%}
+
+    {% if request.page_type == 'collection' and collection != blank %}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "@id": "{{ shop.url }}{{ collection.url }}#collection",
+          "name": {{ collection.title | json }},
+          "url": "{{ shop.url }}{{ collection.url }}",
+          "description": {{ collection.description | strip_html | strip_newlines | escape | json }},
+          "isPartOf": {
+            "@id": "{{ shop.url }}/#website"
+          }
+        }
+      </script>
+    {% endif %}
+
+    {%- comment -%}
+      BLOG ARTICLE SCHEMA
+    {%- endcomment -%}
+
+    {% if request.page_type == 'article' and article != blank %}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "@id": "{{ shop.url }}{{ article.url }}#article",
+          "headline": {{ article.title | json }},
+          "url": "{{ shop.url }}{{ article.url }}",
+          "description": {{ article.excerpt_or_content | strip_html | strip_newlines | truncate: 300 | escape | json }},
+          {% if article.image %}
+          "image": [
+            "{{ article.image | image_url: width: 1600 | prepend: 'https:' }}"
+          ],
+          {% endif %}
+          "datePublished": "{{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' }}",
+          "dateModified": "{{ article.updated_at | date: '%Y-%m-%dT%H:%M:%S%z' }}",
+          "author": {
+            "@type": "Person",
+            "name": {{ article.author | json }}
+          },
+          "publisher": {
+            "@id": "{{ shop.url }}/#organization"
+          },
+          "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "{{ shop.url }}{{ article.url }}"
+          }
+        }
+      </script>
+    {% endif %}
+
+    {%- comment -%}
+      GENERAL WEBPAGE SCHEMA
+    {%- endcomment -%}
+
+    {% if request.page_type == 'page' %}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": "{{ canonical_url }}#webpage",
+          "url": "{{ canonical_url }}",
+          "name": {{ page_title | json }},
+          {% if page_description %}
+          "description": {{ page_description | escape | json }},
+          {% endif %}
+          "isPartOf": {
+            "@id": "{{ shop.url }}/#website"
+          }
+        }
+      </script>
+    {% endif %}
+
+    {%- comment -%}
+      BREADCRUMB SCHEMA
+    {%- endcomment -%}
+
+    {% unless request.page_type == 'index' %}
+      <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "@id": "{{ canonical_url }}#breadcrumb",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "{{ shop.url }}"
+            }
+            {% if request.page_type == 'product' and product != blank %}
+            ,
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": {{ product.title | json }},
+              "item": "{{ shop.url }}{{ product.url }}"
+            }
+            {% elsif request.page_type == 'collection' and collection != blank %}
+            ,
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": {{ collection.title | json }},
+              "item": "{{ shop.url }}{{ collection.url }}"
+            }
+            {% elsif request.page_type == 'article' and article != blank %}
+            ,
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": {{ article.title | json }},
+              "item": "{{ shop.url }}{{ article.url }}"
+            }
+            {% elsif request.page_type == 'page' %}
+            ,
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": {{ page_title | json }},
+              "item": "{{ canonical_url }}"
+            }
+            {% endif %}
+          ]
+        }
+      </script>
+    {% endunless %}
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {% else %}
+      <meta name="description" content="{{ settings.meta_description | escape }}">
+    {%- endif -%}
+
+    {%- render 'social-meta-tags' -%}
+    {%- render 'header-css' -%}
+    <link rel="preload" href="{{ 'lazysizes.min.js' | asset_url }}" as="script">
+    <link rel="preload" href="{{ 'vendor.js' | asset_url }}" as="script">
+    <link rel="preload" href="{{ 'swiper-bundle.min.js' | asset_url }}" as="script">
+    <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+    {{ content_for_header }}
+    <style>
+      html, body { overflow-x: clip; }
+      background-color: #fef8f1 !important;
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8QK6LMGVD5"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', 'G-8QK6LMGVD5');
+    </script>
+    <style>
+            @media (max-width: 991px) {
+        .slide_img_right {
+          display: none !important;
+        }
+
+        .img_mobile {
+          display: block !important;
+        }
+      }
+
+      @media (min-width: 992px) {
+        .img_mobile {
+          display: none !important;
+        }
+
+        .slide_img_right {
+          display: block !important;
+        }
+      }
+    </style>
+    <script>
+      window.complimentaryGiftSettings = {
+        enabled: {{ settings.enable_complimentary_gift | json }},
+
+        variantId: {% if settings.complimentary_gift_product != blank %}
+          {{ settings.complimentary_gift_product.selected_or_first_available_variant.id }}
+        {% else %}
+          null
+        {% endif %},
+
+        threshold: {{ settings.complimentary_gift_amount | times: 100 }},
+
+        title: {% if settings.complimentary_gift_product != blank %}
+          {{ settings.complimentary_gift_product.title | json }}
+        {% else %}
+          ""
+        {% endif %},
+
+        image: {% if settings.complimentary_gift_product != blank and settings.complimentary_gift_product.featured_image != blank %}
+          {{ settings.complimentary_gift_product.featured_image | image_url: width: 300 | json }}
+        {% else %}
+          ""
+        {% endif %},
+
+        price: {% if settings.complimentary_gift_product != blank %}
+          {{ settings.complimentary_gift_product.price | json }}
+        {% else %}
+          0
+        {% endif %},
+
+        progressText: {{ settings.gift_progress_text | json }},
+        successText: {{ settings.gift_success_text | json }}
+      };
+    </script>
+    <style>
+      /* =========================================
+         COMPLIMENTARY GIFT
+      ========================================= */
+
+      .complimentary-gift-mini {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #e5e5e5;
+      }
+
+      .complimentary-gift-mini__progress {
+        width: 100%;
+        height: 4px;
+        background: #ddd;
+        overflow: hidden;
+        border-radius: 10px;
+        margin-bottom: 14px;
+      }
+
+      .complimentary-gift-mini__progress-fill {
+        width: 0;
+        height: 100%;
+        background: #003b70;
+        transition: width .3s ease;
+      }
+
+      .complimentary-gift-mini__text {
+        text-align: center;
+        font-size: 15px;
+        line-height: 1.5;
+        margin-bottom: 18px;
+        color: #003b70;
+      }
+
+      .complimentary-gift-mini__product {
+        display: none;
+        align-items: center;
+        gap: 12px;
+        padding-top: 2px;
+      }
+
+      .complimentary-gift-mini__image {
+        width: 105px;
+        min-width: 105px;
+      }
+
+      .complimentary-gift-mini__image img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+        display: block;
+      }
+
+      .complimentary-gift-mini__details {
+        flex: 1;
+      }
+
+      .complimentary-gift-mini__title {
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.35;
+        margin-bottom: 8px;
+      }
+
+      .complimentary-gift-mini__price {
+        margin-bottom: 12px;
+        font-size: 14px;
+      }
+
+      .complimentary-gift-mini__free {
+        font-weight: 600;
+        margin-right: 7px;
+      }
+
+      .complimentary-gift-mini__button {
+        background: #003b70;
+        color: #fff;
+        border: 0;
+        padding: 10px 18px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .complimentary-gift-mini__button:hover {
+        opacity: .9;
+      }
+
+      .complimentary-gift-mini__button:disabled {
+        opacity: .6;
+        cursor: not-allowed;
+      }
+
+      @media (max-width: 767px) {
+
+        .complimentary-gift-mini__product {
+          gap: 10px;
+        }
+
+        .complimentary-gift-mini__image {
+          width: 90px;
+          min-width: 90px;
+        }
+
+        .complimentary-gift-mini__image img {
+          height: 90px;
+        }
+
+        .complimentary-gift-mini__title {
+          font-size: 13px;
+        }
+
+        .complimentary-gift-mini__button {
+          padding: 9px 14px;
+        }
+
+      }
+    </style>
+    {{ content_for_header }}
+  </head>
+
+  <body class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }} body-theme {% if settings.productpage == 'product-2' or settings.productpage == 'product-6' or settings.productpage == 'product-7' %} product-hide-breadcrumb {% endif %}">
+    <div id="site-loader" aria-hidden="true">
+  <div class="ld-wrap">
+    <span class="ld-ring"></span>
+    <span class="ld-ring ld-ring--2"></span>
+    <div class="ld-logo">
+      <img src="{{ 'diamond-logo.jpeg' | asset_url }}" alt="Lumera Fine Jewellery" width="96" height="96">
+    </div>
+    <i class="ld-spark s1"></i>
+    <i class="ld-spark s2"></i>
+    <i class="ld-spark s3"></i>
+    <i class="ld-spark s4"></i>
+  </div>
+  <div class="ld-brand">LUMERA</div>
+  <div class="ld-sub">FINE JEWELLERY</div>
+  <div class="ld-line"><span></span></div>
+</div>
+    {% assign lazy = false %}
+    <img
+      {% if lazy %}
+        loading="lazy"
+      {% endif %}
+      width="99998"
+      height="99999"
+      alt="index"
+      style="pointer-events: none; position: absolute; top: 0; left: 0; width: 99vw; height: 99vh; max-width: 99vw; max-height: 99vh;"
+      src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSI5OTk5OXB4IiBoZWlnaHQ9Ijk5OTk5cHgiIHZpZXdCb3g9IjAgMCA5OTk5OSA5OTk5OSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBzdHJva2U9Im5vbmUiIGZpbGw9Im5vbmUiIGZpbGwtb3BhY2l0eT0iMCI+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9Ijk5OTk5IiBoZWlnaHQ9Ijk5OTk5Ij48L3JlY3Q+IDwvZz4gPC9zdmc+"
+    >
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    {%- render 'loading' -%}
+    {%- sections 'header-group' -%}
+    <div class="page-container page-element is-moved-by-drawer">
+      {%- render 'breadcrumb' -%}
+      <main class="main-content" id="MainContent" role="main">
+        {%- if settings.enable_animationscroll -%}
+          <div id="js-scroll">
+        {% endif %}
+        {%- if settings.enable_animationscroll -%}
+          <div data-scroll-section>
+        {% endif %}
+        {%- render 'slideshow' -%}
+        {%- if settings.enable_animationscroll -%}
+          </div>
+        {% endif %}
+        {{ content_for_layout }}
+        {%- if settings.enable_animationscroll -%}
+          </div>
+        {% endif %}
+      </main>
+      {%- sections 'footer-group' -%}
+      {%- liquid
+        section 'pnewsletter'
+        section 'product-suggest'
+        section 'cookie-policy'
+        section 'custom-color'
+      -%}
+    </div>
+    {%- liquid
+      render 'back-to-top'
+      render 'whatsapp'
+      render 'menu-mobile'
+      render 'bottom-contents'
+      render 'quickview'
+      render 'popup-compare'
+      render 'header-js'
+    -%}
+
+    <script>
+      (function () {
+        var loader = document.getElementById('site-loader');
+        if (!loader) return;
+
+        // sirf pehli visit par dikhao
+        try {
+          if (sessionStorage.getItem('loaderShown')) {
+            loader.remove();
+            return;
+          }
+          sessionStorage.setItem('loaderShown', '1');
+        } catch (e) {}
+
+        function hideLoader() {
+          loader.classList.add('loaded');
+          setTimeout(function () {
+            loader.remove();
+          }, 600);
+        }
+
+        if (document.readyState === 'complete') hideLoader();
+        else window.addEventListener('load', hideLoader);
+
+        setTimeout(hideLoader, 3000); // safety
+      })();
+    </script>
+  </body>
+
+  <style>
+    /* =========================================================
+       PRODUCT GRID
+       DESKTOP
+       FILTER OPEN  = 3 COLUMNS
+       FILTER CLOSED = 4 COLUMNS
+       ========================================================= */
+
+    @media screen and (min-width: 992px) {
+
+      #ProductGridContainer,
+      #ProductGridContainer .product-grid,
+      #ProductGridContainer .product-grid > li,
+      #ProductGridContainer .product-grid > .grid__item {
+        transition: none !important;
+        animation: none !important;
+      }
+
+      /* FILTER OPEN = 3 */
+      #ProductGridContainer.filter-products-3 .product-grid > li,
+      #ProductGridContainer.filter-products-3 .product-grid > .grid__item {
+        width: 33.333333% !important;
+        max-width: 33.333333% !important;
+        flex: 0 0 33.333333% !important;
+      }
+
+      /* FILTER CLOSED = 4 */
+      #ProductGridContainer.filter-products-4 .product-grid > li,
+      #ProductGridContainer.filter-products-4 .product-grid > .grid__item {
+        width: 25% !important;
+        max-width: 25% !important;
+        flex: 0 0 25% !important;
+      }
+
+      #ProductGridContainer .product-grid > li img,
+      #ProductGridContainer .product-grid > .grid__item img {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 1 / 1 !important;
+        object-fit: cover !important;
+        display: block !important;
+        max-width: 100% !important;
+      }
+    }
+
+    @media screen and (max-width: 991px) {
+      #ProductGridContainer .product-grid > li,
+      #ProductGridContainer .product-grid > .grid__item {
+        width: 50% !important;
+        max-width: 50% !important;
+        flex: 0 0 50% !important;
+        box-sizing: border-box !important;
+      }
+    }
+
+    /* =========================================================
+       FILTER SIDEBAR TOGGLE BAR
+       Lives OUTSIDE the sidebar/grid flex row entirely, so it can
+       never overlap or fight for width with either of them.
+       ========================================================= */
+
+    @media screen and (min-width: 992px) {
+      #filter-toggle-bar {
+        display: flex !important;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        box-sizing: border-box;
+        background: #fef8f1;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        padding: 8px 16px;
+        margin: 0 0 18px 0;
+        font-size: 14px;
+        font-weight: 600;
+        letter-spacing: .5px;
+        color: #062f57;
+        cursor: pointer;
+        position: static !important;
+        z-index: 1;
+      }
+
+      #filter-toggle-bar #filter-toggle-icon {
+        font-size: 16px;
+        line-height: 1;
+      }
+
+      /* When the sidebar is closed it is fully removed from the
+         row via display:none, so the grid can safely take 100%
+         width with zero risk of overlap/overflow. */
+      #main-collection-filters.is-closed {
+        display: none !important;
+      }
+    }
+
+    @media screen and (max-width: 991px) {
+      #filter-toggle-bar {
+        display: none !important;
+      }
+    }
+    /* =========================================================
+       FORCE CONSISTENT SQUARE PRODUCT IMAGES
+       (theme's own component-card.css uses a fixed pixel height
+       on the media wrapper, so the image looks portrait on
+       narrower screens and landscape on wider screens. This
+       forces a true 1:1 ratio at every breakpoint instead.)
+       ========================================================= */
+
+    #ProductGridContainer .product-grid > li .media,
+    #ProductGridContainer .product-grid > li .card__media,
+    #ProductGridContainer .product-grid > li .card__inner .media,
+    #ProductGridContainer .product-grid > .grid__item .media,
+    #ProductGridContainer .product-grid > .grid__item .card__media,
+    #ProductGridContainer .product-grid > .grid__item .card__inner .media {
+      position: relative !important;
+      height: 0 !important;
+      padding-top: 100% !important;
+      overflow: hidden !important;
+    }
+
+    #ProductGridContainer .product-grid > li .media img,
+    #ProductGridContainer .product-grid > li .card__media img,
+    #ProductGridContainer .product-grid > .grid__item .media img,
+    #ProductGridContainer .product-grid > .grid__item .card__media img {
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      right: 0 !important;
+      bottom: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
+      max-width: 100% !important;
+      max-height: none !important;
+      object-fit: cover !important;
+      display: block !important;
+    }
+  </style>
+
+  <script>
+    (function () {
+      'use strict';
+
+      function initFilterToggle() {
+        var aside = document.getElementById('main-collection-filters');
+        var productGrid = document.getElementById('ProductGridContainer');
+
+        if (!aside || !productGrid) {
+          return;
+        }
+
+        if (document.getElementById('filter-toggle-bar')) {
+          return;
+        }
+
+        var bar = document.createElement('div');
+        bar.id = 'filter-toggle-bar';
+        bar.setAttribute('role', 'button');
+        bar.setAttribute('aria-label', 'Toggle filter');
+        bar.innerHTML = '<span id="filter-toggle-icon">&#171;</span><span>Filter By</span>';
+
+        /* Insert the bar as a full-width block right before the
+           row that contains the sidebar + product grid, so it
+           never becomes a flex child of that row. */
+        var row = aside.closest('.facets-vertical') || aside.parentNode;
+        row.parentNode.insertBefore(bar, row);
+
+        var facetsContent = aside.querySelector('.facets-container');
+
+        function isMobile() {
+          return window.innerWidth <= 991;
+        }
+
+        function getProductItems() {
+          var selectors = [
+            '#ProductGridContainer .product-grid > li',
+            '#ProductGridContainer .product-grid > .grid__item',
+            '#ProductGridContainer .product-grid .grid__item',
+            '#ProductGridContainer .collection-product-card',
+          ];
+
+          for (var i = 0; i < selectors.length; i++) {
+            var items = productGrid.querySelectorAll(selectors[i]);
+            if (items.length) {
+              return Array.prototype.slice.call(items);
+            }
+          }
+          return [];
+        }
+
+        function setProductColumns(columns) {
+          if (!getProductItems().length) {
+            return;
+          }
+
+          if (isMobile()) {
+            columns = 2;
+          }
+
+          productGrid.classList.remove('filter-products-2', 'filter-products-3', 'filter-products-4');
+
+          if (columns === 2) {
+            productGrid.classList.add('filter-products-2');
+          } else if (columns === 3) {
+            productGrid.classList.add('filter-products-3');
+          } else {
+            productGrid.classList.add('filter-products-4');
+          }
+        }
+
+        var isOpen = false;
+
+        function setGrid(open) {
+          if (isMobile()) {
+            aside.classList.remove('is-closed');
+            productGrid.classList.remove('col-md-9', 'col-md-12', 'pl-lg-5');
+            productGrid.classList.add('col-12');
+            if (facetsContent) {
+              facetsContent.style.removeProperty('display');
+            }
+            setProductColumns(2);
+            return;
+          }
+
+          if (open) {
+            aside.classList.remove('is-closed');
+            productGrid.classList.remove('col-md-12');
+            productGrid.classList.add('col-md-9', 'pl-lg-5');
+
+            if (facetsContent) {
+              facetsContent.style.removeProperty('display');
+            }
+
+            document.getElementById('filter-toggle-icon').innerHTML = '&#171;';
+            setProductColumns(3);
+          } else {
+            aside.classList.add('is-closed');
+            productGrid.classList.remove('col-md-9', 'pl-lg-5');
+            productGrid.classList.add('col-md-12');
+
+            document.getElementById('filter-toggle-icon').innerHTML = '&#187;';
+            setProductColumns(4);
+          }
+        }
+
+        bar.addEventListener('click', function () {
+          if (isMobile()) {
+            return;
+          }
+          isOpen = !isOpen;
+          setGrid(isOpen);
+        });
+
+        setGrid(isOpen);
+
+        var resizeTimer;
+        window.addEventListener('resize', function () {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(function () {
+            setGrid(isOpen);
+          }, 150);
+        });
+
+        var observer = new MutationObserver(function () {
+          clearTimeout(window.__productGridResizeTimer);
+          window.__productGridResizeTimer = setTimeout(function () {
+            setProductColumns(isMobile() ? 2 : isOpen ? 3 : 4);
+          }, 150);
+        });
+
+        observer.observe(productGrid, {
+          childList: true,
+          subtree: true,
+        });
+      }
+
+      function boot() {
+        initFilterToggle();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', boot);
+      } else {
+        boot();
+      }
+
+      document.addEventListener('shopify:section:load', function () {
+        setTimeout(function () {
+          initFilterToggle();
+        }, 100);
+      });
+    })();
+  </script>
+</html>

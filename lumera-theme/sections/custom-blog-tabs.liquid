@@ -1,0 +1,180 @@
+<style>
+.blog-page-header{
+  text-align:center;
+  margin-bottom:50px;
+}
+
+.blog-page-header h1{
+  font-size:60px;
+  font-family:serif;
+  font-weight:400;
+  margin-bottom:40px;
+}
+
+.blog-tabs-wrapper{
+  max-width:1400px;
+  margin:auto;
+  padding:60px 20px;
+}
+
+/* STICKY TABS */
+.blog-tabs{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+  flex-wrap:wrap;
+  margin-bottom:50px;
+
+  position:sticky;
+  top:0;
+  z-index:99;
+
+  background:#fff;
+  padding:20px 0;
+}
+
+.blog-tab-btn{
+  padding:12px 24px;
+  border:none;
+  background:#f5f0ea;
+  cursor:pointer;
+  font-size:16px;
+  transition:.3s;
+}
+
+.blog-tab-btn.active{
+  background:#d8c3a5;
+}
+
+.blog-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:30px;
+}
+
+.blog-card img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+}
+
+.blog-title{
+  font-size:28px;
+  margin:15px 0;
+  font-family:serif;
+  line-height:1.3;
+}
+
+.blog-date{
+  color:#777;
+}
+
+@media(max-width:768px){
+
+  .blog-page-header h1{
+    font-size:36px;
+  }
+
+  .blog-grid{
+    grid-template-columns:1fr;
+  }
+
+}
+</style>
+
+
+<div class="blog-tabs-wrapper">
+
+  <!-- HEADING -->
+  <div class="blog-page-header">
+    <h1>The Carat Diamonds Blog</h1>
+  </div>
+
+
+  <!-- BLOG TABS -->
+  <div class="blog-tabs">
+
+    <button class="blog-tab-btn {% if blog.handle == 'lab-grown-diamonds' %}active{% endif %}"
+      data-blog="lab-grown-diamonds">
+      Lab Grown Diamonds
+    </button>
+
+    <button class="blog-tab-btn {% if blog.handle == 'engagement-rings' %}active{% endif %}"
+      data-blog="engagement-rings">
+      Engagement Rings
+    </button>
+
+    <button class="blog-tab-btn {% if blog.handle == 'wedding-rings' %}active{% endif %}"
+      data-blog="wedding-rings">
+      Wedding Rings
+    </button>
+
+    <button class="blog-tab-btn {% if blog.handle == 'fine-jewelry' %}active{% endif %}"
+      data-blog="fine-jewelry">
+      Fine Jewelry
+    </button>
+
+    <button class="blog-tab-btn {% if blog.handle == 'education' %}active{% endif %}"
+      data-blog="education">
+      Education
+    </button>
+
+  </div>
+
+
+  <!-- BLOG POSTS -->
+  <div class="blog-grid">
+
+    {% for article in blog.articles limit: 6 %}
+
+      <div class="blog-card">
+
+        <a href="{{ article.url }}">
+          <img src="{{ article.image | image_url: width: 800 }}" alt="{{ article.title }}">
+        </a>
+
+        <div class="blog-title">
+          {{ article.title }}
+        </div>
+
+        <div class="blog-date">
+          {{ article.published_at | date: "%b %d, %Y" }}
+        </div>
+
+      </div>
+
+    {% endfor %}
+
+  </div>
+
+</div>
+
+
+<script>
+const buttons = document.querySelectorAll('.blog-tab-btn');
+
+buttons.forEach(button => {
+
+  button.addEventListener('click', ()=>{
+
+    const handle = button.dataset.blog;
+
+    window.location.href = `/blogs/${handle}`;
+
+  });
+
+});
+</script>
+
+
+{% schema %}
+{
+  "name":"Custom Blog Tabs",
+  "settings":[],
+  "presets":[
+    {
+      "name":"Custom Blog Tabs"
+    }
+  ]
+}
+{% endschema %}

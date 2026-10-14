@@ -1,0 +1,633 @@
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-recently-viewed-{{ ai_gen_id }} {
+    width: 100%;
+    padding: {{ block.settings.section_padding }}px 0;
+    background-color: {{ block.settings.background_color }};
+    display: block;
+  }
+
+  .ai-recently-viewed-container-{{ ai_gen_id }} {
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 15px;
+  }
+
+  .ai-recently-viewed-header-{{ ai_gen_id }} {
+    text-align: {{ block.settings.heading_alignment }};
+    margin-bottom: 30px;
+  }
+
+  .ai-recently-viewed-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.heading_color }};
+    margin: 0;
+    font-weight: 300;
+    text-transform: {{ block.settings.heading_transform }};
+  }
+
+  .ai-recently-viewed-grid-{{ ai_gen_id }} {
+  display: flex;
+  gap: {{ block.settings.grid_gap }}px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex-wrap: nowrap;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 10px;
+}
+
+.ai-recently-viewed-grid-{{ ai_gen_id }}::-webkit-scrollbar {
+  height: 6px;
+}
+
+.ai-recently-viewed-grid-{{ ai_gen_id }}::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 10px;
+}
+
+.ai-recently-viewed-product-{{ ai_gen_id }} {
+  flex: 0 0 calc((100% - ({{ block.settings.grid_gap }}px * 5)) / 6);
+  max-width: calc((100% - ({{ block.settings.grid_gap }}px * 5)) / 6);
+}
+
+  .ai-recently-viewed-product-{{ ai_gen_id }} {
+    position: relative;
+    background-color: #fef8f1;;
+    border-radius: {{ block.settings.product_border_radius }}px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-recently-viewed-product-{{ ai_gen_id }}:hover {
+    transform: translateY(-5px);
+  }
+
+  .ai-recently-viewed-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+    overflow: hidden;
+    background-color: #f7f7f7;
+  }
+
+  .ai-recently-viewed-image-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-recently-viewed-info-{{ ai_gen_id }} {
+    padding: 15px;
+  }
+
+  .ai-recently-viewed-vendor-{{ ai_gen_id }} {
+    font-size: 12px;
+    color: {{ block.settings.vendor_color }};
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    letter-spacing: 0.5px;
+  }
+
+  .ai-recently-viewed-product-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.product_title_size }}px;
+    color: {{ block.settings.product_title_color }};
+    margin: 0 0 10px;
+    font-weight: 400;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .ai-recently-viewed-product-title-{{ ai_gen_id }} a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .ai-recently-viewed-product-title-{{ ai_gen_id }} a:hover {
+    color: {{ block.settings.link_hover_color }};
+  }
+
+  .ai-recently-viewed-price-{{ ai_gen_id }} {
+    font-size: {{ block.settings.price_size }}px;
+    color: {{ block.settings.price_color }};
+    font-weight: 500;
+  }
+
+  .ai-recently-viewed-price-{{ ai_gen_id }} .compare-at {
+    text-decoration: line-through;
+    color: #999;
+    margin-right: 8px;
+  }
+
+  .ai-recently-viewed-price-{{ ai_gen_id }} .sale-price {
+    color: {{ block.settings.sale_price_color }};
+  }
+
+  .ai-recently-viewed-empty-{{ ai_gen_id }} {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+    font-size: 16px;
+  }
+
+@media screen and (max-width: 989px) {
+  .ai-recently-viewed-product-{{ ai_gen_id }} {
+    flex: 0 0 calc((100% - ({{ block.settings.grid_gap }}px * 2)) / 3);
+    max-width: calc((100% - ({{ block.settings.grid_gap }}px * 2)) / 3);
+  }
+}
+
+@media screen and (max-width: 749px) {
+  .ai-recently-viewed-product-{{ ai_gen_id }} {
+    flex: 0 0 48%;
+    max-width: 48%;
+  }
+
+  .ai-recently-viewed-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size | times: 0.7 }}px;
+  }
+}
+{% endstyle %}
+
+<recently-viewed-products-{{ ai_gen_id }}
+  class="ai-recently-viewed-{{ ai_gen_id }}"
+  data-max-products="{{ block.settings.max_products }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-recently-viewed-container-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank %}
+      <div class="ai-recently-viewed-header-{{ ai_gen_id }}">
+        <h2 class="ai-recently-viewed-title-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+      </div>
+    {% endif %}
+
+   <div class="ai-rv-wrapper-{{ ai_gen_id }}">
+  
+  <button class="ai-rv-arrow-{{ ai_gen_id }} ai-rv-prev-{{ ai_gen_id }}">
+    &#10094;
+  </button>
+
+  <div class="ai-recently-viewed-grid-{{ ai_gen_id }}" data-products-container></div>
+
+  <button class="ai-rv-arrow-{{ ai_gen_id }} ai-rv-next-{{ ai_gen_id }}">
+    &#10095;
+  </button>
+
+</div>
+
+    <div class="ai-recently-viewed-empty-{{ ai_gen_id }}" data-empty-state style="display: none;">
+      {{ block.settings.empty_message }}
+    </div>
+  </div>
+</recently-viewed-products-{{ ai_gen_id }}>
+<style>
+.ai-rv-wrapper-{{ ai_gen_id }}{
+  position:relative;
+}
+
+.ai-recently-viewed-grid-{{ ai_gen_id }}{
+  display:flex;
+  flex-wrap:nowrap;
+  overflow-x:auto;
+  scroll-behavior:smooth;
+  gap:20px;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+}
+
+.ai-recently-viewed-grid-{{ ai_gen_id }}::-webkit-scrollbar{
+  display:none;
+}
+
+.ai-recently-viewed-product-{{ ai_gen_id }}{
+  flex:0 0 calc((100% - 100px)/6);
+  max-width:calc((100% - 100px)/6);
+}
+
+.ai-rv-arrow-{{ ai_gen_id }}{
+  position:absolute;
+  top:40%;
+  transform:translateY(-50%);
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  border:none;
+  background:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);
+  cursor:pointer;
+  z-index:5;
+  font-size:22px;
+}
+
+.ai-rv-prev-{{ ai_gen_id }}{
+  left:-20px;
+}
+
+.ai-rv-next-{{ ai_gen_id }}{
+  right:-20px;
+}
+
+.ai-rv-arrow-{{ ai_gen_id }}:hover{
+  background:#000;
+  color:#fff;
+}
+
+@media(max-width:768px){
+
+.ai-recently-viewed-product-{{ ai_gen_id }}{
+  flex:0 0 48%;
+  max-width:48%;
+}
+
+.ai-rv-arrow-{{ ai_gen_id }}{
+  display:none;
+}
+
+}
+</style>
+<script>
+  (function() {
+    class RecentlyViewedProducts{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.storageKey = 'recentlyViewedProducts';
+        this.maxProducts = parseInt(this.dataset.maxProducts) || 8;
+        this.productsContainer = this.querySelector('[data-products-container]');
+        this.emptyState = this.querySelector('[data-empty-state]');
+      }
+
+      connectedCallback() {
+        this.saveCurrentProduct();
+        this.loadRecentlyViewed();
+      }
+
+      saveCurrentProduct() {
+        if (window.location.pathname.includes('/products/')) {
+          const productHandle = window.location.pathname.split('/products/')[1].split('?')[0];
+          
+          if (productHandle) {
+            let recentProducts = this.getRecentProducts();
+            recentProducts = recentProducts.filter(handle => handle !== productHandle);
+            recentProducts.unshift(productHandle);
+            recentProducts = recentProducts.slice(0, this.maxProducts);
+            
+            try {
+              localStorage.setItem(this.storageKey, JSON.stringify(recentProducts));
+            } catch (e) {
+              console.error('Error saving to localStorage:', e);
+            }
+          }
+        }
+      }
+
+      getRecentProducts() {
+        try {
+          const stored = localStorage.getItem(this.storageKey);
+          return stored ? JSON.parse(stored) : [];
+        } catch (e) {
+          console.error('Error reading from localStorage:', e);
+          return [];
+        }
+      }
+
+      async loadRecentlyViewed() {
+        let recentProducts = this.getRecentProducts();
+        
+        if (window.location.pathname.includes('/products/')) {
+          const currentHandle = window.location.pathname.split('/products/')[1].split('?')[0];
+          recentProducts = recentProducts.filter(handle => handle !== currentHandle);
+        }
+
+        if (recentProducts.length === 0) {
+          this.showEmptyState();
+          return;
+        }
+
+        try {
+          const productPromises = recentProducts.map(handle => 
+            fetch(`/products/${handle}.js`)
+              .then(res => res.ok ? res.json() : null)
+              .catch(() => null)
+          );
+
+          const products = await Promise.all(productPromises);
+          const validProducts = products.filter(p => p !== null);
+
+          if (validProducts.length === 0) {
+            this.showEmptyState();
+            return;
+          }
+
+          this.renderProducts(validProducts);
+        } catch (error) {
+          console.error('Error loading recently viewed products:', error);
+          this.showEmptyState();
+        }
+      }
+
+      renderProducts(products) {
+        this.productsContainer.innerHTML = products.map(product => {
+          const imageUrl = product.featured_image || '';
+          const compareAtPrice = product.compare_at_price_max > product.price ? product.compare_at_price_max : null;
+          
+          return `
+            <div class="ai-recently-viewed-product-{{ ai_gen_id }}">
+              <a href="/products/${product.handle}">
+                <div class="ai-recently-viewed-image-wrapper-{{ ai_gen_id }}">
+                  ${imageUrl ? `<img 
+                    src="${imageUrl}" 
+                    alt="${this.escapeHtml(product.title)}"
+                    class="ai-recently-viewed-image-{{ ai_gen_id }}"
+                    loading="lazy"
+                  >` : ''}
+                </div>
+              </a>
+              <div class="ai-recently-viewed-info-{{ ai_gen_id }}">
+                ${product.vendor ? `<div class="ai-recently-viewed-vendor-{{ ai_gen_id }}">${this.escapeHtml(product.vendor)}</div>` : ''}
+                <h3 class="ai-recently-viewed-product-title-{{ ai_gen_id }}">
+                  <a href="/products/${product.handle}">${this.escapeHtml(product.title)}</a>
+                </h3>
+                <div class="ai-recently-viewed-price-{{ ai_gen_id }}">
+                  ${compareAtPrice ? `<span class="compare-at">${this.formatMoney(compareAtPrice)}</span>` : ''}
+                  <span class="${compareAtPrice ? 'sale-price' : ''}">${this.formatMoney(product.price)}</span>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        this.emptyState.style.display = 'none';
+      }
+
+      showEmptyState() {
+        this.productsContainer.innerHTML = '';
+        this.emptyState.style.display = 'block';
+      }
+
+      escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      formatMoney(cents) {
+        const amount = (cents / 100).toFixed(2);
+        return `$${amount}`;
+      }
+    }
+
+    customElements.define('recently-viewed-products-{{ ai_gen_id }}', RecentlyViewedProducts{{ ai_gen_id }});
+  })();
+  document.addEventListener("DOMContentLoaded", function () {
+
+  const slider = document.querySelector(".ai-recently-viewed-grid-{{ ai_gen_id }}");
+
+  if (!slider) return;
+
+  const prev = document.querySelector(".ai-rv-prev-{{ ai_gen_id }}");
+  const next = document.querySelector(".ai-rv-next-{{ ai_gen_id }}");
+
+  next.addEventListener("click", function () {
+    slider.scrollBy({
+      left: slider.clientWidth,
+      behavior: "smooth"
+    });
+  });
+
+  prev.addEventListener("click", function () {
+    slider.scrollBy({
+      left: -slider.clientWidth,
+      behavior: "smooth"
+    });
+  });
+
+});
+</script>
+
+{% schema %}
+{
+  "name": "Recently viewed products",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Recently Viewed"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "heading_transform",
+      "label": "Heading transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Products"
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "Maximum products to show",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_desktop",
+      "label": "Products per row (desktop)",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_tablet",
+      "label": "Products per row (tablet)",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid gap",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "product_border_radius",
+      "label": "Product border radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "product_title_size",
+      "label": "Product title size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "price_size",
+      "label": "Price size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "product_bg_color",
+      "label": "Product background",
+      "default": "#f7f7f7"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "vendor_color",
+      "label": "Vendor",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Product title",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Price",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "sale_price_color",
+      "label": "Sale price",
+      "default": "#ad2c34"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link hover",
+      "default": "#ad2c34"
+    },
+    {
+      "type": "header",
+      "content": "Empty state"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "empty_message",
+      "label": "Empty message",
+      "default": "No recently viewed products"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recently viewed products"
+    }
+  ]
+}
+{% endschema %}

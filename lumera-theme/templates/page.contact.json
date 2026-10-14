@@ -1,0 +1,118 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "17621777653542f87f": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_edea61e_n93jhb": {
+          "type": "ai_gen_block_edea61e",
+          "settings": {
+            "show_header": true,
+            "heading": "Let's Connect",
+            "subtext": "Have a question about our jewelry or need assistance with a custom piece? We're here to help bring your vision to life.",
+            "heading_size": 64,
+            "subtext_size": 18,
+            "show_contact_info": true,
+            "info_title": "Get in Touch",
+            "show_email": true,
+            "email": "info@lumerafinejewellery.com",
+            "show_phone": true,
+            "phone": "918140712181",
+            "show_hours": true,
+            "hours": "Monday–Saturday | 10:00 AM – 6:00 PM",
+            "show_address": false,
+            "address": "",
+            "info_bg_image": "shopify://shop_images/Lumea_Fine_jewellery_-_Copy_1.png",
+            "overlay_opacity": 0.9,
+            "show_form": true,
+            "name_label": "Name",
+            "name_placeholder": "Your name",
+            "email_label": "Email",
+            "email_placeholder": "your@email.com",
+            "subject_label": "Subject",
+            "subject_placeholder": "How can we help?",
+            "message_label": "Message",
+            "message_placeholder": "Tell us about your inquiry...",
+            "button_text": "Send Message",
+            "success_message": "Thank you for reaching out. We'll respond within 24-48 hours.",
+            "show_footer": true,
+            "footer_text": "We aim to respond to all inquiries within 24–48 hours.",
+            "show_social": true,
+            "instagram_url": "",
+            "facebook_url": "",
+            "pinterest_url": "",
+            "background_color": "#ffffff",
+            "heading_color": "#01305a",
+            "text_color": "#01305a",
+            "accent_color": "#c9a961",
+            "info_bg_color": "#f8f6f3",
+            "form_bg_color": "#ffffff",
+            "input_bg_color": "#fafafa",
+            "input_border_color": "#e5e5e5",
+            "button_bg_color": "#01305a",
+            "button_text_color": "#ffffff",
+            "button_hover_bg_color": "#0e4d18",
+            "button_hover_text_color": "#ffffff",
+            "social_bg_color": "#ffffff",
+            "social_border_color": "#e5e5e5",
+            "social_icon_color": "#01305a",
+            "social_hover_color": "#ffffff",
+            "heading_weight": 600,
+            "info_title_size": 28,
+            "label_size": 11,
+            "value_size": 18,
+            "input_text_size": 16,
+            "button_text_size": 13,
+            "footer_text_size": 14,
+            "container_width": 1400,
+            "section_padding_top": 100,
+            "section_padding_bottom": 100,
+            "header_spacing": 70,
+            "subtext_spacing": 24,
+            "grid_gap": 50,
+            "section_spacing": 60,
+            "info_title_spacing": 40,
+            "info_item_spacing": 32,
+            "form_field_gap": 24,
+            "footer_spacing": 50,
+            "social_spacing": 24,
+            "card_padding": 50,
+            "card_border_radius": 16,
+            "input_border_radius": 8,
+            "input_border_width": 1,
+            "input_padding": 16,
+            "button_border_radius": 8,
+            "button_padding_vertical": 18,
+            "button_padding_horizontal": 50,
+            "social_icon_size": 48,
+            "social_icon_gap": 16,
+            "social_border_radius": 12,
+            "form_shadow": "0 8px 32px rgba(0, 0, 0, 0.12)"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_edea61e_n93jhb"
+      ],
+      "settings": {}
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {}
+    }
+  },
+  "order": [
+    "17621777653542f87f",
+    "main"
+  ]
+}

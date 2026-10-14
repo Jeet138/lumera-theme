@@ -1,0 +1,602 @@
+{% comment %}
+  =====================================================
+  sections/best-selling-slider.liquid
+
+  Best Selling Products - Auto Scroll Slider
+  + View More button (slider ko full grid me khol deta hai)
+  + View All button (collection page pe le jata hai)
+  =====================================================
+{% endcomment %}
+
+{%- liquid
+  assign uid = section.id
+  assign per_row = section.settings.desktop_products_per_row | plus: 0
+  assign grid_gap = section.settings.grid_gap
+  assign mobile_gap = grid_gap | times: 0.7 | round
+  assign best_selling_collection = section.settings.best_selling_collection
+-%}
+
+<style>
+  .bss-{{ uid }} {
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+    background-color: {{ section.settings.background_color }};
+    padding: {{ section.settings.section_padding_top }}px 0 {{ section.settings.section_padding_bottom }}px;
+  }
+
+  .bss-{{ uid }} .bss-container {
+    width: 100%;
+    max-width: 1548px;
+    margin: 0 auto;
+    padding: 0 24px;
+    box-sizing: border-box;
+  }
+
+  /* ---------- Heading ---------- */
+  .bss-{{ uid }} .bss-header {
+    width: 100%;
+    text-align: {{ section.settings.heading_alignment }};
+    margin-bottom: {{ section.settings.heading_spacing }}px;
+  }
+
+  .bss-{{ uid }} .bss-title {
+    margin: 0 0 10px;
+    font-size: {{ section.settings.heading_size }}px;
+    line-height: 1.2;
+    color: {{ section.settings.heading_color }};
+  }
+
+  .bss-{{ uid }} .bss-subtitle {
+    margin: 0;
+    font-size: {{ section.settings.subheading_size }}px;
+    line-height: 1.5;
+    color: {{ section.settings.subheading_color }};
+  }
+
+  /* ---------- Slider track ---------- */
+  .bss-{{ uid }} .bss-track {
+    --per-view: {{ per_row }};
+    --gap: {{ grid_gap }}px;
+
+    display: flex;
+    gap: var(--gap);
+    width: 100%;
+    margin-top: {{ section.settings.grid_spacing }}px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    box-sizing: border-box;
+  }
+
+  .bss-{{ uid }} .bss-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .bss-{{ uid }} .bss-item {
+    flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--gap)) / var(--per-view));
+    min-width: 0;
+    max-width: 100%;
+    scroll-snap-align: start;
+    box-sizing: border-box;
+  }
+
+  .bss-{{ uid }} .bss-item .card,
+  .bss-{{ uid }} .bss-item .product-card,
+  .bss-{{ uid }} .bss-item .card-wrapper,
+  .bss-{{ uid }} .bss-item .card__inner,
+  .bss-{{ uid }} .bss-item .card__media,
+  .bss-{{ uid }} .bss-item .media {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .bss-{{ uid }} img {
+    max-width: 100%;
+  }
+
+  .bss-{{ uid }} .product-card__name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+    max-height: calc(1.4em * 2);
+  }
+
+  /* ---------- View More: full grid mode ---------- */
+  .bss-{{ uid }} .bss-track.is-expanded {
+    flex-wrap: wrap;
+    overflow: visible;
+    scroll-snap-type: none;
+  }
+
+  /* ---------- Buttons ---------- */
+  .bss-{{ uid }} .bss-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 30px;
+  }
+
+  .bss-{{ uid }} .bss-btn {
+    display: inline-block;
+    padding: 14px 40px;
+    background-color: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+    border: 1px solid {{ section.settings.button_bg_color }};
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    line-height: 1.2;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .bss-{{ uid }} .bss-btn:hover {
+    background-color: transparent;
+    color: {{ section.settings.button_bg_color }};
+  }
+
+  .bss-{{ uid }} .bss-btn--more {
+    background-color: transparent;
+    color: {{ section.settings.button_bg_color }};
+  }
+
+  .bss-{{ uid }} .bss-btn--more:hover {
+    background-color: {{ section.settings.button_bg_color }};
+    color: {{ section.settings.button_text_color }};
+  }
+
+  /* ---------- Empty state ---------- */
+  .bss-{{ uid }} .bss-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+  }
+
+  .bss-{{ uid }} .bss-empty-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px;
+    opacity: 0.3;
+  }
+
+  .bss-{{ uid }} .bss-empty p {
+    margin: 0;
+    font-size: 16px;
+  }
+
+  /* ---------- Tablet ---------- */
+  @media screen and (max-width: 989px) {
+    .bss-{{ uid }} .bss-container {
+      padding: 0 20px;
+    }
+
+    .bss-{{ uid }} .bss-track {
+      --per-view: 3;
+    }
+
+    .bss-{{ uid }} .bss-title {
+      font-size: {{ section.settings.heading_size | times: 0.8 }}px;
+    }
+  }
+
+  /* ---------- Mobile ---------- */
+  @media screen and (max-width: 749px) {
+    .bss-{{ uid }} {
+      padding-top: {{ section.settings.section_padding_top | times: 0.7 | round }}px;
+      padding-bottom: {{ section.settings.section_padding_bottom | times: 0.7 | round }}px;
+    }
+
+    .bss-{{ uid }} .bss-container {
+      padding: 0 10px;
+    }
+
+    .bss-{{ uid }} .bss-track {
+      --per-view: 2;
+      --gap: {{ mobile_gap }}px;
+    }
+
+    .bss-{{ uid }} .bss-title {
+      font-size: {{ section.settings.heading_size | times: 0.6 }}px;
+    }
+
+    .bss-{{ uid }} .bss-subtitle {
+      font-size: {{ section.settings.subheading_size | times: 0.9 }}px;
+    }
+
+    .bss-{{ uid }} .bss-btn {
+      padding: 12px 26px;
+      font-size: 13px;
+    }
+
+    .bss-{{ uid }} .bss-buttons {
+      gap: 10px;
+    }
+  }
+</style>
+
+<div class="bss-{{ uid }}" id="bss-{{ uid }}">
+  <div class="bss-container">
+
+    {% if section.settings.heading != blank or section.settings.subheading != blank %}
+      <div class="bss-header">
+        {% if section.settings.heading != blank %}
+          <h2 class="bss-title">{{ section.settings.heading }}</h2>
+        {% endif %}
+        {% if section.settings.subheading != blank %}
+          <p class="bss-subtitle">{{ section.settings.subheading }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if best_selling_collection != blank and best_selling_collection.products_count > 0 %}
+
+      <div
+        class="bss-track"
+        data-autoplay="{{ section.settings.autoplay }}"
+        data-speed="{{ section.settings.autoplay_speed }}"
+      >
+        {% for product in best_selling_collection.products limit: section.settings.products_limit %}
+          <div class="bss-item">
+            {% render 'product-card', product: product %}
+          </div>
+        {% endfor %}
+      </div>
+
+      {% assign show_more = false %}
+      {% if section.settings.show_view_more and best_selling_collection.products_count > per_row %}
+        {% assign show_more = true %}
+      {% endif %}
+
+      {% if show_more or section.settings.show_view_all %}
+        <div class="bss-buttons">
+          {% if show_more %}
+            <button
+              type="button"
+              class="bss-btn bss-btn--more"
+              data-more-text="{{ section.settings.view_more_text | escape }}"
+              data-less-text="{{ section.settings.view_less_text | escape }}"
+            >
+              {{ section.settings.view_more_text }}
+            </button>
+          {% endif %}
+
+          {% if section.settings.show_view_all %}
+            <a href="{{ best_selling_collection.url }}" class="bss-btn">
+              {{ section.settings.view_all_text }}
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+
+    {% else %}
+      <div class="bss-empty">
+        <div class="bss-empty-icon">
+          {{ 'product-1' | placeholder_svg_tag }}
+        </div>
+        <p>Select a best selling collection to showcase your products</p>
+      </div>
+    {% endif %}
+
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('bss-{{ uid }}');
+    if (!root) return;
+
+    var track = root.querySelector('.bss-track');
+    var moreBtn = root.querySelector('.bss-btn--more');
+    if (!track) return;
+
+    var timer = null;
+    var expanded = false;
+    var autoplay = track.dataset.autoplay === 'true';
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var speed = (parseInt(track.dataset.speed, 10) || 3) * 1000;
+
+    function step() {
+      var first = track.firstElementChild;
+      if (!first) return;
+
+      var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      var amount = first.getBoundingClientRect().width + gap;
+      var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 5;
+
+      if (atEnd) {
+        track.scrollTo({ left: 0, behavior: 'smooth' });
+      } else {
+        track.scrollBy({ left: amount, behavior: 'smooth' });
+      }
+    }
+
+    function stop() {
+      if (timer) {
+        clearInterval(timer);
+        timer = null;
+      }
+    }
+
+    function start() {
+      stop();
+      if (!autoplay || reduceMotion || expanded) return;
+      timer = setInterval(step, speed);
+    }
+
+    track.addEventListener('mouseenter', stop);
+    track.addEventListener('mouseleave', start);
+    track.addEventListener('touchstart', stop, { passive: true });
+    track.addEventListener('touchend', start, { passive: true });
+
+    if (moreBtn) {
+      moreBtn.addEventListener('click', function () {
+        expanded = !expanded;
+        track.classList.toggle('is-expanded', expanded);
+
+        if (expanded) {
+          track.scrollTo({ left: 0 });
+          moreBtn.textContent = moreBtn.dataset.lessText;
+          stop();
+        } else {
+          moreBtn.textContent = moreBtn.dataset.moreText;
+          start();
+        }
+      });
+    }
+
+    start();
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Best selling slider",
+  "tag": "section",
+  "class": "best-selling-slider-section",
+
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Best Selling Products"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Discover our most popular items"
+    },
+    {
+      "type": "collection",
+      "id": "best_selling_collection",
+      "label": "Best selling collection"
+    },
+
+    {
+      "type": "header",
+      "content": "Slider"
+    },
+    {
+      "type": "select",
+      "id": "desktop_products_per_row",
+      "label": "Desktop products per row",
+      "options": [
+        { "value": "4", "label": "4 products" },
+        { "value": "5", "label": "5 products" },
+        { "value": "6", "label": "6 products" }
+      ],
+      "default": "6"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Total products to show",
+      "min": 6,
+      "max": 24,
+      "step": 2,
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto scroll",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_speed",
+      "label": "Auto scroll speed (seconds)",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "unit": "s",
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Gap between products",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "grid_spacing",
+      "label": "Products top spacing",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+
+    {
+      "type": "header",
+      "content": "Buttons"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_more",
+      "label": "Show View More button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_more_text",
+      "label": "View More text",
+      "default": "View More"
+    },
+    {
+      "type": "text",
+      "id": "view_less_text",
+      "label": "View Less text",
+      "default": "View Less"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show View All button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "label": "View All text",
+      "default": "View All"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button color",
+      "default": "#ad2c34"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#ffffff"
+    },
+
+    {
+      "type": "header",
+      "content": "Heading style"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "label": "Subheading size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "label": "Heading bottom spacing",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading",
+      "default": "#666666"
+    }
+  ],
+
+  "presets": [
+    {
+      "name": "Best selling slider"
+    }
+  ]
+}
+{% endschema %}

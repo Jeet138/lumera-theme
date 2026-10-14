@@ -1,0 +1,154 @@
+<div class="page-width">
+    <div class="custom-blog-tabs">
+
+  <a href="/pages/all-blogs"
+     class="blog-tab {% if request.path == '/pages/all-blogs' %}active{% endif %}">
+    All
+  </a>
+
+  <a href="/blogs/lab-grown-diamonds"
+     class="blog-tab {% if blog.handle == 'lab-grown-diamonds' %}active{% endif %}">
+    Lab Grown Diamonds
+  </a>
+
+  <a href="/blogs/engagement-rings"
+     class="blog-tab {% if blog.handle == 'engagement-rings' %}active{% endif %}">
+    Engagement Rings
+  </a>
+
+  <a href="/blogs/wedding-rings"
+     class="blog-tab {% if blog.handle == 'wedding-rings' %}active{% endif %}">
+    Wedding Rings
+  </a>
+
+  <a href="/blogs/fine-jewelry"
+     class="blog-tab {% if blog.handle == 'fine-jewelry' %}active{% endif %}">
+    Fine Jewelry
+  </a>
+
+  <a href="/blogs/education"
+     class="blog-tab {% if blog.handle == 'education' %}active{% endif %}">
+    Education
+  </a>
+
+</div>
+<style>
+    .custom-blog-tabs{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  flex-wrap:wrap;
+  margin:30px 0;
+}
+
+.blog-tab{
+  padding:12px 22px;
+  background:#f5f5f5;
+  color:#000;
+  text-decoration:none;
+  border:1px solid #ddd;
+  transition:.3s;
+}
+
+.blog-tab.active,
+.blog-tab:hover{
+  background:#d8c2a3;
+  color:#000;
+}
+</style>
+  <h1 class="main-page-title page-title h0" style="text-align:center; margin-bottom:40px;">
+    All Blogs
+  </h1>
+
+  {% assign blog_handles = "lab-grown-diamonds,engagement-rings,wedding-rings,fine-jewelry,education" | split: "," %}
+
+  <div class="blog-articles-grid">
+    {% for handle in blog_handles %}
+      {% assign current_blog = blogs[handle] %}
+
+      {% if current_blog %}
+        {% for article in current_blog.articles %}
+
+          <article class="blog-card">
+
+            <a href="{{ article.url }}">
+              {% if article.image %}
+                <img
+                  src="{{ article.image | image_url: width: 600 }}"
+                  alt="{{ article.title }}"
+                  loading="lazy"
+                  class="blog-card__image">
+              {% endif %}
+
+              <h3>{{ article.title }}</h3>
+            </a>
+
+            <p>
+              {{ article.excerpt | strip_html | truncate: 120 }}
+            </p>
+
+            <a href="{{ article.url }}">Read More →</a>
+
+          </article>
+
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.blog-articles-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:30px;
+}
+
+.blog-card{
+  border:1px solid #eee;
+  padding:15px;
+  border-radius:8px;
+}
+
+.blog-card img{
+  width:100%;
+  height:140px;
+  object-fit:cover;
+  display:block;
+  margin-bottom:15px;
+}
+
+.blog-card h3{
+  font-size:22px;
+  margin:10px 0;
+}
+
+.blog-card p{
+  font-size:15px;
+  color:#666;
+}
+
+@media(max-width:990px){
+.blog-articles-grid{
+grid-template-columns:repeat(2,1fr);
+}
+}
+
+@media(max-width:749px){
+.blog-articles-grid{
+grid-template-columns:1fr;
+}
+}
+</style>
+
+{% schema %}
+{
+  "name": "All Blogs",
+  "settings": [],
+  "presets": [
+    {
+      "name": "All Blogs"
+    }
+  ]
+}
+{% endschema %}

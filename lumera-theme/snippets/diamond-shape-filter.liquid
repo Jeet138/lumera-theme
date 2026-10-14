@@ -1,0 +1,208 @@
+{% comment %} {% comment %}
+  Diamond Shape Filter Images
+  Metaobject: diamond_shapes
+  Fields:
+  - name
+  - image
+{% endcomment %}
+
+<div
+  id="diamond-shape-filter-data"
+  style="display:none;"
+  data-shapes='[
+    {% for shape in shop.metaobjects.diamond_shapes.values %}
+      {
+        "name": {{ shape.name.value | json }},
+        "image": {% if shape.image.value != blank %}{{ shape.image.value | image_url: width: 100 | json }}{% else %}""{% endif %}
+      }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]'
+></div>
+
+<style>
+  /* Diamond Shape filter only */
+  .diamond-shape-filter-image {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+  }
+
+  .diamond-shape-filter-option {
+    display: flex !important;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .diamond-shape-filter-option input[type="checkbox"] {
+    flex-shrink: 0;
+  }
+
+  .diamond-shape-filter-option .diamond-shape-filter-image {
+    margin-right: 2px;
+  }
+
+  .diamond-shape-filter-option .diamond-shape-filter-name {
+    line-height: 1.2;
+  }
+</style>
+
+<script>
+(function () {
+
+  function initDiamondShapeFilter() {
+
+    const dataElement = document.getElementById('diamond-shape-filter-data');
+
+    if (!dataElement) return;
+
+    let shapes = [];
+
+    try {
+      shapes = JSON.parse(dataElement.dataset.shapes || '[]');
+    } catch (error) {
+      console.log('Diamond Shape data error:', error);
+      return;
+    }
+
+    if (!shapes.length) return;
+
+    /*
+      Create easy lookup:
+      Round -> image
+      Oval -> image
+      Cushion -> image
+    */
+    const shapeMap = {};
+
+    shapes.forEach(function(shape) {
+
+      if (!shape.name || !shape.image) return;
+
+      const key = shape.name
+        .trim()
+        .toLowerCase();
+
+      shapeMap[key] = shape.image;
+
+    });
+
+    /*
+      Find filter groups containing
+      "Diamond Shape"
+    */
+    const allElements = document.querySelectorAll(
+      'fieldset, details, .facets__disclosure, .facets-wrap, .facets__item'
+    );
+
+    allElements.forEach(function(group) {
+
+      const text = group.innerText || '';
+
+      if (!text.toLowerCase().includes('diamond shape')) {
+        return;
+      }
+
+      /*
+        Find labels inside this filter
+      */
+      const labels = group.querySelectorAll('label');
+
+      labels.forEach(function(label) {
+
+        if (label.dataset.diamondShapeDone === 'true') {
+          return;
+        }
+
+        const input = label.querySelector('input[type="checkbox"]');
+
+        if (!input) return;
+
+        /*
+          Get label text
+        */
+        let labelText = label.innerText
+          .replace(/\(\s*\d+\s*\)/g, '')
+          .trim();
+
+        /*
+          Remove extra whitespace
+        */
+        labelText = labelText.replace(/\s+/g, ' ');
+
+        const key = labelText.toLowerCase();
+
+        const imageUrl = shapeMap[key];
+
+        if (!imageUrl) return;
+
+        /*
+          Create image
+        */
+        const image = document.createElement('img');
+
+        image.src = imageUrl;
+        image.alt = labelText;
+        image.className = 'diamond-shape-filter-image';
+
+        /*
+          Create wrapper
+        */
+        const content = document.createElement('span');
+
+        content.className = 'diamond-shape-filter-option';
+
+        /*
+          Move existing label content
+        */
+        while (label.firstChild) {
+          content.appendChild(label.firstChild);
+        }
+
+        /*
+          Put image before text
+        */
+        content.insertBefore(image, content.firstChild);
+
+        label.appendChild(content);
+
+        label.classList.add('diamond-shape-filter-option');
+
+        label.dataset.diamondShapeDone = 'true';
+
+      });
+
+    });
+
+  }
+
+  /*
+    Initial load
+  */
+  document.addEventListener('DOMContentLoaded', function () {
+    initDiamondShapeFilter();
+  });
+
+  /*
+    Shopify filters often update the page
+    dynamically, so run again after changes.
+  */
+  document.addEventListener('shopify:section:load', function () {
+    setTimeout(initDiamondShapeFilter, 300);
+  });
+
+  /*
+    Observe DOM changes
+  */
+  const observer = new MutationObserver(function () {
+    initDiamondShapeFilter();
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+
+})();
+</script> {% endcomment %}

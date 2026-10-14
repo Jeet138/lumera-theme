@@ -1,0 +1,855 @@
+{% doc %}
+  @prompt
+    add new section for following content "Corporate Social Responsibility
+    We believe success shines brightest when it uplifts others. Our CSR is driven by Matru Shree Kashiba Haribhai Charitable Trust and the initiative “Better Giving”.
+    
+    Education: Building 300+ schools across India (Nagaland, Assam, Mizoram, Chhattisgarh, Jharkhand, Gujarat, Madhya Pradesh & more).
+    Environment: Over 1,000 trees planted through community drives.
+    Community Care: Regular donation of clothes & food to families in need under “Better Giving”.
+    2014
+    Established
+    300+
+    Schools
+    1,000+
+    Trees Planted
+    5+
+    Global Hubs
+    CSR via Matru Shree Kashiba Haribhai Charitable Trust & “Better Giving”."
+    
+    and what i want here i have instagarm page for this where i post csr activities so give me option to link that or only adding a Instagram account link it shows recent post okay 
+    
+    modern creative mobile friendly and use theme colors
+    
+    also when i add Instagram profile link i want to actually show feed here okay, in Instagram post not only image give option to chose video also, i want in Instagram post upload video option not use vimeo or YouTube video
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-csr-section-{{ ai_gen_id }} {
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.padding_top }}px 0 {{ block.settings.padding_bottom }}px;
+  }
+
+  .ai-csr-container-{{ ai_gen_id }} {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 30px;
+  }
+
+  .ai-csr-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+
+  .ai-csr-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 20px;
+    font-weight: 500;
+  }
+
+  .ai-csr-description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.text_size }}px;
+    color: {{ block.settings.text_color }};
+    max-width: 800px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .ai-csr-stats-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin: 60px 0;
+  }
+
+  .ai-csr-stat-{{ ai_gen_id }} {
+    text-align: center;
+    padding: 30px 20px;
+    background-color: {{ block.settings.stat_bg_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .ai-csr-stat-{{ ai_gen_id }}:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-csr-stat-number-{{ ai_gen_id }} {
+    font-size: 48px;
+    font-weight: 700;
+    color: {{ block.settings.stat_number_color }};
+    margin: 0 0 10px;
+    line-height: 1;
+  }
+
+  .ai-csr-stat-label-{{ ai_gen_id }} {
+    font-size: 16px;
+    color: {{ block.settings.stat_label_color }};
+    font-weight: 500;
+  }
+
+  .ai-csr-initiatives-{{ ai_gen_id }} {
+    margin: 60px 0;
+  }
+
+  .ai-csr-initiatives-title-{{ ai_gen_id }} {
+    font-size: 28px;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 30px;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .ai-csr-initiatives-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+  }
+
+  .ai-csr-initiative-{{ ai_gen_id }} {
+    padding: 30px;
+    background-color: {{ block.settings.initiative_bg_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    border-left: 4px solid {{ block.settings.accent_color }};
+  }
+
+  .ai-csr-initiative-icon-{{ ai_gen_id }} {
+    width: 50px;
+    height: 50px;
+    background-color: {{ block.settings.accent_color }};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .ai-csr-initiative-icon-{{ ai_gen_id }} svg {
+    width: 28px;
+    height: 28px;
+    fill: {{ block.settings.icon_color }};
+  }
+
+  .ai-csr-initiative-title-{{ ai_gen_id }} {
+    font-size: 20px;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 15px;
+    font-weight: 600;
+  }
+
+  .ai-csr-initiative-text-{{ ai_gen_id }} {
+    font-size: 14px;
+    color: {{ block.settings.text_color }};
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .ai-csr-instagram-{{ ai_gen_id }} {
+    margin-top: 80px;
+  }
+
+  .ai-csr-instagram-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .ai-csr-instagram-title-{{ ai_gen_id }} {
+    font-size: 28px;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 15px;
+    font-weight: 500;
+  }
+
+  .ai-csr-instagram-link-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: {{ block.settings.accent_color }};
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: opacity 0.3s ease;
+  }
+
+  .ai-csr-instagram-link-{{ ai_gen_id }}:hover {
+    opacity: 0.7;
+  }
+
+  .ai-csr-instagram-link-{{ ai_gen_id }} svg {
+    width: 24px;
+    height: 24px;
+    fill: {{ block.settings.accent_color }};
+  }
+
+  .ai-csr-instagram-feed-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .ai-csr-instagram-post-{{ ai_gen_id }} {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: {{ block.settings.border_radius }}px;
+    background-color: {{ block.settings.stat_bg_color }};
+    cursor: pointer;
+  }
+
+  .ai-csr-instagram-post-{{ ai_gen_id }} img,
+  .ai-csr-instagram-post-{{ ai_gen_id }} video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-csr-instagram-post-{{ ai_gen_id }}:hover img,
+  .ai-csr-instagram-post-{{ ai_gen_id }}:hover video {
+    transform: scale(1.05);
+  }
+
+  .ai-csr-instagram-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+  }
+
+  .ai-csr-instagram-post-{{ ai_gen_id }}:hover .ai-csr-instagram-overlay-{{ ai_gen_id }} {
+    opacity: 1;
+  }
+
+  .ai-csr-instagram-caption-{{ ai_gen_id }} {
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .ai-csr-instagram-play-icon-{{ ai_gen_id }} {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    transition: background-color 0.3s ease;
+    z-index: 2;
+  }
+
+  .ai-csr-instagram-post-{{ ai_gen_id }}:hover .ai-csr-instagram-play-icon-{{ ai_gen_id }} {
+    background-color: rgba(255, 255, 255, 1);
+  }
+
+  .ai-csr-instagram-play-icon-{{ ai_gen_id }} svg {
+    width: 24px;
+    height: 24px;
+    fill: {{ block.settings.accent_color }};
+    margin-left: 3px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-csr-instagram-feed-{{ ai_gen_id }} {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-csr-section-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-csr-container-{{ ai_gen_id }}">
+    <div class="ai-csr-header-{{ ai_gen_id }}">
+      {% if block.settings.title != blank %}
+        <h2 class="ai-csr-title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+      {% endif %}
+      {% if block.settings.description != blank %}
+        <div class="ai-csr-description-{{ ai_gen_id }}">{{ block.settings.description }}</div>
+      {% endif %}
+    </div>
+
+    <div class="ai-csr-stats-{{ ai_gen_id }}">
+      {% for i in (1..4) %}
+        {% assign num = 'stat_' | append: i | append: '_number' %}
+        {% assign lbl = 'stat_' | append: i | append: '_label' %}
+        {% if block.settings[num] != blank %}
+          <div class="ai-csr-stat-{{ ai_gen_id }}">
+            <div class="ai-csr-stat-number-{{ ai_gen_id }}">{{ block.settings[num] }}</div>
+            <div class="ai-csr-stat-label-{{ ai_gen_id }}">{{ block.settings[lbl] }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    {% if block.settings.show_instagram %}
+      <div class="ai-csr-instagram-{{ ai_gen_id }}">
+        <div class="ai-csr-instagram-header-{{ ai_gen_id }}">
+          <h3 class="ai-csr-instagram-title-{{ ai_gen_id }}">{{ block.settings.instagram_title }}</h3>
+          {% if block.settings.instagram_url %}
+            <a href="{{ block.settings.instagram_url }}" target="_blank" rel="noopener" class="ai-csr-instagram-link-{{ ai_gen_id }}">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5z"/></svg>
+              {{ block.settings.instagram_handle }}
+            </a>
+          {% endif %}
+        </div>
+
+        {% if block.settings.instagram_url %}
+          <div class="ai-csr-instagram-feed-{{ ai_gen_id }}">
+            {% for i in (1..6) %}
+              {% assign type = 'instagram_media_type_' | append: i %}
+              {% assign img = 'instagram_image_' | append: i %}
+              {% assign vid = 'instagram_video_' | append: i %}
+              {% assign cap = 'instagram_caption_' | append: i %}
+              {% assign media_type = block.settings[type] %}
+              {% if media_type == 'image' and block.settings[img] %}
+                <div class="ai-csr-instagram-post-{{ ai_gen_id }}">
+                  <img src="{{ block.settings[img] | image_url: width: 500 }}" alt="{{ block.settings[cap] | escape }}" loading="lazy">
+                  {% if block.settings[cap] %}
+                    <div class="ai-csr-instagram-overlay-{{ ai_gen_id }}"><p class="ai-csr-instagram-caption-{{ ai_gen_id }}">{{ block.settings[cap] }}</p></div>
+                  {% endif %}
+                </div>
+              {% elsif media_type == 'video' and block.settings[vid] %}
+                <div class="ai-csr-instagram-post-{{ ai_gen_id }}">
+                  <video width="500" height="500" loop muted playsinline preload="metadata" poster="{{ block.settings[vid].preview_image | image_url: width: 500 }}">
+                    {% for source in block.settings[vid].sources %}
+                      <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                    {% endfor %}
+                  </video>
+                  <div class="ai-csr-instagram-play-icon-{{ ai_gen_id }}">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                  </div>
+                  {% if block.settings[cap] %}
+                    <div class="ai-csr-instagram-overlay-{{ ai_gen_id }}"><p class="ai-csr-instagram-caption-{{ ai_gen_id }}">{{ block.settings[cap] }}</p></div>
+                  {% endif %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.ai-csr-instagram-post-{{ ai_gen_id }} video').forEach(video => {
+      const post = video.closest('.ai-csr-instagram-post-{{ ai_gen_id }}');
+      const playIcon = post.querySelector('.ai-csr-instagram-play-icon-{{ ai_gen_id }}');
+
+      post.addEventListener('click', () => {
+        if (video.paused) {
+          video.play();
+          if (playIcon) playIcon.style.opacity = '0';
+        } else {
+          video.pause();
+          if (playIcon) playIcon.style.opacity = '1';
+        }
+      });
+
+      video.addEventListener('ended', () => {
+        if (playIcon) playIcon.style.opacity = '1';
+      });
+    });
+  });
+</script>
+
+
+<csr-instagram-feed-{{ ai_gen_id }}>
+</csr-instagram-feed-{{ ai_gen_id }}>
+
+{% schema %}
+{
+  "name": "CSR with Instagram feed",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Main content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Corporate Social Responsibility"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>We believe success shines brightest when it uplifts others. Our CSR is driven by Matru Shree Kashiba Haribhai Charitable Trust and the initiative \"Better Giving\".</p>"
+    },
+    {
+      "type": "header",
+      "content": "Statistics"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_number",
+      "label": "Stat 1 number",
+      "default": "2014"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "Stat 1 label",
+      "default": "Established"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_number",
+      "label": "Stat 2 number",
+      "default": "300+"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Stat 2 label",
+      "default": "Schools"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_number",
+      "label": "Stat 3 number",
+      "default": "1,000+"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Stat 3 label",
+      "default": "Trees Planted"
+    },
+    {
+      "type": "text",
+      "id": "stat_4_number",
+      "label": "Stat 4 number",
+      "default": "5+"
+    },
+    {
+      "type": "text",
+      "id": "stat_4_label",
+      "label": "Stat 4 label",
+      "default": "Global Hubs"
+    },
+    {
+      "type": "header",
+      "content": "Initiatives"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_initiatives",
+      "label": "Show initiatives",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "initiatives_title",
+      "label": "Initiatives title",
+      "default": "Our Key Initiatives"
+    },
+    {
+      "type": "text",
+      "id": "initiative_1_title",
+      "label": "Initiative 1 title",
+      "default": "Education"
+    },
+    {
+      "type": "textarea",
+      "id": "initiative_1_text",
+      "label": "Initiative 1 text",
+      "default": "Building 300+ schools across India (Nagaland, Assam, Mizoram, Chhattisgarh, Jharkhand, Gujarat, Madhya Pradesh & more)."
+    },
+    {
+      "type": "text",
+      "id": "initiative_2_title",
+      "label": "Initiative 2 title",
+      "default": "Environment"
+    },
+    {
+      "type": "textarea",
+      "id": "initiative_2_text",
+      "label": "Initiative 2 text",
+      "default": "Over 1,000 trees planted through community drives."
+    },
+    {
+      "type": "text",
+      "id": "initiative_3_title",
+      "label": "Initiative 3 title",
+      "default": "Community Care"
+    },
+    {
+      "type": "textarea",
+      "id": "initiative_3_text",
+      "label": "Initiative 3 text",
+      "default": "Regular donation of clothes & food to families in need under \"Better Giving\"."
+    },
+    {
+      "type": "header",
+      "content": "Instagram feed"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_instagram",
+      "label": "Show Instagram feed",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "instagram_title",
+      "label": "Instagram section title",
+      "default": "Our CSR Activities"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram profile URL"
+    },
+    {
+      "type": "text",
+      "id": "instagram_handle",
+      "label": "Instagram handle",
+      "default": "@livajewels"
+    },
+    {
+      "type": "header",
+      "content": "Post 1"
+    },
+    {
+      "type": "select",
+      "id": "instagram_media_type_1",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "instagram_image_1",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "instagram_video_1",
+      "label": "Video"
+    },
+    {
+      "type": "text",
+      "id": "instagram_caption_1",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Post 2"
+    },
+    {
+      "type": "select",
+      "id": "instagram_media_type_2",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "instagram_image_2",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "instagram_video_2",
+      "label": "Video"
+    },
+    {
+      "type": "text",
+      "id": "instagram_caption_2",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Post 3"
+    },
+    {
+      "type": "select",
+      "id": "instagram_media_type_3",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "instagram_image_3",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "instagram_video_3",
+      "label": "Video"
+    },
+    {
+      "type": "text",
+      "id": "instagram_caption_3",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Post 4"
+    },
+    {
+      "type": "select",
+      "id": "instagram_media_type_4",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "instagram_image_4",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "instagram_video_4",
+      "label": "Video"
+    },
+    {
+      "type": "text",
+      "id": "instagram_caption_4",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Post 5"
+    },
+    {
+      "type": "select",
+      "id": "instagram_media_type_5",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "instagram_image_5",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "instagram_video_5",
+      "label": "Video"
+    },
+    {
+      "type": "text",
+      "id": "instagram_caption_5",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Post 6"
+    },
+    {
+      "type": "select",
+      "id": "instagram_media_type_6",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "instagram_image_6",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "instagram_video_6",
+      "label": "Video"
+    },
+    {
+      "type": "text",
+      "id": "instagram_caption_6",
+      "label": "Caption"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title",
+      "default": "#01305a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#01305a"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent",
+      "default": "#01305a"
+    },
+    {
+      "type": "color",
+      "id": "stat_bg_color",
+      "label": "Stat background",
+      "default": "#f6f4f3"
+    },
+    {
+      "type": "color",
+      "id": "stat_number_color",
+      "label": "Stat number",
+      "default": "#01305a"
+    },
+    {
+      "type": "color",
+      "id": "stat_label_color",
+      "label": "Stat label",
+      "default": "#01305a"
+    },
+    {
+      "type": "color",
+      "id": "initiative_bg_color",
+      "label": "Initiative background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Title size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "CSR with Instagram feed"
+    }
+  ]
+}
+{% endschema %}

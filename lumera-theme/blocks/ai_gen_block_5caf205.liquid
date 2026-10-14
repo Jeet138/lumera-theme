@@ -1,0 +1,664 @@
+{% doc %}
+  @prompt
+    Create a split-layout hero section with two columns: the left side shows a 2-image collage/grid (two jewelry product photos stacked or side by side), and the right side has a small uppercase label (e.g. "SHOP DIAMOND"), a large bold serif heading (e.g. "ENGAGEMENT RINGS"), and an outlined "SHOP NOW →" CTA button. The right side should have a clean white/light background. The section should be full-width, responsive, and suitable for a luxury jewelry brand. All images, text, and button should be customizable via theme editor settings.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-split-hero-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.section_bg_color }};
+  }
+
+  .ai-split-hero-container-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: {{ block.settings.min_height }}px;
+    width: 100%;
+  }
+
+  .ai-split-hero-left-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+    background-color: {{ block.settings.left_bg_color }};
+  }
+
+  .ai-split-hero-image-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: {{ block.settings.image_gap }}px;
+    height: 100%;
+    padding: {{ block.settings.image_padding }}px;
+  }
+
+  .ai-split-hero-image-grid-{{ ai_gen_id }}.ai-layout-stacked-{{ ai_gen_id }} {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+
+  .ai-split-hero-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: {{ block.settings.image_border_radius }}px;
+  }
+
+  .ai-split-hero-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ai-split-hero-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-split-hero-image-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 200px;
+    max-height: 200px;
+    opacity: 0.3;
+  }
+
+  .ai-split-hero-right-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: {{ block.settings.content_alignment }};
+    padding: {{ block.settings.content_padding }}px;
+    background-color: {{ block.settings.right_bg_color }};
+    text-align: {% if block.settings.content_alignment == 'flex-start' %}left{% elsif block.settings.content_alignment == 'flex-end' %}right{% else %}center{% endif %};
+  }
+
+  .ai-split-hero-label-{{ ai_gen_id }} {
+    font-size: {{ block.settings.label_font_size }}px;
+    font-weight: {{ block.settings.label_font_weight }};
+    letter-spacing: {{ block.settings.label_letter_spacing }}em;
+    text-transform: uppercase;
+    color: {{ block.settings.label_color }};
+    margin: 0 0 {{ block.settings.label_margin_bottom }}px 0;
+    font-family: var(--g-font-2);
+  }
+
+  .ai-split-hero-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_font_size }}px;
+    font-weight: {{ block.settings.heading_font_weight }};
+    line-height: 1.2;
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 {{ block.settings.heading_margin_bottom }}px 0;
+    font-family: var(--g-font-1);
+  }
+
+  .ai-split-hero-description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.description_font_size }}px;
+    line-height: 1.6;
+    color: {{ block.settings.description_color }};
+    margin: 0 0 {{ block.settings.description_margin_bottom }}px 0;
+    max-width: 500px;
+  }
+
+  .ai-split-hero-button-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: {{ block.settings.button_padding_vertical }}px {{ block.settings.button_padding_horizontal }}px;
+    font-size: {{ block.settings.button_font_size }}px;
+    font-weight: {{ block.settings.button_font_weight }};
+    letter-spacing: {{ block.settings.button_letter_spacing }}em;
+    text-transform: uppercase;
+    color: {{ block.settings.button_text_color }};
+    background-color: {{ block.settings.button_bg_color }};
+    border: {{ block.settings.button_border_width }}px solid {{ block.settings.button_border_color }};
+    border-radius: {{ block.settings.button_border_radius }}px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-family: var(--g-font-2);
+  }
+
+  .ai-split-hero-button-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.button_hover_text_color }};
+    background-color: {{ block.settings.button_hover_bg_color }};
+    border-color: {{ block.settings.button_hover_border_color }};
+  }
+
+  .ai-split-hero-button-arrow-{{ ai_gen_id }} {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-split-hero-button-{{ ai_gen_id }}:hover .ai-split-hero-button-arrow-{{ ai_gen_id }} {
+    transform: translateX(4px);
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-split-hero-container-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .ai-split-hero-left-{{ ai_gen_id }} {
+      min-height: 400px;
+    }
+
+    .ai-split-hero-right-{{ ai_gen_id }} {
+      padding: 40px 20px;
+      align-items: center;
+      text-align: center;
+    }
+
+    .ai-split-hero-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_font_size | times: 0.6 }}px;
+    }
+
+    .ai-split-hero-label-{{ ai_gen_id }} {
+      font-size: {{ block.settings.label_font_size | times: 0.9 }}px;
+    }
+
+    .ai-split-hero-description-{{ ai_gen_id }} {
+      font-size: {{ block.settings.description_font_size | times: 0.9 }}px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-split-hero-left-{{ ai_gen_id }} {
+      min-height: 300px;
+    }
+
+    .ai-split-hero-image-grid-{{ ai_gen_id }} {
+      gap: {{ block.settings.image_gap | times: 0.5 }}px;
+      padding: {{ block.settings.image_padding | times: 0.5 }}px;
+    }
+  }
+{% endstyle %}
+
+<split-hero-{{ ai_gen_id }} class="ai-split-hero-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-split-hero-container-{{ ai_gen_id }}">
+    <div class="ai-split-hero-left-{{ ai_gen_id }}">
+      <div class="ai-split-hero-image-grid-{{ ai_gen_id }} {% if block.settings.image_layout == 'stacked' %}ai-layout-stacked-{{ ai_gen_id }}{% endif %}">
+        <div class="ai-split-hero-image-wrapper-{{ ai_gen_id }}">
+          {% if block.settings.image_1 %}
+            <img
+              src="{{ block.settings.image_1 | image_url: width: 1000 }}"
+              alt="{{ block.settings.image_1.alt | escape }}"
+              loading="lazy"
+              width="{{ block.settings.image_1.width }}"
+              height="{{ block.settings.image_1.height }}"
+              class="ai-split-hero-image-{{ ai_gen_id }}"
+            >
+          {% else %}
+            <div class="ai-split-hero-image-placeholder-{{ ai_gen_id }}">
+              {{ 'product-apparel-1' | placeholder_svg_tag }}
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="ai-split-hero-image-wrapper-{{ ai_gen_id }}">
+          {% if block.settings.image_2 %}
+            <img
+              src="{{ block.settings.image_2 | image_url: width: 1000 }}"
+              alt="{{ block.settings.image_2.alt | escape }}"
+              loading="lazy"
+              width="{{ block.settings.image_2.width }}"
+              height="{{ block.settings.image_2.height }}"
+              class="ai-split-hero-image-{{ ai_gen_id }}"
+            >
+          {% else %}
+            <div class="ai-split-hero-image-placeholder-{{ ai_gen_id }}">
+              {{ 'product-apparel-1' | placeholder_svg_tag }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="ai-split-hero-right-{{ ai_gen_id }}">
+      {% if block.settings.label != blank %}
+        <div class="ai-split-hero-label-{{ ai_gen_id }}">
+          {{ block.settings.label }}
+        </div>
+      {% endif %}
+
+      {% if block.settings.heading != blank %}
+        <h2 class="ai-split-hero-heading-{{ ai_gen_id }}">
+          {{ block.settings.heading }}
+        </h2>
+      {% endif %}
+
+      {% if block.settings.description != blank %}
+        <div class="ai-split-hero-description-{{ ai_gen_id }}">
+          {{ block.settings.description }}
+        </div>
+      {% endif %}
+
+      {% if block.settings.button_text != blank %}
+        <a
+          href="{{ block.settings.button_link }}"
+          class="ai-split-hero-button-{{ ai_gen_id }}"
+        >
+          {{ block.settings.button_text }}
+          {% if block.settings.show_arrow %}
+            <svg class="ai-split-hero-button-arrow-{{ ai_gen_id }}" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 8H15M15 8L8 1M15 8L8 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          {% endif %}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</split-hero-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class SplitHero{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+      }
+    }
+
+    customElements.define('split-hero-{{ ai_gen_id }}', SplitHero{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Split hero",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "label": "Minimum height",
+      "min": 400,
+      "max": 900,
+      "step": 50,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Left side - Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "select",
+      "id": "image_layout",
+      "label": "Image layout",
+      "options": [
+        {
+          "value": "side-by-side",
+          "label": "Side by side"
+        },
+        {
+          "value": "stacked",
+          "label": "Stacked"
+        }
+      ],
+      "default": "side-by-side"
+    },
+    {
+      "type": "range",
+      "id": "image_gap",
+      "label": "Gap between images",
+      "min": 0,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "image_padding",
+      "label": "Image area padding",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Image border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "left_bg_color",
+      "label": "Left background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "header",
+      "content": "Right side - Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "label",
+      "label": "Label",
+      "default": "SHOP DIAMOND"
+    },
+    {
+      "type": "range",
+      "id": "label_font_size",
+      "label": "Label font size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "label_font_weight",
+      "label": "Label font weight",
+      "min": 300,
+      "max": 700,
+      "step": 100,
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "label_letter_spacing",
+      "label": "Label letter spacing",
+      "min": 0,
+      "max": 0.5,
+      "step": 0.1,
+      "unit": "em",
+      "default": 0.2
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "label_margin_bottom",
+      "label": "Label spacing below",
+      "min": 5,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "ENGAGEMENT RINGS"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading font size",
+      "min": 24,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "heading_font_weight",
+      "label": "Heading font weight",
+      "min": 300,
+      "max": 700,
+      "step": 100,
+      "default": 300
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "range",
+      "id": "heading_margin_bottom",
+      "label": "Heading spacing below",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Discover our exquisite collection of handcrafted engagement rings, designed to celebrate your unique love story.</p>"
+    },
+    {
+      "type": "range",
+      "id": "description_font_size",
+      "label": "Description font size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "description_margin_bottom",
+      "label": "Description spacing below",
+      "min": 15,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Content alignment",
+      "options": [
+        {
+          "value": "flex-start",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "flex-end",
+          "label": "Right"
+        }
+      ],
+      "default": "flex-start"
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "label": "Content padding",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "color",
+      "id": "right_bg_color",
+      "label": "Right background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "SHOP NOW"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "Show arrow",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Font size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_font_weight",
+      "label": "Font weight",
+      "min": 300,
+      "max": 700,
+      "step": 100,
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "button_letter_spacing",
+      "label": "Letter spacing",
+      "min": 0,
+      "max": 0.5,
+      "step": 0.1,
+      "unit": "em",
+      "default": 0.1
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "label": "Padding vertical",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "label": "Padding horizontal",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "button_border_width",
+      "label": "Border width",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Border color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Hover text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Hover background",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border_color",
+      "label": "Hover border color",
+      "default": "#1a1a1a"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Split hero"
+    }
+  ]
+}
+{% endschema %}

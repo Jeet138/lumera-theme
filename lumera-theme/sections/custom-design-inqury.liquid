@@ -1,0 +1,662 @@
+<section
+  id="custom-inqury--section"
+  style="
+     background: {{ section.settings.bg_color }};
+    padding-top: 57px;
+     padding-bottom: {{ section.settings.pad_bottom }}px;
+  "
+>
+  <div class="container" style="max-width:1300px; margin:0 auto;">
+    <div class="row" style="align-items:center;">
+      <!-- LEFT CONTENT -->
+      <div class="col-lg-4 col-md-4 col-sm-12" style="padding-right:20px;">
+        <div class="left-content">
+          <h2
+            style="
+              font-size: {{ section.settings.title_size }}px;
+              line-height:1.3;
+              margin:0 0 18px;
+              color: {{ section.settings.title_color }};
+              text-align: {{ section.settings.title_align }};
+              font-family: inherit;
+            "
+          >
+            {{ section.settings['title-left'] }}
+          </h2>
+
+          <p
+            style="
+              color: {{ section.settings.subtitle_color }};
+              margin:0 0 26px;
+              font-family: inherit;
+              font-size: {{ section.settings.subtitle_size }}px;
+              text-align: {{ section.settings.subtitle_align }};
+            "
+          >
+            {{ section.settings['subtitle-left'] }}
+          </p>
+
+          <a
+            class="button-left"
+            href="{{ section.settings.btnurl }}"
+            style="
+              display:inline-block;
+              background: {{ section.settings.btn_bg }};
+              color: {{ section.settings.btn_color }};
+              padding: {{ section.settings.btn_padding }};
+              text-decoration:none;
+              font-weight:500;
+              font-size: {{ section.settings.btn_font }}px;
+              border-radius: {{ section.settings.btn_radius }}px;
+            "
+          >
+            {{ section.settings.btnlabel }}
+          </a>
+        </div>
+      </div>
+
+      <!-- RIGHT SLIDER -->
+      <!-- RIGHT SLIDER -->
+      <div class="col-lg-8 col-md-8 col-sm-12 px-0">
+        <div class="custom-slider">
+          <div class="slider-track">
+            <!-- Original Slides -->
+            {% for block in section.blocks %}
+              <div class="slider__item">
+                <div class="pair">
+                  <!-- Reference -->
+                  <div class="img-card">
+                    <span class="img-label">REFERENCE</span>
+
+                    {% if block.settings.imageurl != blank %}
+                      <a href="{{ block.settings.imageurl }}">
+                    {% endif %}
+
+                    {% if block.settings.brandimage != blank %}
+                      <img
+                        src="{{ block.settings.brandimage | image_url: width: 800 }}"
+                        alt=""
+                        loading="lazy"
+                        width=""
+                        height=""
+                      >
+                    {% endif %}
+
+                    {% if block.settings.imageurl != blank %}
+                      </a>
+                    {% endif %}
+                  </div>
+
+                  <!-- Reality -->
+                  <div class="img-card">
+                    <span class="img-label">REALITY</span>
+
+                    {% if block.settings.imageurlone != blank %}
+                      <a href="{{ block.settings.imageurlone }}">
+                    {% endif %}
+
+                    {% if block.settings.brandimageone != blank %}
+                      <img
+                        src="{{ block.settings.brandimageone | image_url: width: 800 }}"
+                        alt=""
+                        loading="lazy"
+                        width=""
+                        height=""
+                      >
+                    {% endif %}
+
+                    {% if block.settings.imageurlone != blank %}
+                      </a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+
+            <!-- Duplicate Slides (Infinite Loop) -->
+            {% for block in section.blocks %}
+              <div class="slider__item clone">
+                <div class="pair">
+                  <div class="img-card">
+                    <span class="img-label">REFERENCE</span>
+
+                    {% if block.settings.imageurl != blank %}
+                      <a href="{{ block.settings.imageurl }}">
+                    {% endif %}
+
+                    {% if block.settings.brandimage != blank %}
+                      <img
+                        src="{{ block.settings.brandimage | image_url: width: 800 }}"
+                        alt=""
+                        loading="lazy"
+                        width=""
+                        height=""
+                      >
+                    {% endif %}
+
+                    {% if block.settings.imageurl != blank %}
+                      </a>
+                    {% endif %}
+                  </div>
+
+                  <div class="img-card">
+                    <span class="img-label">REALITY</span>
+
+                    {% if block.settings.imageurlone != blank %}
+                      <a href="{{ block.settings.imageurlone }}">
+                    {% endif %}
+
+                    {% if block.settings.brandimageone != blank %}
+                      <img
+                        src="{{ block.settings.brandimageone | image_url: width: 800 }}"
+                        alt=""
+                        loading="lazy"
+                        width=""
+                        height=""
+                      >
+                    {% endif %}
+
+                    {% if block.settings.imageurlone != blank %}
+                      </a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+
+          <!-- Navigation -->
+          <div class="slider-arrows">
+            <button class="prev-slide" aria-label="Previous">&#10094;</button>
+
+            <button class="next-slide" aria-label="Next">&#10095;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+                 /* ===========================
+               Slider Wrapper
+            =========================== */
+
+            #custom-inqury--section .custom-slider{
+                position: relative;
+                overflow: hidden;
+                width: 100%;
+                cursor: grab;
+                user-select: none;
+                -webkit-user-select: none;
+                touch-action: pan-y;
+            }
+
+            #custom-inqury--section .custom-slider:active{
+                cursor: grabbing;
+            }
+
+            /* ===========================
+               Track
+            =========================== */
+
+            #custom-inqury--section .slider-track{
+                display:flex;
+                align-items:center;
+                gap:{{ section.settings.slider_gap }}px;
+                will-change:transform;
+                backface-visibility:hidden;
+            }
+
+            /* ===========================
+               Item
+            =========================== */
+
+            #custom-inqury--section .slider__item{
+                flex:0 0 {{ section.settings.slide_width }}px;
+                min-width:{{ section.settings.slide_width }}px;
+            }
+
+            #custom-inqury--section .pair{
+                display:flex;
+                gap:12px;
+            }
+
+            /* ===========================
+               Image Card
+            =========================== */
+
+            #custom-inqury--section .img-card{
+                position:relative;
+                flex:1;
+                overflow:hidden;
+            }
+
+            #custom-inqury--section .img-card img{
+                width:100%;
+                height:{{ section.settings.img_height }}px;
+                object-fit:cover;
+                display:block;
+                transition:.35s;
+            }
+
+            #custom-inqury--section .img-card:hover img{
+                transform:scale(1.04);
+            }
+
+            /* ===========================
+               Label
+            =========================== */
+
+            #custom-inqury--section .img-label{
+                position:absolute;
+                top:10px;
+                left:10px;
+                z-index:5;
+                padding:4px 10px;
+                font-size:12px;
+                font-weight:600;
+                background:#d1e8f1;
+                color:#00254e;
+                border-radius:30px;
+            }
+
+            /* ===========================
+               Arrows
+            =========================== */
+
+            #custom-inqury--section .slider-arrows{
+                position:absolute;
+                right:15px;
+                bottom:15px;
+                display:flex;
+                gap:10px;
+                z-index:20;
+            }
+
+            #custom-inqury--section .slider-arrows button{
+                width:42px;
+                height:42px;
+                border:none;
+                border-radius:50%;
+                background:#ffffff;
+                color:#000;
+                cursor:pointer;
+                font-size:18px;
+                transition:.3s;
+                box-shadow:0 4px 15px rgba(0,0,0,.12);
+            }
+
+            #custom-inqury--section .slider-arrows button:hover{
+                background:#000;
+                color:#fff;
+            }
+        #custom-inqury--section .slider-track{
+          display:flex;
+          flex-wrap:nowrap;
+          width:max-content;
+          will-change:transform;
+        }
+
+        #custom-inqury--section .custom-slider{
+          overflow:hidden;
+        }
+            /* ===========================
+               Desktop
+            =========================== */
+
+            @media (min-width:992px){
+
+            #custom-inqury--section .left-content h2{
+                width:75%;
+            }
+
+            }
+
+            /* ===========================
+               Tablet
+            =========================== */
+
+            @media(max-width:991px){
+
+            #custom-inqury--section .row{
+                display:flex;
+                flex-direction:column;
+            }
+
+            #custom-inqury--section .col-lg-8{
+                width:100%;
+                max-width:100%;
+                order:1;
+                margin-bottom:25px;
+            }
+
+            #custom-inqury--section .col-lg-4{
+                width:100%;
+                max-width:100%;
+                order:2;
+                text-align:center;
+                padding-right:0;
+            }
+
+            #custom-inqury--section .left-content h2{
+                width:100%;
+            }
+
+            #custom-inqury--section .left-content p{
+                padding:0 8rem;
+            }
+
+            }
+
+           /* ===========================
+       Mobile
+    =========================== */
+
+    @media (max-width: 767px) {
+
+      #custom-inqury--section .custom-slider{
+        overflow: hidden;
+        width: 100%;
+      }
+
+      #custom-inqury--section .slider-track{
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 10px;
+        width: max-content;
+      }
+
+      #custom-inqury--section .slider__item{
+        flex: 0 0 85vw;
+        min-width: 85vw;
+        max-width: 85vw;
+      }
+
+      #custom-inqury--section .pair{
+        display: flex;
+        gap: 8px;
+      }
+
+      #custom-inqury--section .img-card{
+        flex: 1;
+      }
+
+      #custom-inqury--section .img-card img{
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        display: block;
+      }
+
+      #custom-inqury--section .img-label{
+        font-size: 10px;
+        padding: 4px 8px;
+      }
+
+      #custom-inqury--section .left-content h2{
+        width: 100%;
+        font-size: 24px !important;
+        text-align: center;
+      }
+
+      #custom-inqury--section .left-content p{
+        padding: 0;
+        text-align: center;
+      }
+
+      #custom-inqury--section .slider-arrows{
+        right: 10px;
+        bottom: 10px;
+      }
+
+      #custom-inqury--section .slider-arrows button{
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 480px){
+
+      #custom-inqury--section .slider__item{
+        flex: 0 0 92vw;
+        min-width: 92vw;
+        max-width: 92vw;
+      }
+
+      #custom-inqury--section .img-card img{
+        aspect-ratio: 1 / 1;
+      }
+
+      #custom-inqury--section .slider-arrows button{
+        width: 34px;
+        height: 34px;
+      }
+    }
+
+            }
+  </style>
+  <script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  const slider = document.querySelector('#custom-inqury--section .custom-slider');
+
+  if (!slider) return;
+
+  const track = slider.querySelector('.slider-track');
+  const prevBtn = slider.querySelector('.prev-slide');
+  const nextBtn = slider.querySelector('.next-slide');
+
+  if (!track || !prevBtn || !nextBtn) return;
+
+  /* Only original slides */
+  const slides = Array.from(
+    track.querySelectorAll('.slider__item:not(.clone)')
+  );
+
+  if (!slides.length) return;
+
+  const totalSlides = slides.length;
+
+  let currentIndex = 0;
+  let isAnimating = false;
+
+
+  function slideWidth() {
+    const slide = track.querySelector('.slider__item');
+
+    if (!slide) return 0;
+
+    const gap =
+      parseFloat(window.getComputedStyle(track).gap) || 0;
+
+    return slide.offsetWidth + gap;
+  }
+
+
+  function updateSlider(animate = true) {
+
+    track.style.transition = animate
+      ? 'transform .4s ease'
+      : 'none';
+
+    track.style.transform =
+      `translate3d(-${currentIndex * slideWidth()}px, 0, 0)`;
+  }
+
+
+  /* NEXT */
+  nextBtn.addEventListener('click', () => {
+
+    if (isAnimating) return;
+
+    isAnimating = true;
+
+    currentIndex++;
+
+    updateSlider(true);
+  });
+
+
+  /* PREVIOUS */
+  prevBtn.addEventListener('click', () => {
+
+    if (isAnimating) return;
+
+    isAnimating = true;
+
+    if (currentIndex === 0) {
+
+      /*
+       * First se directly last clone par jao
+       */
+      currentIndex = totalSlides;
+
+      updateSlider(false);
+
+      requestAnimationFrame(() => {
+
+        requestAnimationFrame(() => {
+
+          currentIndex = totalSlides - 1;
+
+          updateSlider(true);
+
+        });
+
+      });
+
+    } else {
+
+      currentIndex--;
+
+      updateSlider(true);
+
+    }
+
+  });
+
+
+  /* Transition complete */
+  track.addEventListener('transitionend', () => {
+
+    /*
+     * Clone first slide par pahunch gaye
+     * to silently original first slide par reset
+     */
+    if (currentIndex >= totalSlides) {
+
+      currentIndex = 0;
+
+      updateSlider(false);
+    }
+
+    isAnimating = false;
+
+  });
+
+
+  /* Resize */
+  window.addEventListener('resize', () => {
+
+    updateSlider(false);
+
+  });
+
+
+  /* Initial */
+  updateSlider(false);
+
+});
+</script>
+</section>
+
+{% schema %}
+{
+  "name": "Custom Design",
+  "settings": [
+    { "type": "color", "id": "bg_color", "label": "Background Color", "default": "#00254E" },
+
+    { "type": "range", "id": "pad_top", "label": "Padding Top", "min": 0, "max": 200, "step": 2, "default": 40 },
+    { "type": "range", "id": "pad_bottom", "label": "Padding Bottom", "min": 0, "max": 200, "step": 2, "default": 40 },
+
+    { "type": "text", "id": "title-left", "label": "Title", "default": "Your Perfect Ring, Made to Order." },
+    { "type": "range", "id": "title_size", "label": "Title Font Size", "min": 14, "max": 60, "step": 1, "default": 28 },
+    { "type": "color", "id": "title_color", "label": "Title Color", "default": "#ffffff" },
+    {
+      "type": "select",
+      "id": "title_align",
+      "label": "Title Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+
+    {
+      "type": "textarea",
+      "id": "subtitle-left",
+      "label": "Subtitle",
+      "default": "From stone to setting, we craft every ring by hand."
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle Font Size",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "default": 14
+    },
+    { "type": "color", "id": "subtitle_color", "label": "Subtitle Color", "default": "#dfeef6" },
+    {
+      "type": "select",
+      "id": "subtitle_align",
+      "label": "Subtitle Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+
+    { "type": "text", "id": "btnlabel", "label": "Button Label", "default": "SUBMIT CUSTOM DESIGN INQUIRY" },
+    { "type": "url", "id": "btnurl", "label": "Button Link" },
+
+    { "type": "color", "id": "btn_bg", "label": "Button Background", "default": "#ffffff" },
+    { "type": "color", "id": "btn_color", "label": "Button Text Color", "default": "#042e4b" },
+    { "type": "text", "id": "btn_padding", "label": "Button Padding", "default": "12px 16px" },
+    { "type": "range", "id": "btn_font", "label": "Button Font Size", "min": 10, "max": 30, "step": 1, "default": 16 },
+    {
+      "type": "range",
+      "id": "btn_radius",
+      "label": "Button Border Radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "default": 4
+    },
+
+    { "type": "range", "id": "slider_gap", "label": "Slider Gap (px)", "min": 0, "max": 60, "step": 2, "default": 22 },
+    { "type": "range", "id": "slide_width", "label": "Slide Width", "min": 200, "max": 500, "step": 5, "default": 360 },
+    { "type": "range", "id": "img_height", "label": "Image Height", "min": 80, "max": 500, "step": 5, "default": 200 }
+  ],
+
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slider Item",
+      "settings": [
+        { "type": "image_picker", "id": "brandimage", "label": "Reference Image" },
+        { "type": "url", "id": "imageurl", "label": "Reference Image Link" },
+        { "type": "image_picker", "id": "brandimageone", "label": "Reality Image" },
+        { "type": "url", "id": "imageurlone", "label": "Reality Image Link" }
+      ]
+    }
+  ],
+
+  "presets": [{ "name": "Custom Design" }]
+}
+{% endschema %}

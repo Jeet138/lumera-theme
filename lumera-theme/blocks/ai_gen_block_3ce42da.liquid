@@ -1,0 +1,762 @@
+{% doc %}
+  @prompt
+    Find Out Ring Size Equivalents Globally iska ak section create kerna he jisme pura chart US CA
+    UK AU IE NZ
+    JP IN CN SA
+    ES IT NL CH
+    Inside-Diameter Circumference (mm)
+    3	F	4	4.25	14.05
+    3.25	F.5	-	4.75	14.24
+    3.50	G	5	5.5	14.45
+    3.75	G.5	6	6	14.65
+    4	H	7	6.75	14.88
+    4.25	H.5	-	7.5	15.09
+    4.5	I	8	8	15.29
+    4.75	J	-	8.75	15.49
+    5	J 1/2	9	9.25	15.70
+    5.25	K	-	10	15.90
+    5.5	K 1/2	10	10.5	16.10 yesa 15 tak tabel me bana ker chaiye muje , 6.5 tak hi aa rha he 15 tak kerna he 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-ring-size-chart-{{ ai_gen_id }} {
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: {{ block.settings.section_padding }}px 0;
+    background-color: {{ block.settings.background_color }};
+    display: block;
+  }
+
+  .ai-ring-size-chart__container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-ring-size-chart__heading-{{ ai_gen_id }} {
+    text-align: {{ block.settings.heading_alignment }};
+    color: {{ block.settings.heading_color }};
+    margin-bottom: {{ block.settings.heading_spacing }}px;
+    font-size: {{ block.settings.heading_size }}px;
+  }
+
+  .ai-ring-size-chart__description-{{ ai_gen_id }} {
+    text-align: {{ block.settings.heading_alignment }};
+    color: {{ block.settings.text_color }};
+    margin-bottom: 30px;
+    font-size: {{ block.settings.text_size }}px;
+  }
+
+  .ai-ring-size-chart__table-wrapper-{{ ai_gen_id }} {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: {{ block.settings.table_border_radius }}px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-ring-size-chart__table-{{ ai_gen_id }} {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: {{ block.settings.table_background }};
+    font-size: {{ block.settings.table_text_size }}px;
+  }
+
+  .ai-ring-size-chart__table-{{ ai_gen_id }} thead {
+    background-color: {{ block.settings.header_background }};
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .ai-ring-size-chart__table-{{ ai_gen_id }} th {
+    padding: {{ block.settings.cell_padding }}px;
+    text-align: center;
+    font-weight: 600;
+    color: {{ block.settings.header_text_color }};
+    border: 1px solid {{ block.settings.border_color }};
+    white-space: nowrap;
+    font-size: {{ block.settings.header_text_size }}px;
+  }
+
+  .ai-ring-size-chart__table-{{ ai_gen_id }} td {
+    padding: {{ block.settings.cell_padding }}px;
+    text-align: center;
+    color: {{ block.settings.text_color }};
+    border: 1px solid {{ block.settings.border_color }};
+  }
+
+  .ai-ring-size-chart__table-{{ ai_gen_id }} tbody tr:nth-child(even) {
+    background-color: {{ block.settings.row_alternate_background }};
+  }
+
+  .ai-ring-size-chart__table-{{ ai_gen_id }} tbody tr:hover {
+    background-color: {{ block.settings.row_hover_background }};
+  }
+
+  .ai-ring-size-chart__country-group-{{ ai_gen_id }} {
+    font-size: 11px;
+    color: {{ block.settings.text_color }};
+    opacity: 0.8;
+    display: block;
+    margin-top: 4px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-ring-size-chart__heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.7 }}px;
+    }
+
+    .ai-ring-size-chart__table-{{ ai_gen_id }} {
+      font-size: {{ block.settings.table_text_size | times: 0.85 }}px;
+    }
+
+    .ai-ring-size-chart__table-{{ ai_gen_id }} th {
+      padding: {{ block.settings.cell_padding | times: 0.7 }}px;
+      font-size: {{ block.settings.header_text_size | times: 0.85 }}px;
+    }
+
+    .ai-ring-size-chart__table-{{ ai_gen_id }} td {
+      padding: {{ block.settings.cell_padding | times: 0.7 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-ring-size-chart-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-ring-size-chart__container-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank %}
+      <h2 class="ai-ring-size-chart__heading-{{ ai_gen_id }}">
+        {{ block.settings.heading }}
+      </h2>
+    {% endif %}
+
+    {% if block.settings.description != blank %}
+      <div class="ai-ring-size-chart__description-{{ ai_gen_id }}">
+        {{ block.settings.description }}
+      </div>
+    {% endif %}
+
+    <div class="ai-ring-size-chart__table-wrapper-{{ ai_gen_id }}">
+      <table class="ai-ring-size-chart__table-{{ ai_gen_id }}">
+        <thead>
+          <tr>
+            <th>US</th>
+            <th>
+              UK / AU / IE / NZ
+              <span class="ai-ring-size-chart__country-group-{{ ai_gen_id }}">United Kingdom, Australia, Ireland, New Zealand</span>
+            </th>
+            <th>
+              JP / IN / CN / SA
+              <span class="ai-ring-size-chart__country-group-{{ ai_gen_id }}">Japan, India, China, Saudi Arabia</span>
+            </th>
+            <th>
+              ES / IT / NL / CH
+              <span class="ai-ring-size-chart__country-group-{{ ai_gen_id }}">Spain, Italy, Netherlands, Switzerland</span>
+            </th>
+            <th>Inside Diameter (mm)</th>
+            <th>Circumference (mm)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>3</td>
+            <td>F</td>
+            <td>4</td>
+            <td>4.25</td>
+            <td>14.05</td>
+            <td>44.2</td>
+          </tr>
+          <tr>
+            <td>3.25</td>
+            <td>F.5</td>
+            <td>-</td>
+            <td>4.75</td>
+            <td>14.24</td>
+            <td>44.8</td>
+          </tr>
+          <tr>
+            <td>3.5</td>
+            <td>G</td>
+            <td>5</td>
+            <td>5.5</td>
+            <td>14.45</td>
+            <td>45.5</td>
+          </tr>
+          <tr>
+            <td>3.75</td>
+            <td>G.5</td>
+            <td>6</td>
+            <td>6</td>
+            <td>14.65</td>
+            <td>46.0</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>H</td>
+            <td>7</td>
+            <td>6.75</td>
+            <td>14.88</td>
+            <td>46.8</td>
+          </tr>
+          <tr>
+            <td>4.25</td>
+            <td>H.5</td>
+            <td>-</td>
+            <td>7.5</td>
+            <td>15.09</td>
+            <td>47.4</td>
+          </tr>
+          <tr>
+            <td>4.5</td>
+            <td>I</td>
+            <td>8</td>
+            <td>8</td>
+            <td>15.29</td>
+            <td>48.0</td>
+          </tr>
+          <tr>
+            <td>4.75</td>
+            <td>J</td>
+            <td>-</td>
+            <td>8.75</td>
+            <td>15.49</td>
+            <td>48.7</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>J 1/2</td>
+            <td>9</td>
+            <td>9.25</td>
+            <td>15.70</td>
+            <td>49.3</td>
+          </tr>
+          <tr>
+            <td>5.25</td>
+            <td>K</td>
+            <td>-</td>
+            <td>10</td>
+            <td>15.90</td>
+            <td>50.0</td>
+          </tr>
+          <tr>
+            <td>5.5</td>
+            <td>K 1/2</td>
+            <td>10</td>
+            <td>10.5</td>
+            <td>16.10</td>
+            <td>50.6</td>
+          </tr>
+          <tr>
+            <td>5.75</td>
+            <td>L</td>
+            <td>-</td>
+            <td>11.25</td>
+            <td>16.31</td>
+            <td>51.2</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>L 1/2</td>
+            <td>11</td>
+            <td>12</td>
+            <td>16.51</td>
+            <td>51.9</td>
+          </tr>
+          <tr>
+            <td>6.25</td>
+            <td>M</td>
+            <td>-</td>
+            <td>12.5</td>
+            <td>16.71</td>
+            <td>52.5</td>
+          </tr>
+          <tr>
+            <td>6.5</td>
+            <td>M 1/2</td>
+            <td>12</td>
+            <td>13</td>
+            <td>16.92</td>
+            <td>53.1</td>
+          </tr>
+          <tr>
+            <td>6.75</td>
+            <td>N</td>
+            <td>-</td>
+            <td>13.5</td>
+            <td>17.12</td>
+            <td>53.8</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>N 1/2</td>
+            <td>13</td>
+            <td>14</td>
+            <td>17.32</td>
+            <td>54.4</td>
+          </tr>
+          <tr>
+            <td>7.25</td>
+            <td>O</td>
+            <td>-</td>
+            <td>14.5</td>
+            <td>17.53</td>
+            <td>55.1</td>
+          </tr>
+          <tr>
+            <td>7.5</td>
+            <td>O 1/2</td>
+            <td>14</td>
+            <td>15</td>
+            <td>17.73</td>
+            <td>55.7</td>
+          </tr>
+          <tr>
+            <td>7.75</td>
+            <td>P</td>
+            <td>-</td>
+            <td>15.75</td>
+            <td>17.93</td>
+            <td>56.3</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>P 1/2</td>
+            <td>15</td>
+            <td>16.25</td>
+            <td>18.14</td>
+            <td>57.0</td>
+          </tr>
+          <tr>
+            <td>8.25</td>
+            <td>Q</td>
+            <td>-</td>
+            <td>17</td>
+            <td>18.34</td>
+            <td>57.6</td>
+          </tr>
+          <tr>
+            <td>8.5</td>
+            <td>Q 1/2</td>
+            <td>16</td>
+            <td>17.5</td>
+            <td>18.54</td>
+            <td>58.3</td>
+          </tr>
+          <tr>
+            <td>8.75</td>
+            <td>R</td>
+            <td>-</td>
+            <td>18</td>
+            <td>18.75</td>
+            <td>58.9</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>R 1/2</td>
+            <td>17</td>
+            <td>18.5</td>
+            <td>18.95</td>
+            <td>59.5</td>
+          </tr>
+          <tr>
+            <td>9.25</td>
+            <td>S</td>
+            <td>-</td>
+            <td>19</td>
+            <td>19.15</td>
+            <td>60.2</td>
+          </tr>
+          <tr>
+            <td>9.5</td>
+            <td>S 1/2</td>
+            <td>18</td>
+            <td>19.75</td>
+            <td>19.35</td>
+            <td>60.8</td>
+          </tr>
+          <tr>
+            <td>9.75</td>
+            <td>T</td>
+            <td>-</td>
+            <td>20.25</td>
+            <td>19.56</td>
+            <td>61.4</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>T 1/2</td>
+            <td>19</td>
+            <td>21</td>
+            <td>19.76</td>
+            <td>62.1</td>
+          </tr>
+          <tr>
+            <td>10.25</td>
+            <td>U</td>
+            <td>-</td>
+            <td>21.5</td>
+            <td>19.96</td>
+            <td>62.7</td>
+          </tr>
+          <tr>
+            <td>10.5</td>
+            <td>U 1/2</td>
+            <td>20</td>
+            <td>22</td>
+            <td>20.17</td>
+            <td>63.4</td>
+          </tr>
+          <tr>
+            <td>10.75</td>
+            <td>V</td>
+            <td>-</td>
+            <td>22.5</td>
+            <td>20.37</td>
+            <td>64.0</td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td>V 1/2</td>
+            <td>21</td>
+            <td>23</td>
+            <td>20.57</td>
+            <td>64.6</td>
+          </tr>
+          <tr>
+            <td>11.25</td>
+            <td>W</td>
+            <td>-</td>
+            <td>23.5</td>
+            <td>20.78</td>
+            <td>65.3</td>
+          </tr>
+          <tr>
+            <td>11.5</td>
+            <td>W 1/2</td>
+            <td>22</td>
+            <td>24</td>
+            <td>20.98</td>
+            <td>65.9</td>
+          </tr>
+          <tr>
+            <td>11.75</td>
+            <td>X</td>
+            <td>-</td>
+            <td>24.75</td>
+            <td>21.18</td>
+            <td>66.6</td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td>X 1/2</td>
+            <td>23</td>
+            <td>25.25</td>
+            <td>21.39</td>
+            <td>67.2</td>
+          </tr>
+          <tr>
+            <td>12.25</td>
+            <td>Y</td>
+            <td>-</td>
+            <td>26</td>
+            <td>21.59</td>
+            <td>67.8</td>
+          </tr>
+          <tr>
+            <td>12.5</td>
+            <td>Y 1/2</td>
+            <td>24</td>
+            <td>26.5</td>
+            <td>21.79</td>
+            <td>68.5</td>
+          </tr>
+          <tr>
+            <td>12.75</td>
+            <td>Z</td>
+            <td>-</td>
+            <td>27</td>
+            <td>22.00</td>
+            <td>69.1</td>
+          </tr>
+          <tr>
+            <td>13</td>
+            <td>Z 1/2</td>
+            <td>25</td>
+            <td>27.5</td>
+            <td>22.20</td>
+            <td>69.7</td>
+          </tr>
+          <tr>
+            <td>13.25</td>
+            <td>Z+1</td>
+            <td>-</td>
+            <td>28</td>
+            <td>22.40</td>
+            <td>70.4</td>
+          </tr>
+          <tr>
+            <td>13.5</td>
+            <td>Z+1.5</td>
+            <td>26</td>
+            <td>28.75</td>
+            <td>22.60</td>
+            <td>71.0</td>
+          </tr>
+          <tr>
+            <td>13.75</td>
+            <td>Z+2</td>
+            <td>-</td>
+            <td>29.25</td>
+            <td>22.81</td>
+            <td>71.7</td>
+          </tr>
+          <tr>
+            <td>14</td>
+            <td>Z+2.5</td>
+            <td>27</td>
+            <td>30</td>
+            <td>23.01</td>
+            <td>72.3</td>
+          </tr>
+          <tr>
+            <td>14.25</td>
+            <td>Z+3</td>
+            <td>-</td>
+            <td>30.5</td>
+            <td>23.21</td>
+            <td>72.9</td>
+          </tr>
+          <tr>
+            <td>14.5</td>
+            <td>Z+3.5</td>
+            <td>28</td>
+            <td>31</td>
+            <td>23.42</td>
+            <td>73.6</td>
+          </tr>
+          <tr>
+            <td>14.75</td>
+            <td>Z+4</td>
+            <td>-</td>
+            <td>31.75</td>
+            <td>23.62</td>
+            <td>74.2</td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td>Z+4.5</td>
+            <td>29</td>
+            <td>32.25</td>
+            <td>23.83</td>
+            <td>74.8</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ring size chart",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Find Out Ring Size Equivalents Globally"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Use this comprehensive chart to find your perfect ring size across different international sizing standards.</p>"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "table_background",
+      "label": "Table background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "header_background",
+      "label": "Header background",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "header_text_color",
+      "label": "Header text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "row_alternate_background",
+      "label": "Alternate row background",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "color",
+      "id": "row_hover_background",
+      "label": "Row hover background",
+      "default": "#f0f0f0"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Description size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "header_text_size",
+      "label": "Table header size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "range",
+      "id": "table_text_size",
+      "label": "Table text size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "label": "Heading spacing",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "cell_padding",
+      "label": "Cell padding",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "table_border_radius",
+      "label": "Table border radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ring size chart"
+    }
+  ]
+}
+{% endschema %}

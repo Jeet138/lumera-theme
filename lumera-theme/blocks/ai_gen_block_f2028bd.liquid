@@ -1,0 +1,1042 @@
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+      .ai-ring-carousel-{{ ai_gen_id }} {
+        display: block;
+        width: 100%;
+        background: #fff;
+       padding: 40px 0;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .ai-ring-carousel-container-{{ ai_gen_id }} {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .ai-ring-carousel-header-{{ ai_gen_id }} {
+        text-align: center;
+         margin-bottom: 25px;
+      }
+
+      .ai-ring-carousel-title-{{ ai_gen_id }} {
+        font-size: {{ block.settings.title_size }}px;
+        font-weight: 300;
+        color: {{ block.settings.title_color }};
+        margin: 0 0 16px;
+        letter-spacing: 0.02em;
+      }
+
+      .ai-ring-carousel-subtitle-{{ ai_gen_id }} {
+        font-size: {{ block.settings.subtitle_size }}px;
+        color: {{ block.settings.subtitle_color }};
+        margin: 0;
+        line-height: 1.6;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+
+      .ai-ring-carousel-stage-{{ ai_gen_id }} {
+        position: relative;
+        height: 480px;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        perspective: 1500px;
+   padding-bottom: 60px;
+      }
+
+      .ai-ring-carousel-track-{{ ai_gen_id }} {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+      }
+
+      .ai-ring-carousel-item-{{ ai_gen_id }} {
+        position: absolute;
+        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        opacity: 0;
+        pointer-events: none;
+          bottom: 60px;
+      }
+
+      .ai-ring-carousel-item-{{ ai_gen_id }}.active {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .ai-ring-carousel-card-{{ ai_gen_id }} {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .ai-ring-carousel-link-{{ ai_gen_id }} {
+        display: block;
+        text-decoration: none;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .ai-ring-carousel-link-{{ ai_gen_id }}:hover {
+        transform: translateY(-8px);
+      }
+
+      .ai-ring-carousel-image-wrapper-{{ ai_gen_id }} {
+        position: relative;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-bottom: 40px;
+      }
+
+      .ai-ring-carousel-image-{{ ai_gen_id }} {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: contain;
+        position: relative;
+        z-index: 2;
+      }
+
+     .ai-ring-carousel-image-wrapper-{{ ai_gen_id }}{
+        position:relative;
+        overflow:visible;
+        padding-bottom:25px;
+    }
+
+  .ai-ring-carousel-image-wrapper-{{ ai_gen_id }}::after{
+      content:"";
+      position:absolute;
+      left:50%;
+      bottom:10px;
+      transform:translateX(-50%);
+
+      width:60%;
+      height:18px;
+
+      background:rgba(0,0,0,.12);
+      border-radius:50%;
+
+      filter:blur(18px);
+
+      z-index:0;
+  }
+
+    .ai-ring-carousel-image-wrapper-{{ ai_gen_id }}::after{
+        content:"";
+        position:absolute;
+
+        left:50%;
+        bottom:24px;
+
+        transform:translateX(-50%);
+
+        width:65%;
+        height:14px;
+
+        border-radius:50%;
+
+        background:radial-gradient(
+            ellipse,
+            rgba(0,0,0,.08) 0%,
+            rgba(0,0,0,.03) 40%,
+            transparent 80%
+        );
+
+        filter:blur(12px);
+
+        z-index:0;
+    }
+      .ai-ring-carousel-info-wrapper-{{ ai_gen_id }} {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 600px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+
+      .ai-ring-carousel-item-{{ ai_gen_id }}.center .ai-ring-carousel-info-wrapper-{{ ai_gen_id }} {
+        opacity: 1;
+      }
+
+      .ai-ring-carousel-info-{{ ai_gen_id }} {
+        text-align: center;
+        flex: 1;
+      }
+
+      .ai-ring-carousel-item-title-{{ ai_gen_id }} {
+        font-size: {{ block.settings.item_title_size }}px;
+        font-weight: 500;
+        color: {{ block.settings.item_title_color }};
+        margin: 0 0 8px;
+      }
+
+      .ai-ring-carousel-item-subtitle-{{ ai_gen_id }} {
+        font-size: {{ block.settings.item_subtitle_size }}px;
+        color: {{ block.settings.item_subtitle_color }};
+        margin: 0;
+        line-height: 1.5;
+      }
+
+      .ai-ring-carousel-arrow-{{ ai_gen_id }} {
+        width: {{ block.settings.arrow_size }}px;
+        height: {{ block.settings.arrow_size }}px;
+        border-radius: 50%;
+        background: {{ block.settings.arrow_bg_color }};
+        border: 2px solid {{ block.settings.arrow_border_color }};
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        flex-shrink: 0;
+      }
+
+      .ai-ring-carousel-arrow-{{ ai_gen_id }}:hover {
+        background: {{ block.settings.arrow_hover_bg_color }};
+        transform: scale(1.1);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .ai-ring-carousel-arrow-{{ ai_gen_id }} svg {
+        width: 24px;
+        height: 24px;
+        stroke: {{ block.settings.arrow_icon_color }};
+        stroke-width: 2;
+      }
+
+      .ai-ring-carousel-arrow-{{ ai_gen_id }}:hover svg {
+        stroke: {{ block.settings.arrow_hover_icon_color }};
+      }
+
+      .ai-ring-carousel-item-{{ ai_gen_id }}.center {
+        z-index: 10;
+          bottom: 60px;
+      }
+
+      .ai-ring-carousel-item-{{ ai_gen_id }}.center .ai-ring-carousel-image-wrapper-{{ ai_gen_id }} {
+        width: 350px;
+      }
+
+      .ai-ring-carousel-item-{{ ai_gen_id }}.left-1,
+      .ai-ring-carousel-item-{{ ai_gen_id }}.right-1 {
+        z-index: 8;
+      }
+
+      .ai-ring-carousel-item-{{ ai_gen_id }}.left-1 .ai-ring-carousel-image-wrapper-{{ ai_gen_id }},
+      .ai-ring-carousel-item-{{ ai_gen_id }}.right-1 .ai-ring-carousel-image-wrapper-{{ ai_gen_id }} {
+        width: 280px;
+      }
+
+      .ai-ring-carousel-item-{{ ai_gen_id }}.left-2,
+      .ai-ring-carousel-item-{{ ai_gen_id }}.right-2 {
+        z-index: 6;
+      }
+
+      .ai-ring-carousel-item-{{ ai_gen_id }}.left-2 .ai-ring-carousel-image-wrapper-{{ ai_gen_id }},
+      .ai-ring-carousel-item-{{ ai_gen_id }}.right-2 .ai-ring-carousel-image-wrapper-{{ ai_gen_id }} {
+        width: 200px;
+      }
+
+      .ai-ring-carousel-item-{{ ai_gen_id }}.left-1 {
+        transform: translate(-320px, -100px) scale(0.85);
+      }
+
+      .ai-ring-carousel-item-{{ ai_gen_id }}.right-1 {
+        transform: translate(320px, -100px) scale(0.85);
+      }
+
+      .ai-ring-carousel-item-{{ ai_gen_id }}.left-2 {
+        transform: translate(-520px, -180px) scale(0.7);
+      }
+
+      .ai-ring-carousel-item-{{ ai_gen_id }}.right-2 {
+        transform: translate(520px, -180px) scale(0.7);
+      }
+
+      @media screen and (max-width: 1024px) {
+        .ai-ring-carousel-stage-{{ ai_gen_id }} {
+          height: 600px;
+          padding-bottom: 100px;
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }} {
+          bottom: 100px;
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }}.center {
+          bottom: 100px;
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }}.center .ai-ring-carousel-image-wrapper-{{ ai_gen_id }} {
+          width: 320px;
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }}.left-1 .ai-ring-carousel-image-wrapper-{{ ai_gen_id }},
+        .ai-ring-carousel-item-{{ ai_gen_id }}.right-1 .ai-ring-carousel-image-wrapper-{{ ai_gen_id }} {
+          width: 220px;
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }}.left-2 .ai-ring-carousel-image-wrapper-{{ ai_gen_id }},
+        .ai-ring-carousel-item-{{ ai_gen_id }}.right-2 .ai-ring-carousel-image-wrapper-{{ ai_gen_id }} {
+          width: 160px;
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }}.left-1 {
+          transform: translate(-240px, -80px) scale(0.85);
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }}.right-1 {
+          transform: translate(240px, -80px) scale(0.85);
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }}.left-2 {
+          transform: translate(-400px, -140px) scale(0.7);
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }}.right-2 {
+          transform: translate(400px, -140px) scale(0.7);
+        }
+
+        .ai-ring-carousel-info-wrapper-{{ ai_gen_id }} {
+          gap: 20px;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        .ai-ring-carousel-{{ ai_gen_id }} {
+          padding: 60px 0;
+        }
+
+        .ai-ring-carousel-header-{{ ai_gen_id }} {
+          margin-bottom: 40px;
+        }
+
+        .ai-ring-carousel-title-{{ ai_gen_id }} {
+          font-size: {{ block.settings.title_size | times: 0.7 }}px;
+        }
+
+        .ai-ring-carousel-subtitle-{{ ai_gen_id }} {
+          font-size: {{ block.settings.subtitle_size | times: 0.9 }}px;
+        }
+
+        .ai-ring-carousel-stage-{{ ai_gen_id }} {
+          height: 500px;
+          padding-bottom: 80px;
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }} {
+          bottom: 80px;
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }}.center {
+          bottom: 80px;
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }}.center .ai-ring-carousel-image-wrapper-{{ ai_gen_id }} {
+          width: 260px;
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }}.left-1 .ai-ring-carousel-image-wrapper-{{ ai_gen_id }},
+        .ai-ring-carousel-item-{{ ai_gen_id }}.right-1 .ai-ring-carousel-image-wrapper-{{ ai_gen_id }} {
+          width: 180px;
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }}.left-2 .ai-ring-carousel-image-wrapper-{{ ai_gen_id }},
+        .ai-ring-carousel-item-{{ ai_gen_id }}.right-2 .ai-ring-carousel-image-wrapper-{{ ai_gen_id }} {
+          width: 120px;
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }}.left-1 {
+          transform: translate(-160px, -60px) scale(0.85);
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }}.right-1 {
+          transform: translate(160px, -60px) scale(0.85);
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }}.left-2 {
+          transform: translate(-280px, -100px) scale(0.7);
+        }
+
+        .ai-ring-carousel-item-{{ ai_gen_id }}.right-2 {
+          transform: translate(280px, -100px) scale(0.7);
+        }
+
+        .ai-ring-carousel-info-wrapper-{{ ai_gen_id }} {
+          gap: 15px;
+          max-width: 90%;
+        }
+
+        .ai-ring-carousel-item-title-{{ ai_gen_id }} {
+          font-size: {{ block.settings.item_title_size | times: 0.85 }}px;
+        }
+
+        .ai-ring-carousel-item-subtitle-{{ ai_gen_id }} {
+          font-size: {{ block.settings.item_subtitle_size | times: 0.9 }}px;
+        }
+      }
+{% endstyle %}
+
+<ring-carousel-{{ ai_gen_id }} class="ai-ring-carousel-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-ring-carousel-container-{{ ai_gen_id }}">
+    <div class="ai-ring-carousel-header-{{ ai_gen_id }}">
+      {% if block.settings.main_title != blank %}
+        <h2 class="ai-ring-carousel-title-{{ ai_gen_id }}">{{ block.settings.main_title }}</h2>
+      {% endif %}
+      {% if block.settings.main_subtitle != blank %}
+        <p class="ai-ring-carousel-subtitle-{{ ai_gen_id }}">{{ block.settings.main_subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <div class="ai-ring-carousel-stage-{{ ai_gen_id }}">
+      <div class="ai-ring-carousel-track-{{ ai_gen_id }}" data-carousel-track>
+        {% for i in (1..12) %}
+          {% liquid
+            assign image_key = 'ring_image_' | append: i
+            assign title_key = 'ring_title_' | append: i
+            assign subtitle_key = 'ring_subtitle_' | append: i
+            assign link_key = 'ring_link_' | append: i
+
+            assign ring_image = block.settings[image_key]
+            assign ring_title = block.settings[title_key]
+            assign ring_subtitle = block.settings[subtitle_key]
+            assign ring_link = block.settings[link_key]
+          %}
+
+          {% if ring_image != blank %}
+            <div class="ai-ring-carousel-item-{{ ai_gen_id }}" data-index="{{ forloop.index0 }}">
+              <div class="ai-ring-carousel-card-{{ ai_gen_id }}">
+                {% if ring_link != blank %}
+                  <a href="{{ ring_link }}" class="ai-ring-carousel-link-{{ ai_gen_id }}">
+                {% else %}
+                  <div class="ai-ring-carousel-link-{{ ai_gen_id }}">
+                {% endif %}
+                <div class="ai-ring-carousel-image-wrapper-{{ ai_gen_id }}">
+                  <img
+                    src="{{ ring_image | image_url: width: 800 }}"
+                    alt=""
+                    class="ai-ring-carousel-reflection-{{ ai_gen_id }}"
+                    aria-hidden="true"
+                    loading="lazy"
+                  >
+                </div>
+                {% if ring_link != blank %}
+                  </a>
+                {% else %}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="ai-ring-carousel-info-wrapper-{{ ai_gen_id }}">
+                <button
+                  class="ai-ring-carousel-arrow-{{ ai_gen_id }} ai-ring-carousel-prev-{{ ai_gen_id }}"
+                  aria-label="Previous ring style"
+                  data-carousel-prev
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                  </svg>
+                </button>
+
+                {% if ring_title != blank or ring_subtitle != blank %}
+                  <div class="ai-ring-carousel-info-{{ ai_gen_id }}">
+                    {% if ring_title != blank %}
+                      <h3 class="ai-ring-carousel-item-title-{{ ai_gen_id }}">{{ ring_title }}</h3>
+                    {% endif %}
+                    {% if ring_subtitle != blank %}
+                      <p class="ai-ring-carousel-item-subtitle-{{ ai_gen_id }}">{{ ring_subtitle }}</p>
+                    {% endif %}
+                  </div>
+                {% endif %}
+
+                <button
+                  class="ai-ring-carousel-arrow-{{ ai_gen_id }} ai-ring-carousel-next-{{ ai_gen_id }}"
+                  aria-label="Next ring style"
+                  data-carousel-next
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</ring-carousel-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class RingCarousel{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.currentIndex = 0;
+        this.items = [];
+        this.isAnimating = false;
+      }
+
+      connectedCallback() {
+        this.track = this.querySelector('[data-carousel-track]');
+        this.items = Array.from(this.querySelectorAll('.ai-ring-carousel-item-{{ ai_gen_id }}'));
+
+        if (this.items.length === 0) return;
+
+        this.setupEventListeners();
+        this.updatePositions();
+      }
+
+      setupEventListeners() {
+        this.addEventListener('click', (e) => {
+          const prevBtn = e.target.closest('[data-carousel-prev]');
+          const nextBtn = e.target.closest('[data-carousel-next]');
+
+          if (prevBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.navigate(-1);
+          } else if (nextBtn) {
+            e.preventDefault();
+            e.stopPropagation();
+            this.navigate(1);
+          }
+        });
+
+        let startX = 0;
+        let endX = 0;
+
+        this.track.addEventListener('touchstart', (e) => {
+          startX = e.touches[0].clientX;
+        });
+
+        this.track.addEventListener('touchend', (e) => {
+          endX = e.changedTouches[0].clientX;
+          const diff = startX - endX;
+
+          if (Math.abs(diff) > 50) {
+            if (diff > 0) {
+              this.navigate(1);
+            } else {
+              this.navigate(-1);
+            }
+          }
+        });
+      }
+
+      navigate(direction) {
+        if (this.isAnimating || this.items.length === 0) return;
+
+        this.isAnimating = true;
+        this.currentIndex = (this.currentIndex + direction + this.items.length) % this.items.length;
+        this.updatePositions();
+
+        setTimeout(() => {
+          this.isAnimating = false;
+        }, 600);
+      }
+
+      updatePositions() {
+        this.items.forEach((item, index) => {
+          item.classList.remove('center', 'left-1', 'left-2', 'right-1', 'right-2', 'active');
+
+          const position = (index - this.currentIndex + this.items.length) % this.items.length;
+
+          if (position === 0) {
+            item.classList.add('center', 'active');
+          } else if (position === 1) {
+            item.classList.add('right-1', 'active');
+          } else if (position === this.items.length - 1) {
+            item.classList.add('left-1', 'active');
+          } else if (position === 2) {
+            item.classList.add('right-2', 'active');
+          } else if (position === this.items.length - 2) {
+            item.classList.add('left-2', 'active');
+          }
+        });
+      }
+    }
+
+    customElements.define('ring-carousel-{{ ai_gen_id }}', RingCarousel{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Ring styles carousel",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Main heading"
+    },
+    {
+      "type": "text",
+      "id": "main_title",
+      "label": "Title",
+      "default": "Discover Styles"
+    },
+    {
+      "type": "textarea",
+      "id": "main_subtitle",
+      "label": "Subtitle",
+      "default": "Discover diverse engagement ring styles, each embodying a distinct symbol of love and devotion"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#fff"
+    },
+    {
+      "type": "header",
+      "content": "Ring 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "ring_image_1",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "ring_title_1",
+      "label": "Title",
+      "default": "Solitaire"
+    },
+    {
+      "type": "textarea",
+      "id": "ring_subtitle_1",
+      "label": "Description",
+      "default": "Timeless elegance with a single diamond"
+    },
+    {
+      "type": "url",
+      "id": "ring_link_1",
+      "label": "Collection link"
+    },
+    {
+      "type": "header",
+      "content": "Ring 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "ring_image_2",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "ring_title_2",
+      "label": "Title",
+      "default": "Halo"
+    },
+    {
+      "type": "textarea",
+      "id": "ring_subtitle_2",
+      "label": "Description",
+      "default": "Surrounded by brilliance"
+    },
+    {
+      "type": "url",
+      "id": "ring_link_2",
+      "label": "Collection link"
+    },
+    {
+      "type": "header",
+      "content": "Ring 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "ring_image_3",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "ring_title_3",
+      "label": "Title",
+      "default": "Vintage"
+    },
+    {
+      "type": "textarea",
+      "id": "ring_subtitle_3",
+      "label": "Description",
+      "default": "Classic romance reimagined"
+    },
+    {
+      "type": "url",
+      "id": "ring_link_3",
+      "label": "Collection link"
+    },
+    {
+      "type": "header",
+      "content": "Ring 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "ring_image_4",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "ring_title_4",
+      "label": "Title",
+      "default": "Three Stone"
+    },
+    {
+      "type": "textarea",
+      "id": "ring_subtitle_4",
+      "label": "Description",
+      "default": "Past, present, and future"
+    },
+    {
+      "type": "url",
+      "id": "ring_link_4",
+      "label": "Collection link"
+    },
+    {
+      "type": "header",
+      "content": "Ring 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "ring_image_5",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "ring_title_5",
+      "label": "Title",
+      "default": "Pavé"
+    },
+    {
+      "type": "textarea",
+      "id": "ring_subtitle_5",
+      "label": "Description",
+      "default": "Continuous sparkle"
+    },
+    {
+      "type": "url",
+      "id": "ring_link_5",
+      "label": "Collection link"
+    },
+    {
+      "type": "header",
+      "content": "Ring 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "ring_image_6",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "ring_title_6",
+      "label": "Title",
+      "default": "Side Stone"
+    },
+    {
+      "type": "textarea",
+      "id": "ring_subtitle_6",
+      "label": "Description",
+      "default": "Enhanced brilliance"
+    },
+    {
+      "type": "url",
+      "id": "ring_link_6",
+      "label": "Collection link"
+    },
+    {
+      "type": "header",
+      "content": "Ring 7"
+    },
+    {
+      "type": "image_picker",
+      "id": "ring_image_7",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "ring_title_7",
+      "label": "Title",
+      "default": "Cathedral"
+    },
+    {
+      "type": "textarea",
+      "id": "ring_subtitle_7",
+      "label": "Description",
+      "default": "Architectural elegance"
+    },
+    {
+      "type": "url",
+      "id": "ring_link_7",
+      "label": "Collection link"
+    },
+    {
+      "type": "header",
+      "content": "Ring 8"
+    },
+    {
+      "type": "image_picker",
+      "id": "ring_image_8",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "ring_title_8",
+      "label": "Title",
+      "default": "Tension"
+    },
+    {
+      "type": "textarea",
+      "id": "ring_subtitle_8",
+      "label": "Description",
+      "default": "Modern suspension"
+    },
+    {
+      "type": "url",
+      "id": "ring_link_8",
+      "label": "Collection link"
+    },
+    {
+      "type": "header",
+      "content": "Ring 9"
+    },
+    {
+      "type": "image_picker",
+      "id": "ring_image_9",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "ring_title_9",
+      "label": "Title",
+      "default": "Bezel"
+    },
+    {
+      "type": "textarea",
+      "id": "ring_subtitle_9",
+      "label": "Description",
+      "default": "Sleek protection"
+    },
+    {
+      "type": "url",
+      "id": "ring_link_9",
+      "label": "Collection link"
+    },
+    {
+      "type": "header",
+      "content": "Ring 10"
+    },
+    {
+      "type": "image_picker",
+      "id": "ring_image_10",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "ring_title_10",
+      "label": "Title",
+      "default": "Split Shank"
+    },
+    {
+      "type": "textarea",
+      "id": "ring_subtitle_10",
+      "label": "Description",
+      "default": "Dramatic division"
+    },
+    {
+      "type": "url",
+      "id": "ring_link_10",
+      "label": "Collection link"
+    },
+    {
+      "type": "header",
+      "content": "Ring 11"
+    },
+    {
+      "type": "image_picker",
+      "id": "ring_image_11",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "ring_title_11",
+      "label": "Title",
+      "default": "Cluster"
+    },
+    {
+      "type": "textarea",
+      "id": "ring_subtitle_11",
+      "label": "Description",
+      "default": "Grouped brilliance"
+    },
+    {
+      "type": "url",
+      "id": "ring_link_11",
+      "label": "Collection link"
+    },
+    {
+      "type": "header",
+      "content": "Ring 12"
+    },
+    {
+      "type": "image_picker",
+      "id": "ring_image_12",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "ring_title_12",
+      "label": "Title",
+      "default": "Infinity"
+    },
+    {
+      "type": "textarea",
+      "id": "ring_subtitle_12",
+      "label": "Description",
+      "default": "Eternal love"
+    },
+    {
+      "type": "url",
+      "id": "ring_link_12",
+      "label": "Collection link"
+    },
+    {
+      "type": "header",
+      "content": "Item text style"
+    },
+    {
+      "type": "range",
+      "id": "item_title_size",
+      "label": "Title size",
+      "min": 14,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 22
+    },
+    {
+      "type": "range",
+      "id": "item_subtitle_size",
+      "label": "Description size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "item_title_color",
+      "label": "Title color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "item_subtitle_color",
+      "label": "Description color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Navigation arrows"
+    },
+    {
+      "type": "range",
+      "id": "arrow_size",
+      "label": "Arrow size",
+      "min": 40,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "color",
+      "id": "arrow_bg_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "arrow_border_color",
+      "label": "Border",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "color",
+      "id": "arrow_icon_color",
+      "label": "Icon color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_bg_color",
+      "label": "Hover background",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_icon_color",
+      "label": "Hover icon color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ring styles carousel"
+    }
+  ]
+}
+{% endschema %}

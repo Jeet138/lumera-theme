@@ -1,0 +1,919 @@
+{% doc %}
+  @prompt
+    Create a new Shopify section called Premium Collection.
+    Display products from a selected collection.
+    When a customer clicks on any premium product, do not open the product page immediately.
+    Instead, show a popup/modal asking the customer to enter either:
+    Email Address, or
+    Mobile Number.
+    After submission, send an OTP to the entered email or mobile number.
+    Verify the OTP.
+    Only after successful OTP verification should the customer be redirected to the selected product page.
+    If OTP verification fails, keep the customer on the popup and display an error message.
+    Once verified, store the verification in Shopify customer session/local storage so the customer does not need to verify again for 24 hours.
+    The popup should be responsive for desktop and mobile.
+    Include loading animation, resend OTP button (after 30 seconds), OTP countdown timer, and proper validation.
+    The section should be customizable from the Shopify Theme Editor:
+    Select Premium Collection
+    Heading
+    Description
+    Button Colors
+    Popup Colors
+    Enable/Disable OTP verification
+    Use Shopify Liquid, HTML, CSS, and JavaScript.
+    Keep the code modular and compatible with Shopify Online Store 2.0 themes.
+    Do not modify existing theme files unnecessarily.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .premium-collection-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding: 60px 0;
+    background-color: {{ block.settings.section_bg_color }};
+  }
+
+  .premium-collection-container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+  }
+
+  .premium-collection-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .premium-collection-heading-{{ ai_gen_id }} {
+    font-size: 36px;
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 16px;
+    font-weight: 300;
+  }
+
+  .premium-collection-description-{{ ai_gen_id }} {
+    font-size: 16px;
+    color: {{ block.settings.text_color }};
+    margin: 0;
+  }
+
+  .premium-collection-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+  }
+
+  .premium-product-card-{{ ai_gen_id }} {
+    position: relative;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+
+  .premium-product-card-{{ ai_gen_id }}:hover {
+    transform: translateY(-4px);
+  }
+
+  .premium-product-image-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+    overflow: hidden;
+    background: #f4f4f4;
+    cursor: pointer;
+  }
+
+  .premium-product-image-{{ ai_gen_id }} img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .premium-product-info-{{ ai_gen_id }} {
+    padding: 20px;
+  }
+
+  .premium-product-title-{{ ai_gen_id }} {
+    font-size: 18px;
+    font-weight: 400;
+    margin: 0 0 8px;
+    color: #1a1a1a;
+  }
+
+  .premium-product-price-{{ ai_gen_id }} {
+    font-size: 16px;
+    color: #666;
+  }
+
+  .premium-modal-overlay-{{ ai_gen_id }} {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .premium-modal-overlay-{{ ai_gen_id }}.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+  }
+
+  .premium-modal-{{ ai_gen_id }} {
+    background: {{ block.settings.popup_bg_color }};
+    border-radius: 12px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+    z-index: 9999;
+  }
+
+  .premium-modal-overlay-{{ ai_gen_id }}.active .premium-modal-{{ ai_gen_id }} {
+    transform: scale(1);
+  }
+
+  .premium-modal-header-{{ ai_gen_id }} {
+    padding: 30px 30px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    position: relative;
+  }
+
+  .premium-modal-close-{{ ai_gen_id }} {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: {{ block.settings.popup_text_color }};
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .premium-modal-title-{{ ai_gen_id }} {
+    font-size: 24px;
+    color: {{ block.settings.popup_text_color }};
+    margin: 0;
+    font-weight: 300;
+  }
+
+  .premium-modal-body-{{ ai_gen_id }} {
+    padding: 30px;
+  }
+
+  .premium-form-group-{{ ai_gen_id }} {
+    margin-bottom: 20px;
+  }
+
+  .premium-form-label-{{ ai_gen_id }} {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: {{ block.settings.popup_text_color }};
+    font-weight: 500;
+  }
+
+  .premium-form-input-{{ ai_gen_id }} {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+  }
+
+  .premium-form-input-{{ ai_gen_id }}:focus {
+    outline: none;
+    border-color: {{ block.settings.button_bg_color }};
+  }
+
+  .premium-form-input-{{ ai_gen_id }}.error {
+    border-color: #d82c0d;
+  }
+
+  .premium-error-message-{{ ai_gen_id }} {
+    color: #d82c0d;
+    font-size: 12px;
+    margin-top: 4px;
+    display: none;
+  }
+
+  .premium-error-message-{{ ai_gen_id }}.show {
+    display: block;
+  }
+
+  .premium-form-button-{{ ai_gen_id }} {
+    width: 100%;
+    padding: 14px 24px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .premium-form-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_color }};
+  }
+
+  .premium-form-button-{{ ai_gen_id }}:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .premium-otp-container-{{ ai_gen_id }} {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .premium-otp-input-{{ ai_gen_id }} {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    font-size: 24px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    transition: border-color 0.3s ease;
+  }
+
+  .premium-otp-input-{{ ai_gen_id }}:focus {
+    outline: none;
+    border-color: {{ block.settings.button_bg_color }};
+  }
+
+  .premium-timer-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 16px;
+    font-size: 14px;
+    color: {{ block.settings.popup_text_color }};
+  }
+
+  .premium-resend-container-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .premium-resend-button-{{ ai_gen_id }} {
+    background: none;
+    border: none;
+    color: {{ block.settings.button_bg_color }};
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+  }
+
+  .premium-resend-button-{{ ai_gen_id }}:disabled {
+    color: #999;
+    cursor: not-allowed;
+    text-decoration: none;
+  }
+
+  .premium-loading-{{ ai_gen_id }} {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid {{ block.settings.button_text_color }};
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: premium-spin-{{ ai_gen_id }} 0.6s linear infinite;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  @keyframes premium-spin-{{ ai_gen_id }} {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .premium-step-{{ ai_gen_id }} {
+    display: none;
+  }
+
+  .premium-step-{{ ai_gen_id }}.active {
+    display: block;
+  }
+
+  .premium-success-message-{{ ai_gen_id }} {
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .premium-success-icon-{{ ai_gen_id }} {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    background: #008060;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .premium-success-icon-{{ ai_gen_id }} svg {
+    width: 32px;
+    height: 32px;
+    stroke: #fff;
+  }
+
+  .premium-success-text-{{ ai_gen_id }} {
+    font-size: 18px;
+    color: {{ block.settings.popup_text_color }};
+    margin-bottom: 20px;
+  }
+
+  @media screen and (max-width: 768px) {
+    .premium-collection-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 20px;
+    }
+
+    .premium-modal-{{ ai_gen_id }} {
+      width: 95%;
+    }
+
+    .premium-modal-header-{{ ai_gen_id }},
+    .premium-modal-body-{{ ai_gen_id }} {
+      padding: 20px;
+    }
+
+    .premium-otp-input-{{ ai_gen_id }} {
+      width: 40px;
+      height: 40px;
+      font-size: 20px;
+    }
+  }
+{% endstyle %}
+
+<premium-collection-{{ ai_gen_id }}
+  class="premium-collection-{{ ai_gen_id }}"
+  data-otp-enabled="{{ block.settings.enable_otp }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="premium-collection-container-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank or block.settings.description != blank %}
+      <div class="premium-collection-header-{{ ai_gen_id }}">
+        {% if block.settings.heading != blank %}
+          <h2 class="premium-collection-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+        {% endif %}
+        {% if block.settings.description != blank %}
+          <div class="premium-collection-description-{{ ai_gen_id }}">{{ block.settings.description }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if block.settings.collection != blank %}
+      <div class="premium-collection-grid-{{ ai_gen_id }}">
+        {% for product in block.settings.collection.products limit: block.settings.products_limit %}
+          <div class="premium-product-card-{{ ai_gen_id }}">
+            <div
+              class="premium-product-image-{{ ai_gen_id }}"
+              data-product-url="{{ product.url }}"
+              data-product-title="{{ product.title | escape }}"
+            >
+              {% if product.featured_image %}
+                <img
+                  src="{{ product.featured_image | image_url: width: 600 }}"
+                  alt="{{ product.featured_image.alt | escape }}"
+                  loading="lazy"
+                  width="600"
+                  height="600"
+                >
+              {% else %}
+                <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
+                  {{ 'product-1' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="premium-product-info-{{ ai_gen_id }}">
+              <h3 class="premium-product-title-{{ ai_gen_id }}">{{ product.title }}</h3>
+              <div class="premium-product-price-{{ ai_gen_id }}">{{ product.price | money }}</div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div style="text-align: center; padding: 60px 20px; color: #666;">
+        <p>Please select a collection from the theme editor to display premium products.</p>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="premium-modal-overlay-{{ ai_gen_id }}">
+    <div class="premium-modal-{{ ai_gen_id }}">
+      <div class="premium-modal-header-{{ ai_gen_id }}">
+        <button
+          class="premium-modal-close-{{ ai_gen_id }}"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+        <h3 class="premium-modal-title-{{ ai_gen_id }}">Verify to Continue</h3>
+      </div>
+      <div class="premium-modal-body-{{ ai_gen_id }}">
+        <div class="premium-step-{{ ai_gen_id }} premium-step-contact-{{ ai_gen_id }} active">
+          <div class="premium-form-group-{{ ai_gen_id }}">
+            <label class="premium-form-label-{{ ai_gen_id }}">Choose verification method</label>
+            <select class="premium-form-input-{{ ai_gen_id }} premium-contact-type-{{ ai_gen_id }}">
+              <option value="email">Email Address</option>
+              <option value="mobile">Mobile Number</option>
+            </select>
+          </div>
+          <div class="premium-form-group-{{ ai_gen_id }}">
+            <label class="premium-form-label-{{ ai_gen_id }} premium-contact-label-{{ ai_gen_id }}">Email Address</label>
+            <input
+              type="text"
+              class="premium-form-input-{{ ai_gen_id }} premium-contact-input-{{ ai_gen_id }}"
+              placeholder="Enter your email"
+            >
+            <div class="premium-error-message-{{ ai_gen_id }} premium-contact-error-{{ ai_gen_id }}">
+              Please enter a valid email address
+            </div>
+          </div>
+          <button class="premium-form-button-{{ ai_gen_id }} premium-send-otp-{{ ai_gen_id }}">
+            Send OTP
+          </button>
+        </div>
+
+        <div class="premium-step-{{ ai_gen_id }} premium-step-otp-{{ ai_gen_id }}">
+          <p style="text-align: center; margin-bottom: 20px; color: {{ block.settings.popup_text_color }};">
+            Enter the 6-digit code sent to <strong class="premium-contact-display-{{ ai_gen_id }}"></strong>
+          </p>
+          <div class="premium-otp-container-{{ ai_gen_id }}">
+            <input type="text" maxlength="1" class="premium-otp-input-{{ ai_gen_id }}" data-index="0">
+            <input type="text" maxlength="1" class="premium-otp-input-{{ ai_gen_id }}" data-index="1">
+            <input type="text" maxlength="1" class="premium-otp-input-{{ ai_gen_id }}" data-index="2">
+            <input type="text" maxlength="1" class="premium-otp-input-{{ ai_gen_id }}" data-index="3">
+            <input type="text" maxlength="1" class="premium-otp-input-{{ ai_gen_id }}" data-index="4">
+            <input type="text" maxlength="1" class="premium-otp-input-{{ ai_gen_id }}" data-index="5">
+          </div>
+          <div class="premium-error-message-{{ ai_gen_id }} premium-otp-error-{{ ai_gen_id }}">
+            Invalid OTP. Please try again.
+          </div>
+          <div class="premium-timer-{{ ai_gen_id }}">
+            Time remaining: <span class="premium-timer-value-{{ ai_gen_id }}">30</span>s
+          </div>
+          <div class="premium-resend-container-{{ ai_gen_id }}">
+            <button class="premium-resend-button-{{ ai_gen_id }}" disabled>
+              Resend OTP
+            </button>
+          </div>
+          <button class="premium-form-button-{{ ai_gen_id }} premium-verify-otp-{{ ai_gen_id }}">
+            Verify OTP
+          </button>
+        </div>
+
+        <div class="premium-step-{{ ai_gen_id }} premium-step-success-{{ ai_gen_id }}">
+          <div class="premium-success-message-{{ ai_gen_id }}">
+            <div class="premium-success-icon-{{ ai_gen_id }}">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+              </svg>
+            </div>
+            <div class="premium-success-text-{{ ai_gen_id }}">
+              Verification successful! Redirecting...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</premium-collection-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class PremiumCollection{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.otpEnabled = this.dataset.otpEnabled === 'true';
+        this.productUrl = '';
+        this.currentStep = 'contact';
+        this.timer = null;
+        this.timeLeft = 30;
+        this.generatedOtp = '';
+      }
+
+      connectedCallback() {
+        this.modal = this.querySelector('.premium-modal-overlay-{{ ai_gen_id }}');
+        this.closeBtn = this.querySelector('.premium-modal-close-{{ ai_gen_id }}');
+        this.productCards = this.querySelectorAll('.premium-product-image-{{ ai_gen_id }}');
+        this.contactTypeSelect = this.querySelector('.premium-contact-type-{{ ai_gen_id }}');
+        this.contactInput = this.querySelector('.premium-contact-input-{{ ai_gen_id }}');
+        this.contactLabel = this.querySelector('.premium-contact-label-{{ ai_gen_id }}');
+        this.contactError = this.querySelector('.premium-contact-error-{{ ai_gen_id }}');
+        this.sendOtpBtn = this.querySelector('.premium-send-otp-{{ ai_gen_id }}');
+        this.verifyOtpBtn = this.querySelector('.premium-verify-otp-{{ ai_gen_id }}');
+        this.resendBtn = this.querySelector('.premium-resend-button-{{ ai_gen_id }}');
+        this.otpInputs = this.querySelectorAll('.premium-otp-input-{{ ai_gen_id }}');
+        this.otpError = this.querySelector('.premium-otp-error-{{ ai_gen_id }}');
+        this.timerValue = this.querySelector('.premium-timer-value-{{ ai_gen_id }}');
+        this.contactDisplay = this.querySelector('.premium-contact-display-{{ ai_gen_id }}');
+
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        this.productCards.forEach(card => {
+          card.addEventListener('click', (e) => this.handleProductClick(e));
+        });
+
+        this.closeBtn.addEventListener('click', () => this.closeModal());
+        this.modal.addEventListener('click', (e) => {
+          if (e.target === this.modal) {
+            this.closeModal();
+          }
+        });
+
+        if (this.contactTypeSelect) {
+          this.contactTypeSelect.addEventListener('change', () => this.updateContactType());
+        }
+
+        if (this.sendOtpBtn) {
+          this.sendOtpBtn.addEventListener('click', () => this.sendOtp());
+        }
+
+        if (this.verifyOtpBtn) {
+          this.verifyOtpBtn.addEventListener('click', () => this.verifyOtp());
+        }
+
+        if (this.resendBtn) {
+          this.resendBtn.addEventListener('click', () => this.resendOtp());
+        }
+
+        this.otpInputs.forEach((input, index) => {
+          input.addEventListener('input', (e) => this.handleOtpInput(e, index));
+          input.addEventListener('keydown', (e) => this.handleOtpKeydown(e, index));
+          input.addEventListener('paste', (e) => this.handleOtpPaste(e));
+        });
+      }
+
+      handleProductClick(e) {
+        const card = e.currentTarget;
+        this.productUrl = card.dataset.productUrl;
+
+        if (!this.otpEnabled) {
+          window.location.href = this.productUrl;
+          return;
+        }
+
+        const verified = this.checkVerification();
+        if (verified) {
+          window.location.href = this.productUrl;
+        } else {
+          this.openModal();
+        }
+      }
+
+      checkVerification() {
+        const verifiedData = localStorage.getItem('premium_verified_{{ ai_gen_id }}');
+        if (!verifiedData) return false;
+
+        const data = JSON.parse(verifiedData);
+        const now = new Date().getTime();
+        const expiryTime = 24 * 60 * 60 * 1000;
+
+        if (now - data.timestamp < expiryTime) {
+          return true;
+        } else {
+          localStorage.removeItem('premium_verified_{{ ai_gen_id }}');
+          return false;
+        }
+      }
+
+      openModal() {
+        this.modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        this.resetModal();
+      }
+
+      closeModal() {
+        this.modal.classList.remove('active');
+        document.body.style.overflow = '';
+        this.resetModal();
+      }
+
+      resetModal() {
+        this.showStep('contact');
+        this.contactInput.value = '';
+        this.contactError.classList.remove('show');
+        this.contactInput.classList.remove('error');
+        this.otpInputs.forEach(input => {
+          input.value = '';
+        });
+        this.otpError.classList.remove('show');
+        if (this.timer) {
+          clearInterval(this.timer);
+        }
+      }
+
+      showStep(step) {
+        this.currentStep = step;
+        const steps = this.querySelectorAll('.premium-step-{{ ai_gen_id }}');
+        steps.forEach(s => s.classList.remove('active'));
+        this.querySelector(`.premium-step-${step}-{{ ai_gen_id }}`).classList.add('active');
+      }
+
+      updateContactType() {
+        const type = this.contactTypeSelect.value;
+        if (type === 'email') {
+          this.contactLabel.textContent = 'Email Address';
+          this.contactInput.placeholder = 'Enter your email';
+          this.contactError.textContent = 'Please enter a valid email address';
+        } else {
+          this.contactLabel.textContent = 'Mobile Number';
+          this.contactInput.placeholder = 'Enter your mobile number';
+          this.contactError.textContent = 'Please enter a valid mobile number';
+        }
+        this.contactInput.value = '';
+        this.contactError.classList.remove('show');
+        this.contactInput.classList.remove('error');
+      }
+
+      validateContact() {
+        const type = this.contactTypeSelect.value;
+        const value = this.contactInput.value.trim();
+
+        if (type === 'email') {
+          const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return emailRegex.test(value);
+        } else {
+          const phoneRegex = /^[0-9]{10,15}$/;
+          return phoneRegex.test(value.replace(/[\s\-\(\)]/g, ''));
+        }
+      }
+
+      sendOtp() {
+        if (!this.validateContact()) {
+          this.contactInput.classList.add('error');
+          this.contactError.classList.add('show');
+          return;
+        }
+
+        this.contactInput.classList.remove('error');
+        this.contactError.classList.remove('show');
+
+        this.sendOtpBtn.disabled = true;
+        this.sendOtpBtn.innerHTML = 'Sending... <span class="premium-loading-{{ ai_gen_id }}"></span>';
+
+        this.generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+        console.log('Generated OTP:', this.generatedOtp);
+
+        setTimeout(() => {
+          this.sendOtpBtn.disabled = false;
+          this.sendOtpBtn.textContent = 'Send OTP';
+          this.contactDisplay.textContent = this.contactInput.value;
+          this.showStep('otp');
+          this.startTimer();
+          this.otpInputs[0].focus();
+        }, 1500);
+      }
+
+      resendOtp() {
+        this.generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+        console.log('Resent OTP:', this.generatedOtp);
+
+        this.resendBtn.disabled = true;
+        this.timeLeft = 30;
+        this.startTimer();
+        this.otpInputs.forEach(input => {
+          input.value = '';
+        });
+        this.otpError.classList.remove('show');
+        this.otpInputs[0].focus();
+      }
+
+      startTimer() {
+        this.timeLeft = 30;
+        this.timerValue.textContent = this.timeLeft;
+        this.resendBtn.disabled = true;
+
+        if (this.timer) {
+          clearInterval(this.timer);
+        }
+
+        this.timer = setInterval(() => {
+          this.timeLeft--;
+          this.timerValue.textContent = this.timeLeft;
+
+          if (this.timeLeft <= 0) {
+            clearInterval(this.timer);
+            this.resendBtn.disabled = false;
+          }
+        }, 1000);
+      }
+
+      handleOtpInput(e, index) {
+        const input = e.target;
+        const value = input.value;
+
+        if (value && index < this.otpInputs.length - 1) {
+          this.otpInputs[index + 1].focus();
+        }
+
+        this.otpError.classList.remove('show');
+      }
+
+      handleOtpKeydown(e, index) {
+        if (e.key === 'Backspace' && !e.target.value && index > 0) {
+          this.otpInputs[index - 1].focus();
+        }
+      }
+
+      handleOtpPaste(e) {
+        e.preventDefault();
+        const pastedData = e.clipboardData.getData('text').slice(0, 6);
+        const digits = pastedData.split('');
+
+        digits.forEach((digit, index) => {
+          if (this.otpInputs[index]) {
+            this.otpInputs[index].value = digit;
+          }
+        });
+
+        if (digits.length > 0) {
+          const lastIndex = Math.min(digits.length - 1, this.otpInputs.length - 1);
+          this.otpInputs[lastIndex].focus();
+        }
+      }
+
+      verifyOtp() {
+        const enteredOtp = Array.from(this.otpInputs).map(input => input.value).join('');
+
+        if (enteredOtp.length !== 6) {
+          this.otpError.textContent = 'Please enter all 6 digits';
+          this.otpError.classList.add('show');
+          return;
+        }
+
+        this.verifyOtpBtn.disabled = true;
+        this.verifyOtpBtn.innerHTML = 'Verifying... <span class="premium-loading-{{ ai_gen_id }}"></span>';
+
+        setTimeout(() => {
+          if (enteredOtp === this.generatedOtp) {
+            const verificationData = {
+              timestamp: new Date().getTime(),
+              contact: this.contactInput.value
+            };
+            localStorage.setItem('premium_verified_{{ ai_gen_id }}', JSON.stringify(verificationData));
+
+            this.showStep('success');
+            if (this.timer) {
+              clearInterval(this.timer);
+            }
+
+            setTimeout(() => {
+              window.location.href = this.productUrl;
+            }, 1500);
+          } else {
+            this.verifyOtpBtn.disabled = false;
+            this.verifyOtpBtn.textContent = 'Verify OTP';
+            this.otpError.textContent = 'Invalid OTP. Please try again.';
+            this.otpError.classList.add('show');
+            this.otpInputs.forEach(input => {
+              input.value = '';
+            });
+            this.otpInputs[0].focus();
+          }
+        }, 1500);
+      }
+    }
+
+    customElements.define('premium-collection-{{ ai_gen_id }}', PremiumCollection{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Premium collection",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Collection"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Premium collection"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Products to show",
+      "min": 4,
+      "max": 24,
+      "step": 4,
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Premium Collection"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Exclusive products requiring verification to view"
+    },
+    {
+      "type": "header",
+      "content": "OTP verification"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_otp",
+      "label": "Enable OTP verification",
+      "default": true,
+      "info": "Require customers to verify via OTP before viewing products"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "popup_bg_color",
+      "label": "Popup background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "popup_text_color",
+      "label": "Popup text",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button hover",
+      "default": "#333333"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Premium collection"
+    }
+  ]
+}
+{% endschema %}

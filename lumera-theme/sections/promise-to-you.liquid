@@ -1,0 +1,680 @@
+{% assign ai_gen_id = section.id | replace: '-', '' | downcase %}
+
+{% style %}
+
+  /* =========================================================
+     MAIN SECTION
+     ========================================================= */
+
+  .promise-section-{{ ai_gen_id }} {
+    width: 100%;
+    box-sizing: border-box;
+    padding: {{ section.settings.section_padding_top }}px {{ section.settings.section_padding_horizontal }}px {{ section.settings.section_padding_bottom }}px;
+    background-color: {{ section.settings.background_color }};
+  }
+
+  /* =========================================================
+     HEADER
+     ========================================================= */
+
+  .promise-header-{{ ai_gen_id }} {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto {{ section.settings.header_spacing }}px;
+  }
+
+  .promise-title-{{ ai_gen_id }} {
+    color: {{ section.settings.title_color }};
+    margin: 0;
+    font-family: {{ section.settings.title_font.family }}, serif;
+    font-style: italic;
+    font-size: {{ section.settings.title_size }}px;
+    line-height: 1.2;
+    font-weight: 400;
+  }
+
+  .promise-subtitle-{{ ai_gen_id }} {
+    color: {{ section.settings.subtitle_color }};
+    margin: 12px 0 0;
+    font-size: {{ section.settings.subtitle_size }}px;
+    line-height: 1.5;
+  }
+
+  /* =========================================================
+     GRID
+     ========================================================= */
+
+  .promise-grid-{{ ai_gen_id }} {
+    width: 100%;
+    max-width: 1450px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: {{ section.settings.grid_gap }}px;
+  }
+
+  /* =========================================================
+     FEATURE CARD
+     ========================================================= */
+
+  .promise-item-{{ ai_gen_id }} {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+
+    text-align: center;
+
+    padding: 40px 24px 32px;
+
+    background-color: {{ section.settings.item_background }};
+    border-radius: 2px;
+
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .promise-item-{{ ai_gen_id }}:hover {
+    transform: translateY(-4px);
+  }
+
+  /* =========================================================
+     ICON
+     ========================================================= */
+
+  .promise-icon-wrapper-{{ ai_gen_id }} {
+    width: 64px;
+    height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 20px;
+    flex-shrink: 0;
+
+    border-radius: 50%;
+    border: 1px solid {{ section.settings.icon_color }};
+  }
+
+  .promise-icon-{{ ai_gen_id }} {
+    width: 30px;
+    height: 30px;
+    max-width: 30px;
+    max-height: 30px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .promise-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    fill: {{ section.settings.icon_color }};
+  }
+
+  .promise-icon-placeholder-{{ ai_gen_id }} {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .promise-icon-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    stroke: {{ section.settings.icon_color }};
+  }
+
+  /* =========================================================
+     CONTENT
+     ========================================================= */
+
+  .promise-content-{{ ai_gen_id }} {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .promise-item-title-{{ ai_gen_id }} {
+    width: 100%;
+    color: {{ section.settings.item_title_color }};
+    margin: 0 0 10px;
+    font-size: {{ section.settings.item_title_size }}px;
+    line-height: 1.35;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  .promise-item-description-{{ ai_gen_id }} {
+    width: 100%;
+    max-width: 230px;
+    color: {{ section.settings.item_description_color }};
+    margin: 0;
+    font-size: {{ section.settings.item_description_size }}px;
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  /* =========================================================
+     TABLET
+     ========================================================= */
+
+  @media screen and (max-width: 1100px) {
+
+    .promise-section-{{ ai_gen_id }} {
+      padding: 40px 20px 36px;
+    }
+
+    .promise-grid-{{ ai_gen_id }} {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .promise-item-{{ ai_gen_id }} {
+      padding: 32px 18px 26px;
+    }
+
+  }
+
+  /* =========================================================
+   MOBILE - HORIZONTAL SCROLL
+   ========================================================= */
+
+@media screen and (max-width: 768px) {
+
+  .promise-section-{{ ai_gen_id }} {
+    padding: 30px 15px 30px;
+    overflow: hidden;
+  }
+
+  .promise-header-{{ ai_gen_id }} {
+    margin-bottom: 28px;
+  }
+
+  .promise-title-{{ ai_gen_id }} {
+    font-size: 28px;
+  }
+
+  .promise-subtitle-{{ ai_gen_id }} {
+    font-size: 13px;
+    margin-top: 8px;
+  }
+
+  /* Horizontal scrolling */
+  .promise-grid-{{ ai_gen_id }} {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    gap: 14px;
+
+    width: 100%;
+    max-width: none;
+
+    margin: 0;
+
+    padding: 0 0 8px;
+
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+
+    /* Hide scrollbar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .promise-grid-{{ ai_gen_id }}::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Cards */
+  .promise-item-{{ ai_gen_id }} {
+    flex: 0 0 75%;
+    width: 75%;
+    min-width: 75%;
+
+    padding: 26px 14px 20px;
+
+    scroll-snap-align: start;
+  }
+
+  .promise-icon-wrapper-{{ ai_gen_id }} {
+    width: 54px;
+    height: 54px;
+    margin-bottom: 14px;
+  }
+
+  .promise-icon-{{ ai_gen_id }},
+  .promise-icon-placeholder-{{ ai_gen_id }} {
+    width: 26px;
+    height: 26px;
+  }
+
+  .promise-item-title-{{ ai_gen_id }} {
+    font-size: 14px;
+  }
+
+  .promise-item-description-{{ ai_gen_id }} {
+    font-size: 12px;
+    max-width: 170px;
+  }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media screen and (max-width: 480px) {
+
+  .promise-section-{{ ai_gen_id }} {
+    padding: 26px 15px 26px;
+  }
+
+  .promise-title-{{ ai_gen_id }} {
+    font-size: 24px;
+  }
+
+  .promise-grid-{{ ai_gen_id }} {
+    gap: 12px;
+  }
+
+  .promise-item-{{ ai_gen_id }} {
+    flex: 0 0 78%;
+    width: 78%;
+    min-width: 100%;
+
+    padding: 24px 16px 20px;
+  }
+
+  .promise-icon-wrapper-{{ ai_gen_id }} {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 12px;
+  }
+
+  .promise-icon-{{ ai_gen_id }},
+  .promise-icon-placeholder-{{ ai_gen_id }} {
+    width: 28px;
+    height: 28px;
+  }
+
+  .promise-item-title-{{ ai_gen_id }} {
+    font-size: 15px;
+  }
+
+  .promise-item-description-{{ ai_gen_id }} {
+    font-size: 13px;
+    max-width: 280px;
+  }
+
+}
+
+
+/* =========================================================
+   EXTRA SMALL PHONES
+   ========================================================= */
+
+@media screen and (max-width: 360px) {
+
+  .promise-section-{{ ai_gen_id }} {
+    padding: 24px 10px 24px;
+  }
+
+  .promise-title-{{ ai_gen_id }} {
+    font-size: 21px;
+  }
+
+  .promise-subtitle-{{ ai_gen_id }} {
+    font-size: 12px;
+  }
+
+  .promise-item-{{ ai_gen_id }} {
+    flex: 0 0 82%;
+    width: 82%;
+    min-width: 100%;
+  }
+
+}
+
+{% endstyle %}
+
+<div class="promise-section-{{ ai_gen_id }}">
+
+  {% if section.settings.main_title != blank or section.settings.subtitle != blank %}
+    <div class="promise-header-{{ ai_gen_id }}">
+
+      {% if section.settings.main_title != blank %}
+        <h2 class="promise-title-{{ ai_gen_id }}">
+          {{ section.settings.main_title }}
+        </h2>
+      {% endif %}
+
+      {% if section.settings.subtitle != blank %}
+        <div class="promise-subtitle-{{ ai_gen_id }}">
+          {{ section.settings.subtitle }}
+        </div>
+      {% endif %}
+
+    </div>
+  {% endif %}
+
+  <div class="promise-grid-{{ ai_gen_id }}">
+
+    {% for block in section.blocks %}
+
+      {% if block.type == 'feature' %}
+
+        <div class="promise-item-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+
+          <div class="promise-icon-wrapper-{{ ai_gen_id }}">
+
+            {% if block.settings.icon != blank %}
+
+              <img
+                src="{{ block.settings.icon | image_url: width: 120 }}"
+                alt="{{ block.settings.title | escape }}"
+                class="promise-icon-{{ ai_gen_id }}"
+                loading="lazy"
+                width="120"
+                height="120"
+              >
+
+            {% else %}
+
+              <div class="promise-icon-placeholder-{{ ai_gen_id }}">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="12"></line>
+                  <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+              </div>
+
+            {% endif %}
+
+          </div>
+
+          <div class="promise-content-{{ ai_gen_id }}">
+
+            {% if block.settings.title != blank %}
+              <h3 class="promise-item-title-{{ ai_gen_id }}">
+                {{ block.settings.title }}
+              </h3>
+            {% endif %}
+
+            {% if block.settings.description != blank %}
+              <div class="promise-item-description-{{ ai_gen_id }}">
+                {{ block.settings.description }}
+              </div>
+            {% endif %}
+
+          </div>
+
+        </div>
+
+      {% endif %}
+
+    {% endfor %}
+
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "Our Promise section",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "text",
+      "id": "main_title",
+      "label": "Main title",
+      "default": "Our Promise to You"
+    },
+    {
+      "type": "font_picker",
+      "id": "title_font",
+      "label": "Title font",
+      "default": "playfair_display_n4"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Discover the promise we make to every customer"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Title size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Header bottom spacing",
+      "default": 48
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 0,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Grid gap",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "Item style"
+    },
+    {
+      "type": "color",
+      "id": "item_background",
+      "label": "Item background",
+      "default": "#f0ece5"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color",
+      "default": "#3a2f28"
+    },
+    {
+      "type": "header",
+      "content": "Item text"
+    },
+    {
+      "type": "range",
+      "id": "item_title_size",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "label": "Title size",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "item_description_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Section background",
+      "default": "#fbf9f6"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle",
+      "default": "#5c5c5c"
+    },
+    {
+      "type": "color",
+      "id": "item_title_color",
+      "label": "Item title",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "item_description_color",
+      "label": "Item description",
+      "default": "#6b6b6b"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_horizontal",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Horizontal padding",
+      "default": 20
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Upload icon",
+          "info": "Upload a small square icon (PNG/SVG on transparent background works best)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Feature title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Short feature description goes here"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our Promise section",
+      "blocks": [
+        {
+          "type": "feature",
+          "settings": {
+            "title": "IGI Certified",
+            "description": "Assured Quality and Authenticity for Every Diamond"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Handcrafted Design",
+            "description": "Every Detail Handcrafted with Precision and Care"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Worldwide Shipping",
+            "description": "Shipping Across the Globe, Wherever You Are."
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "Recycled Metals & Eco-Friendly",
+            "description": "Crafted with Recycled Metals and Eco-Friendly Diamonds"
+          }
+        },
+        {
+          "type": "feature",
+          "settings": {
+            "title": "30 Days Returns",
+            "description": "Easy Returns within 30 Days."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

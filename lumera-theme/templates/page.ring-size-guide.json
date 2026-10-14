@@ -1,0 +1,108 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "ring-size-guide",
+      "settings": {
+        "heading": "Find Your Ring Size At Home",
+        "description": "Measure your ring size in a few simple steps.",
+        "button_text": "Download Size Guide",
+        "pdf_link": "https://cdn.shopify.com/s/files/1/0790/0876/0059/files/Ring_Size_Chart_by_lumera_fine_jewels_removed.pdf?v=1785759411",
+        "button_link": ""
+      }
+    },
+    "17857595689748420f": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_af37706_nP9DPx": {
+          "type": "ai_gen_block_af37706",
+          "settings": {
+            "main_title": "How To Find Your Ring Size At Home?",
+            "main_description": "Jewelry making is an art and we are blessed with gifted craftsmen, who have the expertise to make one of the finest handmade jewelry.",
+            "title_size": 36,
+            "title_weight": "600",
+            "title_color": "#1a1a1a",
+            "title_spacing": 20,
+            "description_size": 16,
+            "description_color": "#666666",
+            "step_1_image": "shopify://shop_images/find-ring-step-1.avif",
+            "step_1_title": "Using Paper Strip",
+            "step_1_text": "Take a thin strip of paper and wrap it around your finger.",
+            "step_2_image": "shopify://shop_images/find-ring-step-2.avif",
+            "step_2_title": "Take A Thin & Small Rope",
+            "step_2_text": "Wrap the rope around the base of your finger.",
+            "step_3_image": "shopify://shop_images/find-ring-step-3.avif",
+            "step_3_title": "Mark With Marker On Strip",
+            "step_3_text": "Mark the point where the strip overlaps with a marker.",
+            "step_4_image": "shopify://shop_images/find-ring-step-4.avif",
+            "step_4_title": "Measure With Scale On Point",
+            "step_4_text": "Measure the marked length with a ruler to find your ring size.",
+            "desktop_width_percent": 100,
+            "section_padding": 60,
+            "spacing_between_sections": 40,
+            "step_gap": 30,
+            "background_color": "#ffffff",
+            "step_background": "#f7f7f7",
+            "step_number_bg": "#000000",
+            "step_number_color": "#ffffff",
+            "step_padding": 30,
+            "step_border_radius": 8,
+            "image_border_radius": 0,
+            "image_spacing": 20,
+            "step_title_size": 20,
+            "step_title_weight": "600",
+            "step_title_color": "#1a1a1a",
+            "step_title_spacing": 15,
+            "step_text_size": 14,
+            "step_text_color": "#666666"
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_3ce42da_TQxFki": {
+          "type": "ai_gen_block_3ce42da",
+          "settings": {
+            "heading": "Find Out Ring Size Equivalents Globally",
+            "description": "<p>Use this comprehensive chart to find your perfect ring size across different international sizing standards.</p>",
+            "heading_alignment": "center",
+            "desktop_width_percent": 100,
+            "background_color": "#ffffff",
+            "heading_color": "#115A27",
+            "text_color": "#666666",
+            "table_background": "#ffffff",
+            "header_background": "#5AA972",
+            "header_text_color": "#ffffff",
+            "row_alternate_background": "#f9f9f9",
+            "row_hover_background": "#f0f0f0",
+            "border_color": "#e0e0e0",
+            "heading_size": 36,
+            "text_size": 16,
+            "header_text_size": 13,
+            "table_text_size": 14,
+            "section_padding": 40,
+            "heading_spacing": 20,
+            "cell_padding": 12,
+            "table_border_radius": 8
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_af37706_nP9DPx",
+        "ai_gen_block_3ce42da_TQxFki"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "17857595689748420f"
+  ]
+}

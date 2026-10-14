@@ -1,0 +1,384 @@
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-ring-size-guide-{{ ai_gen_id }} {
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: {{ block.settings.section_padding }}px 0;
+    display: block;
+  }
+
+  .ai-ring-size-guide__container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-ring-size-guide__header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: {{ block.settings.spacing_between_sections }}px;
+  }
+
+  .ai-ring-size-guide__method-{{ ai_gen_id }} {
+    font-size: {{ block.settings.method_font_size }}px;
+    color: {{ block.settings.method_color }};
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  .ai-ring-size-guide__title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_font_size }}px;
+    color: {{ block.settings.title_color }};
+    margin: 0;
+    font-weight: 300;
+  }
+
+  .ai-ring-size-guide__steps-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: {{ block.settings.gap_between_steps }}px;
+    margin-top: {{ block.settings.spacing_between_sections }}px;
+  }
+
+  .ai-ring-size-guide__step-{{ ai_gen_id }} {
+    text-align: center;
+    background-color: {{ block.settings.step_background }};
+    padding: {{ block.settings.step_padding }}px;
+    border-radius: {{ block.settings.step_border_radius }}px;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-ring-size-guide__step-{{ ai_gen_id }}:hover {
+    transform: translateY(-5px);
+  }
+
+  .ai-ring-size-guide__step-image-wrapper-{{ ai_gen_id }} {
+    width: 100%;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    border-radius: {{ block.settings.image_border_radius }}px;
+  }
+
+  .ai-ring-size-guide__step-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  .ai-ring-size-guide__step-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: {{ block.settings.image_border_radius }}px;
+  }
+
+  .ai-ring-size-guide__step-image-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .ai-ring-size-guide__step-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.step_title_font_size }}px;
+    color: {{ block.settings.step_title_color }};
+    margin: 0;
+    font-weight: 500;
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-ring-size-guide__steps-{{ ai_gen_id }} {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: {{ block.settings.gap_between_steps | times: 0.7 }}px;
+    }
+
+    .ai-ring-size-guide__title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_font_size | times: 0.7 }}px;
+    }
+
+    .ai-ring-size-guide__method-{{ ai_gen_id }} {
+      font-size: {{ block.settings.method_font_size | times: 0.8 }}px;
+    }
+
+    .ai-ring-size-guide__step-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.step_title_font_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-ring-size-guide-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-ring-size-guide__container-{{ ai_gen_id }}">
+    <div class="ai-ring-size-guide__header-{{ ai_gen_id }}">
+      {% if block.settings.method_text != blank %}
+        <div class="ai-ring-size-guide__method-{{ ai_gen_id }}">
+          {{ block.settings.method_text }}
+        </div>
+      {% endif %}
+      {% if block.settings.main_title != blank %}
+        <h2 class="ai-ring-size-guide__title-{{ ai_gen_id }}">
+          {{ block.settings.main_title }}
+        </h2>
+      {% endif %}
+    </div>
+
+    <div class="ai-ring-size-guide__steps-{{ ai_gen_id }}">
+      {% for i in (1..4) %}
+        {% liquid
+          assign step_image_key = 'step_' | append: i | append: '_image'
+          assign step_title_key = 'step_' | append: i | append: '_title'
+          assign step_image = block.settings[step_image_key]
+          assign step_title = block.settings[step_title_key]
+        %}
+
+        <div class="ai-ring-size-guide__step-{{ ai_gen_id }}">
+          <div class="ai-ring-size-guide__step-image-wrapper-{{ ai_gen_id }}">
+            {% if step_image %}
+              <img
+                src="{{ step_image | image_url: width: 600 }}"
+                alt="{{ step_title | escape }}"
+                class="ai-ring-size-guide__step-image-{{ ai_gen_id }}"
+                loading="lazy"
+                width="{{ step_image.width }}"
+                height="{{ step_image.height }}"
+              >
+            {% else %}
+              <div class="ai-ring-size-guide__step-image-placeholder-{{ ai_gen_id }}">
+                {{ 'image' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+          </div>
+          {% if step_title != blank %}
+            <h3 class="ai-ring-size-guide__step-title-{{ ai_gen_id }}">
+              {{ step_title }}
+            </h3>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ring size guide",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Main heading"
+    },
+    {
+      "type": "text",
+      "id": "method_text",
+      "label": "Method text",
+      "default": "Using Paper Strip"
+    },
+    {
+      "type": "text",
+      "id": "main_title",
+      "label": "Main title",
+      "default": "How To Find Your Ring Size At Home?"
+    },
+    {
+      "type": "range",
+      "id": "method_font_size",
+      "label": "Method font size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "Title font size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "method_color",
+      "label": "Method color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "header",
+      "content": "Step 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "step_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "step_1_title",
+      "label": "Title",
+      "default": "Take A Thin & Small Rope"
+    },
+    {
+      "type": "header",
+      "content": "Step 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "step_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "step_2_title",
+      "label": "Title",
+      "default": "Put On Your Finger Slightly"
+    },
+    {
+      "type": "header",
+      "content": "Step 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "step_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "step_3_title",
+      "label": "Title",
+      "default": "Mark With Marker On Strip"
+    },
+    {
+      "type": "header",
+      "content": "Step 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "step_4_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "step_4_title",
+      "label": "Title",
+      "default": "Measure With Scale On Point"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "spacing_between_sections",
+      "label": "Spacing below header",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "gap_between_steps",
+      "label": "Gap between steps",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Step cards"
+    },
+    {
+      "type": "color",
+      "id": "step_background",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "step_padding",
+      "label": "Padding",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "step_border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Image border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "step_title_font_size",
+      "label": "Step title font size",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "step_title_color",
+      "label": "Step title color",
+      "default": "#1a1a1a"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ring size guide"
+    }
+  ]
+}
+{% endschema %}

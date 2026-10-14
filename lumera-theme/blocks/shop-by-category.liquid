@@ -1,0 +1,1815 @@
+{% doc %}
+  @prompt
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+
+  /* =========================================================
+     MAIN SECTION
+  ========================================================= */
+
+  .shop-category-section-{{ ai_gen_id }} {
+    width: 100%;
+    background-color: {{ block.settings.section_background }};
+    padding:
+      {{ block.settings.section_padding_top }}px
+      20px
+      {{ block.settings.section_padding_bottom }}px;
+    display: block;
+    box-sizing: border-box;
+  }
+
+
+  /* =========================================================
+     MAIN CONTAINER
+     DESKTOP BASE
+  ========================================================= */
+
+  .shop-category-container-{{ ai_gen_id }} {
+    width: 100%;
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+
+  /* =========================================================
+     DESKTOP GRID
+     24 COLUMNS
+     
+     LEFT   = 9
+     CENTER = 6
+     RIGHT  = 9
+  ========================================================= */
+
+  .shop-category-grid-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(24, minmax(0, 1fr));
+    gap: 39px;
+    width: 100%;
+    align-items: stretch;
+    box-sizing: border-box;
+  }
+
+
+  /* =========================================================
+     ALL CARDS
+  ========================================================= */
+
+  .shop-category-card-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+    background-color: {{ block.settings.card_background }};
+    border-radius: {{ block.settings.border_radius }}px;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+
+  /* =========================================================
+     TOP LEFT IMAGE
+     9 / 24 COLUMNS
+  ========================================================= */
+
+  .shop-category-card-{{ ai_gen_id }}.shop-category-card-top-{{ ai_gen_id }}:first-child {
+    grid-column: span 9;
+    height: {{ block.settings.image_height }}px;
+    width: 100%;
+  }
+
+
+  /* =========================================================
+     CENTER CONTENT CARD
+     6 / 24 COLUMNS
+  ========================================================= */
+
+  .shop-category-center-card-{{ ai_gen_id }} {
+    grid-column: span 6;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: {{ block.settings.image_height }}px;
+    min-height: {{ block.settings.image_height }}px;
+
+    padding: 40px 30px;
+
+    text-align: center;
+
+    background-color: {{ block.settings.center_card_background }};
+
+    border-radius: {{ block.settings.border_radius }}px;
+
+    box-sizing: border-box;
+    overflow: hidden;
+    min-width: 0;
+  }
+
+
+  /* =========================================================
+     TOP RIGHT IMAGE
+     9 / 24 COLUMNS
+  ========================================================= */
+
+  .shop-category-grid-{{ ai_gen_id }}
+  > .shop-category-card-{{ ai_gen_id }}:nth-child(3) {
+    grid-column: span 9;
+    height: {{ block.settings.image_height }}px;
+    width: 100%;
+  }
+
+
+  /* =========================================================
+     BOTTOM 4 IMAGES
+     6 / 24 COLUMNS EACH
+  ========================================================= */
+
+  .shop-category-card-{{ ai_gen_id }}.shop-category-card-bottom-{{ ai_gen_id }} {
+    grid-column: span 6;
+    width: 100%;
+  }
+
+
+  /* =========================================================
+     CARD LINK
+  ========================================================= */
+
+  .shop-category-card-link-{{ ai_gen_id }} {
+    display: block;
+    position: relative;
+
+    text-decoration: none;
+    color: inherit;
+
+    height: 100%;
+    width: 100%;
+  }
+
+
+  /* =========================================================
+     IMAGE WRAPPER
+  ========================================================= */
+
+  .shop-category-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+
+    width: 100%;
+    height: {{ block.settings.image_height }}px;
+
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+
+  /* =========================================================
+     IMAGE
+  ========================================================= */
+
+  .shop-category-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition: transform 0.6s ease;
+  }
+
+
+  /* =========================================================
+     IMAGE HOVER
+  ========================================================= */
+
+  .shop-category-card-link-{{ ai_gen_id }}:hover
+  .shop-category-image-{{ ai_gen_id }} {
+    transform: scale(1.05);
+  }
+
+
+  /* =========================================================
+     PLACEHOLDER
+  ========================================================= */
+
+  .shop-category-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+
+    background-color: #f5f5f5;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+  .shop-category-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+  }
+
+
+  /* =========================================================
+     IMAGE OVERLAY
+  ========================================================= */
+
+  .shop-category-overlay-{{ ai_gen_id }} {
+    position: absolute;
+
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    padding: 30px 20px;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    background:
+      linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.4) 0%,
+        rgba(0, 0, 0, 0) 100%
+      );
+
+    box-sizing: border-box;
+  }
+
+
+  /* =========================================================
+     BUTTON
+  ========================================================= */
+
+  .shop-category-button-{{ ai_gen_id }} {
+    background-color: {{ block.settings.button_background }};
+    color: {{ block.settings.button_text_color }};
+
+    padding:
+      {{ block.settings.button_padding_vertical }}px
+      {{ block.settings.button_padding_horizontal }}px;
+
+    border: none;
+
+    border-radius:
+      {{ block.settings.button_border_radius }}px;
+
+    font-size:
+      {{ block.settings.button_font_size }}px;
+
+    font-weight: 500;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition: all 0.3s ease;
+
+    font-family:
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Roboto,
+      'Helvetica Neue',
+      Arial,
+      sans-serif;
+
+    white-space: nowrap;
+  }
+
+
+  /* =========================================================
+     BUTTON HOVER
+  ========================================================= */
+
+  .shop-category-card-link-{{ ai_gen_id }}:hover
+  .shop-category-button-{{ ai_gen_id }} {
+    background-color:
+      {{ block.settings.button_hover_background }};
+
+    color:
+      {{ block.settings.button_hover_text_color }};
+  }
+
+
+  /* =========================================================
+     CENTER EYEBROW
+  ========================================================= */
+
+  .shop-category-center-eyebrow-{{ ai_gen_id }} {
+    font-size:
+      {{ block.settings.eyebrow_font_size }}px;
+
+    color:
+      {{ block.settings.eyebrow_color }};
+
+    text-transform: uppercase;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 12px;
+
+    font-weight: 400;
+
+    font-family:
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Roboto,
+      'Helvetica Neue',
+      Arial,
+      sans-serif;
+  }
+
+
+  /* =========================================================
+     CENTER HEADING
+  ========================================================= */
+
+  .shop-category-center-heading-{{ ai_gen_id }} {
+    font-size:
+      {{ block.settings.center_heading_size }}px;
+
+    color:
+      {{ block.settings.center_heading_color }};
+
+    margin: 0 0 16px;
+
+    font-weight: 300;
+
+    line-height: 1.2;
+
+    font-family:
+      Georgia,
+      'Times New Roman',
+      serif;
+  }
+
+
+  /* =========================================================
+     CENTER DESCRIPTION
+  ========================================================= */
+
+  .shop-category-center-description-{{ ai_gen_id }} {
+    font-size:
+      {{ block.settings.description_font_size }}px;
+
+    color:
+      {{ block.settings.description_color }};
+
+    line-height: 1.6;
+
+    max-width: 280px;
+
+    margin: 0 auto;
+
+    font-family:
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      Roboto,
+      'Helvetica Neue',
+      Arial,
+      sans-serif;
+  }
+
+
+  /* =========================================================
+     LAPTOP
+     1200px - 1499px
+     
+     IMPORTANT:
+     14"  = 1366px
+     15"  = 1440px
+     
+     Container gets controlled side spacing.
+  ========================================================= */
+
+  @media screen and (min-width: 1200px) and (max-width: 1499px) {
+
+    /* -------------------------------------------------------
+       SECTION
+    ------------------------------------------------------- */
+
+    .shop-category-section-{{ ai_gen_id }} {
+      width: 100%;
+      padding-left: 0;
+      padding-right: 0;
+      box-sizing: border-box;
+    }
+
+
+    /* -------------------------------------------------------
+       CONTAINER
+
+       1366px screen:
+       1366 - 60 = 1306px
+
+       1440px screen:
+       1440 - 60 = 1380px
+
+       So left and right spacing = 30px each.
+    ------------------------------------------------------- */
+
+    .shop-category-container-{{ ai_gen_id }} {
+      width: calc(100% - 60px) !important;
+      max-width: 1500px !important;
+
+      margin-left: auto;
+      margin-right: auto;
+
+      box-sizing: border-box;
+    }
+
+
+    /* -------------------------------------------------------
+       GRID
+    ------------------------------------------------------- */
+
+    .shop-category-grid-{{ ai_gen_id }} {
+      width: 100%;
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(24, minmax(0, 1fr));
+
+      gap: {{ block.settings.grid_gap }}px;
+
+      align-items: stretch;
+
+      box-sizing: border-box;
+    }
+
+
+    /* -------------------------------------------------------
+       LEFT IMAGE
+    ------------------------------------------------------- */
+
+    .shop-category-card-{{ ai_gen_id }}.shop-category-card-top-{{ ai_gen_id }}:first-child {
+      grid-column: span 9;
+
+      width: 100%;
+      min-width: 0;
+
+      height: {{ block.settings.image_height }}px;
+
+      box-sizing: border-box;
+    }
+
+
+    /* -------------------------------------------------------
+       CENTER
+    ------------------------------------------------------- */
+
+    .shop-category-center-card-{{ ai_gen_id }} {
+      grid-column: span 6;
+
+      width: 100%;
+      min-width: 0;
+
+      height: {{ block.settings.image_height }}px;
+      min-height: {{ block.settings.image_height }}px;
+
+      padding: 35px 25px;
+
+      box-sizing: border-box;
+    }
+
+
+    /* -------------------------------------------------------
+       RIGHT IMAGE
+    ------------------------------------------------------- */
+
+    .shop-category-grid-{{ ai_gen_id }}
+    > .shop-category-card-{{ ai_gen_id }}:nth-child(3) {
+      grid-column: span 9;
+
+      width: 100%;
+      min-width: 0;
+
+      height: {{ block.settings.image_height }}px;
+
+      box-sizing: border-box;
+    }
+
+
+    /* -------------------------------------------------------
+       BOTTOM 4 IMAGES
+    ------------------------------------------------------- */
+
+    .shop-category-card-{{ ai_gen_id }}.shop-category-card-bottom-{{ ai_gen_id }} {
+      grid-column: span 6;
+
+      width: 100%;
+      min-width: 0;
+
+      box-sizing: border-box;
+    }
+
+
+    /* -------------------------------------------------------
+       IMAGE WRAPPER
+    ------------------------------------------------------- */
+
+    .shop-category-image-wrapper-{{ ai_gen_id }} {
+      width: 100%;
+      height: {{ block.settings.image_height }}px;
+
+      box-sizing: border-box;
+    }
+
+
+    /* -------------------------------------------------------
+       IMAGE
+    ------------------------------------------------------- */
+
+    .shop-category-image-{{ ai_gen_id }} {
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      display: block;
+    }
+
+
+    /* -------------------------------------------------------
+       CENTER HEADING
+    ------------------------------------------------------- */
+
+    .shop-category-center-heading-{{ ai_gen_id }} {
+      max-width: 100%;
+
+      line-height: 1.15;
+    }
+
+
+    /* -------------------------------------------------------
+       CENTER DESCRIPTION
+    ------------------------------------------------------- */
+
+    .shop-category-center-description-{{ ai_gen_id }} {
+      max-width: 260px;
+    }
+
+  }
+
+
+  /* =========================================================
+     14" LAPTOP
+     1366px
+     
+     EXACT CONTAINER:
+     1366 - 60 = 1306px
+     
+     LEFT  = 30px
+     RIGHT = 30px
+  ========================================================= */
+
+  @media screen and (min-width: 1200px) and (max-width: 1399px) {
+
+    .shop-category-container-{{ ai_gen_id }} {
+      width: calc(100% - 60px) !important;
+      max-width: 1306px !important;
+
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+
+    .shop-category-grid-{{ ai_gen_id }} {
+      grid-template-columns:
+        repeat(24, minmax(0, 1fr));
+
+      gap: {{ block.settings.grid_gap }}px;
+    }
+
+
+    /* LEFT */
+
+    .shop-category-card-{{ ai_gen_id }}.shop-category-card-top-{{ ai_gen_id }}:first-child {
+      grid-column: span 9;
+    }
+
+
+    /* CENTER */
+
+    .shop-category-center-card-{{ ai_gen_id }} {
+      grid-column: span 6;
+
+      padding-left: 22px;
+      padding-right: 22px;
+    }
+
+
+    /* RIGHT */
+
+    .shop-category-grid-{{ ai_gen_id }}
+    > .shop-category-card-{{ ai_gen_id }}:nth-child(3) {
+      grid-column: span 9;
+    }
+
+
+    /* BOTTOM */
+
+    .shop-category-card-{{ ai_gen_id }}.shop-category-card-bottom-{{ ai_gen_id }} {
+      grid-column: span 6;
+    }
+
+
+    /* CENTER TEXT */
+
+    .shop-category-center-heading-{{ ai_gen_id }} {
+      font-size:
+        {{ block.settings.center_heading_size }}px;
+    }
+
+  }
+
+
+  /* =========================================================
+     15" LAPTOP
+     1440px
+     
+     EXACT CONTAINER:
+     1440 - 60 = 1380px
+     
+     LEFT  = 30px
+     RIGHT = 30px
+  ========================================================= */
+
+  @media screen and (min-width: 1400px) and (max-width: 1499px) {
+
+    .shop-category-container-{{ ai_gen_id }} {
+      width: calc(100% - 60px) !important;
+      max-width: 1380px !important;
+
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+
+    .shop-category-grid-{{ ai_gen_id }} {
+      grid-template-columns:
+        repeat(24, minmax(0, 1fr));
+
+      gap: {{ block.settings.grid_gap }}px;
+    }
+
+
+    /* LEFT */
+
+    .shop-category-card-{{ ai_gen_id }}.shop-category-card-top-{{ ai_gen_id }}:first-child {
+      grid-column: span 9;
+    }
+
+
+    /* CENTER */
+
+    .shop-category-center-card-{{ ai_gen_id }} {
+      grid-column: span 6;
+
+      padding-left: 28px;
+      padding-right: 28px;
+    }
+
+
+    /* RIGHT */
+
+    .shop-category-grid-{{ ai_gen_id }}
+    > .shop-category-card-{{ ai_gen_id }}:nth-child(3) {
+      grid-column: span 9;
+    }
+
+
+    /* BOTTOM */
+
+    .shop-category-card-{{ ai_gen_id }}.shop-category-card-bottom-{{ ai_gen_id }} {
+      grid-column: span 6;
+    }
+
+  }
+
+
+  /* =========================================================
+     TABLET
+     750px - 1100px
+
+     4 / 4 / 4 LAYOUT
+  ========================================================= */
+
+  @media screen and (min-width: 750px) and (max-width: 1100px) {
+
+    .shop-category-section-{{ ai_gen_id }} {
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+
+    .shop-category-container-{{ ai_gen_id }} {
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+
+    .shop-category-grid-{{ ai_gen_id }} {
+      display: grid;
+
+      grid-template-columns:
+        repeat(12, minmax(0, 1fr));
+
+      gap: {{ block.settings.grid_gap }}px;
+
+      align-items: stretch;
+
+      width: 100%;
+    }
+
+
+    /* -------------------------------------------------------
+       TOP LEFT
+    ------------------------------------------------------- */
+
+    .shop-category-card-{{ ai_gen_id }}.shop-category-card-top-{{ ai_gen_id }}:first-child {
+      grid-column: span 4;
+
+      height: {{ block.settings.image_height }}px;
+
+      min-width: 0;
+    }
+
+
+    /* -------------------------------------------------------
+       CENTER
+    ------------------------------------------------------- */
+
+    .shop-category-center-card-{{ ai_gen_id }} {
+      grid-column: span 4;
+
+      height: {{ block.settings.image_height }}px;
+
+      min-height: {{ block.settings.image_height }}px;
+
+      padding: 30px 20px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+    }
+
+
+    /* -------------------------------------------------------
+       TOP RIGHT
+    ------------------------------------------------------- */
+
+    .shop-category-grid-{{ ai_gen_id }}
+    > .shop-category-card-{{ ai_gen_id }}:nth-child(3) {
+      grid-column: span 4;
+
+      height: {{ block.settings.image_height }}px;
+
+      min-width: 0;
+    }
+
+
+    /* -------------------------------------------------------
+       BOTTOM
+    ------------------------------------------------------- */
+
+    .shop-category-card-{{ ai_gen_id }}.shop-category-card-bottom-{{ ai_gen_id }} {
+      grid-column: span 3;
+
+      min-width: 0;
+    }
+
+  }
+
+
+  /* =========================================================
+     MOBILE
+     2 COLUMN
+  ========================================================= */
+
+  @media screen and (max-width: 749px) {
+
+    /* -------------------------------------------------------
+       MAIN SECTION
+    ------------------------------------------------------- */
+
+    .shop-category-section-{{ ai_gen_id }} {
+      width: 100%;
+
+      padding-left: 15px;
+      padding-right: 15px;
+
+      box-sizing: border-box;
+    }
+
+
+    /* -------------------------------------------------------
+       CONTAINER
+    ------------------------------------------------------- */
+
+    .shop-category-container-{{ ai_gen_id }} {
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+
+      box-sizing: border-box;
+    }
+
+
+    /* -------------------------------------------------------
+       MOBILE GRID
+    ------------------------------------------------------- */
+
+    .shop-category-grid-{{ ai_gen_id }} {
+      display: grid;
+
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+      gap:
+        {{ block.settings.mobile_grid_gap }}px;
+
+      align-items: stretch;
+
+      width: 100%;
+
+      box-sizing: border-box;
+    }
+
+
+    /* -------------------------------------------------------
+       CENTER CONTENT
+       FULL WIDTH
+       COMES FIRST
+    ------------------------------------------------------- */
+
+    .shop-category-center-card-{{ ai_gen_id }} {
+
+      grid-column: 1 / -1;
+
+      order: -1;
+
+      width: 100%;
+
+      height: auto;
+
+      min-height: auto;
+
+      padding: 30px 20px;
+
+      box-sizing: border-box;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      text-align: center;
+    }
+
+
+    /* -------------------------------------------------------
+       TOP IMAGE 1
+    ------------------------------------------------------- */
+
+    .shop-category-card-{{ ai_gen_id }}.shop-category-card-top-{{ ai_gen_id }}:first-child {
+
+      grid-column: span 1;
+
+      height: auto;
+
+      min-width: 0;
+    }
+
+
+    /* -------------------------------------------------------
+       TOP IMAGE 2
+    ------------------------------------------------------- */
+
+    .shop-category-grid-{{ ai_gen_id }}
+    > .shop-category-card-{{ ai_gen_id }}:nth-child(3) {
+
+      grid-column: span 1;
+
+      height: auto;
+
+      min-width: 0;
+    }
+
+
+    /* -------------------------------------------------------
+       BOTTOM IMAGES
+    ------------------------------------------------------- */
+
+    .shop-category-card-{{ ai_gen_id }}.shop-category-card-bottom-{{ ai_gen_id }} {
+
+      grid-column: span 1;
+
+      height: auto;
+
+      min-width: 0;
+    }
+
+
+    /* -------------------------------------------------------
+       MOBILE IMAGE = SQUARE
+    ------------------------------------------------------- */
+
+    .shop-category-image-wrapper-{{ ai_gen_id }} {
+
+      position: relative;
+
+      width: 100%;
+
+      height: 0;
+
+      padding-bottom: 100%;
+
+      overflow: hidden;
+
+      box-sizing: border-box;
+    }
+
+
+    /* -------------------------------------------------------
+       MOBILE IMAGE
+    ------------------------------------------------------- */
+
+    .shop-category-image-{{ ai_gen_id }} {
+
+      position: absolute;
+
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      display: block;
+    }
+
+
+    /* -------------------------------------------------------
+       MOBILE PLACEHOLDER
+    ------------------------------------------------------- */
+
+    .shop-category-placeholder-{{ ai_gen_id }} {
+
+      position: absolute;
+
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+    }
+
+
+    /* -------------------------------------------------------
+       MOBILE OVERLAY
+    ------------------------------------------------------- */
+
+    .shop-category-overlay-{{ ai_gen_id }} {
+
+      padding: 20px 10px;
+
+      gap: 8px;
+    }
+
+
+    /* -------------------------------------------------------
+       MOBILE BUTTON
+    ------------------------------------------------------- */
+
+    .shop-category-button-{{ ai_gen_id }} {
+
+      padding:
+        {{ block.settings.mobile_button_padding_vertical }}px
+        {{ block.settings.mobile_button_padding_horizontal }}px;
+
+      font-size:
+        {{ block.settings.mobile_button_font_size }}px;
+
+      letter-spacing: 0.8px;
+    }
+
+
+    /* -------------------------------------------------------
+       MOBILE CENTER HEADING
+    ------------------------------------------------------- */
+
+    .shop-category-center-heading-{{ ai_gen_id }} {
+
+      font-size:
+        {{ block.settings.mobile_center_heading_size }}px;
+
+      margin-bottom: 12px;
+    }
+
+
+    /* -------------------------------------------------------
+       MOBILE EYEBROW
+    ------------------------------------------------------- */
+
+    .shop-category-center-eyebrow-{{ ai_gen_id }} {
+
+      font-size:
+        {{ block.settings.mobile_eyebrow_font_size }}px;
+
+      margin-bottom: 8px;
+    }
+
+
+    /* -------------------------------------------------------
+       MOBILE DESCRIPTION
+    ------------------------------------------------------- */
+
+    .shop-category-center-description-{{ ai_gen_id }} {
+
+      font-size:
+        {{ block.settings.mobile_description_font_size }}px;
+
+      line-height: 1.5;
+
+      max-width: 300px;
+    }
+
+
+    /* -------------------------------------------------------
+       DISABLE HOVER ZOOM ON MOBILE
+    ------------------------------------------------------- */
+
+    .shop-category-card-link-{{ ai_gen_id }}:hover
+    .shop-category-image-{{ ai_gen_id }} {
+
+      transform: none;
+    }
+
+  }
+
+
+  /* =========================================================
+     VERY SMALL MOBILE
+     BELOW 400px
+  ========================================================= */
+
+  @media screen and (max-width: 399px) {
+
+    .shop-category-section-{{ ai_gen_id }} {
+
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+
+    .shop-category-container-{{ ai_gen_id }} {
+      width: 100%;
+      max-width: 100%;
+    }
+
+
+    .shop-category-grid-{{ ai_gen_id }} {
+
+      gap: {{ block.settings.mobile_grid_gap }}px;
+    }
+
+
+    .shop-category-center-card-{{ ai_gen_id }} {
+
+      padding: 25px 15px;
+    }
+
+
+    .shop-category-overlay-{{ ai_gen_id }} {
+
+      padding: 15px 8px;
+    }
+
+
+    .shop-category-button-{{ ai_gen_id }} {
+
+      white-space: normal;
+
+      text-align: center;
+    }
+
+  }
+
+{% endstyle %}
+
+<div class="shop-category-section-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="shop-category-container-{{ ai_gen_id }}">
+    <div class="shop-category-grid-{{ ai_gen_id }}">
+      {% if block.settings.category_1_image != blank or block.settings.category_1_title != blank %}
+        <div class="shop-category-card-{{ ai_gen_id }} shop-category-card-top-{{ ai_gen_id }}">
+          <a
+            href="{{ block.settings.category_1_link }}"
+            class="shop-category-card-link-{{ ai_gen_id }}"
+            {% if block.settings.category_1_title != blank %}
+              aria-label="{{ block.settings.category_1_title }}"
+            {% endif %}
+          >
+            <div class="shop-category-image-wrapper-{{ ai_gen_id }}">
+              {% if block.settings.category_1_image %}
+                <img
+                  src="{{ block.settings.category_1_image | image_url: width: 900 }}"
+                  alt="{{ block.settings.category_1_image.alt | escape }}"
+                  loading="lazy"
+                  width="900"
+                  height="{{ block.settings.image_height }}"
+                  class="shop-category-image-{{ ai_gen_id }}"
+                >
+              {% else %}
+                <div class="shop-category-placeholder-{{ ai_gen_id }}">
+                  {{ 'collection-apparel-1' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="shop-category-overlay-{{ ai_gen_id }}">
+              <button type="button" class="shop-category-button-{{ ai_gen_id }}">
+                {{ block.settings.category_1_button_text }}
+              </button>
+            </div>
+          </a>
+        </div>
+      {% endif %}
+
+      <div class="shop-category-center-card-{{ ai_gen_id }}">
+        {% if block.settings.center_eyebrow != blank %}
+          <div class="shop-category-center-eyebrow-{{ ai_gen_id }}">
+            {{ block.settings.center_eyebrow }}
+          </div>
+        {% endif %}
+
+        {% if block.settings.center_heading != blank %}
+          <h2 class="shop-category-center-heading-{{ ai_gen_id }}">
+            {{ block.settings.center_heading }}
+          </h2>
+        {% endif %}
+
+        {% if block.settings.center_description != blank %}
+          <div class="shop-category-center-description-{{ ai_gen_id }}">
+            {{ block.settings.center_description }}
+          </div>
+        {% endif %}
+      </div>
+
+      {% if block.settings.category_2_image != blank or block.settings.category_2_title != blank %}
+        <div class="shop-category-card-{{ ai_gen_id }} shop-category-card-top-{{ ai_gen_id }}">
+          <a
+            href="{{ block.settings.category_2_link }}"
+            class="shop-category-card-link-{{ ai_gen_id }}"
+            {% if block.settings.category_2_title != blank %}
+              aria-label="{{ block.settings.category_2_title }}"
+            {% endif %}
+          >
+            <div class="shop-category-image-wrapper-{{ ai_gen_id }}">
+              {% if block.settings.category_2_image %}
+                <img
+                  src="{{ block.settings.category_2_image | image_url: width: 900 }}"
+                  alt="{{ block.settings.category_2_image.alt | escape }}"
+                  loading="lazy"
+                  width="900"
+                  height="{{ block.settings.image_height }}"
+                  class="shop-category-image-{{ ai_gen_id }}"
+                >
+              {% else %}
+                <div class="shop-category-placeholder-{{ ai_gen_id }}">
+                  {{ 'collection-apparel-1' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="shop-category-overlay-{{ ai_gen_id }}">
+              <button type="button" class="shop-category-button-{{ ai_gen_id }}">
+                {{ block.settings.category_2_button_text }}
+              </button>
+            </div>
+          </a>
+        </div>
+      {% endif %}
+
+      {% if block.settings.category_3_image != blank or block.settings.category_3_title != blank %}
+        <div class="shop-category-card-{{ ai_gen_id }} shop-category-card-bottom-{{ ai_gen_id }}">
+          <a
+            href="{{ block.settings.category_3_link }}"
+            class="shop-category-card-link-{{ ai_gen_id }}"
+            {% if block.settings.category_3_title != blank %}
+              aria-label="{{ block.settings.category_3_title }}"
+            {% endif %}
+          >
+            <div class="shop-category-image-wrapper-{{ ai_gen_id }}">
+              {% if block.settings.category_3_image %}
+                <img
+                  src="{{ block.settings.category_3_image | image_url: width: 600 }}"
+                  alt="{{ block.settings.category_3_image.alt | escape }}"
+                  loading="lazy"
+                  width="600"
+                  height="{{ block.settings.image_height }}"
+                  class="shop-category-image-{{ ai_gen_id }}"
+                >
+              {% else %}
+                <div class="shop-category-placeholder-{{ ai_gen_id }}">
+                  {{ 'collection-apparel-1' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="shop-category-overlay-{{ ai_gen_id }}">
+              <button type="button" class="shop-category-button-{{ ai_gen_id }}">
+                {{ block.settings.category_3_button_text }}
+              </button>
+            </div>
+          </a>
+        </div>
+      {% endif %}
+
+      {% if block.settings.category_4_image != blank or block.settings.category_4_title != blank %}
+        <div class="shop-category-card-{{ ai_gen_id }} shop-category-card-bottom-{{ ai_gen_id }}">
+          <a
+            href="{{ block.settings.category_4_link }}"
+            class="shop-category-card-link-{{ ai_gen_id }}"
+            {% if block.settings.category_4_title != blank %}
+              aria-label="{{ block.settings.category_4_title }}"
+            {% endif %}
+          >
+            <div class="shop-category-image-wrapper-{{ ai_gen_id }}">
+              {% if block.settings.category_4_image %}
+                <img
+                  src="{{ block.settings.category_4_image | image_url: width: 600 }}"
+                  alt="{{ block.settings.category_4_image.alt | escape }}"
+                  loading="lazy"
+                  width="600"
+                  height="{{ block.settings.image_height }}"
+                  class="shop-category-image-{{ ai_gen_id }}"
+                >
+              {% else %}
+                <div class="shop-category-placeholder-{{ ai_gen_id }}">
+                  {{ 'collection-apparel-1' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="shop-category-overlay-{{ ai_gen_id }}">
+              <button type="button" class="shop-category-button-{{ ai_gen_id }}">
+                {{ block.settings.category_4_button_text }}
+              </button>
+            </div>
+          </a>
+        </div>
+      {% endif %}
+
+      {% if block.settings.category_5_image != blank or block.settings.category_5_title != blank %}
+        <div class="shop-category-card-{{ ai_gen_id }} shop-category-card-bottom-{{ ai_gen_id }}">
+          <a
+            href="{{ block.settings.category_5_link }}"
+            class="shop-category-card-link-{{ ai_gen_id }}"
+            {% if block.settings.category_5_title != blank %}
+              aria-label="{{ block.settings.category_5_title }}"
+            {% endif %}
+          >
+            <div class="shop-category-image-wrapper-{{ ai_gen_id }}">
+              {% if block.settings.category_5_image %}
+                <img
+                  src="{{ block.settings.category_5_image | image_url: width: 600 }}"
+                  alt="{{ block.settings.category_5_image.alt | escape }}"
+                  loading="lazy"
+                  width="600"
+                  height="{{ block.settings.image_height }}"
+                  class="shop-category-image-{{ ai_gen_id }}"
+                >
+              {% else %}
+                <div class="shop-category-placeholder-{{ ai_gen_id }}">
+                  {{ 'collection-apparel-1' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="shop-category-overlay-{{ ai_gen_id }}">
+              <button type="button" class="shop-category-button-{{ ai_gen_id }}">
+                {{ block.settings.category_5_button_text }}
+              </button>
+            </div>
+          </a>
+        </div>
+      {% endif %}
+      {% if block.settings.category_6_image != blank or block.settings.category_6_title != blank %}
+        <div class="shop-category-card-{{ ai_gen_id }} shop-category-card-bottom-{{ ai_gen_id }}">
+          <a
+            href="{{ block.settings.category_6_link }}"
+            class="shop-category-card-link-{{ ai_gen_id }}"
+            {% if block.settings.category_6_title != blank %}
+              aria-label="{{ block.settings.category_6_title }}"
+            {% endif %}
+          >
+            <div class="shop-category-image-wrapper-{{ ai_gen_id }}">
+              {% if block.settings.category_6_image %}
+                <img
+                  src="{{ block.settings.category_6_image | image_url: width: 600 }}"
+                  alt="{{ block.settings.category_6_image.alt | escape }}"
+                  loading="lazy"
+                  width="600"
+                  height="{{ block.settings.image_height }}"
+                  class="shop-category-image-{{ ai_gen_id }}"
+                >
+              {% else %}
+                <div class="shop-category-placeholder-{{ ai_gen_id }}">
+                  {{ 'collection-apparel-1' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="shop-category-overlay-{{ ai_gen_id }}">
+              <button type="button" class="shop-category-button-{{ ai_gen_id }}">
+                {{ block.settings.category_6_button_text }}
+              </button>
+            </div>
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Shop by category",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Maximum width",
+      "min": 1000,
+      "max": 1600,
+      "step": 100,
+      "unit": "px",
+      "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Bottom spacing",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Gap between cards",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "mobile_grid_gap",
+      "label": "Mobile gap",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Desktop image height",
+      "min": 300,
+      "max": 700,
+      "step": 20,
+      "unit": "px",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Center card"
+    },
+    {
+      "type": "text",
+      "id": "center_eyebrow",
+      "label": "Eyebrow text",
+      "default": "CARAT DIAMONDS"
+    },
+    {
+      "type": "text",
+      "id": "center_heading",
+      "label": "Heading",
+      "default": "Shop By Category"
+    },
+    {
+      "type": "textarea",
+      "id": "center_description",
+      "label": "Description",
+      "default": "Discover our exquisite collection of fine jewelry"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_font_size",
+      "label": "Eyebrow size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "mobile_eyebrow_font_size",
+      "label": "Mobile eyebrow size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "center_heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "mobile_center_heading_size",
+      "label": "Mobile heading size",
+      "min": 18,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 26
+    },
+    {
+      "type": "range",
+      "id": "description_font_size",
+      "label": "Description size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "mobile_description_font_size",
+      "label": "Mobile description size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 13
+    },
+    {
+      "type": "header",
+      "content": "Category 1 (Engagement Rings)"
+    },
+    {
+      "type": "image_picker",
+      "id": "category_1_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "category_1_title",
+      "label": "Title",
+      "default": "Engagement Rings"
+    },
+    {
+      "type": "url",
+      "id": "category_1_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "category_1_button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "header",
+      "content": "Category 2 (Wedding Rings)"
+    },
+    {
+      "type": "image_picker",
+      "id": "category_2_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "category_2_title",
+      "label": "Title",
+      "default": "Wedding Rings"
+    },
+    {
+      "type": "url",
+      "id": "category_2_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "category_2_button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "header",
+      "content": "Category 3 (Earrings)"
+    },
+    {
+      "type": "image_picker",
+      "id": "category_3_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "category_3_title",
+      "label": "Title",
+      "default": "Earrings"
+    },
+    {
+      "type": "url",
+      "id": "category_3_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "category_3_button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "header",
+      "content": "Category 4 (Pendants)"
+    },
+    {
+      "type": "image_picker",
+      "id": "category_4_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "category_4_title",
+      "label": "Title",
+      "default": "Pendants"
+    },
+    {
+      "type": "url",
+      "id": "category_4_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "category_4_button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "header",
+      "content": "Category 5 (Bracelets)"
+    },
+    {
+      "type": "image_picker",
+      "id": "category_5_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "category_5_title",
+      "label": "Title",
+      "default": "Bracelets"
+    },
+    {
+      "type": "url",
+      "id": "category_5_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "category_5_button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "header",
+      "content": "Category 6 (Necklace)"
+    },
+    {
+      "type": "image_picker",
+      "id": "category_6_image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "category_6_title",
+      "label": "Title",
+      "default": "Necklace"
+    },
+    {
+      "type": "url",
+      "id": "category_6_link",
+      "label": "Link"
+    },
+    {
+      "type": "text",
+      "id": "category_6_button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "header",
+      "content": "Button style"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button font size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "mobile_button_font_size",
+      "label": "Mobile button font size",
+      "min": 9,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "label": "Button vertical padding",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "label": "Button horizontal padding",
+      "min": 16,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "mobile_button_padding_vertical",
+      "label": "Mobile button vertical padding",
+      "min": 6,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "mobile_button_padding_horizontal",
+      "label": "Mobile button horizontal padding",
+      "min": 12,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Button corner radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "section_background",
+      "label": "Section background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#f8f8f8"
+    },
+    {
+      "type": "color",
+      "id": "center_card_background",
+      "label": "Center card background",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow text",
+      "default": "#c9a961"
+    },
+    {
+      "type": "color",
+      "id": "center_heading_color",
+      "label": "Center heading",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description text",
+      "default": "#cccccc"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button hover background",
+      "default": "#c9a961"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button hover text",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shop by category"
+    }
+  ]
+}
+{% endschema %}

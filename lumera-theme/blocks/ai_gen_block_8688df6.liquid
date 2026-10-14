@@ -1,0 +1,1395 @@
+{% doc %}
+  @prompt
+    Create a two-column section with a video playing on the left side and a story/text content area on the right side. The left column should have an autoplay looping video (with mute option) that fills the column. The right side should have a heading, subheading, body text paragraph, and an optional call-to-action button. The layout should be responsive — stacking vertically on mobile. The design should feel premium and luxurious, matching a fine jewellery brand aesthetic with dark/elegant styling options. All content (video, heading, text, button label/link) should be customizable from the theme editor settings., THODA OR ACHA OR PRODOSIONAL JESA CREATE KERKE DO NA 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-luxury-video-story-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ai-luxury-video-story-container-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: {{ block.settings.video_width }}% {{ 100 | minus: block.settings.video_width }}%;
+    gap: 0;
+    width: 100%;
+    min-height: {{ block.settings.section_height }}px;
+    position: relative;
+  }
+
+  .ai-luxury-video-story-video-column-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+    background-color: {{ block.settings.video_bg_color }};
+  }
+
+  .ai-luxury-video-story-video-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: {{ block.settings.section_height }}px;
+  }
+
+  .ai-luxury-video-story-video-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ai-luxury-video-story-video-overlay-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      {{ block.settings.overlay_direction }},
+      {{ block.settings.overlay_color_start }},
+      {{ block.settings.overlay_color_end }}
+    );
+    opacity: {{ block.settings.overlay_opacity }};
+    pointer-events: none;
+  }
+
+  .ai-luxury-video-story-controls-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: {{ block.settings.controls_position_bottom }}px;
+    right: {{ block.settings.controls_position_right }}px;
+    display: flex;
+    gap: 12px;
+    z-index: 10;
+  }
+
+  .ai-luxury-video-story-control-btn-{{ ai_gen_id }} {
+    background-color: {{ block.settings.control_button_bg }};
+    color: {{ block.settings.control_button_color }};
+    border: 1px solid {{ block.settings.control_button_border }};
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+  }
+
+  .ai-luxury-video-story-control-btn-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.control_button_hover_bg }};
+    transform: scale(1.1);
+  }
+
+  .ai-luxury-video-story-control-btn-{{ ai_gen_id }} svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .ai-luxury-video-story-content-column-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: {{ block.settings.content_padding_vertical }}px {{ block.settings.content_padding_horizontal }}px;
+    background-color: {{ block.settings.content_bg_color }};
+    color: {{ block.settings.content_text_color }};
+    position: relative;
+  }
+
+  .ai-luxury-video-story-content-inner-{{ ai_gen_id }} {
+    max-width: {{ block.settings.content_max_width }}px;
+    {% if block.settings.content_alignment == 'center' %}
+      margin: 0 auto;
+      text-align: center;
+    {% elsif block.settings.content_alignment == 'right' %}
+      margin-left: auto;
+      text-align: right;
+    {% else %}
+      text-align: left;
+    {% endif %}
+  }
+
+  .ai-luxury-video-story-label-{{ ai_gen_id }} {
+    font-size: {{ block.settings.label_size }}px;
+    font-weight: {{ block.settings.label_weight }};
+    color: {{ block.settings.label_color }};
+    letter-spacing: {{ block.settings.label_spacing }}em;
+    text-transform: uppercase;
+    margin: 0 0 {{ block.settings.label_spacing_bottom }}px 0;
+    display: inline-block;
+  }
+
+  .ai-luxury-video-story-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    font-weight: {{ block.settings.heading_weight }};
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 {{ block.settings.heading_spacing }}px 0;
+    line-height: {{ block.settings.heading_line_height }};
+    letter-spacing: -0.02em;
+  }
+
+  .ai-luxury-video-story-divider-{{ ai_gen_id }} {
+    width: {{ block.settings.divider_width }}px;
+    height: {{ block.settings.divider_height }}px;
+    background-color: {{ block.settings.divider_color }};
+    margin: {{ block.settings.divider_margin_top }}px {% if block.settings.content_alignment == 'center' %}auto{% elsif block.settings.content_alignment == 'right' %}0 0 auto{% else %}0{% endif %} {{ block.settings.divider_margin_bottom }}px;
+  }
+
+  .ai-luxury-video-story-subheading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subheading_size }}px;
+    font-weight: {{ block.settings.subheading_weight }};
+    color: {{ block.settings.subheading_color }};
+    margin: 0 0 {{ block.settings.subheading_spacing }}px 0;
+    line-height: 1.5;
+    font-style: {{ block.settings.subheading_style }};
+  }
+
+  .ai-luxury-video-story-body-{{ ai_gen_id }} {
+    font-size: {{ block.settings.body_size }}px;
+    line-height: {{ block.settings.body_line_height }};
+    margin: 0 0 {{ block.settings.body_spacing }}px 0;
+    opacity: {{ block.settings.body_opacity }};
+  }
+
+  .ai-luxury-video-story-button-wrapper-{{ ai_gen_id }} {
+    display: flex;
+    gap: 15px;
+    {% if block.settings.content_alignment == 'center' %}
+      justify-content: center;
+    {% elsif block.settings.content_alignment == 'right' %}
+      justify-content: flex-end;
+    {% else %}
+      justify-content: flex-start;
+    {% endif %}
+  }
+
+  .ai-luxury-video-story-button-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: {{ block.settings.button_padding_vertical }}px {{ block.settings.button_padding_horizontal }}px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    border-radius: {{ block.settings.button_border_radius }}px;
+    font-size: {{ block.settings.button_font_size }}px;
+    font-weight: {{ block.settings.button_font_weight }};
+    letter-spacing: {{ block.settings.button_letter_spacing }}em;
+    text-transform: {{ block.settings.button_text_transform }};
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: {{ block.settings.button_border_width }}px solid {{ block.settings.button_border_color }};
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ai-luxury-video-story-button-{{ ai_gen_id }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: {{ block.settings.button_hover_bg_color }};
+    transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: -1;
+  }
+
+  .ai-luxury-video-story-button-{{ ai_gen_id }}:hover::before {
+    left: 0;
+  }
+
+  .ai-luxury-video-story-button-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.button_hover_text_color }};
+    border-color: {{ block.settings.button_hover_border_color }};
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px {{ block.settings.button_shadow_color }};
+  }
+
+  .ai-luxury-video-story-button-{{ ai_gen_id }} svg {
+    width: 18px;
+    height: 18px;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-luxury-video-story-button-{{ ai_gen_id }}:hover svg {
+    transform: translateX(4px);
+  }
+
+  .ai-luxury-video-story-button-secondary-{{ ai_gen_id }} {
+    background-color: transparent;
+    color: {{ block.settings.button_secondary_color }};
+    border-color: {{ block.settings.button_secondary_border }};
+  }
+
+  .ai-luxury-video-story-button-secondary-{{ ai_gen_id }}::before {
+    background: {{ block.settings.button_secondary_hover_bg }};
+  }
+
+  .ai-luxury-video-story-button-secondary-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.button_secondary_hover_color }};
+    border-color: {{ block.settings.button_secondary_hover_border }};
+  }
+
+  .ai-luxury-video-story-features-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.features_columns }}, 1fr);
+    gap: {{ block.settings.features_gap }}px;
+    margin-top: {{ block.settings.features_margin_top }}px;
+  }
+
+  .ai-luxury-video-story-feature-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .ai-luxury-video-story-feature-icon-{{ ai_gen_id }} {
+    width: {{ block.settings.feature_icon_size }}px;
+    height: {{ block.settings.feature_icon_size }}px;
+    color: {{ block.settings.feature_icon_color }};
+    flex-shrink: 0;
+  }
+
+  .ai-luxury-video-story-feature-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.feature_text_size }}px;
+    color: {{ block.settings.feature_text_color }};
+    line-height: 1.4;
+  }
+
+  @media screen and (max-width: 989px) {
+    .ai-luxury-video-story-container-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .ai-luxury-video-story-video-wrapper-{{ ai_gen_id }} {
+      min-height: {{ block.settings.section_height | times: 0.6 }}px;
+    }
+
+    .ai-luxury-video-story-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.65 }}px;
+    }
+
+    .ai-luxury-video-story-subheading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subheading_size | times: 0.8 }}px;
+    }
+
+    .ai-luxury-video-story-body-{{ ai_gen_id }} {
+      font-size: {{ block.settings.body_size | times: 0.9 }}px;
+    }
+
+    .ai-luxury-video-story-content-column-{{ ai_gen_id }} {
+      padding: {{ block.settings.content_padding_vertical | times: 0.5 }}px {{ block.settings.content_padding_horizontal | times: 0.5 }}px;
+    }
+
+    .ai-luxury-video-story-button-wrapper-{{ ai_gen_id }} {
+      flex-direction: column;
+    }
+
+    .ai-luxury-video-story-button-{{ ai_gen_id }} {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .ai-luxury-video-story-features-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media screen and (max-width: 749px) {
+
+  .ai-luxury-video-story-container-{{ ai_gen_id }}{
+    display:flex;
+    flex-direction:column;
+  }
+
+  .ai-luxury-video-story-video-column-{{ ai_gen_id }}{
+    order:1;
+  }
+
+  .ai-luxury-video-story-content-column-{{ ai_gen_id }}{
+    order:2;
+    padding:30px 20px;
+    text-align:center;
+  }
+
+  .ai-luxury-video-story-content-inner-{{ ai_gen_id }}{
+    max-width:100%;
+    margin:0 auto;
+    text-align:center;
+  }
+
+  .ai-luxury-video-story-video-wrapper-{{ ai_gen_id }}{
+    min-height:235px;
+  }
+
+  .ai-luxury-video-story-video-{{ ai_gen_id }}{
+    object-fit:cover;
+  }
+
+  .ai-luxury-video-story-label-{{ ai_gen_id }}{
+    font-size:12px;
+    margin-bottom:10px;
+  }
+
+  .ai-luxury-video-story-heading-{{ ai_gen_id }}{
+    font-size:30px;
+    line-height:1.2;
+    margin-bottom:15px;
+  }
+
+  .ai-luxury-video-story-divider-{{ ai_gen_id }}{
+    margin:0 auto 20px;
+  }
+
+  .ai-luxury-video-story-subheading-{{ ai_gen_id }}{
+    font-size:16px;
+    line-height:1.6;
+    margin-bottom:15px;
+  }
+
+  .ai-luxury-video-story-body-{{ ai_gen_id }}{
+    font-size:15px;
+    line-height:1.7;
+    margin-bottom:25px;
+  }
+
+  .ai-luxury-video-story-button-wrapper-{{ ai_gen_id }}{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    align-items:center;
+  }
+
+  .ai-luxury-video-story-button-{{ ai_gen_id }}{
+    width:100%;
+    max-width:280px;
+    justify-content:center;
+    padding:14px 20px;
+    font-size:15px;
+  }
+
+  .ai-luxury-video-story-controls-{{ ai_gen_id }}{
+    bottom:15px;
+    right:15px;
+  }
+
+  .ai-luxury-video-story-control-btn-{{ ai_gen_id }}{
+    width:40px;
+    height:40px;
+  }
+
+  .ai-luxury-video-story-features-{{ ai_gen_id }}{
+    grid-template-columns:1fr;
+    gap:15px;
+    margin-top:25px;
+  }
+
+  .ai-luxury-video-story-feature-{{ ai_gen_id }}{
+    justify-content:center;
+    text-align:center;
+    flex-direction:column;
+    gap:8px;
+  }
+
+}
+{% endstyle %}
+
+<luxury-video-story-{{ ai_gen_id }} class="ai-luxury-video-story-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-luxury-video-story-container-{{ ai_gen_id }}">
+    <div class="ai-luxury-video-story-video-column-{{ ai_gen_id }}">
+      <div class="ai-luxury-video-story-video-wrapper-{{ ai_gen_id }}">
+        {% if block.settings.video_url != blank %}
+          <video
+            class="ai-luxury-video-story-video-{{ ai_gen_id }}"
+            autoplay
+            loop
+            muted
+            playsinline
+            aria-label="{{ block.settings.video_aria_label }}"
+          >
+            <source src="{{ block.settings.video_url }}" type="video/mp4">
+          </video>
+          {% if block.settings.show_overlay %}
+            <div class="ai-luxury-video-story-video-overlay-{{ ai_gen_id }}"></div>
+          {% endif %}
+          <div class="ai-luxury-video-story-controls-{{ ai_gen_id }}">
+            {% if block.settings.show_mute_button %}
+              <button
+                class="ai-luxury-video-story-control-btn-{{ ai_gen_id }} ai-luxury-video-story-mute-btn-{{ ai_gen_id }}"
+                aria-label="Toggle sound"
+                type="button"
+              >
+                <svg class="ai-luxury-video-story-mute-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                  <line x1="23" y1="9" x2="17" y2="15"></line>
+                  <line x1="17" y1="9" x2="23" y2="15"></line>
+                </svg>
+                <svg class="ai-luxury-video-story-unmute-icon-{{ ai_gen_id }}" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
+              </button>
+            {% endif %}
+            {% if block.settings.show_play_pause %}
+              <button
+                class="ai-luxury-video-story-control-btn-{{ ai_gen_id }} ai-luxury-video-story-play-btn-{{ ai_gen_id }}"
+                aria-label="Pause video"
+                type="button"
+              >
+                <svg class="ai-luxury-video-story-pause-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="6" y="4" width="4" height="16"></rect>
+                  <rect x="14" y="4" width="4" height="16"></rect>
+                </svg>
+                <svg class="ai-luxury-video-story-play-icon-{{ ai_gen_id }}" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </button>
+            {% endif %}
+          </div>
+        {% else %}
+          <div style="width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 15px; color: #999; font-size: 14px; padding: 40px; text-align: center;">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="23 7 16 12 23 17 23 7"></polygon>
+              <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+            </svg>
+            <div>Add your video URL in the block settings</div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="ai-luxury-video-story-content-column-{{ ai_gen_id }}">
+      <div class="ai-luxury-video-story-content-inner-{{ ai_gen_id }}">
+        {% if block.settings.label != blank %}
+          <div class="ai-luxury-video-story-label-{{ ai_gen_id }}">{{ block.settings.label }}</div>
+        {% endif %}
+
+        {% if block.settings.heading != blank %}
+          <h2 class="ai-luxury-video-story-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+        {% endif %}
+
+        {% if block.settings.show_divider %}
+          <div class="ai-luxury-video-story-divider-{{ ai_gen_id }}"></div>
+        {% endif %}
+
+        {% if block.settings.subheading != blank %}
+          <div class="ai-luxury-video-story-subheading-{{ ai_gen_id }}">{{ block.settings.subheading }}</div>
+        {% endif %}
+
+        {% if block.settings.body_text != blank %}
+          <div class="ai-luxury-video-story-body-{{ ai_gen_id }}">{{ block.settings.body_text }}</div>
+        {% endif %}
+
+        {% if block.settings.button_text != blank or block.settings.button_secondary_text != blank %}
+          <div class="ai-luxury-video-story-button-wrapper-{{ ai_gen_id }}">
+            {% if block.settings.button_text != blank and block.settings.button_link != blank %}
+              <a href="{{ block.settings.button_link }}" class="ai-luxury-video-story-button-{{ ai_gen_id }}">
+                {{ block.settings.button_text }}
+                {% if block.settings.show_button_arrow %}
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                {% endif %}
+              </a>
+            {% endif %}
+            {% if block.settings.button_secondary_text != blank and block.settings.button_secondary_link != blank %}
+              <a href="{{ block.settings.button_secondary_link }}" class="ai-luxury-video-story-button-{{ ai_gen_id }} ai-luxury-video-story-button-secondary-{{ ai_gen_id }}">
+                {{ block.settings.button_secondary_text }}
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if block.settings.show_features %}
+          <div class="ai-luxury-video-story-features-{{ ai_gen_id }}">
+            {% if block.settings.feature_1_text != blank %}
+              <div class="ai-luxury-video-story-feature-{{ ai_gen_id }}">
+                <svg class="ai-luxury-video-story-feature-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <div class="ai-luxury-video-story-feature-text-{{ ai_gen_id }}">{{ block.settings.feature_1_text }}</div>
+              </div>
+            {% endif %}
+            {% if block.settings.feature_2_text != blank %}
+              <div class="ai-luxury-video-story-feature-{{ ai_gen_id }}">
+                <svg class="ai-luxury-video-story-feature-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <div class="ai-luxury-video-story-feature-text-{{ ai_gen_id }}">{{ block.settings.feature_2_text }}</div>
+              </div>
+            {% endif %}
+            {% if block.settings.feature_3_text != blank %}
+              <div class="ai-luxury-video-story-feature-{{ ai_gen_id }}">
+                <svg class="ai-luxury-video-story-feature-icon-{{ ai_gen_id }}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <div class="ai-luxury-video-story-feature-text-{{ ai_gen_id }}">{{ block.settings.feature_3_text }}</div>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</luxury-video-story-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class LuxuryVideoStory{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.video = this.querySelector('.ai-luxury-video-story-video-{{ ai_gen_id }}');
+        this.muteButton = this.querySelector('.ai-luxury-video-story-mute-btn-{{ ai_gen_id }}');
+        this.playButton = this.querySelector('.ai-luxury-video-story-play-btn-{{ ai_gen_id }}');
+        this.muteIcon = this.querySelector('.ai-luxury-video-story-mute-icon-{{ ai_gen_id }}');
+        this.unmuteIcon = this.querySelector('.ai-luxury-video-story-unmute-icon-{{ ai_gen_id }}');
+        this.pauseIcon = this.querySelector('.ai-luxury-video-story-pause-icon-{{ ai_gen_id }}');
+        this.playIcon = this.querySelector('.ai-luxury-video-story-play-icon-{{ ai_gen_id }}');
+
+        if (this.muteButton && this.video) {
+          this.muteButton.addEventListener('click', () => this.toggleMute());
+        }
+
+        if (this.playButton && this.video) {
+          this.playButton.addEventListener('click', () => this.togglePlay());
+        }
+      }
+
+      toggleMute() {
+        if (this.video.muted) {
+          this.video.muted = false;
+          this.muteIcon.style.display = 'none';
+          this.unmuteIcon.style.display = 'block';
+          this.muteButton.setAttribute('aria-label', 'Mute sound');
+        } else {
+          this.video.muted = true;
+          this.muteIcon.style.display = 'block';
+          this.unmuteIcon.style.display = 'none';
+          this.muteButton.setAttribute('aria-label', 'Unmute sound');
+        }
+      }
+
+      togglePlay() {
+        if (this.video.paused) {
+          this.video.play();
+          this.pauseIcon.style.display = 'block';
+          this.playIcon.style.display = 'none';
+          this.playButton.setAttribute('aria-label', 'Pause video');
+        } else {
+          this.video.pause();
+          this.pauseIcon.style.display = 'none';
+          this.playIcon.style.display = 'block';
+          this.playButton.setAttribute('aria-label', 'Play video');
+        }
+      }
+    }
+
+    customElements.define('luxury-video-story-{{ ai_gen_id }}', LuxuryVideoStory{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Luxury video story",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section height",
+      "min": 400,
+      "max": 900,
+      "step": 50,
+      "unit": "px",
+      "default": 700
+    },
+    {
+      "type": "range",
+      "id": "video_width",
+      "label": "Video column width",
+      "min": 40,
+      "max": 60,
+      "step": 5,
+      "unit": "%",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "Video URL",
+      "info": "Upload your video to Shopify Files and paste the URL here"
+    },
+    {
+      "type": "text",
+      "id": "video_aria_label",
+      "label": "Video description",
+      "default": "Luxury jewellery craftsmanship video"
+    },
+    {
+      "type": "color",
+      "id": "video_bg_color",
+      "label": "Background color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Video overlay"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay",
+      "label": "Show overlay",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "overlay_direction",
+      "label": "Overlay direction",
+      "options": [
+        {
+          "value": "to right",
+          "label": "Left to right"
+        },
+        {
+          "value": "to left",
+          "label": "Right to left"
+        },
+        {
+          "value": "to bottom",
+          "label": "Top to bottom"
+        },
+        {
+          "value": "to top",
+          "label": "Bottom to top"
+        }
+      ],
+      "default": "to right"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color_start",
+      "label": "Overlay start color",
+      "default": "rgba(0, 0, 0, 0.4)"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color_end",
+      "label": "Overlay end color",
+      "default": "rgba(0, 0, 0, 0)"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.5
+    },
+    {
+      "type": "header",
+      "content": "Video controls"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mute_button",
+      "label": "Show mute button",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_play_pause",
+      "label": "Show play/pause button",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "controls_position_bottom",
+      "label": "Controls bottom position",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "controls_position_right",
+      "label": "Controls right position",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "color",
+      "id": "control_button_bg",
+      "label": "Control button background",
+      "default": "rgba(255, 255, 255, 0.15)"
+    },
+    {
+      "type": "color",
+      "id": "control_button_color",
+      "label": "Control button icon",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "control_button_border",
+      "label": "Control button border",
+      "default": "rgba(255, 255, 255, 0.3)"
+    },
+    {
+      "type": "color",
+      "id": "control_button_hover_bg",
+      "label": "Control button hover background",
+      "default": "rgba(255, 255, 255, 0.25)"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "Handcrafted Excellence"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Timeless Elegance, Crafted to Perfection"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Where artistry meets precious metals"
+    },
+    {
+      "type": "richtext",
+      "id": "body_text",
+      "label": "Body text",
+      "default": "<p>Each piece in our collection is meticulously handcrafted by master artisans, combining centuries-old techniques with contemporary design. Discover jewellery that tells your unique story.</p>"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content max width",
+      "min": 400,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "header",
+      "content": "Divider"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_divider",
+      "label": "Show divider",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "divider_width",
+      "label": "Width",
+      "min": 30,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "divider_height",
+      "label": "Height",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Color",
+      "default": "#d4af37"
+    },
+    {
+      "type": "range",
+      "id": "divider_margin_top",
+      "label": "Top spacing",
+      "min": 0,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "divider_margin_bottom",
+      "label": "Bottom spacing",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "header",
+      "content": "Primary button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Explore Collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button_arrow",
+      "label": "Show arrow icon",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Secondary button"
+    },
+    {
+      "type": "text",
+      "id": "button_secondary_text",
+      "label": "Button text",
+      "default": "Our Story"
+    },
+    {
+      "type": "url",
+      "id": "button_secondary_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Features"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_features",
+      "label": "Show features",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "features_columns",
+      "label": "Columns",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "text",
+      "id": "feature_1_text",
+      "label": "Feature 1",
+      "default": "Lifetime warranty"
+    },
+    {
+      "type": "text",
+      "id": "feature_2_text",
+      "label": "Feature 2",
+      "default": "Ethically sourced"
+    },
+    {
+      "type": "text",
+      "id": "feature_3_text",
+      "label": "Feature 3",
+      "default": "Free engraving"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "content_bg_color",
+      "label": "Content background",
+      "default": "#0a1628"
+    },
+    {
+      "type": "color",
+      "id": "content_text_color",
+      "label": "Body text",
+      "default": "#c9c9c9"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label",
+      "default": "#d4af37"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading",
+      "default": "#d4af37"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Primary button background",
+      "default": "#d4af37"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Primary button text",
+      "default": "#0a1628"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Primary button border",
+      "default": "#d4af37"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Primary button hover background",
+      "default": "#b8941f"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Primary button hover text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border_color",
+      "label": "Primary button hover border",
+      "default": "#b8941f"
+    },
+    {
+      "type": "color",
+      "id": "button_shadow_color",
+      "label": "Button shadow",
+      "default": "rgba(212, 175, 55, 0.3)"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_color",
+      "label": "Secondary button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_border",
+      "label": "Secondary button border",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_hover_bg",
+      "label": "Secondary button hover background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_hover_color",
+      "label": "Secondary button hover text",
+      "default": "#0a1628"
+    },
+    {
+      "type": "color",
+      "id": "button_secondary_hover_border",
+      "label": "Secondary button hover border",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "feature_icon_color",
+      "label": "Feature icon",
+      "default": "#d4af37"
+    },
+    {
+      "type": "color",
+      "id": "feature_text_color",
+      "label": "Feature text",
+      "default": "#c9c9c9"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "label_size",
+      "label": "Label size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "label_weight",
+      "label": "Label weight",
+      "min": 300,
+      "max": 700,
+      "step": 100,
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "label_spacing",
+      "label": "Label letter spacing",
+      "min": 0,
+      "max": 0.3,
+      "step": 0.1,
+      "unit": "em",
+      "default": 0.2
+    },
+    {
+      "type": "range",
+      "id": "label_spacing_bottom",
+      "label": "Label bottom spacing",
+      "min": 5,
+      "max": 30,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 24,
+      "max": 90,
+      "step": 2,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "min": 300,
+      "max": 700,
+      "step": 100,
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading line height",
+      "min": 1,
+      "max": 1.5,
+      "step": 0.1,
+      "default": 1.2
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "label": "Heading bottom spacing",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "label": "Subheading size",
+      "min": 14,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "subheading_weight",
+      "label": "Subheading weight",
+      "min": 300,
+      "max": 700,
+      "step": 100,
+      "default": 400
+    },
+    {
+      "type": "select",
+      "id": "subheading_style",
+      "label": "Subheading style",
+      "options": [
+        {
+          "value": "normal",
+          "label": "Normal"
+        },
+        {
+          "value": "italic",
+          "label": "Italic"
+        }
+      ],
+      "default": "italic"
+    },
+    {
+      "type": "range",
+      "id": "subheading_spacing",
+      "label": "Subheading bottom spacing",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "label": "Body text size",
+      "min": 13,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "body_line_height",
+      "label": "Body line height",
+      "min": 1.4,
+      "max": 2,
+      "step": 0.1,
+      "default": 1.7
+    },
+    {
+      "type": "range",
+      "id": "body_opacity",
+      "label": "Body text opacity",
+      "min": 0.6,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.9
+    },
+    {
+      "type": "range",
+      "id": "body_spacing",
+      "label": "Body text bottom spacing",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 35
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button font size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_font_weight",
+      "label": "Button font weight",
+      "min": 400,
+      "max": 700,
+      "step": 100,
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "button_letter_spacing",
+      "label": "Button letter spacing",
+      "min": 0,
+      "max": 0.2,
+      "step": 0.1,
+      "unit": "em",
+      "default": 0.1
+    },
+    {
+      "type": "select",
+      "id": "button_text_transform",
+      "label": "Button text transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "feature_icon_size",
+      "label": "Feature icon size",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "feature_text_size",
+      "label": "Feature text size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "content_padding_vertical",
+      "label": "Content vertical padding",
+      "min": 40,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "content_padding_horizontal",
+      "label": "Content horizontal padding",
+      "min": 30,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "default": 70
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "label": "Button vertical padding",
+      "min": 10,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "label": "Button horizontal padding",
+      "min": 25,
+      "max": 70,
+      "step": 5,
+      "unit": "px",
+      "default": 45
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Button border radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "button_border_width",
+      "label": "Button border width",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "features_gap",
+      "label": "Features gap",
+      "min": 15,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "features_margin_top",
+      "label": "Features top spacing",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury video story"
+    }
+  ]
+}
+{% endschema %}

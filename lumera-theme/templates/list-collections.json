@@ -1,0 +1,247 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "list-collections-template",
+      "disabled": true,
+      "settings": {
+        "display_type": "all",
+        "layout": "list",
+        "sort": "alphabetical"
+      }
+    },
+    "parallax_banner_E7ERzd": {
+      "type": "parallax-banner",
+      "blocks": {
+        "heading_DV3jgz": {
+          "type": "heading",
+          "settings": {
+            "title": "All Collection",
+            "size_text": "h2"
+          }
+        }
+      },
+      "block_order": [
+        "heading_DV3jgz"
+      ],
+      "name": "Parallax banner",
+      "settings": {
+        "animation": "",
+        "setwidth": "full",
+        "bgsection": "#ffffff",
+        "parrallax_enable": true,
+        "image": "shopify://shop_images/Untitled_design.jpg",
+        "height_section": "450",
+        "height_section_mobile": "350",
+        "align": "center",
+        "position_text": "mid-center",
+        "bg_box": "rgba(0,0,0,0)",
+        "opacity_bgbox": 1,
+        "title_color": "rgba(0,0,0,0)",
+        "bg_overlay": "#d73f0f",
+        "gradient_bg": "",
+        "opacity_bg_overlay": 0.1,
+        "paddingsection": "0px 0px 0px 0px",
+        "marginsection": "0px 0px 0px 0px"
+      }
+    },
+    "featured_products_GQLPNH": {
+      "type": "featured-products",
+      "name": "Product Grid",
+      "settings": {
+        "animation": "",
+        "setwidth": "container",
+        "bgsection": "#ffffff",
+        "title_top": "",
+        "title": "Anniversary Gifts",
+        "des": "",
+        "align-heading": "left",
+        "products": [
+          "round-cut-diamond-stud-solitaire-earrings",
+          "stackable-round-diamond-half-eternity-band",
+          "lab-grown-round-cut-diamond-solitaire-pendant",
+          "multi-row-marquise-diamond-wedding-band"
+        ],
+        "enable_creative": false,
+        "padding": true,
+        "colgrid": "col-lg-3",
+        "rows": 4,
+        "txtbutton": "show all",
+        "urlbtn": "shopify://collections/engagement-ring",
+        "style_btn": "btn-outline",
+        "paddingsection": "20px 0px 0px 0px",
+        "paddingmobile": "40px 0px 40px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "featured_products_HkKHHw": {
+      "type": "featured-products",
+      "name": "Product Grid",
+      "settings": {
+        "animation": "",
+        "setwidth": "container",
+        "bgsection": "#ffffff",
+        "title_top": "",
+        "title": "Anniversary Wedding Bands",
+        "des": "",
+        "align-heading": "left",
+        "products": [
+          "5-stone-east-west-oval-wedding-band",
+          "half-eternity-round-diamond-wedding-band",
+          "pear-and-marquise-wedding-band",
+          "5-stone-pear-shaped-diamond-band"
+        ],
+        "enable_creative": false,
+        "padding": true,
+        "colgrid": "col-lg-3",
+        "rows": 4,
+        "txtbutton": "show all",
+        "urlbtn": "shopify://collections/wedding-band",
+        "style_btn": "btn-outline",
+        "paddingsection": "0px 0px 0px 0px",
+        "paddingmobile": "40px 0px 40px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "featured_products_3ymJ6J": {
+      "type": "featured-products",
+      "name": "Product Grid",
+      "settings": {
+        "animation": "",
+        "setwidth": "container",
+        "bgsection": "#ffffff",
+        "title_top": "",
+        "title": "Signature Engagement Rings",
+        "des": "",
+        "align-heading": "left",
+        "products": [
+          "dutch-marquise-engagement-ring-pave-setting",
+          "elongated-cushion-cut-engagement-ring-pave-setting",
+          "three-stone-emerald-cut-engagement-ring",
+          "yellow-cushion-solitaire-engagement-ring"
+        ],
+        "enable_creative": false,
+        "padding": true,
+        "colgrid": "col-lg-3",
+        "rows": 4,
+        "txtbutton": "show all",
+        "urlbtn": "shopify://collections/engagement-ring",
+        "style_btn": "btn-outline",
+        "paddingsection": "0px 0px 0px 0px",
+        "paddingmobile": "40px 0px 40px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "featured_products_9bDj8e": {
+      "type": "featured-products",
+      "name": "Product Grid",
+      "settings": {
+        "animation": "",
+        "setwidth": "container",
+        "bgsection": "#ffffff",
+        "title_top": "",
+        "title": "Elegant Bracelets",
+        "des": "",
+        "align-heading": "left",
+        "products": [
+          "crushed-ice-radiant-cut-tennis-bracelet",
+          "east-west-oval-diamond-tennis-bracelet",
+          "east-west-emerald-and-round-tennis-bracelet",
+          "emerald-cut-eternity-tennis-bracelet"
+        ],
+        "enable_creative": false,
+        "padding": true,
+        "colgrid": "col-lg-3",
+        "rows": 4,
+        "txtbutton": "show all",
+        "urlbtn": "shopify://collections/bracelets",
+        "style_btn": "btn-outline",
+        "paddingsection": "0px 0px 0px 0px",
+        "paddingmobile": "40px 0px 40px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "featured_products_BygYPH": {
+      "type": "featured-products",
+      "name": "Product Grid",
+      "settings": {
+        "animation": "",
+        "setwidth": "container",
+        "bgsection": "#ffffff",
+        "title_top": "",
+        "title": "Luxury Necklaces",
+        "des": "",
+        "align-heading": "left",
+        "products": [
+          "eternity-round-brilliant-diamond-tennis-necklace",
+          "eternity-round-cut-diamond-tennis-necklace",
+          "eternity-single-line-round-tennis-necklace",
+          "round-cut-diamond-tennis-necklace"
+        ],
+        "enable_creative": false,
+        "padding": true,
+        "colgrid": "col-lg-3",
+        "rows": 4,
+        "txtbutton": "show all",
+        "urlbtn": "shopify://collections/necklace",
+        "style_btn": "btn-outline",
+        "paddingsection": "0px 0px 0px 0px",
+        "paddingmobile": "40px 0px 40px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    },
+    "featured_products_eiMTHn": {
+      "type": "featured-products",
+      "name": "Product Grid",
+      "settings": {
+        "animation": "",
+        "setwidth": "container",
+        "bgsection": "#ffffff",
+        "title_top": "",
+        "title": "Best Seller Engagement Rings",
+        "des": "",
+        "align-heading": "left",
+        "products": [
+          "lab-grown-radiant-diamond-engagement-ring",
+          "split-shank-oval-cut-diamond-ring",
+          "oval-cut-diamond-ring-pave-setting",
+          "round-cut-diamond-pave-setting-ring"
+        ],
+        "enable_creative": false,
+        "padding": true,
+        "colgrid": "col-lg-3",
+        "rows": 4,
+        "txtbutton": "show all",
+        "urlbtn": "shopify://collections/best-selling-products",
+        "style_btn": "btn-outline",
+        "paddingsection": "0px 0px 40px 0px",
+        "paddingmobile": "40px 0px 40px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "parallax_banner_E7ERzd",
+    "featured_products_GQLPNH",
+    "featured_products_HkKHHw",
+    "featured_products_3ymJ6J",
+    "featured_products_9bDj8e",
+    "featured_products_BygYPH",
+    "featured_products_eiMTHn"
+  ]
+}

@@ -1,0 +1,729 @@
+{% doc %}
+  @prompt
+    IMPORTANT LOGIN FLOW
+
+    Do NOT create a new login popup.
+
+    Do NOT create any OTP popup.
+
+    Do NOT create Email Verification.
+
+    Do NOT create Mobile Verification.
+
+    The Shopify theme already contains an existing login popup:
+
+    snippets/popup-login.liquid
+
+    Popup ID:
+
+    #jsLogin
+
+    This popup already handles:
+
+    - Customer Login
+    - Customer Registration
+    - Email Verification
+    - Mobile Verification
+    - OTP Sending
+    - OTP Verification
+    - Resend OTP
+    - Error Messages
+    - Successful Authentication
+
+    The Premium Collection section must NEVER duplicate these features.
+
+    When a guest customer clicks any premium product:
+
+    1. Prevent default product navigation.
+    2. Save the clicked product URL into localStorage using key:
+       premium_redirect_url
+    3. Open the existing login popup:
+       $("#jsLogin").modal("show");
+
+    After the customer successfully completes Login + OTP Verification through the existing popup:
+
+    1. Read premium_redirect_url from localStorage.
+    2. Redirect the customer to that product page.
+    3. Remove the localStorage value.
+
+    If OTP fails, the popup must remain open and no redirect should happen.
+
+    Do not modify popup-login.liquid.
+
+    Do not modify the login flow.
+
+    Simply integrate with the existing popup.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+        .ai-premium-collection-{{ ai_gen_id }} {
+          display: block;
+          width: {{ block.settings.desktop_width_percent }}%;
+          max-width: 100%;
+          margin: 0 auto;
+        }
+
+        .ai-premium-collection__header-{{ ai_gen_id }} {
+          text-align: {{ block.settings.heading_alignment }};
+          margin-bottom: 30px;
+        }
+
+        .ai-premium-collection__heading-{{ ai_gen_id }} {
+          color: {{ block.settings.heading_color }};
+          margin: 0 0 10px;
+          font-size: {{ block.settings.heading_size }}px;
+        }
+
+        .ai-premium-collection__subheading-{{ ai_gen_id }} {
+          color: {{ block.settings.subheading_color }};
+          font-size: {{ block.settings.subheading_size }}px;
+          margin: 0;
+        }
+
+        .ai-premium-collection__grid-{{ ai_gen_id }} {
+          display: grid;
+          grid-template-columns: repeat({{ block.settings.columns_desktop }}, 1fr);
+          gap: {{ block.settings.grid_gap }}px;
+        }
+
+        @media screen and (max-width: 749px) {
+          .ai-premium-collection__grid-{{ ai_gen_id }} {
+            grid-template-columns: repeat({{ block.settings.columns_mobile }}, 1fr);
+          }
+        }
+
+        .ai-premium-product-card-{{ ai_gen_id }} {
+          position: relative;
+          cursor: pointer;
+          transition: transform 0.3s ease;
+        }
+
+        .ai-premium-product-card-{{ ai_gen_id }}:hover {
+          transform: translateY(-5px);
+        }
+
+        .ai-premium-product-card__image-wrapper-{{ ai_gen_id }} {
+          position: relative;
+          width: 100%;
+          padding-bottom: 100%;
+          overflow: hidden;
+          background-color: {{ block.settings.image_bg_color }};
+          border-radius: {{ block.settings.image_border_radius }}px;
+        }
+    .ai-premium-product-card__image-blur-{{ ai_gen_id }} {
+      filter: blur(8px);
+      transform: scale(1.08); /* Blur ke edges hide karne ke liye */
+      transition: filter .3s ease;
+    }
+        .ai-premium-product-card__image-{{ ai_gen_id }} {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .ai-premium-product-card__badge-{{ ai_gen_id }} {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          background-color: {{ block.settings.badge_bg_color }};
+          color: {{ block.settings.badge_text_color }};
+          padding: 6px 12px;
+          border-radius: {{ block.settings.badge_border_radius }}px;
+          font-size: {{ block.settings.badge_font_size }}px;
+          font-weight: 600;
+          z-index: 2;
+        }
+
+       .ai-premium-product-card__lock-overlay-{{ ai_gen_id }} {
+          position: absolute;
+          inset: 0;
+          background: rgba(0, 0, 0, 0.45);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 2;
+      }
+
+      .ai-premium-product-card__lock-icon-{{ ai_gen_id }} {
+          width: 60px;
+          height: 60px;
+          color: #fff;
+          background: rgba(255,255,255,0.15);
+          padding: 12px;
+          border-radius: 50%;
+          backdrop-filter: blur(6px);
+          box-shadow: 0 4px 15px rgba(0,0,0,.3);
+      }
+
+
+        .ai-premium-product-card__lock-icon-{{ ai_gen_id }} {
+          width: 40px;
+          height: 40px;
+          color: {{ block.settings.lock_icon_color }};
+        }
+
+        .ai-premium-product-card__info-{{ ai_gen_id }} {
+          padding: 15px 0;
+          text-align: {{ block.settings.product_info_alignment }};
+        }
+
+        .ai-premium-product-card__title-{{ ai_gen_id }} {
+          color: {{ block.settings.product_title_color }};
+          font-size: {{ block.settings.product_title_size }}px;
+          margin: 0 0 8px;
+          font-weight: 500;
+        }
+
+       .ai-premium-product-card__price-wrapper-{{ ai_gen_id }}{
+          display:flex;
+          align-items:center;
+          gap:8px;
+          flex-wrap:wrap;
+          margin-top:8px;
+      }
+
+      .ai-premium-product-card__sale-price-{{ ai_gen_id }}{
+          font-size:18px;
+          font-weight:600;
+          color:#000;
+      }
+
+      .ai-premium-product-card__compare-price-{{ ai_gen_id }}{
+          font-size:14px;
+          color:#999;
+          text-decoration:line-through;
+      }
+
+      .ai-premium-product-card__discount-badge-{{ ai_gen_id }}{
+          background:#0b4f4a;
+          color:#fff;
+          padding:3px 8px;
+          border-radius:4px;
+          font-size:12px;
+          font-weight:600;
+      }
+
+        .ai-premium-collection__empty-state-{{ ai_gen_id }} {
+          text-align: center;
+          padding: 60px 20px;
+          color: #666;
+        }
+
+        .ai-premium-collection__empty-state-{{ ai_gen_id }} svg {
+          width: 100px;
+          height: 100px;
+          margin-bottom: 20px;
+          opacity: 0.3;
+        }
+        .ai-premium-collection__view-all-{{ ai_gen_id }}{
+    display:flex;
+    justify-content:center;
+    margin-top:14px;
+  }
+
+  .ai-premium-collection__view-all-btn-{{ ai_gen_id }}{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:14px 34px;
+    background:#000;
+    color:#fff;
+    text-decoration:none;
+    border-radius:50px;
+    font-size:15px;
+    font-weight:600;
+    letter-spacing:.5px;
+    transition:all .3s ease;
+    border:2px solid #000;
+  }
+
+  .ai-premium-collection__view-all-btn-{{ ai_gen_id }}:hover{
+    background:#fff;
+    color:#000;
+    transform:translateY(-2px);
+    box-shadow:0 10px 25px rgba(0,0,0,.12);
+  }
+
+  @media(max-width:767px){
+    .ai-premium-collection__view-all-btn-{{ ai_gen_id }}{
+      width:90%;
+      max-width:320px;
+      padding:13px 20px;
+      font-size:14px;
+    }
+  }
+{% endstyle %}
+
+<premium-collection-{{ ai_gen_id }}
+  class="ai-premium-collection-{{ ai_gen_id }}"
+  data-login-popup-id="jsLogin"
+  {{ block.shopify_attributes }}
+>
+  {% if block.settings.heading != blank or block.settings.subheading != blank %}
+    <div class="ai-premium-collection__header-{{ ai_gen_id }}">
+      {% if block.settings.heading != blank %}
+        <h2 class="ai-premium-collection__heading-{{ ai_gen_id }}">
+          {{ block.settings.heading }}
+        </h2>
+      {% endif %}
+      {% if block.settings.subheading != blank %}
+        <p class="ai-premium-collection__subheading-{{ ai_gen_id }}">
+          {{ block.settings.subheading }}
+        </p>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {% if block.settings.premium_collection != blank %}
+    <div class="ai-premium-collection__grid-{{ ai_gen_id }}">
+      {% for product in block.settings.premium_collection.products limit: block.settings.products_limit %}
+        <div
+          class="ai-premium-product-card-{{ ai_gen_id }}"
+          data-product-url="{{ product.url }}"
+          data-product-id="{{ product.id }}"
+        >
+          <div class="ai-premium-product-card__image-wrapper-{{ ai_gen_id }}">
+            {% if product.featured_image %}
+              <img
+                src="{{ product.featured_image | image_url: width: 600 }}"
+                alt="{{ product.featured_image.alt | escape }}"
+                class="ai-premium-product-card__image-{{ ai_gen_id }}{% unless customer %} ai-premium-product-card__image-blur-{{ ai_gen_id }}{% endunless %}"
+                loading="lazy"
+                width="600"
+                height="600"
+              >
+            {% else %}
+              <div class="ai-premium-product-card__image-placeholder-{{ ai_gen_id }}">
+                {{ 'product-1' | placeholder_svg_tag }}
+              </div>
+            {% endif %}
+
+            {% if block.settings.show_badge %}
+              <div class="ai-premium-product-card__badge-{{ ai_gen_id }}">
+                {{ block.settings.badge_text }}
+              </div>
+            {% endif %}
+
+            {% unless customer %}
+              <div class="ai-premium-product-card__lock-overlay-{{ ai_gen_id }}">
+                <svg
+                  class="ai-premium-product-card__lock-icon-{{ ai_gen_id }}"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  width="60"
+                  height="60"
+                >
+                  <path d="M17 8V7a5 5 0 10-10 0v1H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2v-9a2 2 0 00-2-2h-2zm-8-1a3 3 0 116 0v1H9V7z"/>
+                </svg>
+              </div>
+            {% endunless %}
+          </div>
+
+          <div class="ai-premium-product-card__info-{{ ai_gen_id }}">
+            <h3 class="ai-premium-product-card__title-{{ ai_gen_id }}">
+              {{ product.title }}
+            </h3>
+            {% if block.settings.show_price %}
+              {% assign discount_percent = 30 %}
+
+              {% for collection in product.collections %}
+                {% if collection.metafields.custom.discount.value %}
+                  {% assign discount_percent = collection.metafields.custom.discount.value %}
+                  {% break %}
+                {% endif %}
+              {% endfor %}
+
+              {% assign base_price = product.compare_at_price %}
+
+              {% if base_price == blank or base_price == 0 %}
+                {% assign base_price = product.price %}
+              {% endif %}
+
+              {% assign discount_amount = base_price | times: discount_percent | divided_by: 100 %}
+              {% assign sale_price = base_price | minus: discount_amount %}
+
+              <div class="ai-premium-product-card__price-wrapper-{{ ai_gen_id }}">
+                <span class="ai-premium-product-card__sale-price-{{ ai_gen_id }}">
+                  {{ sale_price | money }}
+                </span>
+
+                {% if discount_percent > 0 %}
+                  <span class="ai-premium-product-card__compare-price-{{ ai_gen_id }}">
+                    <s>{{ base_price | money }}</s>
+                  </span>
+
+                  {% if block.settings.show_discount_badge %}
+                    <span class="ai-premium-product-card__discount-badge-{{ ai_gen_id }}">
+                      Save {{ discount_percent }}%
+                    </span>
+                  {% endif %}
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="ai-premium-collection__empty-state-{{ ai_gen_id }}">
+      {{ 'collection-1' | placeholder_svg_tag }}
+      <p>Select a premium collection to display products</p>
+    </div>
+  {% endif %}
+</premium-collection-{{ ai_gen_id }}>
+{% if customer %}
+  <div class="ai-premium-collection__view-all-{{ ai_gen_id }}">
+    <a
+      href="/collections/premium-collection"
+      class="ai-premium-collection__view-all-btn-{{ ai_gen_id }}"
+    >
+      View All Premium Collection
+    </a>
+  </div>
+{% endif %}
+<script>
+  (function() {
+    class PremiumCollection{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.loginPopupId = this.dataset.loginPopupId;
+        this.isCustomerLoggedIn = {{ customer | json }} !== null;
+      }
+
+      connectedCallback() {
+        if (!this.isCustomerLoggedIn) {
+          this.setupGuestClickHandlers();
+        } else {
+          this.setupLoggedInClickHandlers();
+        }
+      }
+
+      setupGuestClickHandlers() {
+        const productCards = this.querySelectorAll('.ai-premium-product-card-{{ ai_gen_id }}');
+
+        productCards.forEach(card => {
+          card.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const productUrl = card.dataset.productUrl;
+
+            if (productUrl) {
+              localStorage.setItem('premium_redirect_url', productUrl);
+
+              if (typeof $ !== 'undefined' && $('#' + this.loginPopupId).length) {
+                $('#' + this.loginPopupId).modal('show');
+              } else if (typeof jQuery !== 'undefined' && jQuery('#' + this.loginPopupId).length) {
+                jQuery('#' + this.loginPopupId).modal('show');
+              } else {
+                console.warn('Login popup not found or jQuery not available');
+              }
+            }
+          });
+        });
+      }
+
+      setupLoggedInClickHandlers() {
+        const productCards = this.querySelectorAll('.ai-premium-product-card-{{ ai_gen_id }}');
+
+        productCards.forEach(card => {
+          card.addEventListener('click', (e) => {
+            const productUrl = card.dataset.productUrl;
+            if (productUrl) {
+              window.location.href = productUrl;
+            }
+          });
+        });
+      }
+    }
+
+    customElements.define('premium-collection-{{ ai_gen_id }}', PremiumCollection{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Premium collection",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Collection"
+    },
+    {
+      "type": "collection",
+      "id": "premium_collection",
+      "label": "Premium collection"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Products to show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Heading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Premium Collection"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Login to view exclusive products"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "label": "Subheading size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Grid layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "label": "Columns on desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid gap",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Product card"
+    },
+    {
+      "type": "color",
+      "id": "image_bg_color",
+      "label": "Image background",
+      "default": "#f7f7f7"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Image border radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show price",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "compare_price_color",
+      "label": "Compare price",
+      "default": "#999999"
+    },
+    {
+      "type": "select",
+      "id": "product_info_alignment",
+      "label": "Product info alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Title color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "range",
+      "id": "product_title_size",
+      "label": "Title size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "product_price_color",
+      "label": "Price color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "product_price_size",
+      "label": "Price size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Premium badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show badge",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "Premium"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "Badge background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "badge_font_size",
+      "label": "Badge font size",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "badge_border_radius",
+      "label": "Badge border radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Lock overlay"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 1,
+      "step": 0.1,
+      "default": 0.3
+    },
+    {
+      "type": "color",
+      "id": "lock_icon_color",
+      "label": "Lock icon color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Premium collection"
+    }
+  ]
+}
+{% endschema %}

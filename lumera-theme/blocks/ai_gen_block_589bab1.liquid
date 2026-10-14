@@ -1,0 +1,1021 @@
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-signature-collections-{{ ai_gen_id }} {
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.section_padding_top }}px 0 {{ block.settings.section_padding_bottom }}px;
+  }
+
+  .ai-signature-collections-container-{{ ai_gen_id }} {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-signature-collections-heading-{{ ai_gen_id }} {
+    text-align: center;
+    color: {{ block.settings.heading_color }};
+    font-size: {{ block.settings.heading_size }}px;
+    margin: 16px {{ block.settings.heading_spacing }}px;
+    font-weight: 500;
+  }
+
+  .ai-signature-collections-tabs-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: {{ block.settings.tabs_spacing }}px;
+    flex-wrap: nowrap;
+    padding: 0;
+  }
+
+  .ai-signature-collections-tab-{{ ai_gen_id }} {
+    padding: 14px 28px;
+    border: 2px solid {{ block.settings.tab_border_color }};
+    background-color: {{ block.settings.tab_bg_color }};
+    color: {{ block.settings.tab_text_color }};
+    cursor: pointer;
+    border-radius: {{ block.settings.tab_border_radius }}px;
+    font-size: {{ block.settings.tab_font_size }}px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .ai-signature-collections-tab-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.tab_hover_bg_color }};
+    color: {{ block.settings.tab_hover_text_color }};
+    border-color: {{ block.settings.tab_hover_bg_color }};
+  }
+
+  .ai-signature-collections-tab-{{ ai_gen_id }}.active {
+    background-color: {{ block.settings.tab_active_bg_color }};
+    color: {{ block.settings.tab_active_text_color }};
+    border-color: {{ block.settings.tab_active_bg_color }};
+  }
+
+  .ai-signature-collections-carousel-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    margin-bottom: 40px;
+  }
+
+  .ai-signature-collections-carousel-{{ ai_gen_id }} {
+    display: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .ai-signature-collections-carousel-{{ ai_gen_id }}.active {
+    display: block;
+    opacity: 1;
+  }
+
+  .ai-signature-collections-products-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 32px;
+  }
+
+  .ai-signature-collections-product-card-{{ ai_gen_id }} {
+    background: #ffffff;
+    border-radius: {{ block.settings.card_border_radius }}px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+  }
+
+  .ai-signature-collections-product-card-{{ ai_gen_id }}:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(1, 48, 90, 0.12);
+  }
+
+  .ai-signature-collections-product-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    padding-top: 100%;
+    overflow: hidden;
+    background-color: #f6f4f3;
+  }
+
+  .ai-signature-collections-product-image-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-signature-collections-badge-{{ ai_gen_id }} {
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    background-color: {{ block.settings.badge_bg_color }};
+    color: {{ block.settings.badge_text_color }};
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 12px;
+    {% comment %} font-weight: 600; {% endcomment %}
+    z-index: 2;
+  }
+
+  .ai-signature-collections-product-info-{{ ai_gen_id }} {
+    padding-top: 16px;
+  }
+
+  .ai-signature-collections-stone-type-{{ ai_gen_id }} {
+    {% comment %} position: absolute;
+    right: 0;
+    {% comment %} color: {{ block.settings.stone_type_color }}; {% endcomment %}
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px; {% endcomment %}
+
+
+    position: absolute;
+    bottom: -1px;
+    right: -1px;
+    background-color: {{ block.settings.stone_bg_color }};
+    color: {{ block.settings.stone_type_color }};
+    padding: 2px 6px;
+    {% comment %} border-radius: 2px; {% endcomment %}
+    font-size: 12px;
+    {% comment %} font-weight: 600; {% endcomment %}
+    z-index: 2;
+  }
+
+  .ai-signature-collections-product-title-{{ ai_gen_id }} {
+    color: {{ block.settings.product_title_color }};
+    font-size: {{ block.settings.product_title_size }}px;
+    {% comment %} font-weight: 400; {% endcomment %}
+    {% comment %} font-weight: 600; {% endcomment %}
+    margin: 0 0 6px;
+    line-height: 1.4;
+  }
+
+  .ai-signature-collections-product-title-{{ ai_gen_id }} a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .ai-signature-collections-product-title-{{ ai_gen_id }} a:hover {
+    color: {{ block.settings.heading_color }};
+  }
+
+  .ai-signature-collections-price-wrapper-{{ ai_gen_id }} {
+    {% comment %} display: flex; {% endcomment %}
+    align-items: center;
+    gap: 10px;
+    {% comment %} margin-bottom: 12px; {% endcomment %}
+  }
+
+  .ai-signature-collections-price-{{ ai_gen_id }} {
+    color: {{ block.settings.price_color }};
+    font-size: {{ block.settings.price_size }}px;
+    font-weight: 600;
+  }
+
+  {% comment %} .ai-signature-collections-compare-price-{{ ai_gen_id }} {
+    color: {{ block.settings.compare_price_color }};
+    font-size: {{ block.settings.compare_price_size }}px;
+    text-decoration: line-through;
+  } {% endcomment %}
+  .ai-signature-collections-price-wrapper-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.ai-signature-collections-compare-price-{{ ai_gen_id }} {
+    display: inline-block !important;
+    color: #999 !important;
+    font-size: 14px;
+    text-decoration: line-through;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+  .ai-signature-collections-discount-badge-{{ ai_gen_id }} {
+    background-color: {{ block.settings.discount_badge_bg }};
+    color: {{ block.settings.discount_badge_color }};
+    padding: 4px 8px;
+    border-radius: 5px !important;
+    font-size: 14px;
+    font-weight: 600 !important;
+    float: right;
+  }
+
+  .ai-signature-collections-rating-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .ai-signature-collections-stars-{{ ai_gen_id }} {
+    display: flex;
+    gap: 2px;
+    color: {{ block.settings.star_color }};
+    font-size: 18px;
+    letter-spacing: -3px;
+  }
+
+  .ai-signature-collections-reviews-count-{{ ai_gen_id }} {
+    color: {{ block.settings.reviews_count_color }};
+    font-size: 12px;
+  }
+
+  .ai-signature-collections-cta-wrapper-{{ ai_gen_id }} {
+    text-align: center;
+  }
+
+  .ai-signature-collections-cta-{{ ai_gen_id }} {
+    display: inline-block;
+    padding: 12px 18px;
+    background-color: {{ block.settings.cta_bg_color }};
+    color: {{ block.settings.cta_text_color }};
+    text-decoration: none;
+    border-radius: {{ block.settings.cta_border_radius }}px;
+    font-size: {{ block.settings.cta_font_size }}px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid {{ block.settings.cta_bg_color }};
+    text-transform: uppercase;
+  }
+
+  .ai-signature-collections-cta-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.cta_hover_bg_color }};
+    color: {{ block.settings.cta_hover_text_color }};
+    border-color: {{ block.settings.cta_hover_bg_color }};
+  }
+
+  .ai-signature-collections-empty-state-{{ ai_gen_id }} {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+  }
+
+  .ai-signature-collections-empty-state-{{ ai_gen_id }} p {
+    font-size: 16px;
+    margin: 12px 0 0;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .ai-signature-collections-products-{{ ai_gen_id }} {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-signature-collections-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.7 }}px;
+    }
+
+    .ai-signature-collections-tabs-{{ ai_gen_id }} {
+      overflow-x: auto;
+      justify-content: flex-start;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+
+    .ai-signature-collections-tabs-{{ ai_gen_id }}::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ai-signature-collections-products-{{ ai_gen_id }} {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    {% comment %} .ai-signature-collections-product-info-{{ ai_gen_id }} {
+      padding: 16px;
+    } {% endcomment %}
+
+    .ai-signature-collections-product-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.product_title_size | times: 0.9 }}px;
+    }
+
+    .ai-signature-collections-badge-{{ ai_gen_id }} {
+      padding: 0px 3px;
+    }
+
+    .ai-signature-collections-stone-type-{{ ai_gen_id }} {
+      padding: 1px 4px;
+      font-size: 10px;
+    }
+
+    .ai-signature-collections-discount-badge-{{ ai_gen_id }} {
+      font-size: 12px;
+      padding: 2px 6px;
+    }
+
+  }
+
+  @media screen and (max-width: 330px) {
+     .ai-signature-collections-cta-{{ ai_gen_id }} {
+      font-size: 15px;
+      width: 100%;
+      font-weight: 400;
+    }
+  }
+{% endstyle %}
+
+<signature-collections-{{ ai_gen_id }} class="ai-signature-collections-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-signature-collections-container-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank %}
+      <h2 class="ai-signature-collections-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+    {% endif %}
+
+    <div class="ai-signature-collections-tabs-{{ ai_gen_id }}">
+      {% for i in (1..5) %}
+        {% liquid
+          assign tab_name_key = 'tab_' | append: i | append: '_name'
+          assign tab_collection_key = 'tab_' | append: i | append: '_collection'
+          assign tab_name = block.settings[tab_name_key]
+          assign tab_collection = block.settings[tab_collection_key]
+        %}
+        {% if tab_name != blank %}
+          <button
+            class="ai-signature-collections-tab-{{ ai_gen_id }} {% if i == 1 %}active{% endif %}"
+            data-tab="{{ i }}"
+            aria-label="View {{ tab_name }}"
+          >
+            {{ tab_name }}
+          </button>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="ai-signature-collections-carousel-wrapper-{{ ai_gen_id }}">
+      {% for i in (1..5) %}
+        {% liquid
+          assign tab_name_key = 'tab_' | append: i | append: '_name'
+          assign tab_collection_key = 'tab_' | append: i | append: '_collection'
+          assign tab_name = block.settings[tab_name_key]
+          assign tab_collection = block.settings[tab_collection_key]
+        %}
+        {% if tab_name != blank %}
+          <div
+            class="ai-signature-collections-carousel-{{ ai_gen_id }} {% if i == 1 %}active{% endif %}"
+            data-carousel="{{ i }}"
+          >
+            {% if tab_collection != blank and tab_collection.products.size > 0 %}
+              <div class="ai-signature-collections-products-{{ ai_gen_id }}">
+                {% for product in tab_collection.products limit: block.settings.products_per_tab %}
+                  <div class="ai-signature-collections-product-card-{{ ai_gen_id }}">
+                    <div class="ai-signature-collections-product-image-wrapper-{{ ai_gen_id }}">
+                      {% if block.settings.show_badge and block.settings.badge_text != blank %}
+                        <div class="ai-signature-collections-badge-{{ ai_gen_id }}">
+                          {{ block.settings.badge_text }}
+                        </div>
+                      {% endif %}
+                      {% if block.settings.show_stone_type %}
+                        <div class="ai-signature-collections-stone-type-{{ ai_gen_id }}">
+                          <a href="{{ product.url }}">
+                            {% if product.metafields.custom.stone_type != blank %}
+                              {{ product.metafields.custom.stone_type }}
+                            {% else %}
+                              {{ block.settings.default_stone_type }}
+                            {% endif %}
+                          </a>
+                        </div>
+                      {% endif %}
+
+                      <a href="{{ product.url }}">
+                        {% if product.featured_image %}
+                          <img
+                            src="{{ product.featured_image | image_url: width: 600 }}"
+                            alt="{{ product.featured_image.alt | escape }}"
+                            class="ai-signature-collections-product-image-{{ ai_gen_id }}"
+                            loading="lazy"
+                            width="600"
+                            height="600"
+                          >
+                        {% else %}
+                          <div class="ai-signature-collections-product-image-{{ ai_gen_id }}">
+                            {{ 'product-1' | placeholder_svg_tag }}
+                          </div>
+                        {% endif %}
+                      </a>
+                    </div>
+
+                    <div class="ai-signature-collections-product-info-{{ ai_gen_id }}">
+                      {% comment %}
+                        {% if block.settings.show_stone_type %}
+                          <div class="ai-signature-collections-stone-type-{{ ai_gen_id }}">
+                            {% if product.metafields.custom.stone_type != blank %}
+                              {{ product.metafields.custom.stone_type }}
+                            {% else %}
+                              {{ block.settings.default_stone_type }}
+                            {% endif %}
+                          </div>
+                        {% endif %}
+                      {% endcomment %}
+
+                      <h3 class="ai-signature-collections-product-title-{{ ai_gen_id }}">
+                        <a href="{{ product.url }}">{{ product.title }}</a>
+                      </h3>
+                      {% assign discount_percent = 30 %}
+
+                      {% for collection in product.collections %}
+                        {% if collection.metafields.custom.discount.value %}
+                          {% assign discount_percent = collection.metafields.custom.discount.value %}
+                          {% break %}
+                        {% endif %}
+                      {% endfor %}
+
+                      {% assign base_price = product.compare_at_price %}
+
+                      {% if base_price == blank or base_price == 0 %}
+                        {% assign base_price = product.price %}
+                      {% endif %}
+
+                      {% assign discount_amount = base_price | times: discount_percent | divided_by: 100 %}
+                      {% assign sale_price = base_price | minus: discount_amount %}
+
+                      <div class="ai-signature-collections-price-wrapper-{{ ai_gen_id }}">
+                        <span class="ai-signature-collections-price-{{ ai_gen_id }}">
+                          {{ sale_price | money }}
+                        </span>
+
+                        {% if discount_percent > 0 %}
+                         <span class="ai-signature-collections-compare-price-{{ ai_gen_id }}">
+  {{ base_price | money }}
+</span>
+
+                          {% if block.settings.show_discount_badge %}
+                            <span class="ai-signature-collections-discount-badge-{{ ai_gen_id }}">
+                              Save {{ discount_percent }}%
+                            </span>
+                          {% endif %}
+                        {% endif %}
+                      </div>
+                      {% if block.settings.show_rating %}
+                        <div class="ai-signature-collections-rating-{{ ai_gen_id }}">
+                          <div class="ai-signature-collections-stars-{{ ai_gen_id }}">
+                            {% assign rating = block.settings.default_rating %}
+                            {% for star in (1..5) %}
+                              {% if star <= rating %}
+                                ★
+                              {% else %}
+                                ☆
+                              {% endif %}
+                            {% endfor %}
+                          </div>
+                          <span class="ai-signature-collections-reviews-count-{{ ai_gen_id }}">
+                            ({{ block.settings.default_reviews_count }})
+                          </span>
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+
+              {% if block.settings.show_cta %}
+                <div class="ai-signature-collections-cta-wrapper-{{ ai_gen_id }}">
+                  <a
+                    href="{{ tab_collection.url }}"
+                    class="ai-signature-collections-cta-{{ ai_gen_id }}"
+                  >
+                    {{ block.settings.cta_text | replace: '[Category Name]', tab_name }}
+                  </a>
+                </div>
+              {% endif %}
+            {% else %}
+              <div class="ai-signature-collections-empty-state-{{ ai_gen_id }}">
+                {{ 'collection-1' | placeholder_svg_tag }}
+                <p>Select a collection for {{ tab_name }} to display products</p>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</signature-collections-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class SignatureCollections{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.tabs = this.querySelectorAll('.ai-signature-collections-tab-{{ ai_gen_id }}');
+        this.carousels = this.querySelectorAll('.ai-signature-collections-carousel-{{ ai_gen_id }}');
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        this.tabs.forEach((tab) => {
+          tab.addEventListener('click', () => {
+            const tabId = tab.getAttribute('data-tab');
+            this.switchTab(tabId);
+          });
+        });
+      }
+
+      switchTab(tabId) {
+        this.tabs.forEach((tab) => {
+          if (tab.getAttribute('data-tab') === tabId) {
+            tab.classList.add('active');
+          } else {
+            tab.classList.remove('active');
+          }
+        });
+
+        this.carousels.forEach((carousel) => {
+          if (carousel.getAttribute('data-carousel') === tabId) {
+            carousel.classList.add('active');
+          } else {
+            carousel.classList.remove('active');
+          }
+        });
+      }
+    }
+
+    customElements.define('signature-collections-{{ ai_gen_id }}', SignatureCollections{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Signature collections",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our Signature Collections"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "min": 20,
+      "max": 80,
+      "step": 4,
+      "unit": "px",
+      "label": "Heading spacing",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 60
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#01305A"
+    },
+    {
+      "type": "header",
+      "content": "Category tabs"
+    },
+    {
+      "type": "range",
+      "id": "tabs_spacing",
+      "min": 20,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Tabs spacing",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "tab_font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "tab_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "tab_bg_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "tab_text_color",
+      "label": "Text",
+      "default": "#01305A"
+    },
+    {
+      "type": "color",
+      "id": "tab_border_color",
+      "label": "Border",
+      "default": "#01305A"
+    },
+    {
+      "type": "color",
+      "id": "tab_hover_bg_color",
+      "label": "Hover background",
+      "default": "#f6f4f3"
+    },
+    {
+      "type": "color",
+      "id": "tab_hover_text_color",
+      "label": "Hover text",
+      "default": "#01305A"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_bg_color",
+      "label": "Active background",
+      "default": "#01305A"
+    },
+    {
+      "type": "color",
+      "id": "tab_active_text_color",
+      "label": "Active text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Tab 1"
+    },
+    {
+      "type": "text",
+      "id": "tab_1_name",
+      "label": "Name",
+      "default": "Engagement Rings"
+    },
+    {
+      "type": "collection",
+      "id": "tab_1_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Tab 2"
+    },
+    {
+      "type": "text",
+      "id": "tab_2_name",
+      "label": "Name",
+      "default": "Wedding Bands"
+    },
+    {
+      "type": "collection",
+      "id": "tab_2_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Tab 3"
+    },
+    {
+      "type": "text",
+      "id": "tab_3_name",
+      "label": "Name",
+      "default": "Earrings"
+    },
+    {
+      "type": "collection",
+      "id": "tab_3_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Tab 4"
+    },
+    {
+      "type": "text",
+      "id": "tab_4_name",
+      "label": "Name",
+      "default": "Men's Rings"
+    },
+    {
+      "type": "collection",
+      "id": "tab_4_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Tab 5"
+    },
+    {
+      "type": "text",
+      "id": "tab_5_name",
+      "label": "Name",
+      "default": "Bridal Sets"
+    },
+    {
+      "type": "collection",
+      "id": "tab_5_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Product cards"
+    },
+    {
+      "type": "range",
+      "id": "products_per_tab",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "label": "Products per tab",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "label": "Card border radius",
+      "default": 0
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "Best Seller"
+    },
+    {
+      "type": "color",
+      "id": "badge_bg_color",
+      "label": "Badge background",
+      "default": "#d73f0f"
+    },
+    {
+      "type": "color",
+      "id": "badge_text_color",
+      "label": "Badge text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stone_type",
+      "label": "Show stone type",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "default_stone_type",
+      "label": "Default stone type",
+      "default": "Lab Grown Diamond"
+    },
+    {
+      "type": "color",
+      "id": "stone_type_color",
+      "label": "Stone type color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "stone_bg_color",
+      "label": "Stone background",
+      "default": "#d73f0f"
+    },
+    {
+      "type": "range",
+      "id": "product_title_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Title size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Title color",
+      "default": "#01305A"
+    },
+    {
+      "type": "header",
+      "content": "Pricing"
+    },
+    
+    {
+      "type": "checkbox",
+      "id": "show_compare_price",
+      "label": "Show compare price",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_discount_badge",
+      "label": "Show discount badge",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "price_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Price size",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "price_color",
+      "label": "Price color",
+      "default": "#01305A"
+    },
+    {
+      "type": "range",
+      "id": "compare_price_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Compare price size",
+      "default": 14
+    },
+    
+    {
+      "type": "color",
+      "id": "compare_price_color",
+      "label": "Compare price color",
+      "default": "#999999"
+    },
+    {
+      "type": "color",
+      "id": "discount_badge_bg",
+      "label": "Discount badge background",
+      "default": "#e8f4f8"
+    },
+    {
+      "type": "color",
+      "id": "discount_badge_color",
+      "label": "Discount badge text",
+      "default": "#01305A"
+    },
+    {
+      "type": "header",
+      "content": "Rating"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rating",
+      "label": "Show rating",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "default_rating",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Default rating",
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "default_reviews_count",
+      "min": 0,
+      "max": 1000,
+      "step": 10,
+      "label": "Default reviews count",
+      "default": 120
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star color",
+      "default": "#FFB800"
+    },
+    {
+      "type": "color",
+      "id": "reviews_count_color",
+      "label": "Reviews count color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Call to action"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta",
+      "label": "Show button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Button text",
+      "default": "Shop All [Category Name]"
+    },
+    {
+      "type": "range",
+      "id": "cta_font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "cta_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 0
+    },
+    {
+      "type": "color",
+      "id": "cta_bg_color",
+      "label": "Background",
+      "default": "#01305A"
+    },
+    {
+      "type": "color",
+      "id": "cta_text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "cta_hover_bg_color",
+      "label": "Hover background",
+      "default": "#051333"
+    },
+    {
+      "type": "color",
+      "id": "cta_hover_text_color",
+      "label": "Hover text",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Signature collections"
+    }
+  ]
+}
+{% endschema %}

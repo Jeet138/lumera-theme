@@ -1,0 +1,248 @@
+<section class="ring-scroll-wrapper" id="ring-scroll-{{ section.id }}">
+
+  <div class="ring-scroll-inner">
+
+    <div class="ring-left">
+      <h2>{{ section.settings.heading }}</h2>
+
+      <p>{{ section.settings.text }}</p>
+
+      {% if section.settings.button_text != blank %}
+        <a href="{{ section.settings.button_link }}" class="ring-btn">
+          {{ section.settings.button_text }}
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="ring-right">
+
+      <img
+        src="https://cdn.shopify.com/s/files/1/0790/0876/0059/files/hand-diamond.webp?v=1782299007"
+        class="diamond-piece"
+        alt="Diamond"
+      >
+
+      <img
+        src="https://cdn.shopify.com/s/files/1/0790/0876/0059/files/hand-dimondRing.webp?v=1782299006"
+        class="ring-piece"
+        alt="Ring"
+      >
+
+      <img
+        src="https://cdn.shopify.com/s/files/1/0790/0876/0059/files/hand-mobile.webp?v=1782299007"
+        class="hand-piece"
+        alt="Hand"
+      >
+
+    </div>
+
+  </div>
+
+</section>
+
+<style>
+#ring-scroll-{{ section.id }}{
+  position:relative;
+  height:250vh;
+  overflow:hidden;
+}
+
+#ring-scroll-{{ section.id }} .ring-scroll-inner{
+  position:sticky;
+  top:0;
+  height:100vh;
+  display:flex;
+  background:#eef2f3;
+  overflow:hidden;
+}
+
+#ring-scroll-{{ section.id }} .ring-left{
+  width:35%;
+  padding:80px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+#ring-scroll-{{ section.id }} .ring-right{
+  width:65%;
+  position:relative;
+}
+
+.hand-piece{
+  position:absolute;
+  width:420px;
+  left:50%;
+  bottom:-20px;
+  transform:translateX(-50%);
+  z-index:1;
+}
+
+.ring-piece{
+  position:absolute;
+  width:160px;
+  left:50%;
+  top:22%;
+  transform:translateX(-50%);
+  z-index:2;
+}
+
+.diamond-piece{
+  position:absolute;
+  width:80px;
+  left:50%;
+  top:5%;
+  transform:translateX(-50%);
+  z-index:3;
+}
+
+.ring-btn{
+  display:inline-block;
+  padding:14px 28px;
+  background:#0f4c5c;
+  color:#fff;
+  text-decoration:none;
+}
+
+@media(max-width:768px){
+
+  #ring-scroll-{{ section.id }}{
+    height:180vh;
+  }
+
+  #ring-scroll-{{ section.id }} .ring-scroll-inner{
+    flex-direction:column;
+  }
+
+  #ring-scroll-{{ section.id }} .ring-left{
+    width:100%;
+    padding:30px 20px;
+    text-align:center;
+  }
+
+  #ring-scroll-{{ section.id }} .ring-right{
+    width:100%;
+    height:70vh;
+  }
+
+  .hand-piece{
+    width:260px;
+  }
+
+  .ring-piece{
+    width:105px;
+  }
+
+  .diamond-piece{
+    width:52px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+  const section = document.querySelector("#ring-scroll-{{ section.id }}");
+
+  if(!section) return;
+
+  const diamond = section.querySelector(".diamond-piece");
+  const ring = section.querySelector(".ring-piece");
+
+  function animateRing(){
+
+    const rect = section.getBoundingClientRect();
+
+    const progress = Math.min(
+      Math.max(
+        (-rect.top) /
+        (section.offsetHeight - window.innerHeight),
+        0
+      ),
+      1
+    );
+
+    /* STEP 1 : Diamond -> Ring */
+
+    if(progress <= 0.45){
+
+      let p = progress / 0.45;
+
+      diamond.style.opacity = "1";
+
+      diamond.style.transform =
+      `translateX(-50%)
+       translateY(${p * 140}px)
+       scale(${1 - p * 0.25})`;
+
+    }else{
+
+      diamond.style.opacity = "0";
+
+    }
+
+    /* STEP 2 : Ring -> Finger */
+
+    let rp = Math.max(0,(progress - 0.35) / 0.65);
+
+    if(window.innerWidth > 768){
+
+      ring.style.transform =
+      `translateX(calc(-50% - ${rp * 40}px))
+       translateY(${rp * 190}px)
+       scale(${1 - rp * 0.22})`;
+
+    }else{
+
+      ring.style.transform =
+      `translateX(calc(-50% - ${rp * 22}px))
+       translateY(${rp * 115}px)
+       scale(${1 - rp * 0.15})`;
+
+    }
+
+  }
+
+  animateRing();
+
+  window.addEventListener("scroll", animateRing);
+  window.addEventListener("resize", animateRing);
+
+});
+</script>
+
+{% schema %}
+{
+  "name": "Ring Scroll Animation",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Choose Your Sparkling Glints"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "Create your dream ring in 3 simple steps."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Customize Your Forever"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ring Scroll Animation"
+    }
+  ]
+}
+{% endschema %}

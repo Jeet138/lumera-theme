@@ -1,0 +1,1754 @@
+{%- comment -%} SINGLE SOURCE OF TRUTH: premium lock check (handle-based, locale-safe) {%- endcomment -%}
+{%- assign is_premium_collection = false -%}
+{%- for c in product.collections -%}
+  {%- if c.handle == 'home-page-all' -%}
+    {%- assign is_premium_collection = true -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+{%- assign is_locked = false -%}
+{%- if is_premium_collection and customer == blank -%}
+  {%- assign is_locked = true -%}
+{%- endif -%}
+{%- assign locked_url = product.url | within: collection -%}
+{%- comment -%} image {%- endcomment -%}
+{%- capture image_product -%}
+
+  {%- assign image = product.selected_or_first_available_variant.featured_image | default: product.featured_image -%}
+
+  <a
+    class="product-card__image js image-content__image-wrapper {{ settings.size_image_grid }}{% if is_locked %} premium-product-locked{% endif %}"
+    href="{{ locked_url }}"
+    style="padding-top:{{ 1 | divided_by: image.aspect_ratio | times: 100 }}%;"
+    data-image-id="{{ image.id }}"
+    {% if is_locked %}
+      data-premium-locked="true"
+      data-product-url="{{ locked_url }}"
+    {% endif %}
+  >
+
+    <img
+      srcset="
+        {%- if image.width >= 165 -%}{{ image | image_url: width: 165 }} 165w,{%- endif -%}
+        {%- if image.width >= 360 -%}{{ image | image_url: width: 360 }} 360w,{%- endif -%}
+        {%- if image.width >= 533 -%}{{ image | image_url: width: 533 }} 533w,{%- endif -%}
+        {%- if image.width >= 720 -%}{{ image | image_url: width: 720 }} 720w,{%- endif -%}
+        {%- if image.width >= 940 -%}{{ image | image_url: width: 940 }} 940w,{%- endif -%}
+        {%- if image.width >= 1066 -%}{{ image | image_url: width: 1066 }} 1066w,{%- endif -%}
+        {{ image | image_url }} {{ image.width }}w
+      "
+      src="{{ image | image_url: width: 720 }}"
+      sizes="(min-width: {{ settings.container }}px) {{ settings.container | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
+      alt="{{ image.alt | escape }}"
+      class="lazyload scale-in first-image {% if product.images.size > 1 %}hover__hide-image{% endif %}"
+      data-sizes="auto"
+      data-aspectratio="{{ image.aspect_ratio }}"
+      loading="lazy"
+      width="{{ image.width }}"
+      height="{{ image.height }}"
+    >
+
+    {% render 'second-image', product: product %}
+
+    {% if is_locked %}
+      <div class="premium-product-lock-overlay">
+
+        <div class="premium-lock-icon">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="white"
+            aria-hidden="true"
+          >
+            <path d="M17 8V7a5 5 0 0 0-10 0v1H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-2zm-8-1a3 3 0 1 1 6 0v1H9V7z"/>
+          </svg>
+        </div>
+
+      </div>
+    {% endif %}
+
+  </a>
+
+{%- endcapture -%}
+
+{%- comment -%} title (locked-aware, used by every style below) {%- endcomment -%}
+{% capture product_title_link %}
+  <a
+    href="{{ locked_url }}"
+    title="{{ product.title | escape }}"
+    class="d-block product-card__name {% if settings.t_product %}text-uppercase{% endif %}{% if is_locked %} premium-product-locked{% endif %}"
+    {% if is_locked %}
+      data-premium-locked="true"
+      data-product-url="{{ locked_url }}"
+    {% endif %}
+  >{{ product.title }}</a>
+{% endcapture %}
+
+{%- comment -%} reusable lock overlay markup (used by styles that build their own image anchor) {%- endcomment -%}
+{% capture lock_overlay %}
+  {% if is_locked %}
+    <div class="premium-product-lock-overlay">
+      <div class="premium-lock-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="white" aria-hidden="true">
+          <path d="M17 8V7a5 5 0 0 0-10 0v1H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-2zm-8-1a3 3 0 1 1 6 0v1H9V7z"/>
+        </svg>
+      </div>
+    </div>
+  {% endif %}
+{% endcapture %}
+
+<style>
+  /* =========================================
+     PREMIUM PRODUCT LOCK
+     All Premium Collection
+     Guest users only
+     ========================================= */
+.product-card__image {
+  position: relative !important;
+  overflow: hidden !important;
+  display: block !important;
+}
+
+.product-card__image img {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+  .premium-product-locked {
+    position: relative !important;
+    overflow: hidden !important;
+    cursor: pointer !important;
+  }
+
+  /* Main image blur */
+  .premium-product-locked > img {
+    filter: blur(14px) !important;
+    transform: scale(1.08) !important;
+    transition: filter 0.3s ease, transform 0.3s ease;
+  }
+
+  /* Second / hover image blur */
+  .premium-product-locked .second-image,
+  .premium-product-locked .hover__hide-image {
+    filter: blur(14px) !important;
+  }
+
+  /* Lock overlay */
+  .premium-product-lock-overlay {
+    position: absolute !important;
+    inset: 0 !important;
+    z-index: 50 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: transparent !important;
+
+    pointer-events: none !important;
+  }
+
+  /* Lock circle */
+  .premium-lock-icon {
+    width: 42px !important;
+    height: 42px !important;
+
+    border-radius: 50% !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: rgba(125, 125, 125, 0.88) !important;
+
+    box-shadow:
+      0 4px 15px rgba(0, 0, 0, 0.25),
+      0 0 0 1px rgba(255,255,255,0.08) !important;
+  }
+
+  .premium-lock-icon svg {
+    width: 17px !important;
+    height: 17px !important;
+  }
+
+  /* Mobile */
+  @media (max-width: 767px) {
+
+    .premium-lock-icon {
+      width: 38px !important;
+      height: 38px !important;
+    }
+
+    .premium-lock-icon svg {
+      width: 15px !important;
+      height: 15px !important;
+    }
+  }
+</style>
+<script>
+(function () {
+
+  function openPremiumLogin(productLink, event) {
+
+    /* Guest user ke liye product open completely block */
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+    }
+
+    const productUrl = productLink.dataset.productUrl;
+
+    /* Login ke baad redirect ke liye URL save */
+    if (productUrl) {
+      try {
+        localStorage.setItem('premium_redirect_url', productUrl);
+      } catch (e) {
+        console.warn('Premium redirect URL could not be saved.');
+      }
+    }
+
+    /* Login popup */
+    const loginPopup = document.getElementById('jsLogin');
+
+    if (loginPopup) {
+
+      /* Bootstrap / jQuery modal */
+      if (
+        typeof window.jQuery !== 'undefined' &&
+        typeof window.jQuery(loginPopup).modal === 'function'
+      ) {
+        window.jQuery(loginPopup).modal('show');
+
+      } else {
+
+        /* Fallback */
+        loginPopup.style.display = 'block';
+        loginPopup.classList.add('show');
+        loginPopup.setAttribute('aria-hidden', 'false');
+      }
+
+    } else {
+      console.warn(
+        'Premium product: #jsLogin login popup not found.'
+      );
+    }
+  }
+
+
+  function initPremiumProductLock() {
+
+    const lockedProducts = document.querySelectorAll(
+      '[data-premium-locked="true"]'
+    );
+
+    if (!lockedProducts.length) return;
+
+
+    lockedProducts.forEach(function (productLink) {
+
+      /* Duplicate listener prevent */
+      if (
+        productLink.dataset.premiumLockInitialized === 'true'
+      ) {
+        return;
+      }
+
+      productLink.dataset.premiumLockInitialized = 'true';
+
+
+      /*
+       * NORMAL CLICK
+       * Left click completely block
+       */
+      productLink.addEventListener(
+        'click',
+        function (event) {
+
+          /*
+           * Ctrl + Click
+           * Cmd + Click
+           * Shift + Click
+           * Alt + Click
+           *
+           * Sab block
+           */
+          event.preventDefault();
+          event.stopPropagation();
+          event.stopImmediatePropagation();
+
+          openPremiumLogin(productLink, event);
+
+          return false;
+
+        },
+        true
+      );
+
+
+      /*
+       * MIDDLE MOUSE BUTTON
+       *
+       * Mouse wheel click se new tab open hota hai.
+       * Isko bhi block karna zaroori hai.
+       */
+      productLink.addEventListener(
+        'auxclick',
+        function (event) {
+
+          if (event.button === 1) {
+
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+
+            openPremiumLogin(productLink, event);
+          }
+
+        },
+        true
+      );
+
+
+      /*
+       * RIGHT CLICK
+       *
+       * Context menu me "Open link in new tab"
+       * option hi nahi denge.
+       */
+      productLink.addEventListener(
+        'contextmenu',
+        function (event) {
+
+          event.preventDefault();
+          event.stopPropagation();
+          event.stopImmediatePropagation();
+
+          return false;
+
+        },
+        true
+      );
+
+
+      /*
+       * KEYBOARD
+       *
+       * Enter / Space se bhi product open nahi hoga.
+       */
+      productLink.addEventListener(
+        'keydown',
+        function (event) {
+
+          if (
+            event.key === 'Enter' ||
+            event.key === ' ' ||
+            event.key === 'Spacebar'
+          ) {
+
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+
+            openPremiumLogin(productLink, event);
+
+          }
+
+        },
+        true
+      );
+
+    });
+  }
+
+
+  /*
+   * Initial page load
+   */
+  if (document.readyState === 'loading') {
+
+    document.addEventListener(
+      'DOMContentLoaded',
+      initPremiumProductLock
+    );
+
+  } else {
+
+    initPremiumProductLock();
+
+  }
+
+
+  /*
+   * Global function
+   *
+   * Ajax / infinite scroll ke baad
+   * dobara initialize kar sakte hain.
+   */
+  window.initPremiumProductLock = initPremiumProductLock;
+
+
+  /*
+   * Shopify section reload
+   */
+  document.addEventListener(
+    'shopify:section:load',
+    function () {
+
+      setTimeout(
+        initPremiumProductLock,
+        100
+      );
+
+    }
+  );
+
+
+  /*
+   * Extra protection:
+   *
+   * Agar koi dynamically-added premium link aaye,
+   * MutationObserver automatically initialize karega.
+   */
+  if (window.MutationObserver) {
+
+    const observer = new MutationObserver(
+      function () {
+
+        initPremiumProductLock();
+
+      }
+    );
+
+    observer.observe(
+      document.body,
+      {
+        childList: true,
+        subtree: true
+      }
+    );
+
+  }
+
+})();
+</script>
+{%- comment -%} vendor {%- endcomment -%}
+{% capture vendor %}
+ {%- if settings.enable_type and product.vendor != blank -%}
+      <a class="mb-1 product-card__type d-inline-block" href="/collections/vendors?filter.p.vendor={{ product.vendor }}&q={{ product.vendor }}">{{ product.vendor }}</a>
+      {%- endif -%}
+{% endcapture %}
+
+{%- comment -%} price {%- endcomment -%}
+{% capture price %}
+<div class="product-card__price" style="padding-left: 63px;">
+
+  {% assign discount_percent = 30 %}
+
+  {% for collection in product.collections %}
+    {% if collection.metafields.custom.discount.value %}
+      {% assign discount_percent = collection.metafields.custom.discount.value %}
+      {% break %}
+    {% endif %}
+  {% endfor %}
+
+  {% assign base_price = product.compare_at_price %}
+
+  {% if base_price == blank or base_price == 0 %}
+    {% assign base_price = product.price %}
+  {% endif %}
+
+  {% assign discount_amount = base_price | times: discount_percent | divided_by: 100 %}
+  {% assign sale_price = base_price | minus: discount_amount %}
+
+  <span class="product-card__sale-price">
+    {{ sale_price | money }}
+  </span>
+
+  {% if discount_percent > 0 %}
+    <s class="product-card__regular-price">
+      {{ base_price | money }}
+    </s>
+
+    <span class="sale-badge">
+      Save {{ discount_percent }}%
+    </span>
+  {% endif %}
+
+</div>
+{% endcapture %}
+{% capture review %}
+  {%- if settings.enable_review and product.metafields.reviews.rating_count.value > 0 -%}
+    <div style='{{ jm_style }}' class='jdgm-widget jdgm-preview-badge  py-1 small'  data-id='{{ product.id }}' data-auto-install="false" >
+      {{ product.metafields.judgeme.badge }}
+    </div>  
+  {%- endif -%}
+{% endcapture %}
+<style>
+
+  
+  .product-card__price{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      flex-wrap:wrap;
+      padding-left:0;
+  }
+  .ai-best-selling-{{ ai_gen_id }} .product-card__name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.4;
+    max-height: calc(1.4em * 2);
+  }
+  @media(max-width:767px){
+      .product-card__price{
+          justify-content:center;
+          padding-left:0 !important;
+      }
+  }
+
+  .product-card__sale-price{
+      font-size:20px;
+      font-weight:600;
+      color:#0b3b36;
+  }
+
+  .product-card__regular-price{
+      color:#777;
+      text-decoration:line-through;
+  }
+
+  .sale-badge{
+      background:#0b7a2a;
+      color:#fff;
+      padding:2px 8px;
+      border-radius:4px;
+      font-size:12px;
+      font-weight:600;
+  }
+  @media (max-width:767px){
+
+    .product-card__overlay,
+    .js-btn-wishlist,
+    .js-grid-cart,
+    .js-btn-quickview,
+    .js-btn-compare{
+        display:none !important;
+    }
+
+    .product-card__name{
+        font-size:13px !important;
+        line-height:18px;
+        display:-webkit-box;
+        -webkit-line-clamp:2;
+        -webkit-box-orient:vertical;
+        overflow:hidden;
+        min-height:36px;
+        text-align:center;
+    }
+
+    .product-card__price{
+        justify-content:center;
+        padding:0 !important;
+    }
+
+    .product-card__info{
+        padding:8px 6px !important;
+    }
+
+    #product-grid .grid__item{
+        padding:0 5px !important;
+        margin-bottom:10px;
+    }
+  }
+</style>
+
+{%- capture show_option -%}
+  {%- if settings.enable_option -%}
+    <div class="small txt-body-70 mt-1">
+      {% for option in product.options_with_values %}
+        {{ option.values | join: ', ' }}{%- if forloop.last -%}{%- else -%}, {%- endif -%}
+      {% endfor %}
+    </div>
+  {%- endif -%}
+{%- endcapture -%}
+{%- liquid
+  assign item = settings.productgrid
+  if enable_edit_item
+    assign item = select_item
+  else
+    assign item = settings.productgrid
+  endif
+-%}
+{%- assign enable_bg_info = settings.enable_bg_info -%}
+{%- case item -%}
+  {%- when 'product-1' -%}
+    {%- comment -%} product-grid-1.liquid {%- endcomment -%}
+    <div
+      class="product-card js-product-card product-card--style1 info-{{ enable_bg_info }}"
+      data-price="{{ product.price }}"
+    >
+      <div class="product-card__image-wr">
+        {{ image_product }}
+        {%- render 'product-label', product: product, showlabel: true -%}
+        <div class="product-card__overlay d-flex justify-content-center flex-column">
+          {%- if settings.enable_wishlsit -%}
+            <span
+              data-toggle="tooltip"
+              data-placement="left"
+              data-tooltipalltimes="true"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-wishlist"
+              title="{{ 'products.product.wishlist_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-heart' -%}
+            </span>
+          {%- endif -%}
+          {%- if settings.qv_box -%}
+            <span
+              data-tooltip="true"
+              data-placement="left"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-quickview"
+              title="{{ 'products.product.quickview_text' | t }}"
+              data-toggle="modal"
+              data-target="#jsQuickview"
+              data-handle="{{ product.handle }}"
+              data-pavailable="{% if product.available %}true{% else %}false{% endif %}"
+
+              {%- render 'icon-view' -%}
+              <span
+            >
+              {{- 'products.product.quickview_text' | t -}}
+            </span>
+            {%- if product.metafields.info.shortdesc != blank -%}
+              <span class=" txt-short hide">
+                {{ product.metafields.info.shortdesc | strip_html | truncatewords: 12 }}
+              </span>
+            {%- else -%}
+              <span class=" txt-short hide">
+                {{ product.description | strip_html | truncatewords: 12 }}
+              </span>
+            {%- endif -%}
+            </span>
+          {%- endif -%}
+          {%- if settings.enable_compare -%}
+            <span
+              data-tooltip="true"
+              data-placement="left"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-compare"
+              title="{{ 'products.product.compare_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-exchange' -%}
+              {%- render 'icon-close-solid' -%}
+              <span>{{ 'products.product.compare_text' | t }}</span>
+            </span>
+          {%- endif -%}
+          <span
+            data-tooltip="true"
+            data-placement="left"
+            class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-grid-cart {% unless product.available %} disabled {% endunless %}"
+            {% if product.available %}
+              title="{{ 'products.product.add_to_cart' | t }}"
+            {% else %}
+              title="{{ 'products.product.sold_out' | t }}"
+            {% endif %}
+            data-id="{{ product.selected_or_first_available_variant.id }}"
+          >
+            {%- render 'icon-cart' -%}
+            <div class="product-card__loading spinner-{{ settings.loading }}" role="status"></div>
+            <span>{{ 'products.product.add_to_cart' | t }}</span>
+          </span>
+        </div>
+        {%- liquid
+          if settings.enable_countdown_card
+            render 'product-countdown', product: product
+          endif
+          render 'swatch-grid-1', product: product
+        -%}
+      </div>
+      <div class="product-card__info">
+        {{ vendor }}
+        {{ product_title_link }}
+
+        {{ price }}
+        {{ review }}
+      </div>
+    </div>
+  {%- when 'product-2' -%}
+    {%- comment -%} product-grid-2.liquid {%- endcomment -%}
+    <div
+      class="product-card js-product-card product-card--style2 text-left info-{{ enable_bg_info }}"
+      data-price="{{ product.price }}"
+    >
+      <div class="product-card__image-wr">
+        {{ image_product }}
+        {%- liquid
+          if settings.enable_countdown_card
+            render 'product-countdown', product: product
+          endif
+          render 'product-label', product: product, showlabel: true
+        -%}
+        <div class="product-card__overlay product-card__overlay_wl d-flex justify-content-center flex-column">
+          {%- if settings.enable_wishlsit -%}
+            <span
+              data-toggle="tooltip"
+              data-placement="left"
+              data-tooltipalltimes="true"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-wishlist"
+              title="{{ 'products.product.wishlist_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-heart' -%}
+            </span>
+          {%- endif -%}
+        </div>
+      </div>
+      <div class="product-card__info">
+        {%- render 'swatch-grid-1', product: product -%}
+        {{ vendor }}
+        {{ product_title_link }}
+
+        {{ price }}
+        {{ review }}
+        <div class="product-form__item product-form__item--submit d-flex justify-content-end-lg flex-row align-items-center">
+          <span
+            class="btn btn-theme btn-sm js-grid-cart d-inline-flex align-items-center {% unless product.available %} disabled{% endunless %}"
+            title="{{ 'products.product.add_to_cart' | t }}"
+            data-id="{{ product.selected_or_first_available_variant.id }}"
+          >
+            <div class="product-card__loading spinner-{{ settings.loading }}" role="status"></div>
+            <span class="mr-2">
+              {%- if product.available -%}
+                {{- 'products.product.add_to_cart' | t }}
+              {% else %}
+                {{ 'products.product.sold_out' | t }}
+              {% endif -%}
+            </span>
+            {%- render 'icon-cart' -%}
+          </span>
+          {%- if settings.qv_box -%}
+            <span
+              class="btn btn-theme js-btn-quickview product-card__overlay-btn"
+              data-toggle="modal"
+              data-target="#jsQuickview"
+              data-handle="{{ product.handle }}"
+              data-pavailable="{% if product.available %}true{% else %}false{% endif %}"
+              {% if settings.enable_review %}
+                data-viewjdmg="<span class='jdgm-preview-badge' data-id='{{ product.id }}'>{{ product.metafields.judgeme.badge }}</span>"
+              {% endif %}
+            >
+              <span class="d-block" title="{{ 'products.product.quickview_text' | t }}">
+                {%- render 'icon-view' -%}
+                <span class="icon__fallback-text">{{ 'products.product.quickview_text' | t }}</span>
+                {%- if product.metafields.info.shortdesc != blank -%}
+                  <span class=" txt-short hide">
+                    {{ product.metafields.info.shortdesc | strip_html | truncatewords: 12 }}
+                  </span>
+                {%- else -%}
+                  <span class=" txt-short hide">
+                    {{ product.description | strip_html | truncatewords: 12 }}
+                  </span>
+                {%- endif -%}
+              </span>
+            </span>
+          {%- endif -%}
+          {%- if settings.enable_compare -%}
+            <span
+              class="btn btn-theme product-card__overlay-btn js-btn-compare"
+              title="{{ 'products.product.compare_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-exchange' -%}
+              {%- render 'icon-close-solid' -%}
+              <span>{{ 'products.product.compare_text' | t }}</span>
+            </span>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- when 'product-3' -%}
+    {%- comment -%} product-grid-3.liquid {%- endcomment -%}
+    <div
+      class="product-card js-product-card product-card--style3 info-{{ enable_bg_info }}"
+      data-price="{{ product.price }}"
+    >
+      <div class="product-card__image-wr transition overflow-hidden">
+        {{ image_product }}
+        {%- liquid
+          if settings.enable_countdown_card
+            render 'product-countdown', product: product
+          endif
+          render 'product-label', product: product, showlabel: true
+        -%}
+      </div>
+      <div class="product-card__info">
+        {{ vendor }}
+        {{ product_title_link }}
+
+        {{ price }}
+        {{ review }}
+        {%- render 'swatch-grid-1', product: product -%}
+        <div class="product-card__overlay d-flex justify-content-center flex-row">
+          <span
+            class="btn btn-theme product-card__overlay-btn js-grid-cart {% unless product.available %} disabled{% endunless %}"
+            title="{{ 'products.product.add_to_cart' | t }}"
+            data-toggle="tooltip"
+            data-placement="top"
+            data-id="{{ product.selected_or_first_available_variant.id }}"
+          >
+            {%- render 'icon-cart' -%}
+            <div class="product-card__loading spinner-{{ settings.loading }}" role="status"></div>
+            <span>{{ 'products.product.add_to_cart' | t }}</span>
+          </span>
+
+          {%- if settings.qv_box -%}
+            <span
+              data-tooltip="true"
+              data-placement="top"
+              class="btn btn-theme product-card__overlay-btn js-btn-quickview"
+              title="{{ 'products.product.quickview_text' | t }}"
+              data-toggle="modal"
+              data-target="#jsQuickview"
+              data-handle="{{ product.handle }}"
+              data-pavailable="{% if product.available %}true{% else %}false{% endif %}"
+              {% if settings.enable_review %}
+                data-viewjdmg="<span class='jdgm-preview-badge' data-id='{{ product.id }}'>{{ product.metafields.judgeme.badge }}</span>"
+              {% endif %}
+            >
+              {%- render 'icon-view' -%}
+              <span>{{ 'products.product.quickview_text' | t }}</span>
+              {%- if product.metafields.info.shortdesc != blank -%}
+                <span class=" txt-short hide">
+                  {{ product.metafields.info.shortdesc | strip_html | truncatewords: 12 }}
+                </span>
+              {%- else -%}
+                <span class=" txt-short hide">
+                  {{ product.description | strip_html | truncatewords: 12 }}
+                </span>
+              {%- endif -%}
+            </span>
+          {%- endif -%}
+
+          {%- if settings.enable_wishlsit -%}
+            <span
+              data-toggle="tooltip"
+              data-placement="top"
+              data-tooltipalltimes="true"
+              class="btn btn-theme product-card__overlay-btn js-btn-wishlist"
+              title="{{ 'products.product.wishlist_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-heart' -%}
+            </span>
+          {%- endif -%}
+          {%- if settings.enable_compare -%}
+            <span
+              data-tooltip="true"
+              data-placement="top"
+              class="btn btn-theme product-card__overlay-btn js-btn-compare"
+              title="{{ 'products.product.compare_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-exchange' -%}
+              {%- render 'icon-close-solid' -%}
+              <span>{{ 'products.product.compare_text' | t }}</span>
+            </span>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- when 'product-4' -%}
+    {% comment %} product-grid-4.liquid {% endcomment %}
+    <div
+      class="product-card js-product-card product-card--style1 product-card--style4 info-{{ enable_bg_info }}"
+      data-price="{{ product.price }}"
+    >
+      <div class="product-card__image-wr overflow-hidden">
+        {{ image_product }}
+        <div class="product-card__overlay d-flex justify-content-center flex-column product-card__overlaytop">
+          {%- if settings.enable_wishlsit -%}
+            <span
+              data-toggle="tooltip"
+              data-placement="left"
+              data-tooltipalltimes="true"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-wishlist"
+              title="{{ 'products.product.wishlist_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-heart' -%}
+            </span>
+          {%- endif -%}
+          {%- if settings.enable_compare -%}
+            <span
+              data-tooltip="true"
+              data-placement="left"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-compare"
+              title="{{ 'products.product.compare_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-exchange' -%}
+              {%- render 'icon-close-solid' -%}
+              <span>{{ 'products.product.compare_text' | t }}</span>
+            </span>
+          {%- endif -%}
+        </div>
+        <div class="product-card__overlay d-flex justify-content-center flex-row product-card__overlaybottom">
+          {%- if settings.qv_box -%}
+            <span
+              data-tooltip="false"
+              data-placement="left"
+              class="btn btn-theme gradient-theme-vertical js-btn-quickview"
+              title="{{ 'products.product.quickview_text' | t }}"
+              data-toggle="modal"
+              data-target="#jsQuickview"
+              data-handle="{{ product.handle }}"
+              data-pavailable="{% if product.available %}true{% else %}false{% endif %}"
+
+              <span
+            >
+              {{- 'products.product.quickview_text' | t }}
+            </span>
+            {%- if product.metafields.info.shortdesc != blank -%}
+              <span class=" txt-short hide">
+                {{ product.metafields.info.shortdesc | strip_html | truncatewords: 12 }}
+              </span>
+            {%- else -%}
+              <span class=" txt-short hide">
+                {{ product.description | strip_html | truncatewords: 12 }}
+              </span>
+            {%- endif -%}
+            </span>
+          {%- endif -%}
+          <span
+            data-tooltip="false"
+            data-placement="left"
+            class="btn btn-theme js-grid-cart {% unless product.available %} disabled{% endunless %}"
+            title="{{ 'products.product.add_to_cart' | t }}"
+            data-id="{{ product.selected_or_first_available_variant.id }}"
+          >
+            <span>
+              {%- if product.available -%}
+                {{ 'products.product.add_to_cart' | t }}
+              {%- else -%}
+                {{ 'products.product.sold_out' | t }}
+              {%- endif -%}
+            </span>
+            <div class="product-card__loading spinner-{{ settings.loading }}" role="status"></div>
+          </span>
+        </div>
+        {%- liquid
+          if settings.enable_countdown_card
+            render 'product-countdown', product: product
+          endif
+          render 'product-label', product: product, showlabel: true
+        -%}
+      </div>
+      <div class="product-card__info">
+        {{ vendor }}
+        {{ product_title_link }}
+
+        {{ price }}
+        {{ review }}
+        {%- render 'swatch-grid-1', product: product -%}
+      </div>
+    </div>
+  {%- when 'product-5' -%}
+    {% comment %} product-grid-5.liquid {% endcomment %}
+    <div
+      class="product-card js-product-card product-card--style1 product-card--style5 info-{{ enable_bg_info }}"
+      data-price="{{ product.price }}"
+    >
+      <div class="product-card__image-wr overflow-hidden">
+        {{ image_product }}
+        <div class="product-card__overlay d-flex justify-content-center flex-column product-card__overlaytop">
+          {%- if settings.enable_wishlsit -%}
+            <span
+              data-toggle="tooltip"
+              data-placement="left"
+              data-tooltipalltimes="true"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-wishlist"
+              title="{{ 'products.product.wishlist_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-heart' -%}
+            </span>
+          {%- endif -%}
+        </div>
+        {%- if settings.qv_box -%}
+          <div class="product-card__overlay d-flex justify-content-center flex-row product-card__overlaybottom">
+            <span
+              data-tooltip="false"
+              data-placement="left"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-quickview"
+              title="{{ 'products.product.quickview_text' | t }}"
+              data-toggle="modal"
+              data-target="#jsQuickview"
+              data-handle="{{ product.handle }}"
+              data-pavailable="{% if product.available %}true{% else %}false{% endif %}"
+              {% if settings.enable_review %}
+                data-viewjdmg="<span class='jdgm-preview-badge' data-id='{{ product.id }}'>{{ product.metafields.judgeme.badge }}</span>"
+              {% endif %}
+            >
+              <span>{{ 'products.product.quickview_text' | t }}</span>
+              {%- if product.metafields.info.shortdesc != blank -%}
+                <span class=" txt-short hide">
+                  {{ product.metafields.info.shortdesc | strip_html | truncatewords: 12 }}
+                </span>
+              {%- else -%}
+                <span class=" txt-short hide">
+                  {{ product.description | strip_html | truncatewords: 12 }}
+                </span>
+              {%- endif -%}
+            </span>
+          </div>
+        {%- endif -%}
+        {%- liquid
+          if settings.enable_countdown_card
+            render 'product-countdown', product: product
+          endif
+          render 'product-label', product: product, showlabel: true
+        -%}
+      </div>
+      <div class="product-card__info">
+        {{ vendor }}
+        {{ product_title_link }}
+        {{ review }}
+        {{ price }}
+        {%- render 'swatch-grid-1', product: product -%}
+      </div>
+    </div>
+  {%- when 'product-6' -%}
+    <!-- product-grid-6.liquid -->
+    <div
+      class="product-card js-product-card product-card--style1 product-card--style6 info-{{ enable_bg_info }}"
+      data-price="{{ product.price }}"
+    >
+      <div class="product-card__image-wr overflow-hidden">
+        {{ image_product }}
+        <div class="product-card__overlay d-flex justify-content-center flex-row">
+          {%- if settings.enable_wishlsit -%}
+            <span
+              data-toggle="tooltip"
+              data-placement="top"
+              data-tooltipalltimes="true"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-wishlist"
+              title="{{ 'products.product.wishlist_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-heart' -%}
+            </span>
+          {%- endif -%}
+
+          {%- if settings.qv_box -%}
+            <span
+              data-tooltip="true"
+              data-placement="top"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-quickview"
+              title="{{ 'products.product.quickview_text' | t }}"
+              data-toggle="modal"
+              data-target="#jsQuickview"
+              data-handle="{{ product.handle }}"
+              data-pavailable="{% if product.available %}true{% else %}false{% endif %}"
+              {% if settings.enable_review %}
+                data-viewjdmg="<span class='jdgm-preview-badge' data-id='{{ product.id }}'>{{ product.metafields.judgeme.badge }}</span>"
+              {% endif %}
+            >
+              {%- render 'icon-view' -%}
+              <span>{{ 'products.product.quickview_text' | t }}</span>
+              {%- if product.metafields.info.shortdesc != blank -%}
+                <span class=" txt-short hide">
+                  {{ product.metafields.info.shortdesc | strip_html | truncatewords: 12 }}
+                </span>
+              {%- else -%}
+                <span class=" txt-short hide">
+                  {{ product.description | strip_html | truncatewords: 12 }}
+                </span>
+              {%- endif -%}
+            </span>
+          {%- endif -%}
+          {%- if settings.enable_compare -%}
+            <span
+              data-tooltip="true"
+              data-placement="top"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-compare"
+              title="{{ 'products.product.compare_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-exchange' -%}
+              {%- render 'icon-close-solid' -%}
+              <span>{{ 'products.product.compare_text' | t }}</span>
+            </span>
+          {%- endif -%}
+          <span
+            data-tooltip="true"
+            data-placement="top"
+            class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-grid-cart"
+            title="{{ 'products.product.add_to_cart' | t }}"
+            data-id="{{ product.selected_or_first_available_variant.id }}"
+          >
+            {%- render 'icon-cart' -%}
+            <div class="product-card__loading spinner-{{ settings.loading }}" role="status"></div>
+            <span>{{ 'products.product.add_to_cart' | t }}</span>
+          </span>
+        </div>
+        {%- liquid
+          if settings.enable_countdown_card
+            render 'product-countdown', product: product
+          endif
+          render 'product-label', product: product, showlabel: true
+        -%}
+      </div>
+      <div class="product-card__info">
+        {{ vendor }}
+        {{ product_title_link }}
+        {{ review }}
+        {{ price }}
+        {%- render 'swatch-grid-1', product: product -%}
+      </div>
+    </div>
+  {%- when 'product-7' -%}
+    <div
+      class="product-card js-product-card product-card--style7 info-{{ enable_bg_info }}"
+      data-price="{{ product.price }}"
+    >
+      <div class="product-card__image-wr overflow-hidden">
+        {{ image_product }}
+        {%- if settings.enable_wishlsit -%}
+          <span
+            class="btn btn-theme product-card__overlay-btn js-btn-wishlist"
+            title="{{ 'products.product.wishlist_text' | t }}"
+            data-toggle="tooltip"
+            data-placement="left"
+            data-handle="{{ product.handle }}"
+          >
+            {%- render 'icon-heart' -%}
+          </span>
+        {%- endif -%}
+        <div class="product-card__overlay d-flex justify-content-center flex-column">
+          <span
+            class="btn product-card__overlay-btn js-grid-cart {% unless product.available %} disabled{% endunless %}"
+            title="{{ 'products.product.add_to_cart' | t }}"
+            data-toggle="tooltip"
+            data-placement="left"
+            data-id="{{ product.selected_or_first_available_variant.id }}"
+          >
+            {%- render 'icon-cart' -%}
+            <div class="product-card__loading spinner-{{ settings.loading }}" role="status"></div>
+            <span>{{ 'products.product.add_to_cart' | t }}</span>
+          </span>
+          {%- if settings.qv_box -%}
+            <span
+              class="btn js-btn-quickview product-card__overlay-btn"
+              data-toggle="modal"
+              data-target="#jsQuickview"
+              data-handle="{{ product.handle }}"
+              data-pavailable="{% if product.available %}true{% else %}false{% endif %}"
+              {% if settings.enable_review %}
+                data-viewjdmg="<span class='jdgm-preview-badge' data-id='{{ product.id }}'>{{ product.metafields.judgeme.badge }}</span>"
+              {% endif %}
+            >
+              <span
+                class="d-block"
+                data-toggle="tooltip"
+                data-placement="left"
+                title="{{ 'products.product.quickview_text' | t }}"
+              >
+                {%- render 'icon-view' -%}
+                <span class="icon__fallback-text">{{ 'products.product.quickview_text' | t }}</span>
+                {%- if product.metafields.info.shortdesc != blank -%}
+                  <span class=" txt-short hide">
+                    {{ product.metafields.info.shortdesc | strip_html | truncatewords: 12 }}
+                  </span>
+                {%- else -%}
+                  <span class=" txt-short hide">
+                    {{ product.description | strip_html | truncatewords: 12 }}
+                  </span>
+                {%- endif -%}
+              </span>
+            </span>
+          {%- endif -%}
+          {%- if settings.enable_compare -%}
+            <span
+              class="btn  product-card__overlay-btn js-btn-compare"
+              data-toggle="tooltip"
+              data-placement="left"
+              title="{{ 'products.product.compare_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-exchange' -%}
+              {%- render 'icon-close-solid' -%}
+              <span>{{ 'products.product.compare_text' | t }}</span>
+            </span>
+          {%- endif -%}
+        </div>
+        {%- liquid
+          render 'swatch-grid-1', product: product
+          if settings.enable_countdown_card
+            render 'product-countdown', product: product
+          endif
+        -%}
+        {%- render 'product-label', product: product, showlabel: true -%}
+      </div>
+      <div class="product-card__info  {% unless product.available %} disabled {% endunless %}">
+        {{ vendor }}
+        {{ product_title_link }}
+        {{ review }}
+        {{ price }}
+      </div>
+    </div>
+  {%- when 'product-8' -%}
+    {%- comment -%} product-grid-3.liquid {%- endcomment -%}
+    <div
+      class="product-card js-product-card product-card--style8 info-{{ enable_bg_info }}"
+      data-price="{{ product.price }}"
+    >
+      <div class="position-relative">
+        <div class="product-card__image-wr transition overflow-hidden">
+          {{ image_product }}
+          {%- liquid
+            if settings.enable_countdown_card
+              render 'product-countdown', product: product
+            endif
+            render 'product-label', product: product, showlabel: true
+          -%}
+        </div>
+        <div class="product-card__info">
+          {{ vendor }}
+          {{ product_title_link }}
+          {{ review }}
+          {{ price }}
+          {%- render 'swatch-grid-1', product: product -%}
+          <div class="product-card__overlay d-flex justify-content-center flex-row">
+            <span
+              class="btn btn-theme product-card__overlay-btn js-grid-cart {% unless product.available %} disabled{% endunless %}"
+              title="{{ 'products.product.add_to_cart' | t }}"
+              data-toggle="tooltip"
+              data-placement="top"
+              data-id="{{ product.selected_or_first_available_variant.id }}"
+            >
+              {%- render 'icon-cart' -%}
+              <div class="product-card__loading spinner-{{ settings.loading }}" role="status"></div>
+              <span>{{ 'products.product.add_to_cart' | t }}</span>
+            </span>
+
+            {%- if settings.qv_box -%}
+              <span
+                data-tooltip="true"
+                data-placement="top"
+                class="btn btn-theme product-card__overlay-btn js-btn-quickview"
+                title="{{ 'products.product.quickview_text' | t }}"
+                data-toggle="modal"
+                data-target="#jsQuickview"
+                data-handle="{{ product.handle }}"
+                data-pavailable="{% if product.available %}true{% else %}false{% endif %}"
+                {% if settings.enable_review %}
+                  data-viewjdmg="<span class='jdgm-preview-badge' data-id='{{ product.id }}'>{{ product.metafields.judgeme.badge }}</span>"
+                {% endif %}
+              >
+                {%- render 'icon-view' -%}
+                <span>{{ 'products.product.quickview_text' | t }}</span>
+                {%- if product.metafields.info.shortdesc != blank -%}
+                  <span class=" txt-short hide">
+                    {{ product.metafields.info.shortdesc | strip_html | truncatewords: 12 }}
+                  </span>
+                {%- else -%}
+                  <span class=" txt-short hide">
+                    {{ product.description | strip_html | truncatewords: 12 }}
+                  </span>
+                {%- endif -%}
+              </span>
+            {%- endif -%}
+
+            {%- if settings.enable_wishlsit -%}
+              <span
+                data-toggle="tooltip"
+                data-placement="top"
+                data-tooltipalltimes="true"
+                class="btn btn-theme product-card__overlay-btn js-btn-wishlist"
+                title="{{ 'products.product.wishlist_text' | t }}"
+                data-handle="{{ product.handle }}"
+              >
+                {%- render 'icon-heart' -%}
+              </span>
+            {%- endif -%}
+            {%- if settings.enable_compare -%}
+              <span
+                data-tooltip="true"
+                data-placement="top"
+                class="btn btn-theme product-card__overlay-btn js-btn-compare"
+                title="{{ 'products.product.compare_text' | t }}"
+                data-handle="{{ product.handle }}"
+              >
+                {%- render 'icon-exchange' -%}
+                {%- render 'icon-close-solid' -%}
+                <span>{{ 'products.product.compare_text' | t }}</span>
+              </span>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- when 'product-9' -%}
+    {%- comment -%} product style 9  {%- endcomment -%}
+    <div
+      class="product-card js-product-card product-card--style1 product-card--style9 info-{{ enable_bg_info }}"
+      data-price="{{ product.price }}"
+      id="product-item-{{ product.id }}"
+    >
+      <div class="product-card__image-wr">
+        {{ image_product }}
+        {%- render 'product-label', product: product, showlabel: true -%}
+        <div class="product-card__overlay d-flex justify-content-center flex-column">
+          {%- if settings.enable_wishlsit -%}
+            <span
+              data-toggle="tooltip"
+              data-placement="left"
+              data-tooltipalltimes="true"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-wishlist"
+              title="{{ 'products.product.wishlist_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-heart' -%}
+            </span>
+          {%- endif -%}
+          {%- if settings.qv_box -%}
+            <span
+              data-tooltip="true"
+              data-placement="left"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-quickview"
+              title="{{ 'products.product.quickview_text' | t }}"
+              data-toggle="modal"
+              data-target="#jsQuickview"
+              data-handle="{{ product.handle }}"
+              data-pavailable="{% if product.available %}true{% else %}false{% endif %}"
+              {% if settings.enable_review %}
+                data-viewjdmg="<span class='jdgm-preview-badge' data-id='{{ product.id }}'>{{ product.metafields.judgeme.badge }}</span>"
+              {% endif %}
+            >
+              {%- render 'icon-view' -%}
+              <span>{{ 'products.product.quickview_text' | t }}</span>
+              {%- if product.metafields.info.shortdesc != blank -%}
+                <span class=" txt-short hide">
+                  {{ product.metafields.info.shortdesc | strip_html | truncatewords: 12 }}
+                </span>
+              {%- else -%}
+                <span class=" txt-short hide">
+                  {{ product.description | strip_html | truncatewords: 12 }}
+                </span>
+              {%- endif -%}
+            </span>
+          {%- endif -%}
+          {%- if settings.enable_compare -%}
+            <span
+              data-tooltip="true"
+              data-placement="left"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-compare"
+              title="{{ 'products.product.compare_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-exchange' -%}
+              {%- render 'icon-close-solid' -%}
+              <span>{{ 'products.product.compare_text' | t }}</span>
+            </span>
+          {%- endif -%}
+        </div>
+        <div class="product-card-cart">
+          <span
+            class="btn btn-theme js-grid-cart w-100 {% unless product.available %} disabled {% endunless %}"
+            {% if product.available %}
+              title="{{ 'products.product.add_to_cart' | t }}"
+            {% else %}
+              title="{{ 'products.product.sold_out' | t }}"
+            {% endif %}
+            data-id="{{ product.selected_or_first_available_variant.id }}"
+          >
+            <div class="product-card__loading spinner-{{ settings.loading }}" role="status"></div>
+            <span>
+              {% if product.available %}
+                {{ 'products.product.add_to_cart' | t }}
+              {% else %}
+                {{ 'products.product.sold_out' | t }}
+              {% endif %}
+            </span>
+          </span>
+        </div>
+        {%- liquid
+          if settings.enable_countdown_card
+            render 'product-countdown', product: product
+          endif
+        -%}
+      </div>
+      <div class="product-card__info text-left">
+        {{ vendor }}
+        {{ product_title_link }}
+        {{ show_option }}
+        {{ review }}
+        {{ price }}
+        {% render 'swatch-grid-1', product: product %}
+      </div>
+    </div>
+  {%- when 'product-10' -%}
+    <div
+      class="product-card js-product-card product-card--style10 info-{{ settings.enable_bg_info }}"
+      data-price="{{ product.price }}"
+    >
+      <div class="product-card__image-wr">
+        {{ image_product }}
+        {%- render 'product-label', product: product, showlabel: true -%}
+        <div class="product-card__overlay d-flex justify-content-center flex-column">
+          {%- if settings.enable_wishlsit -%}
+            <span
+              data-toggle="tooltip"
+              data-placement="left"
+              data-tooltipalltimes="true"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-wishlist"
+              title="{{ 'products.product.wishlist_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-heart' -%}
+            </span>
+          {%- endif -%}
+          {%- if settings.qv_box -%}
+            <span
+              data-tooltip="true"
+              data-placement="left"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-quickview"
+              title="{{ 'products.product.quickview_text' | t }}"
+              data-toggle="modal"
+              data-target="#jsQuickview"
+              data-handle="{{ product.handle }}"
+              {% if settings.enable_review %}
+                data-viewjdmg="<span class='jdgm-preview-badge' data-id='{{ product.id }}'>{{ product.metafields.judgeme.badge }}</span>"
+              {% endif %}
+              data-pavailable="{% if product.available %}true{% else %}false{% endif %}"
+            >
+              {%- render 'icon-view' -%}
+              <span>{{ 'products.product.quickview_text' | t }}</span>
+              {%- if product.metafields.info.shortdesc != blank -%}
+                <span class=" txt-short hide">
+                  {{ product.metafields.info.shortdesc | strip_html | truncatewords: 12 }}
+                </span>
+              {%- else -%}
+                <span class=" txt-short hide">
+                  {{ product.description | strip_html | truncatewords: 12 }}
+                </span>
+              {%- endif -%}
+            </span>
+          {%- endif -%}
+          {%- if settings.enable_compare -%}
+            <span
+              data-tooltip="true"
+              data-placement="left"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-compare"
+              title="{{ 'products.product.compare_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-exchange' -%}
+              {%- render 'icon-close-solid' -%}
+              <span>{{ 'products.product.compare_text' | t }}</span>
+            </span>
+          {%- endif -%}
+        </div>
+
+        {%- liquid
+          if settings.enable_countdown_card
+            render 'product-countdown', product: product
+          endif
+        -%}
+      </div>
+      <div class="product-card__info">
+        {{ vendor }}
+        {{ product_title_link }}
+        {{ review }}
+        {{ price }}
+        {% render 'swatch-grid-1', product: product %}
+        <div class="product-card-cart mt-2">
+          <span
+            class="btn btn-theme js-grid-cart w-100 {% unless product.available %} disabled {% endunless %}"
+            {% if product.available %}
+              title="{{ 'products.product.add_to_cart' | t }}"
+            {% else %}
+              title="{{ 'products.product.sold_out' | t }}"
+            {% endif %}
+            data-id="{{ product.selected_or_first_available_variant.id }}"
+          >
+            <div class="product-card__loading spinner-{{ settings.loading }}" role="status"></div>
+            <span>
+              {% if product.available %}
+                {{ 'products.product.add_to_cart' | t }}
+              {% else %}
+                {{ 'products.product.sold_out' | t }}
+              {% endif %}
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+  {%- when 'product-11' -%}
+    <!-- product-grid-11.liquid -->
+    <div
+      class="product-card js-product-card product-card--style1 product-card--style6 product-card--style11 info-{{ enable_bg_info }}"
+      data-price="{{ product.price }}"
+    >
+      <div class="product-card__image-wr overflow-hidden">
+        <a
+          class="product-card__image js image-content__image-wrapper {{ settings.size_image_grid }}{% if is_locked %} premium-product-locked{% endif %}"
+          href="{{ locked_url }}"
+          style="padding-top:{{ 1 | divided_by: image.aspect_ratio | times: 100 }}%;"
+          data-image-id="{{ image.id }}"
+          {% if is_locked %}
+            data-premium-locked="true"
+            data-product-url="{{ locked_url }}"
+          {% endif %}
+        >
+          <img
+            srcset="
+              {%- if image.width >= 165 -%}{{ image | image_url: width: 165 }} 165w,{%- endif -%}
+              {%- if image.width >= 360 -%}{{ image | image_url: width: 360 }} 360w,{%- endif -%}
+              {%- if image.width >= 533 -%}{{ image | image_url: width: 533 }} 533w,{%- endif -%}
+              {%- if image.width >= 720 -%}{{ image | image_url: width: 720 }} 720w,{%- endif -%}
+              {%- if image.width >= 940 -%}{{ image | image_url: width: 940 }} 940w,{%- endif -%}
+              {%- if image.width >= 1066 -%}{{ image | image_url: width: 1066 }} 1066w,{%- endif -%}
+              {{ image | image_url }} {{ image.width }}w
+            "
+            src="{{ image | image_url: width: 720 }}"
+            sizes="(min-width: {{ settings.container }}px) {{ settings.container | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
+            alt="{{ image.alt | escape }}"
+            class="lazyload scale-in first-image {% if product.images.size > 1 %} hover__hide-image {% endif %}"
+            data-sizes="auto"
+            data-aspectratio="{{ image.aspect_ratio }}"
+            loading="lazy"
+            width="{{ image.width }}"
+            height="{{ image.height }}"
+          >
+          {{ lock_overlay }}
+        </a>
+
+        {%- liquid
+          if settings.enable_countdown_card
+            render 'product-countdown', product: product
+          endif
+          render 'product-label', product: product, showlabel: true
+        -%}
+      </div>
+      <div class="product-card__overlay d-flex justify-content-center flex-row">
+        {%- if settings.enable_wishlsit -%}
+          <span
+            data-toggle="tooltip"
+            data-placement="top"
+            data-tooltipalltimes="true"
+            class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-wishlist"
+            title="{{ 'products.product.wishlist_text' | t }}"
+            data-handle="{{ product.handle }}"
+          >
+            {%- render 'icon-heart' -%}
+          </span>
+        {%- endif -%}
+
+        {%- if settings.qv_box -%}
+          <span
+            data-tooltip="true"
+            data-placement="top"
+            class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-quickview"
+            title="{{ 'products.product.quickview_text' | t }}"
+            data-toggle="modal"
+            data-target="#jsQuickview"
+            data-handle="{{ product.handle }}"
+            data-pavailable="{% if product.available %}true{% else %}false{% endif %}"
+            {% if settings.enable_review %}
+              data-viewjdmg="<span class='jdgm-preview-badge' data-id='{{ product.id }}'>{{ product.metafields.judgeme.badge }}</span>"
+            {% endif %}
+          >
+            {%- render 'icon-view' -%}
+            <span>{{ 'products.product.quickview_text' | t }}</span>
+            {%- if product.metafields.info.shortdesc != blank -%}
+              <span class=" txt-short hide">
+                {{ product.metafields.info.shortdesc | strip_html | truncatewords: 12 }}
+              </span>
+            {%- else -%}
+              <span class=" txt-short hide">
+                {{ product.description | strip_html | truncatewords: 12 }}
+              </span>
+            {%- endif -%}
+          </span>
+        {%- endif -%}
+        {%- if settings.enable_compare -%}
+          <span
+            data-tooltip="true"
+            data-placement="top"
+            class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-compare"
+            title="{{ 'products.product.compare_text' | t }}"
+            data-handle="{{ product.handle }}"
+          >
+            {%- render 'icon-exchange' -%}
+            {%- render 'icon-close-solid' -%}
+            <span>{{ 'products.product.compare_text' | t }}</span>
+          </span>
+        {%- endif -%}
+        <span
+          data-tooltip="true"
+          data-placement="top"
+          class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-grid-cart"
+          title="{{ 'products.product.add_to_cart' | t }}"
+          data-id="{{ product.selected_or_first_available_variant.id }}"
+        >
+          {%- render 'icon-cart' -%}
+          <div class="product-card__loading spinner-{{ settings.loading }}" role="status"></div>
+          <span>{{ 'products.product.add_to_cart' | t }}</span>
+        </span>
+      </div>
+      <a
+        href="{{ locked_url }}"
+        class="link-second__image"
+        {% if is_locked %}
+          data-premium-locked="true"
+          data-product-url="{{ locked_url }}"
+        {% endif %}
+      >
+        {% render 'second-image', product: product %}
+      </a>
+      <div class="product-card__info">
+        {{ vendor }}
+        {{ product_title_link }}
+        {{ review }}
+        {{ price }}
+        {%- render 'swatch-grid-1', product: product -%}
+      </div>
+    </div>
+  {%- when 'product-12' -%}
+    <!-- product-grid-12.liquid -->
+    <div
+      class="product-card js-product-card product-card--style1 product-card--style12 info-{{ enable_bg_info }}"
+      data-price="{{ product.price }}"
+    >
+      <div class="product-card__image-wr overflow-hidden">
+        {%- assign image = product.selected_or_first_available_variant.featured_image
+          | default: product.featured_image
+        -%}
+        <a
+          class="product-card__image js image-content__image-wrapper {{ settings.size_image_grid }}{% if is_locked %} premium-product-locked{% endif %}"
+          href="{{ locked_url }}"
+          style="padding-top:{{ 1 | divided_by: image.aspect_ratio | times: 100 }}%;"
+          data-image-id="{{ image.id }}"
+          {% if is_locked %}
+            data-premium-locked="true"
+            data-product-url="{{ locked_url }}"
+          {% endif %}
+        >
+          <img
+            srcset="
+              {%- if image.width >= 165 -%}{{ image | image_url: width: 165 }} 165w,{%- endif -%}
+              {%- if image.width >= 360 -%}{{ image | image_url: width: 360 }} 360w,{%- endif -%}
+              {%- if image.width >= 533 -%}{{ image | image_url: width: 533 }} 533w,{%- endif -%}
+              {%- if image.width >= 720 -%}{{ image | image_url: width: 720 }} 720w,{%- endif -%}
+              {%- if image.width >= 940 -%}{{ image | image_url: width: 940 }} 940w,{%- endif -%}
+              {%- if image.width >= 1066 -%}{{ image | image_url: width: 1066 }} 1066w,{%- endif -%}
+              {{ image | image_url }} {{ image.width }}w
+            "
+            src="{{ image | image_url: width: 720 }}"
+            sizes="(min-width: {{ settings.container }}px) {{ settings.container | minus: 130 | divided_by: 4 }}px, (min-width: 990px) calc((100vw - 130px) / 4), (min-width: 750px) calc((100vw - 120px) / 3), calc((100vw - 35px) / 2)"
+            alt="{{ image.alt | escape }}"
+            class="lazyload scale-in first-image {% if product.images.size > 1 %} hover__hide-image {% endif %}"
+            data-sizes="auto"
+            data-aspectratio="{{ image.aspect_ratio }}"
+            loading="lazy"
+            width="{{ image.width }}"
+            height="{{ image.height }}"
+          >
+          {{ lock_overlay }}
+        </a>
+        <div class="product-card__overlay d-flex justify-content-center flex-row">
+          {%- if settings.enable_wishlsit -%}
+            <span
+              data-toggle="tooltip"
+              data-placement="top"
+              data-tooltipalltimes="true"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-wishlist"
+              title="{{ 'products.product.wishlist_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-heart' -%}
+            </span>
+          {%- endif -%}
+
+          {%- if settings.qv_box -%}
+            <span
+              data-tooltip="true"
+              data-placement="top"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-quickview"
+              title="{{ 'products.product.quickview_text' | t }}"
+              data-toggle="modal"
+              data-target="#jsQuickview"
+              data-handle="{{ product.handle }}"
+              data-pavailable="{% if product.available %}true{% else %}false{% endif %}"
+              {% if settings.enable_review %}
+                data-viewjdmg="<span class='jdgm-preview-badge' data-id='{{ product.id }}'>{{ product.metafields.judgeme.badge }}</span>"
+              {% endif %}
+            >
+              {%- render 'icon-view' -%}
+              <span>{{ 'products.product.quickview_text' | t }}</span>
+              {%- if product.metafields.info.shortdesc != blank -%}
+                <span class=" txt-short hide">
+                  {{ product.metafields.info.shortdesc | strip_html | truncatewords: 12 }}
+                </span>
+              {%- else -%}
+                <span class=" txt-short hide">
+                  {{ product.description | strip_html | truncatewords: 12 }}
+                </span>
+              {%- endif -%}
+            </span>
+          {%- endif -%}
+          {%- if settings.enable_compare -%}
+            <span
+              data-tooltip="true"
+              data-placement="top"
+              class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-btn-compare"
+              title="{{ 'products.product.compare_text' | t }}"
+              data-handle="{{ product.handle }}"
+            >
+              {%- render 'icon-exchange' -%}
+              {%- render 'icon-close-solid' -%}
+              <span>{{ 'products.product.compare_text' | t }}</span>
+            </span>
+          {%- endif -%}
+          <span
+            data-tooltip="true"
+            data-placement="top"
+            class="btn btn-theme gradient-theme-vertical product-card__overlay-btn js-grid-cart"
+            title="{{ 'products.product.add_to_cart' | t }}"
+            data-id="{{ product.selected_or_first_available_variant.id }}"
+          >
+            {%- render 'icon-cart' -%}
+            <div class="product-card__loading spinner-{{ settings.loading }}" role="status"></div>
+            <span>{{ 'products.product.add_to_cart' | t }}</span>
+          </span>
+        </div>
+      </div>
+
+      <a
+        href="{{ locked_url }}"
+        class="link-second__image"
+        {% if is_locked %}
+          data-premium-locked="true"
+          data-product-url="{{ locked_url }}"
+        {% endif %}
+      >
+        {% render 'second-image', product: product %}
+      </a>
+      <div class="product-card__info">
+        {{ vendor }}
+        {{ product_title_link }}
+        {{ review }}
+        {{ price }}
+        {%- render 'swatch-grid-1', product: product -%}
+      </div>
+    </div>
+{%- endcase -%}

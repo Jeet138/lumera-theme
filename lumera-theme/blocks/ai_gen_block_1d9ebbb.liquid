@@ -1,0 +1,507 @@
+{% doc %}
+  @prompt
+   
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-gift-banner-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .ai-gift-banner-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.background_hover_color }};
+  }
+
+  .ai-gift-banner-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.container_width }}px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .ai-gift-banner-content-{{ ai_gen_id }} {
+    flex: 1;
+  }
+
+  .ai-gift-banner-heading-{{ ai_gen_id }} {
+    color: {{ block.settings.heading_color }};
+    font-size: {{ block.settings.heading_size }}px;
+    font-weight: {{ block.settings.heading_weight }};
+    margin: 0 0 10px 0;
+    line-height: 1.2;
+  }
+
+  .ai-gift-banner-text-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.text_size }}px;
+    margin: 0 0 15px 0;
+    line-height: 1.5;
+  }
+
+  .ai-gift-banner-cta-{{ ai_gen_id }} {
+    display: inline-block;
+    color: {{ block.settings.cta_color }};
+    font-size: {{ block.settings.cta_size }}px;
+    font-weight: {{ block.settings.cta_weight }};
+    text-decoration: underline;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .ai-gift-banner-images-{{ ai_gen_id }} {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .ai-gift-banner-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: {{ block.settings.image_size }}px;
+    flex-shrink: 0;
+  }
+
+  .ai-gift-banner-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: {{ block.settings.image_border_radius }}px;
+  }
+
+  .ai-gift-banner-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    padding-bottom: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: {{ block.settings.image_border_radius }}px;
+    position: relative;
+  }
+
+  .ai-gift-banner-image-placeholder-{{ ai_gen_id }} svg {
+    position: absolute;
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .ai-gift-banner-price-badge-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: {{ block.settings.price_badge_bg }};
+    color: {{ block.settings.price_badge_text }};
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .ai-gift-banner-original-price-{{ ai_gen_id }} {
+    text-decoration: line-through;
+    opacity: 0.7;
+    font-size: 12px;
+  }
+
+  .ai-gift-banner-free-text-{{ ai_gen_id }} {
+    font-size: 14px;
+    font-weight: 700;
+    color: {{ block.settings.free_text_color }};
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-gift-banner-container-{{ ai_gen_id }} {
+      flex-direction: column;
+      text-align: center;
+      gap: 20px;
+    }
+
+    .ai-gift-banner-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.7 }}px;
+    }
+
+    .ai-gift-banner-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.text_size | times: 0.9 }}px;
+    }
+
+    .ai-gift-banner-images-{{ ai_gen_id }} {
+      justify-content: center;
+    }
+
+    .ai-gift-banner-image-wrapper-{{ ai_gen_id }} {
+      width: {{ block.settings.image_size | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<gift-banner-{{ ai_gen_id }}
+  class="ai-gift-banner-{{ ai_gen_id }}"
+  data-cart-drawer-trigger
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-gift-banner-container-{{ ai_gen_id }}">
+    <div class="ai-gift-banner-content-{{ ai_gen_id }}">
+      {% if block.settings.heading != blank %}
+        <h3 class="ai-gift-banner-heading-{{ ai_gen_id }}">
+          {{ block.settings.heading }}
+        </h3>
+      {% endif %}
+
+      {% if block.settings.description != blank %}
+        <div class="ai-gift-banner-text-{{ ai_gen_id }}">
+          {{ block.settings.description }}
+        </div>
+      {% endif %}
+
+      {% if block.settings.cta_text != blank %}
+        <span class="ai-gift-banner-cta-{{ ai_gen_id }}">
+          {{ block.settings.cta_text }}
+        </span>
+      {% endif %}
+    </div>
+
+    <div class="ai-gift-banner-images-{{ ai_gen_id }}">
+      {% if block.settings.show_product_image_1 %}
+        <div class="ai-gift-banner-image-wrapper-{{ ai_gen_id }}">
+          {% if block.settings.product_image_1 %}
+            <img
+              src="{{ block.settings.product_image_1 | image_url: width: 300 }}"
+              alt="{{ block.settings.product_image_1.alt | escape }}"
+              class="ai-gift-banner-image-{{ ai_gen_id }}"
+              loading="lazy"
+              width="300"
+              height="300"
+            >
+          {% else %}
+            <div class="ai-gift-banner-image-placeholder-{{ ai_gen_id }}">
+              {{ 'product-1' | placeholder_svg_tag }}
+            </div>
+          {% endif %}
+          {% comment %} <div class="ai-gift-banner-price-badge-{{ ai_gen_id }}">
+            <span class="ai-gift-banner-original-price-{{ ai_gen_id }}">{{ block.settings.original_price }}</span>
+            <span class="ai-gift-banner-free-text-{{ ai_gen_id }}">{{ block.settings.free_text }}</span>
+          </div> {% endcomment %}
+        </div>
+      {% endif %}
+
+      {% if block.settings.show_product_image_2 %}
+        <div class="ai-gift-banner-image-wrapper-{{ ai_gen_id }}">
+          {% if block.settings.model_image_1 %}
+            <img
+              src="{{ block.settings.model_image_1 | image_url: width: 300 }}"
+              alt="{{ block.settings.model_image_1.alt | escape }}"
+              class="ai-gift-banner-image-{{ ai_gen_id }}"
+              loading="lazy"
+              width="300"
+              height="300"
+            >
+          {% else %}
+            <div class="ai-gift-banner-image-placeholder-{{ ai_gen_id }}">
+              {{ 'lifestyle-1' | placeholder_svg_tag }}
+            </div>
+          {% endif %}
+          {% comment %} <div class="ai-gift-banner-price-badge-{{ ai_gen_id }}">
+            <span class="ai-gift-banner-original-price-{{ ai_gen_id }}">{{ block.settings.original_price }}</span>
+            <span class="ai-gift-banner-free-text-{{ ai_gen_id }}">{{ block.settings.free_text }}</span>
+          </div> {% endcomment %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</gift-banner-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class GiftBanner{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.addEventListener('click', this.handleClick.bind(this));
+      }
+
+      handleClick() {
+        var cartToggleBtn = document.querySelector('.js-toggle-cart');
+        var miniCart = document.querySelector('.js-mini-cart');
+
+        if (cartToggleBtn) {
+          cartToggleBtn.click();
+        } else if (miniCart) {
+          miniCart.classList.add('active');
+        } else {
+          window.location.href = '/cart';
+        }
+      }
+
+      disconnectedCallback() {
+        this.removeEventListener('click', this.handleClick);
+      }
+    }
+
+    customElements.define('gift-banner-{{ ai_gen_id }}', GiftBanner{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Complimentary gift banner",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Every Order Over $1000 Comes with a Complimentary Gift"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "Made from sterling silver, choose from our collection of pendants or earrings. Beautifully packaged and ready to gift (or keep for yourself)."
+    },
+    {
+      "type": "inline_richtext",
+      "id": "cta_text",
+      "label": "Call to action text",
+      "default": "Claim in your cart"
+    },
+    {
+      "type": "header",
+      "content": "Product images"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_image_1",
+      "label": "Show product image 1",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "product_image_1",
+      "label": "Product image 1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_image_2",
+      "label": "Show product image 2",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "model_image_1",
+      "label": "Model image 1"
+    },
+    {
+      "type": "range",
+      "id": "image_size",
+      "label": "Image size",
+      "min": 60,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "default": 120
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Image border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Price badge"
+    },
+    {
+      "type": "text",
+      "id": "original_price",
+      "label": "Original price",
+      "default": "LJE 285"
+    },
+    {
+      "type": "text",
+      "id": "free_text",
+      "label": "Free text",
+      "default": "FREE"
+    },
+    {
+      "type": "color",
+      "id": "price_badge_bg",
+      "label": "Badge background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "price_badge_text",
+      "label": "Badge text",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "free_text_color",
+      "label": "Free text color",
+      "default": "#34bf49"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#f4efe9"
+    },
+    {
+      "type": "color",
+      "id": "background_hover_color",
+      "label": "Background hover",
+      "default": "#ede7df"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "cta_color",
+      "label": "Call to action",
+      "default": "#ad2c34"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 16,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "cta_size",
+      "label": "Call to action size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "cta_weight",
+      "label": "Call to action weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "label": "Container width",
+      "min": 1000,
+      "max": 1920,
+      "step": 20,
+      "unit": "px",
+      "default": 1200
+    }
+  ],
+  "presets": [
+    {
+      "name": "Complimentary gift banner"
+    }
+  ]
+}
+{% endschema %}

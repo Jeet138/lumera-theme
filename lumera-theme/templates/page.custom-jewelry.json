@@ -1,0 +1,224 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "custom-jewelry-form",
+      "settings": {}
+    },
+    "blocks_FBCRnA": {
+      "type": "_blocks",
+      "name": "About us",
+      "settings": {}
+    },
+    "178469996968b160cb": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_4f317ce_cXnzGe": {
+          "type": "ai_gen_block_4f317ce",
+          "settings": {
+            "image_position": "left",
+            "desktop_width_percent": 80,
+            "gap": 40,
+            "padding_vertical": 40,
+            "padding_horizontal": 40,
+            "border_radius": 0,
+            "background_color": "#FEF8F1",
+            "image": "shopify://shop_images/Unveiling_Your_Dream_The_Design_Concept_Presentation.webp",
+            "image_width": 40,
+            "image_border_radius": 8,
+            "step_number": "Step 1",
+            "title": "Sketching The Dream Design",
+            "description": "<p>One exciting aspect of the custom jewelry adventure is the design concept presentation. Here we show you thorough sketches and 3D models of your personalized engagement rings or other jewelry. This lets you picture your ideas and make any required changes.</p><p>Before we proceed, we want to be sure the design makes you absolutely happy. This cooperative approach ensures that your personal jewelry captures your own vision and style. Show off your dream work with confidence knowing every element has been painstakingly created.</p>",
+            "content_gap": 15,
+            "step_number_size": 14,
+            "step_number_weight": "600",
+            "step_number_color": "#0d3404",
+            "title_size": 28,
+            "title_weight": "600",
+            "title_color": "#1a1a1a",
+            "description_size": 16,
+            "description_color": "#666666",
+            "mobile_gap": 20
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_4f317ce_cLrAhr": {
+          "type": "ai_gen_block_4f317ce",
+          "name": "Step with image",
+          "settings": {
+            "image_position": "right",
+            "desktop_width_percent": 80,
+            "gap": 40,
+            "padding_vertical": 40,
+            "padding_horizontal": 40,
+            "border_radius": 0,
+            "background_color": "#FEF8F1",
+            "image": "shopify://shop_images/2_8d5c528b-16a6-435d-b863-0fb627fa4c03.webp",
+            "image_width": 40,
+            "image_border_radius": 8,
+            "step_number": "Step 2",
+            "title": "Selecting The Perfect Diamond",
+            "description": "<p>Making your own engagement rings or custom Design jewelry depends critically on choosing the ideal diamond. We walk you through this process at Carat Diamonds, clarifying the four Cs—cut, color, clarity, and carat weight.</p><p>Our professionals are dedicated to identify a diamond within your budget and tastes. Whether your style is classic round diamond or unusual fancy cut, we make sure your choice accentuates your own jewelry. Trust us to assist you in selecting the ideal diamond to accentuate your own creation.</p>",
+            "content_gap": 15,
+            "step_number_size": 14,
+            "step_number_weight": "600",
+            "step_number_color": "#0d3404",
+            "title_size": 28,
+            "title_weight": "600",
+            "title_color": "#1a1a1a",
+            "description_size": 16,
+            "description_color": "#666666",
+            "mobile_gap": 20
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_4f317ce_6zLbtY": {
+          "type": "ai_gen_block_4f317ce",
+          "name": "Step with image",
+          "settings": {
+            "image_position": "left",
+            "desktop_width_percent": 80,
+            "gap": 40,
+            "padding_vertical": 40,
+            "padding_horizontal": 40,
+            "border_radius": 0,
+            "background_color": "#FEF8F1",
+            "image": "shopify://shop_images/3.webp",
+            "image_width": 40,
+            "image_border_radius": 8,
+            "step_number": "Step 3",
+            "title": "The Production Stage",
+            "description": "<p>Your custom jewelry comes to life in the production stage. Our talented craftsman create your unique engagement rings and custom jewelry using modern methods and premium materials. Every item is painstakingly checked to make sure it satisfies our exacting standards.</p><p>From diamond setting to polishing the finished good, every action is executed precisely and deliberately. Our dedication to quality guarantees that your personal jewelry is not only lovely but also robust. Discover the work of art and skill involved in producing every one-of- a-kind item.</p>",
+            "content_gap": 15,
+            "step_number_size": 14,
+            "step_number_weight": "600",
+            "step_number_color": "#0d3404",
+            "title_size": 28,
+            "title_weight": "600",
+            "title_color": "#1a1a1a",
+            "description_size": 16,
+            "description_color": "#666666",
+            "mobile_gap": 20
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_4f317ce_c4h9Uc": {
+          "type": "ai_gen_block_4f317ce",
+          "name": "Step with image",
+          "settings": {
+            "image_position": "right",
+            "desktop_width_percent": 85,
+            "gap": 40,
+            "padding_vertical": 40,
+            "padding_horizontal": 40,
+            "border_radius": 0,
+            "background_color": "#FEF8F1",
+            "image": "shopify://shop_images/CD_Setting_1.webp",
+            "image_width": 40,
+            "image_border_radius": 8,
+            "step_number": "Step 4",
+            "title": "From Vision to Reality",
+            "description": "<p>Custom jewelry is especially unique since the trip from vision to reality shapes everything. We at lumera fine Jewellery take great satisfaction in turning your ideas into beautiful objects.</p><p>Our artists start the process of creation once the design is complete and the ideal diamonds have been chosen. From the setting to the finish, every element is painstakingly created. The last result is evidence of your own vision and our workmanship. Knowing they really reflect your style and story, wear your custom engagement rings, custom wedding rings, or other custom jewelry with pride.</p>",
+            "content_gap": 15,
+            "step_number_size": 14,
+            "step_number_weight": "600",
+            "step_number_color": "#0d3404",
+            "title_size": 28,
+            "title_weight": "600",
+            "title_color": "#1a1a1a",
+            "description_size": 16,
+            "description_color": "#666666",
+            "mobile_gap": 20
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_4f317ce_cXnzGe",
+        "ai_gen_block_4f317ce_cLrAhr",
+        "ai_gen_block_4f317ce_6zLbtY",
+        "ai_gen_block_4f317ce_c4h9Uc"
+      ],
+      "settings": {}
+    },
+    "image_interactive_NCenYR": {
+      "type": "image-interactive",
+      "blocks": {
+        "image_3L7QfU": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/DSC04510.jpg"
+          }
+        },
+        "image_TrRTXd": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/DSC04507.jpg"
+          }
+        },
+        "image_xJaETY": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/DSC02965.jpg"
+          }
+        },
+        "image_HpX7cJ": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/1_9312cd31-a427-461e-b1db-bc309cfccf00.png"
+          }
+        },
+        "image_6RwLEV": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/28_da4668e7-80ac-4d7b-aa27-edd3b77acd6b.jpg"
+          }
+        },
+        "image_83tt6q": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/24_6d548552-b4db-4887-a2d5-3eede136aefa.jpg"
+          }
+        }
+      },
+      "block_order": [
+        "image_3L7QfU",
+        "image_TrRTXd",
+        "image_xJaETY",
+        "image_HpX7cJ",
+        "image_6RwLEV",
+        "image_83tt6q"
+      ],
+      "name": "Image Interactive",
+      "settings": {
+        "animation": "fade-down",
+        "bgsection": "#FEF8F1",
+        "title_color": "rgba(0,0,0,0)",
+        "title_top": "TIMELESS ELEGANCE",
+        "title": "Diamond Jewellery",
+        "size_text": "h2",
+        "des": "Crafted with exceptional brilliance and timeless sophistication, our diamond jewellery collection celebrates every special moment with unmatched elegance.",
+        "style_btn": "btn-theme",
+        "button": "discover now",
+        "link": "shopify://collections",
+        "enable_animation": true,
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "blocks_FBCRnA",
+    "178469996968b160cb",
+    "image_interactive_NCenYR"
+  ]
+}

@@ -1,0 +1,199 @@
+{{ 'lab-diamond-story.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="ld-story"
+  style="
+    --ld-bg: {{ section.settings.bg_color }};
+    --ld-panel: {{ section.settings.panel_color }};
+    --ld-text: {{ section.settings.text_color }};
+    --ld-accent: {{ section.settings.accent_color }};
+    --ld-line: {{ section.settings.accent_color }};
+  "
+  data-ld-story
+>
+  <div class="ld-story__inner">
+
+    <div class="ld-story__media" data-ld-media>
+      <div class="ld-story__media-clip" data-ld-clip>
+        {%- if section.settings.image != blank -%}
+          <img
+            class="ld-story__img"
+            src="{{ section.settings.image | image_url: width: 1600 }}"
+            srcset="
+              {{ section.settings.image | image_url: width: 600 }} 600w,
+              {{ section.settings.image | image_url: width: 900 }} 900w,
+              {{ section.settings.image | image_url: width: 1200 }} 1200w,
+              {{ section.settings.image | image_url: width: 1600 }} 1600w
+            "
+            sizes="(min-width: 990px) 45vw, 100vw"
+            alt="{{ section.settings.image.alt | escape | default: section.settings.heading | escape }}"
+            width="{{ section.settings.image.width }}"
+            height="{{ section.settings.image.height }}"
+            loading="lazy"
+          >
+        {%- else -%}
+          <div class="ld-story__img ld-story__img--placeholder">{{ 'image' | placeholder_svg_tag: 'ld-story__placeholder-svg' }}</div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="ld-story__panel">
+      <div class="ld-story__content" data-ld-content>
+
+        {%- if section.settings.show_icon -%}
+          <span class="ld-story__icon" data-ld-item aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 6C24 6 18 12 18 18C18 22 20.5 24.5 24 24.5C27.5 24.5 30 22 30 18C30 12 24 6 24 6Z" fill="var(--ld-accent)" opacity="0.85"/>
+              <path d="M10 16C10 16 16 18 17.5 22.5C18.5 25.6 17 28 14 28.5C11 29 8.5 27 8 24C7.3 20 10 16 10 16Z" fill="var(--ld-accent)" opacity="0.55"/>
+              <path d="M38 16C38 16 32 18 30.5 22.5C29.5 25.6 31 28 34 28.5C37 29 39.5 27 40 24C40.7 20 38 16 38 16Z" fill="var(--ld-accent)" opacity="0.55"/>
+              <path d="M24 24C24 24 22.5 30 24 36" stroke="#7C8567" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M24 30C24 30 20 30.5 18.5 33" stroke="#7C8567" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+
+            <svg class="ld-story__spark ld-story__spark--1" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 0L14 10L24 12L14 14L12 24L10 14L0 12L10 10L12 0Z" fill="var(--ld-accent)"/>
+            </svg>
+            <svg class="ld-story__spark ld-story__spark--2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 0L14 10L24 12L14 14L12 24L10 14L0 12L10 10L12 0Z" fill="var(--ld-accent)"/>
+            </svg>
+            <svg class="ld-story__spark ld-story__spark--3" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 0L14 10L24 12L14 14L12 24L10 14L0 12L10 10L12 0Z" fill="var(--ld-accent)"/>
+            </svg>
+          </span>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h2 class="ld-story__heading" data-ld-item>{{ section.settings.heading }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.text_top != blank -%}
+          <div class="ld-story__text" data-ld-item>{{ section.settings.text_top }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.text_bottom != blank -%}
+          <div class="ld-story__text" data-ld-item>{{ section.settings.text_bottom }}</div>
+        {%- endif -%}
+
+        {%- if section.settings.button_label != blank -%}
+          <a
+            class="ld-story__btn"
+            data-ld-item
+            {% if section.settings.button_link != blank %} href="{{ section.settings.button_link }}" {% else %} href="#" role="link" aria-disabled="true" {% endif %}
+          >
+            <span class="ld-story__btn-label">{{ section.settings.button_label }}</span>
+          </a>
+        {%- endif -%}
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  (function () {
+    var root = document.currentScript.previousElementSibling;
+    if (!root || !root.hasAttribute('data-ld-story')) {
+      root = document.querySelector('[data-ld-story]:not([data-ld-bound])');
+    }
+    if (!root || root.hasAttribute('data-ld-bound')) return;
+    root.setAttribute('data-ld-bound', 'true');
+
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduceMotion) {
+      root.classList.add('is-revealed');
+      return;
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          root.classList.add('is-revealed');
+          io.unobserve(root);
+        }
+      });
+    }, { threshold: 0.25 });
+
+    io.observe(root);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Lab Diamond Story",
+  "tag": "section",
+  "class": "shopify-section--ld-story",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_icon",
+      "label": "Show ornament icon",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Crafted In Labs. Loved In Hearts."
+    },
+    {
+      "type": "richtext",
+      "id": "text_top",
+      "label": "Text - paragraph 1",
+      "default": "<p>Lab grown diamonds provide an ethical, eco-friendly, and affordable alternative to mined diamonds, offering the same brilliance and durability while supporting sustainability.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "text_bottom",
+      "label": "Text - paragraph 2",
+      "default": "<p>At Carat Diamonds, we promise exceptional quality, meticulously sourcing the finest materials and handcrafting each piece with care. Choose Carat Diamonds to elevate your style with jewelry that exceeds expectations.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Start Your Lab Grown Journey"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Outer background",
+      "default": "#FBF9F5"
+    },
+    {
+      "type": "color",
+      "id": "panel_color",
+      "label": "Text panel background",
+      "default": "#EFEAE1"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#2B2420"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color (icon, button, underline)",
+      "default": "#8A5A3B"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lab Diamond Story"
+    }
+  ]
+}
+{% endschema %}

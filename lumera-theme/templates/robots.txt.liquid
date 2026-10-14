@@ -1,0 +1,51 @@
+{% comment %}
+  =========================================================
+  CUSTOM ROBOTS.TXT
+  Lumera Fine Jewellery
+  =========================================================
+{% endcomment %}
+
+User-agent: *
+
+# ==============================
+# PRIVATE / CHECKOUT PAGES
+# ==============================
+Disallow: /admin
+Disallow: /cart
+Disallow: /checkout
+Disallow: /account
+Disallow: /orders
+
+# ==============================
+# INTERNAL SEARCH
+# ==============================
+Disallow: /search
+
+# ==============================
+# DUPLICATE / FILTER URLs
+# ==============================
+Disallow: /collections/*+*
+Disallow: /*?sort_by=*
+Disallow: /*?filter*
+Disallow: /*?variant=*
+
+# ==============================
+# SHOPIFY INTERNAL / APP URLs
+# ==============================
+Disallow: /apps/
+Disallow: /services/
+Disallow: /recommendations/products
+
+# ==============================
+# IMPORTANT SEO PAGES
+# ==============================
+Allow: /
+Allow: /products/
+Allow: /collections/
+Allow: /pages/
+Allow: /blogs/
+
+# ==============================
+# SITEMAP
+# ==============================
+Sitemap: https://www.lumerafinejewellery.com/sitemap.xml

@@ -1,0 +1,905 @@
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-discover-styles-{{ ai_gen_id }} {
+    width: 100%;
+    padding: 60px 0;
+    background-color: {{ block.settings.background_color }};
+    display: block;
+  }
+
+  .ai-discover-styles-container-{{ ai_gen_id }} {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 30px;
+  }
+
+  .ai-discover-styles-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .ai-discover-styles-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    color: {{ block.settings.title_color }};
+    margin: 0 0 15px;
+    font-weight: 300;
+    text-transform: {{ block.settings.title_transform }};
+  }
+
+  .ai-discover-styles-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    color: {{ block.settings.subtitle_color }};
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .ai-discover-styles-carousel-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+    padding: 40px 0;
+  }
+
+  .ai-discover-styles-carousel-{{ ai_gen_id }} {
+    position: relative;
+    overflow: visible;
+    margin: 0 auto;
+  }
+
+  .ai-discover-styles-track-{{ ai_gen_id }} {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    gap: 20px;
+    align-items: flex-end;
+    justify-content: flex-start;
+    padding: 0;
+  }
+
+  .ai-discover-styles-item-{{ ai_gen_id }} {
+    flex: 0 0 180px;
+    opacity: 0.3;
+    transform: scale(0.6) translateY(60px);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+  }
+
+  .ai-discover-styles-item-{{ ai_gen_id }}.left-2 {
+    opacity: 0.5;
+    transform: scale(0.75) translateY(45px);
+  }
+
+  .ai-discover-styles-item-{{ ai_gen_id }}.left-1 {
+    opacity: 0.7;
+    transform: scale(0.85) translateY(25px);
+  }
+
+  .ai-discover-styles-item-{{ ai_gen_id }}.active {
+    flex: 0 0 320px;
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    z-index: 10;
+  }
+
+  .ai-discover-styles-item-{{ ai_gen_id }}.right-1 {
+    opacity: 0.7;
+    transform: scale(0.85) translateY(25px);
+  }
+
+  .ai-discover-styles-item-{{ ai_gen_id }}.right-2 {
+    opacity: 0.5;
+    transform: scale(0.75) translateY(45px);
+  }
+
+  .ai-discover-styles-product-{{ ai_gen_id }} {
+    text-align: center;
+  }
+
+  .ai-discover-styles-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    padding-bottom: 100%;
+    margin-bottom: 0;
+    background-color: transparent;
+    border-radius: {{ block.settings.image_border_radius }}px;
+    overflow: visible;
+    transition: all 0.5s ease;
+  }
+
+  .ai-discover-styles-item-{{ ai_gen_id }}:not(.active) .ai-discover-styles-image-wrapper-{{ ai_gen_id }} {
+    background-color: #f7f7f7;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+  }
+
+  .ai-discover-styles-item-{{ ai_gen_id }}.active .ai-discover-styles-image-wrapper-{{ ai_gen_id }} {
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
+  }
+
+  .ai-discover-styles-image-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .ai-discover-styles-item-{{ ai_gen_id }}:not(.active) .ai-discover-styles-image-{{ ai_gen_id }} {
+    object-fit: cover;
+  }
+
+  .ai-discover-styles-placeholder-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f7f7f7;
+  }
+
+  .ai-discover-styles-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .ai-discover-styles-controls-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin-top: 50px;
+  }
+
+  .ai-discover-styles-arrow-{{ ai_gen_id }} {
+    width: {{ block.settings.arrow_size }}px;
+    height: {{ block.settings.arrow_size }}px;
+    border: 2px solid {{ block.settings.arrow_color }};
+    background-color: {{ block.settings.arrow_background }};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .ai-discover-styles-arrow-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.arrow_hover_background }};
+    border-color: {{ block.settings.arrow_hover_color }};
+  }
+
+  .ai-discover-styles-arrow-{{ ai_gen_id }} svg {
+    width: 20px;
+    height: 20px;
+    stroke: {{ block.settings.arrow_color }};
+    transition: stroke 0.3s ease;
+  }
+
+  .ai-discover-styles-arrow-{{ ai_gen_id }}:hover svg {
+    stroke: {{ block.settings.arrow_hover_color }};
+  }
+
+  .ai-discover-styles-center-info-{{ ai_gen_id }} {
+    text-align: center;
+    min-width: 280px;
+    max-width: 400px;
+  }
+
+  .ai-discover-styles-product-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.product_title_size }}px;
+    color: {{ block.settings.product_title_color }};
+    margin: 0 0 8px;
+    font-weight: 400;
+  }
+
+  .ai-discover-styles-product-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.product_subtitle_size }}px;
+    color: {{ block.settings.product_subtitle_color }};
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  @media screen and (max-width: 1024px) {
+    .ai-discover-styles-item-{{ ai_gen_id }} {
+      flex: 0 0 140px;
+    }
+
+    .ai-discover-styles-item-{{ ai_gen_id }}.active {
+      flex: 0 0 260px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-discover-styles-item-{{ ai_gen_id }} {
+      flex: 0 0 100px;
+      transform: scale(0.65) translateY(40px);
+    }
+
+    .ai-discover-styles-item-{{ ai_gen_id }}.left-2,
+    .ai-discover-styles-item-{{ ai_gen_id }}.right-2 {
+      transform: scale(0.7) translateY(35px);
+    }
+
+    .ai-discover-styles-item-{{ ai_gen_id }}.left-1,
+    .ai-discover-styles-item-{{ ai_gen_id }}.right-1 {
+      transform: scale(0.8) translateY(20px);
+    }
+
+    .ai-discover-styles-item-{{ ai_gen_id }}.active {
+      flex: 0 0 200px;
+    }
+
+    .ai-discover-styles-title-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.title_size }}px * 0.6);
+    }
+
+    .ai-discover-styles-subtitle-{{ ai_gen_id }} {
+      font-size: calc({{ block.settings.subtitle_size }}px * 0.85);
+    }
+
+    .ai-discover-styles-center-info-{{ ai_gen_id }} {
+      min-width: 150px;
+      max-width: 200px;
+    }
+
+    .ai-discover-styles-controls-{{ ai_gen_id }} {
+      gap: 20px;
+    }
+  }
+{% endstyle %}
+
+<discover-styles-{{ ai_gen_id }} class="ai-discover-styles-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-discover-styles-container-{{ ai_gen_id }}">
+    <div class="ai-discover-styles-header-{{ ai_gen_id }}">
+      {% if block.settings.title != blank %}
+        <h2 class="ai-discover-styles-title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+      {% endif %}
+      {% if block.settings.subtitle != blank %}
+        <p class="ai-discover-styles-subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <div class="ai-discover-styles-carousel-wrapper-{{ ai_gen_id }}">
+      <div class="ai-discover-styles-carousel-{{ ai_gen_id }}">
+        <div class="ai-discover-styles-track-{{ ai_gen_id }}" data-track>
+          {% assign has_images = false %}
+          {% for i in (1..12) %}
+            {% assign image_key = 'style_image_' | append: i %}
+            {% assign title_key = 'style_title_' | append: i %}
+            {% assign subtitle_key = 'style_subtitle_' | append: i %}
+            
+            {% assign current_image = block.settings[image_key] %}
+            {% assign current_title = block.settings[title_key] %}
+            {% assign current_subtitle = block.settings[subtitle_key] %}
+            
+            {% if current_image != blank %}
+              {% assign has_images = true %}
+            {% endif %}
+          {% endfor %}
+
+          {% if has_images %}
+            {% for i in (1..12) %}
+              {% assign image_key = 'style_image_' | append: i %}
+              {% assign title_key = 'style_title_' | append: i %}
+              {% assign subtitle_key = 'style_subtitle_' | append: i %}
+              
+              {% assign current_image = block.settings[image_key] %}
+              {% assign current_title = block.settings[title_key] %}
+              {% assign current_subtitle = block.settings[subtitle_key] %}
+              
+              {% if current_image != blank %}
+                <div class="ai-discover-styles-item-{{ ai_gen_id }}" data-index="{{ forloop.index0 }}" data-title="{{ current_title | escape }}" data-subtitle="{{ current_subtitle | escape }}">
+                  <div class="ai-discover-styles-product-{{ ai_gen_id }}">
+                    <div class="ai-discover-styles-image-wrapper-{{ ai_gen_id }}">
+                      <img
+                        src="{{ current_image | image_url: width: 600 }}"
+                        alt="{{ current_image.alt | escape }}"
+                        class="ai-discover-styles-image-{{ ai_gen_id }}"
+                        loading="lazy"
+                        width="600"
+                        height="600"
+                      >
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          {% else %}
+            {% for i in (1..5) %}
+              <div class="ai-discover-styles-item-{{ ai_gen_id }}" data-index="{{ forloop.index0 }}" data-title="Ring Style {{ forloop.index }}" data-subtitle="Add your ring style description">
+                <div class="ai-discover-styles-product-{{ ai_gen_id }}">
+                  <div class="ai-discover-styles-image-wrapper-{{ ai_gen_id }}">
+                    <div class="ai-discover-styles-placeholder-{{ ai_gen_id }}">
+                      {{ 'product-1' | placeholder_svg_tag }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="ai-discover-styles-controls-{{ ai_gen_id }}">
+      <button
+        class="ai-discover-styles-arrow-{{ ai_gen_id }}"
+        data-prev
+        aria-label="Previous style"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <div class="ai-discover-styles-center-info-{{ ai_gen_id }}" data-center-info>
+        <h3 class="ai-discover-styles-product-title-{{ ai_gen_id }}" data-center-title></h3>
+        <p class="ai-discover-styles-product-subtitle-{{ ai_gen_id }}" data-center-subtitle></p>
+      </div>
+
+      <button
+        class="ai-discover-styles-arrow-{{ ai_gen_id }}"
+        data-next
+        aria-label="Next style"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+  </div>
+</discover-styles-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class DiscoverStyles{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.currentIndex = 0;
+        this.originalItems = [];
+        this.isTransitioning = false;
+      }
+
+      connectedCallback() {
+        this.track = this.querySelector('[data-track]');
+        this.originalItems = Array.from(this.querySelectorAll('.ai-discover-styles-item-{{ ai_gen_id }}'));
+        this.prevBtn = this.querySelector('[data-prev]');
+        this.nextBtn = this.querySelector('[data-next]');
+        this.centerTitle = this.querySelector('[data-center-title]');
+        this.centerSubtitle = this.querySelector('[data-center-subtitle]');
+
+        if (this.originalItems.length === 0) return;
+
+        this.createInfiniteLoop();
+        this.currentIndex = this.originalItems.length * 2;
+        this.updateCarousel(false);
+
+        this.prevBtn.addEventListener('click', () => this.navigate(-1));
+        this.nextBtn.addEventListener('click', () => this.navigate(1));
+
+        this.track.addEventListener('transitionend', () => {
+          this.isTransitioning = false;
+          this.checkAndResetPosition();
+        });
+      }
+
+      createInfiniteLoop() {
+        const fragment1 = document.createDocumentFragment();
+        const fragment2 = document.createDocumentFragment();
+        
+        for (let i = 0; i < 2; i++) {
+          this.originalItems.forEach(item => {
+            const clone1 = item.cloneNode(true);
+            fragment1.appendChild(clone1);
+          });
+        }
+        
+        this.originalItems.forEach(item => {
+          const clone2 = item.cloneNode(true);
+          fragment2.appendChild(clone2);
+        });
+        
+        this.track.insertBefore(fragment1, this.track.firstChild);
+        this.track.appendChild(fragment2);
+        
+        this.allItems = Array.from(this.track.querySelectorAll('.ai-discover-styles-item-{{ ai_gen_id }}'));
+      }
+
+      navigate(direction) {
+        if (this.isTransitioning) return;
+        
+        this.isTransitioning = true;
+        this.currentIndex += direction;
+        this.updateCarousel(true);
+      }
+
+      checkAndResetPosition() {
+        const totalOriginal = this.originalItems.length;
+        
+        if (this.currentIndex >= totalOriginal * 3) {
+          this.currentIndex = totalOriginal;
+          this.updateCarousel(false);
+        } else if (this.currentIndex < totalOriginal) {
+          this.currentIndex = totalOriginal * 2;
+          this.updateCarousel(false);
+        }
+      }
+
+      updateCarousel(animate) {
+        this.allItems.forEach((item, index) => {
+          item.classList.remove('active', 'left-1', 'left-2', 'right-1', 'right-2');
+          
+          const diff = index - this.currentIndex;
+          
+          if (diff === 0) {
+            item.classList.add('active');
+          } else if (diff === -1) {
+            item.classList.add('left-1');
+          } else if (diff === -2) {
+            item.classList.add('left-2');
+          } else if (diff === 1) {
+            item.classList.add('right-1');
+          } else if (diff === 2) {
+            item.classList.add('right-2');
+          }
+        });
+
+        const originalIndex = this.currentIndex % this.originalItems.length;
+        const activeItem = this.originalItems[originalIndex];
+        const title = activeItem.getAttribute('data-title');
+        const subtitle = activeItem.getAttribute('data-subtitle');
+
+        if (this.centerTitle) {
+          this.centerTitle.textContent = title || '';
+        }
+
+        if (this.centerSubtitle) {
+          this.centerSubtitle.textContent = subtitle || '';
+        }
+
+        const firstItem = this.allItems[0];
+        if (!firstItem) return;
+        
+        const itemWidth = firstItem.offsetWidth;
+        const gap = 20;
+        const containerWidth = this.track.parentElement.offsetWidth;
+        
+        const activeItemWidth = 320;
+        const offset = this.currentIndex * (itemWidth + gap);
+        const centeringOffset = (containerWidth / 2) - (activeItemWidth / 2);
+        const translateX = centeringOffset - offset;
+        
+        if (animate) {
+          this.track.style.transition = 'transform 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+        } else {
+          this.track.style.transition = 'none';
+        }
+        
+        this.track.style.transform = `translateX(${translateX}px)`;
+        
+        if (!animate) {
+          this.track.offsetHeight;
+        }
+      }
+    }
+
+    customElements.define('discover-styles-{{ ai_gen_id }}', DiscoverStyles{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Discover styles",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section heading"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Discover Styles"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "select",
+      "id": "title_transform",
+      "label": "Title transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Discover diverse engagement ring styles, each embodying a distinct symbol of love and devotion"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Ring style 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "style_image_1",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "style_title_1",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "style_subtitle_1",
+      "label": "Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Ring style 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "style_image_2",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "style_title_2",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "style_subtitle_2",
+      "label": "Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Ring style 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "style_image_3",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "style_title_3",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "style_subtitle_3",
+      "label": "Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Ring style 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "style_image_4",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "style_title_4",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "style_subtitle_4",
+      "label": "Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Ring style 5"
+    },
+    {
+      "type": "image_picker",
+      "id": "style_image_5",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "style_title_5",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "style_subtitle_5",
+      "label": "Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Ring style 6"
+    },
+    {
+      "type": "image_picker",
+      "id": "style_image_6",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "style_title_6",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "style_subtitle_6",
+      "label": "Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Ring style 7"
+    },
+    {
+      "type": "image_picker",
+      "id": "style_image_7",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "style_title_7",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "style_subtitle_7",
+      "label": "Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Ring style 8"
+    },
+    {
+      "type": "image_picker",
+      "id": "style_image_8",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "style_title_8",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "style_subtitle_8",
+      "label": "Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Ring style 9"
+    },
+    {
+      "type": "image_picker",
+      "id": "style_image_9",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "style_title_9",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "style_subtitle_9",
+      "label": "Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Ring style 10"
+    },
+    {
+      "type": "image_picker",
+      "id": "style_image_10",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "style_title_10",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "style_subtitle_10",
+      "label": "Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Ring style 11"
+    },
+    {
+      "type": "image_picker",
+      "id": "style_image_11",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "style_title_11",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "style_subtitle_11",
+      "label": "Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Ring style 12"
+    },
+    {
+      "type": "image_picker",
+      "id": "style_image_12",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "style_title_12",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "style_subtitle_12",
+      "label": "Subtitle"
+    },
+    {
+      "type": "header",
+      "content": "Product info display"
+    },
+    {
+      "type": "range",
+      "id": "product_title_size",
+      "label": "Title size",
+      "min": 14,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "product_title_color",
+      "label": "Title color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "range",
+      "id": "product_subtitle_size",
+      "label": "Subtitle size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "product_subtitle_color",
+      "label": "Subtitle color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Carousel controls"
+    },
+    {
+      "type": "range",
+      "id": "arrow_size",
+      "label": "Arrow size",
+      "min": 30,
+      "max": 70,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "label": "Arrow color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "arrow_background",
+      "label": "Arrow background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_color",
+      "label": "Arrow hover color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "arrow_hover_background",
+      "label": "Arrow hover background",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Image border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "Discover styles"
+    }
+  ]
+}
+{% endschema %}

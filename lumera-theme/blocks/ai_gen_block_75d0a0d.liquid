@@ -1,0 +1,582 @@
+{% doc %}
+  @prompt
+    create professonail faq section 
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-faq-section-{{ ai_gen_id }} {
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: {{ block.settings.section_padding_top }}px 0 {{ block.settings.section_padding_bottom }}px;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-faq-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.content_max_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-faq-header-{{ ai_gen_id }} {
+    text-align: {{ block.settings.text_alignment }};
+    margin-bottom: {{ block.settings.header_spacing }}px;
+  }
+
+  .ai-faq-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 {{ block.settings.subheading_spacing }}px;
+    font-weight: 300;
+    letter-spacing: 0;
+  }
+
+  .ai-faq-subheading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subheading_size }}px;
+    color: {{ block.settings.subheading_color }};
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .ai-faq-list-{{ ai_gen_id }} {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .ai-faq-item-{{ ai_gen_id }} {
+    border-bottom: 1px solid {{ block.settings.divider_color }};
+  }
+
+  .ai-faq-item-{{ ai_gen_id }}:last-child {
+    border-bottom: none;
+  }
+
+  .ai-faq-question-{{ ai_gen_id }} {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: {{ block.settings.item_padding }}px 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    font-size: {{ block.settings.question_size }}px;
+    color: {{ block.settings.question_color }};
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .ai-faq-question-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.question_hover_color }};
+  }
+
+  .ai-faq-question-text-{{ ai_gen_id }} {
+    flex: 1;
+    padding-right: 20px;
+  }
+
+  .ai-faq-icon-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-faq-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    stroke: {{ block.settings.icon_color }};
+  }
+
+  .ai-faq-item-{{ ai_gen_id }}.active .ai-faq-icon-{{ ai_gen_id }} {
+    transform: rotate(180deg);
+  }
+
+  .ai-faq-answer-{{ ai_gen_id }} {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+  }
+
+  .ai-faq-item-{{ ai_gen_id }}.active .ai-faq-answer-{{ ai_gen_id }} {
+    max-height: 1000px;
+    padding-bottom: {{ block.settings.item_padding }}px;
+  }
+
+  .ai-faq-answer-content-{{ ai_gen_id }} {
+    font-size: {{ block.settings.answer_size }}px;
+    color: {{ block.settings.answer_color }};
+    line-height: 1.6;
+  }
+
+  .ai-faq-answer-content-{{ ai_gen_id }} p {
+    margin: 0;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-faq-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.7 }}px;
+    }
+
+    .ai-faq-subheading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subheading_size | times: 0.9 }}px;
+    }
+
+    .ai-faq-question-{{ ai_gen_id }} {
+      font-size: {{ block.settings.question_size | times: 0.9 }}px;
+    }
+
+    .ai-faq-answer-content-{{ ai_gen_id }} {
+      font-size: {{ block.settings.answer_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<faq-accordion-{{ ai_gen_id }} class="ai-faq-section-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-faq-container-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank or block.settings.subheading != blank %}
+      <div class="ai-faq-header-{{ ai_gen_id }}">
+        {% if block.settings.heading != blank %}
+          <h2 class="ai-faq-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+        {% endif %}
+        {% if block.settings.subheading != blank %}
+          <div class="ai-faq-subheading-{{ ai_gen_id }}">{{ block.settings.subheading }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <ul class="ai-faq-list-{{ ai_gen_id }}">
+      {% for i in (1..10) %}
+        {% assign question_key = 'question_' | append: i %}
+        {% assign answer_key = 'answer_' | append: i %}
+        {% assign question = block.settings[question_key] %}
+        {% assign answer = block.settings[answer_key] %}
+
+        {% if question != blank and answer != blank %}
+          <li class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+            <button
+              class="ai-faq-question-{{ ai_gen_id }}"
+              aria-expanded="false"
+              data-faq-button
+            >
+              <span class="ai-faq-question-text-{{ ai_gen_id }}">{{ question }}</span>
+              <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </span>
+            </button>
+            <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+              <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+                {{ answer }}
+              </div>
+            </div>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ul>
+  </div>
+</faq-accordion-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class FaqAccordion{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+        this.items = [];
+      }
+
+      connectedCallback() {
+        this.items = Array.from(this.querySelectorAll('[data-faq-item]'));
+        this.setupEventListeners();
+        
+        {% if block.settings.open_first_item %}
+          if (this.items.length > 0) {
+            this.toggleItem(this.items[0], true);
+          }
+        {% endif %}
+      }
+
+      setupEventListeners() {
+        this.items.forEach((item) => {
+          const button = item.querySelector('[data-faq-button]');
+          button.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+            
+            {% if block.settings.allow_multiple_open == false %}
+              this.items.forEach((otherItem) => {
+                if (otherItem !== item) {
+                  this.toggleItem(otherItem, false);
+                }
+              });
+            {% endif %}
+            
+            this.toggleItem(item, !isActive);
+          });
+        });
+      }
+
+      toggleItem(item, open) {
+        const button = item.querySelector('[data-faq-button]');
+        
+        if (open) {
+          item.classList.add('active');
+          button.setAttribute('aria-expanded', 'true');
+        } else {
+          item.classList.remove('active');
+          button.setAttribute('aria-expanded', 'false');
+        }
+      }
+    }
+
+    customElements.define('faq-accordion-{{ ai_gen_id }}', FaqAccordion{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "FAQ section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section heading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Find answers to common questions about our jewelry collections, shipping, and care instructions.</p>"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "label": "Subheading size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "subheading_spacing",
+      "label": "Subheading spacing",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "FAQ items"
+    },
+    {
+      "type": "text",
+      "id": "question_1",
+      "label": "Question 1",
+      "default": "What materials are your jewelry pieces made from?"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_1",
+      "label": "Answer 1",
+      "default": "<p>Our jewelry is crafted from premium materials including 14K and 18K gold, platinum, and ethically sourced diamonds and gemstones. Each piece is carefully selected to ensure the highest quality and lasting beauty.</p>"
+    },
+    {
+      "type": "text",
+      "id": "question_2",
+      "label": "Question 2",
+      "default": "Do you offer international shipping?"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_2",
+      "label": "Answer 2",
+      "default": "<p>Yes, we ship worldwide. Shipping times and costs vary by location. All international orders are fully insured and require a signature upon delivery for your security.</p>"
+    },
+    {
+      "type": "text",
+      "id": "question_3",
+      "label": "Question 3",
+      "default": "What is your return policy?"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_3",
+      "label": "Answer 3",
+      "default": "<p>We offer a 30-day return policy on all non-custom pieces. Items must be in original condition with all packaging and certificates. Custom and engraved pieces are final sale.</p>"
+    },
+    {
+      "type": "text",
+      "id": "question_4",
+      "label": "Question 4",
+      "default": "How should I care for my jewelry?"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_4",
+      "label": "Answer 4",
+      "default": "<p>Store pieces separately in soft pouches, avoid contact with chemicals and cosmetics, and clean regularly with a soft cloth. We recommend professional cleaning annually for diamond pieces.</p>"
+    },
+    {
+      "type": "text",
+      "id": "question_5",
+      "label": "Question 5"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_5",
+      "label": "Answer 5"
+    },
+    {
+      "type": "text",
+      "id": "question_6",
+      "label": "Question 6"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_6",
+      "label": "Answer 6"
+    },
+    {
+      "type": "text",
+      "id": "question_7",
+      "label": "Question 7"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_7",
+      "label": "Answer 7"
+    },
+    {
+      "type": "text",
+      "id": "question_8",
+      "label": "Question 8"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_8",
+      "label": "Answer 8"
+    },
+    {
+      "type": "text",
+      "id": "question_9",
+      "label": "Question 9"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_9",
+      "label": "Answer 9"
+    },
+    {
+      "type": "text",
+      "id": "question_10",
+      "label": "Question 10"
+    },
+    {
+      "type": "richtext",
+      "id": "answer_10",
+      "label": "Answer 10"
+    },
+    {
+      "type": "header",
+      "content": "Accordion behavior"
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_multiple_open",
+      "label": "Allow multiple items open",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first_item",
+      "label": "Open first item by default",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "question_size",
+      "label": "Question size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "question_color",
+      "label": "Question color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "question_hover_color",
+      "label": "Question hover color",
+      "default": "#ad2c34"
+    },
+    {
+      "type": "range",
+      "id": "answer_size",
+      "label": "Answer size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "answer_color",
+      "label": "Answer color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon color",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider color",
+      "default": "#e5e5e5"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "label": "Header spacing",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "item_padding",
+      "label": "Item padding",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content max width",
+      "min": 600,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "default": 900
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ section"
+    }
+  ]
+}
+{% endschema %}

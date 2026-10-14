@@ -1,0 +1,174 @@
+{% comment %} Ring Details Block {% endcomment %}
+
+<style>
+  .ring-details-accordion {
+    border: 1px solid #e0e0e0;
+    margin: 16px 0;
+    font-family: inherit;
+  }
+  .ring-details-header {
+    background-color: #0a1628;
+    color: #ffffff;
+    padding: 14px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  .ring-details-header h3 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    color: #ffffff;
+  }
+  .ring-details-arrow {
+    transition: transform 0.3s ease;
+    color: #ffffff;
+  }
+  .ring-details-arrow.open {
+    transform: rotate(180deg);
+  }
+  .ring-details-body {
+    display: none;
+    padding: 24px 20px;
+    background: #fff;
+  }
+  .ring-details-body.open {
+    display: block;
+  }
+  .ring-dimensions {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .ring-dim-item {
+    text-align: center;
+  }
+  .ring-dim-item svg {
+    width: 60px;
+    height: 70px;
+    margin-bottom: 8px;
+  }
+  .ring-dim-label {
+    font-size: 13px;
+    color: #555;
+  }
+  .ring-dim-label span {
+    font-weight: 600;
+    color: #111;
+  }
+  .ring-stone-columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .stone-col h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 12px;
+    color: #0a1628;
+    letter-spacing: 0.03em;
+  }
+  .stone-field {
+    display: flex;
+    font-size: 13px;
+    margin-bottom: 7px;
+    color: #333;
+  }
+  .stone-field .field-label {
+    color: #777;
+    min-width: 110px;
+  }
+  @media (max-width: 600px) {
+    .ring-stone-columns {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="ring-details-accordion">
+  <div class="ring-details-header" onclick="this.nextElementSibling.classList.toggle('open'); this.querySelector('.ring-details-arrow').classList.toggle('open')">
+    <h3>Ring Details</h3>
+    <svg class="ring-details-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </div>
+  <div class="ring-details-body">
+    <!-- Dimensions -->
+    <div class="ring-dimensions">
+      <div class="ring-dim-item">
+        <!-- Height SVG (top view) -->
+        <svg viewBox="0 0 60 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="30" cy="35" rx="22" ry="28" stroke="#333" stroke-width="1.5"/>
+          <ellipse cx="30" cy="35" rx="14" ry="18" stroke="#333" stroke-width="1"/>
+          <line x1="30" y1="7" x2="30" y2="2" stroke="#333" stroke-width="1.5"/>
+          <line x1="30" y1="63" x2="30" y2="68" stroke="#333" stroke-width="1.5"/>
+          <line x1="26" y1="2" x2="34" y2="2" stroke="#333" stroke-width="1.5"/>
+          <line x1="26" y1="68" x2="34" y2="68" stroke="#333" stroke-width="1.5"/>
+        </svg>
+        <div class="ring-dim-label">Height <span>{{ block.settings.height }} MM</span></div>
+      </div>
+      <div class="ring-dim-item">
+        <!-- Width SVG (side profile) -->
+        <svg viewBox="0 0 60 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="18" y="10" width="24" height="50" rx="12" stroke="#333" stroke-width="1.5"/>
+          <line x1="18" y1="35" x2="10" y2="35" stroke="#333" stroke-width="1.5"/>
+          <line x1="42" y1="35" x2="50" y2="35" stroke="#333" stroke-width="1.5"/>
+          <line x1="10" y1="31" x2="10" y2="39" stroke="#333" stroke-width="1.5"/>
+          <line x1="50" y1="31" x2="50" y2="39" stroke="#333" stroke-width="1.5"/>
+        </svg>
+        <div class="ring-dim-label">Width <span>{{ block.settings.width }} MM</span></div>
+      </div>
+    </div>
+
+    <!-- Stone Details -->
+    <div class="ring-stone-columns">
+      <div class="stone-col">
+        <h4>Center Stone Details</h4>
+        <div class="stone-field"><span class="field-label">Diamond Type : </span> {{ block.settings.center_diamond_type }}</div>
+        <div class="stone-field"><span class="field-label">Shape : </span> {{ block.settings.center_shape }}</div>
+        <div class="stone-field"><span class="field-label">Color : </span> {{ block.settings.center_color }}</div>
+        <div class="stone-field"><span class="field-label">Carat Weight : </span> {{ block.settings.center_carat }}</div>
+        <div class="stone-field"><span class="field-label">Clarity : </span> {{ block.settings.center_clarity }}</div>
+      </div>
+      <div class="stone-col">
+        <h4>Side Stone Details</h4>
+        <div class="stone-field"><span class="field-label">Diamond Type : </span> {{ block.settings.side_diamond_type }}</div>
+        <div class="stone-field"><span class="field-label">Shape : </span> {{ block.settings.side_shape }}</div>
+        <div class="stone-field"><span class="field-label">Color : </span> {{ block.settings.side_color }}</div>
+        <div class="stone-field"><span class="field-label">Carat Weight : </span> {{ block.settings.side_carat }}</div>
+        <div class="stone-field"><span class="field-label">Clarity : </span> {{ block.settings.side_clarity }}</div>
+        <div class="stone-field"><span class="field-label">Measurement : </span> {{ block.settings.side_measurement }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Ring Details",
+  "settings": [
+    { "type": "text", "id": "height", "label": "Height (MM)", "default": "1.60" },
+    { "type": "text", "id": "width", "label": "Width (MM)", "default": "1.80" },
+    { "type": "header", "content": "Center Stone Details" },
+    { "type": "text", "id": "center_diamond_type", "label": "Diamond Type", "default": "Lab Grown Diamond" },
+    { "type": "text", "id": "center_shape", "label": "Shape", "default": "Dutch Marquise Cut" },
+    { "type": "text", "id": "center_color", "label": "Color", "default": "F" },
+    { "type": "text", "id": "center_carat", "label": "Carat Weight", "default": "1.00 To 4.00 CT" },
+    { "type": "text", "id": "center_clarity", "label": "Clarity", "default": "VS" },
+    { "type": "header", "content": "Side Stone Details" },
+    { "type": "text", "id": "side_diamond_type", "label": "Diamond Type", "default": "Lab Grown Diamond" },
+    { "type": "text", "id": "side_shape", "label": "Shape", "default": "Marquise and Round Cut" },
+    { "type": "text", "id": "side_color", "label": "Color", "default": "EF" },
+    { "type": "text", "id": "side_carat", "label": "Carat Weight", "default": "0.12 CT" },
+    { "type": "text", "id": "side_clarity", "label": "Clarity", "default": "VS" },
+    { "type": "text", "id": "side_measurement", "label": "Measurement", "default": "3.00 x 1.50 and 1.30 MM" }
+  ]
+}
+{% endschema %}
+

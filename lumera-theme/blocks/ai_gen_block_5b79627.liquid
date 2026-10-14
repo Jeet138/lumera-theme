@@ -1,0 +1,533 @@
+{% doc %}
+  @prompt
+    Create a clean, modern section with two stacked blocks, similar to a luxury jewelry brand style.
+    
+    Layout:
+    
+    Each block should be a two-column layout (image + text side by side).
+    
+    First block: text on the left, image on the right.
+    
+    Second block: image on the left, text on the right.
+    
+    Add balanced spacing, soft neutral background, and elegant typography (serif headline + clean body text).
+    
+    Block 1 — Our Craftsmanship:
+    Heading: Our Craftsmanship
+    Text: Our jewelry is meticulously crafted by hand from scratch, ensuring each piece is distinct and personally tailored. We take great pride in every item we create. Certified gemologists carefully select the diamonds we use, guaranteeing that only the finest, perfectly cut, and polished gems are incorporated into our designs. Our skilled craftsmen then fashion these exquisite pieces, ensuring they are not only perfect in appearance but also comfortable for everyday wear.
+    Image: Show a close-up of a craftsman’s hands working on a gemstone ring.
+    
+    Block 2 — Our Vision and Mission:
+    Heading: Our Vision and Mission
+    Text: Our vision is to craft the highest quality handcrafted jewelry using premium lab-grown diamonds. We are dedicated to using environmentally friendly materials throughout our creation process, ensuring that our products are sustainable.
+    We are fully committed to excellence, with a keen awareness of our environmental and social responsibilities. Our business operations are guided by integrity, transparency, accountability, and credibility — values that shape our relationships with employees, clients, and partners while maintaining high ethical standards in every aspect of our business.
+    Image: A top-view artistic photo of a diamond surrounded by green leaves and small white flowers, symbolizing sustainability and nature.
+    Keep both sections visually consistent.
+    Rounded image corners or subtle drop shadows are a plus.
+    
+    Ensure mobile-friendly responsive stacking (image above text on mobile).
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-luxury-content-{{ ai_gen_id }} {
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.section_padding_top }}px 0 {{ block.settings.section_padding_bottom }}px;
+  }
+
+  .ai-luxury-content__container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.container_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-luxury-content__block-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: {{ block.settings.column_gap }}px;
+    align-items: center;
+    margin-bottom: {{ block.settings.block_spacing }}px;
+  }
+
+  .ai-luxury-content__block-{{ ai_gen_id }}:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-luxury-content__image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    border-radius: {{ block.settings.image_border_radius }}px;
+  }
+
+  {% if block.settings.enable_image_shadow %}
+    .ai-luxury-content__image-wrapper-{{ ai_gen_id }} {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+  {% endif %}
+
+  .ai-luxury-content__image-{{ ai_gen_id }} {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
+  .ai-luxury-content__image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: {{ block.settings.image_border_radius }}px;
+  }
+
+  .ai-luxury-content__image-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 300px;
+    max-height: 300px;
+  }
+
+  .ai-luxury-content__text-wrapper-{{ ai_gen_id }} {
+    padding: {{ block.settings.text_padding }}px;
+  }
+
+  .ai-luxury-content__heading-{{ ai_gen_id }} {
+    font-family: {{ block.settings.heading_font }};
+    font-size: {{ block.settings.heading_size }}px;
+    font-weight: {{ block.settings.heading_weight }};
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 {{ block.settings.heading_spacing }}px 0;
+    line-height: 1.3;
+  }
+
+  .ai-luxury-content__text-{{ ai_gen_id }} {
+    font-family: {{ block.settings.body_font }};
+    font-size: {{ block.settings.body_size }}px;
+    font-weight: {{ block.settings.body_weight }};
+    color: {{ block.settings.body_color }};
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .ai-luxury-content__text-{{ ai_gen_id }} p {
+    margin: 0 0 16px 0;
+  }
+
+  .ai-luxury-content__text-{{ ai_gen_id }} p:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-luxury-content__block-{{ ai_gen_id }}--reverse {
+    direction: rtl;
+  }
+
+  .ai-luxury-content__block-{{ ai_gen_id }}--reverse .ai-luxury-content__text-wrapper-{{ ai_gen_id }},
+  .ai-luxury-content__block-{{ ai_gen_id }}--reverse .ai-luxury-content__image-wrapper-{{ ai_gen_id }} {
+    direction: ltr;
+  }
+
+  @media screen and (max-width: 768px) {
+    .ai-luxury-content__block-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: {{ block.settings.mobile_gap }}px;
+    }
+
+    .ai-luxury-content__block-{{ ai_gen_id }}--reverse {
+      direction: ltr;
+    }
+
+    .ai-luxury-content__heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size_mobile }}px;
+    }
+
+    .ai-luxury-content__text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.body_size_mobile }}px;
+    }
+
+    .ai-luxury-content__text-wrapper-{{ ai_gen_id }} {
+      padding: {{ block.settings.text_padding_mobile }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-luxury-content-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-luxury-content__container-{{ ai_gen_id }}">
+    <div class="ai-luxury-content__block-{{ ai_gen_id }}">
+      <div class="ai-luxury-content__text-wrapper-{{ ai_gen_id }}">
+        {% if block.settings.heading_1 != blank %}
+          <h2 class="ai-luxury-content__heading-{{ ai_gen_id }}">{{ block.settings.heading_1 }}</h2>
+        {% endif %}
+        {% if block.settings.text_1 != blank %}
+          <div class="ai-luxury-content__text-{{ ai_gen_id }}">{{ block.settings.text_1 }}</div>
+        {% endif %}
+      </div>
+      <div class="ai-luxury-content__image-wrapper-{{ ai_gen_id }}">
+        {% if block.settings.image_1 %}
+          <img
+            src="{{ block.settings.image_1 | image_url: width: 1200 }}"
+            alt="{{ block.settings.image_1.alt | escape }}"
+            loading="lazy"
+            width="{{ block.settings.image_1.width }}"
+            height="{{ block.settings.image_1.height }}"
+            class="ai-luxury-content__image-{{ ai_gen_id }}"
+          >
+        {% else %}
+          <div class="ai-luxury-content__image-placeholder-{{ ai_gen_id }}">
+            {{ 'image' | placeholder_svg_tag }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="ai-luxury-content__block-{{ ai_gen_id }} ai-luxury-content__block-{{ ai_gen_id }}--reverse">
+      <div class="ai-luxury-content__text-wrapper-{{ ai_gen_id }}">
+        {% if block.settings.heading_2 != blank %}
+          <h2 class="ai-luxury-content__heading-{{ ai_gen_id }}">{{ block.settings.heading_2 }}</h2>
+        {% endif %}
+        {% if block.settings.text_2 != blank %}
+          <div class="ai-luxury-content__text-{{ ai_gen_id }}">{{ block.settings.text_2 }}</div>
+        {% endif %}
+      </div>
+      <div class="ai-luxury-content__image-wrapper-{{ ai_gen_id }}">
+        {% if block.settings.image_2 %}
+          <img
+            src="{{ block.settings.image_2 | image_url: width: 1200 }}"
+            alt="{{ block.settings.image_2.alt | escape }}"
+            loading="lazy"
+            width="{{ block.settings.image_2.width }}"
+            height="{{ block.settings.image_2.height }}"
+            class="ai-luxury-content__image-{{ ai_gen_id }}"
+          >
+        {% else %}
+          <div class="ai-luxury-content__image-placeholder-{{ ai_gen_id }}">
+            {{ 'image' | placeholder_svg_tag }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Luxury content blocks",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Block 1 - Our Craftsmanship"
+    },
+    {
+      "type": "richtext",
+      "id": "heading_1",
+      "label": "Heading",
+      "default": "<p>Our Craftsmanship</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "text_1",
+      "label": "Text",
+      "default": "<p>Our jewelry is meticulously crafted by hand from scratch, ensuring each piece is distinct and personally tailored. We take great pride in every item we create. Certified gemologists carefully select the diamonds we use, guaranteeing that only the finest, perfectly cut, and polished gems are incorporated into our designs. Our skilled craftsmen then fashion these exquisite pieces, ensuring they are not only perfect in appearance but also comfortable for everyday wear.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Block 2 - Our Vision and Mission"
+    },
+    {
+      "type": "richtext",
+      "id": "heading_2",
+      "label": "Heading",
+      "default": "<p>Our Vision and Mission</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "text_2",
+      "label": "Text",
+      "default": "<p>Our vision is to craft the highest quality handcrafted jewelry using premium lab-grown diamonds. We are dedicated to using environmentally friendly materials throughout our creation process, ensuring that our products are sustainable.</p><p>We are fully committed to excellence, with a keen awareness of our environmental and social responsibilities. Our business operations are guided by integrity, transparency, accountability, and credibility — values that shape our relationships with employees, clients, and partners while maintaining high ethical standards in every aspect of our business.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Container width",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "block_spacing",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Space between blocks",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Gap between columns",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile gap",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#f9f7f5"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#01305a"
+    },
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body text",
+      "default": "#01305a"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "heading_font",
+      "label": "Heading font",
+      "options": [
+        {
+          "value": "var(--g-font-1)",
+          "label": "Heading font"
+        },
+        {
+          "value": "var(--g-font-2)",
+          "label": "Body font"
+        }
+      ],
+      "default": "var(--g-font-1)"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "min": 20,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size mobile",
+      "default": 28
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading bottom spacing",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "body_font",
+      "label": "Body font",
+      "options": [
+        {
+          "value": "var(--g-font-1)",
+          "label": "Heading font"
+        },
+        {
+          "value": "var(--g-font-2)",
+          "label": "Body font"
+        }
+      ],
+      "default": "var(--g-font-2)"
+    },
+    {
+      "type": "range",
+      "id": "body_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Body size",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "body_size_mobile",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Body size mobile",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "body_weight",
+      "label": "Body weight",
+      "options": [
+        {
+          "value": "300",
+          "label": "Light"
+        },
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "header",
+      "content": "Image style"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_image_shadow",
+      "label": "Enable shadow",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "text_padding",
+      "min": 0,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Text padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "text_padding_mobile",
+      "min": 0,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Text padding mobile",
+      "default": 10
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury content blocks"
+    }
+  ]
+}
+{% endschema %}

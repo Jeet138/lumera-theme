@@ -1,0 +1,418 @@
+{% comment %}
+  Custom Jewelry Form
+  Place this file in sections/custom-jewelry-form.liquid
+{% endcomment %}
+
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  .custom-wrapper{max-width:1300px;margin:60px auto;padding:0 20px;font-family:Arial,sans-serif}
+  .custom-grid{display:grid;grid-template-columns:45% 55%;gap:40px}
+  .custom-grid img{width:100%;height:820px;object-fit:cover;border-radius:8px}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 30px}
+  .field{display:flex;flex-direction:column}
+  .field.full{grid-column:1/-1}
+  label{margin-bottom:8px}
+  input,select,textarea{padding:14px;border:1px solid #d7e5dc;border-radius:4px;width:100%}
+  textarea{height:110px}
+  .submit-btn{margin-top:20px;background:#6fb38d;color:#fff;border:0;padding:15px 45px;cursor:pointer}
+  .success{padding:15px;background:#e8f7ec;color:#2d6a4f;margin-bottom:20px}
+  .errors{margin-bottom:20px;color:red}
+  @media(max-width:991px){
+  .custom-grid,.form-grid{grid-template-columns:1fr}
+  .custom-grid img{height:auto}
+  }
+</style>
+
+<div class="custom-wrapper">
+  <div class="custom-grid">
+    <div>
+      <img
+        src="https://cdn.shopify.com/s/files/1/0790/0876/0059/files/WhatsApp_Image_2026-06-30_at_4.30.49_PM.jpg?v=1782817415"
+        alt="Custom Jewelry"
+      >
+    </div>
+
+    <div>
+      {% form 'contact' %}
+        {% if form.posted_successfully? %}
+          <div class="success">Thank you! Your request has been submitted successfully.</div>
+        {% endif %}
+
+        <div class="errors">{{ form.errors | default_errors }}</div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label>Full Name</label>
+            <input type="text" name="contact[Full Name]" required>
+          </div>
+
+          <div class="field">
+            <label>Email</label>
+            <input type="email" name="contact[email]" required>
+          </div>
+
+          <div class="field">
+            <label>What Are You Looking To design</label>
+            <select name="contact[Jewelry Type]">
+              <option>Engagement/Special Occassion Ring</option>
+              <option>Wedding/Anniversary Band</option>
+
+              <option>Earring</option>
+              <option>Necklace</option>
+              <option>Pendant</option>
+              <option>Bracelet</option>
+              <option>Brooch</option>
+              <option>Cufflinks</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Chosse Your Stone Type</label>
+            <select name="contact[Stone Type]">
+              <option>Lab-Grown diamond</option>
+                <option>Lab-Gemstone</option>
+              <option>Moissanite</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Metal Color</label>
+            <select name="contact[Metal Type]">
+              <option>Yellow Gold</option>
+              <option>White Gold</option>
+              <option>Rose Gold</option>
+              <option>Platinum</option>
+              <option>Silver</option>
+            </select>
+          </div>
+              <div class="field">
+            <label>Material</label>
+            <select name="contact[Metal Type]">
+              <option>9k</option>
+              <option>10k</option>
+              <option>14k</option>
+              <option>18k</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Ring Size</label>
+            <input
+              type="text"
+              name="contact[Ring Size]"
+              placeholder="Example: US 6.5"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label>Stone Size</label>
+            <input
+              type="text"
+              name="contact[Stone Size]"
+              placeholder="Example: 1.50 ct"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label>Stone Shape</label>
+            <select name="contact[Stone Shape]">
+              <option value="">Select Stone Shape</option>
+              <option>Round</option>
+              <option>Oval</option>
+              <option>Cushion</option>
+              <option>Princess</option>
+              <option>Emerald</option>
+              <option>Radiant</option>
+              <option>Pear</option>
+              <option>Marquise</option>
+              <option>Asscher</option>
+              <option>Heart</option>
+              <option>Trillion</option>
+              <option>Trilliant</option>
+              <option>Baguette</option>
+              <option>Tapered Baguette</option>
+              <option>Old European</option>
+              <option>Old Mine</option>
+              <option>Rose Cut</option>
+              <option>Hexagon</option>
+              <option>Octagon</option>
+              <option>Kite</option>
+              <option>Shield</option>
+              <option>Bullet</option>
+              <option>Half Moon</option>
+              <option>Cabochon</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Approximate Budget</label>
+            <select name="contact[Budget]">
+               <option>$0-$500</option>
+              <option>$500-$1000</option>
+              <option>$1000-$2000</option>
+              <option>$2000-$5000</option>
+              <option>$5000+</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>Comments</label>
+            <textarea name="contact[body]"></textarea>
+          </div>
+          <div class="field full upload-contact-row">
+            <!-- Upload -->
+            <div class="upload-box">
+              <label>Upload Reference Image</label>
+
+              <input
+                type="hidden"
+                id="uploaded-image-url"
+                name="contact[Reference Image]"
+              >
+
+              <input
+                type="file"
+                id="image-upload"
+                accept="image/*"
+              >
+
+              <small id="upload-status"></small>
+            </div>
+          </div>
+          {% comment %}
+            <div class="field full">
+            <p><strong>Note:</strong> Shopify contact forms do not support file uploads.</p>
+            </div>
+          {% endcomment %}
+
+          <div class="field full">
+            <button class="submit-btn" type="submit">SUBMIT</button>
+          </div>
+          <div class="whatsapp-contact">
+            <a
+              href="https://wa.me/918140712181?text=Hi%20Lumera%20Fine%20Jewellery,%20I%20want%20to%20design%20a%20custom%20jewelry."
+              target="_blank"
+              class="wa-link"
+            >
+              <div class="wa-icon">
+                <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/whatsapp.svg" alt="WhatsApp">
+              </div>
+
+              <div class="wa-content">
+                <span class="wa-small">Need Assistance?</span>
+                <span class="wa-title">Chat on WhatsApp</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      {% endform %}
+    </div>
+  </div>
+</div>
+<script>
+  document.getElementById('image-upload').addEventListener('change', async function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    document.getElementById('upload-status').innerHTML = 'Uploading...';
+
+    const data = new FormData();
+    data.append('file', file);
+
+    // Cloudinary Upload Preset
+    data.append('upload_preset', 'YOUR_UPLOAD_PRESET');
+
+    const response = await fetch('https://api.cloudinary.com/v1_1/YOUR_CLOUD_NAME/image/upload', {
+      method: 'POST',
+      body: data,
+    });
+
+    const result = await response.json();
+
+    document.getElementById('uploaded-image-url').value = result.secure_url;
+
+    document.getElementById('upload-status').innerHTML = 'Image Uploaded Successfully ✔';
+  });
+</script>
+<style>
+      .upload-contact-row{
+        display:flex;
+        gap:25px;
+        align-items:flex-start;
+        margin-top:10px;
+    }
+
+    .upload-box{
+        flex:1;
+    }
+
+    .upload-box input[type=file]{
+        width:100%;
+        padding:14px;
+        border:2px dashed #cfcfcf;
+        border-radius:10px;
+        background:#fafafa;
+        cursor:pointer;
+        transition:.3s;
+    }
+
+    .upload-box input[type=file]:hover{
+        border-color:#6fb38d;
+        background:#f5fffa;
+    }
+
+    #upload-status{
+        display:block;
+        margin-top:8px;
+        color:#6fb38d;
+        font-size:13px;
+    }
+
+    /* ================================
+   WHATSAPP CONTACT CARD
+================================ */
+
+.whatsapp-contact {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 220%;
+  margin-top: 20px;
+
+}
+
+.wa-link {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Icon + text ko center me rakhega */
+  gap: 14px;
+
+  width: 100%;
+  max-width: 600px;
+  min-height: 78px;
+  padding: 8px 28px;
+
+  text-decoration: none;
+  background: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 20px;
+  box-sizing: border-box;
+
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.wa-link:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.12);
+}
+
+/* WhatsApp Icon Circle */
+.wa-icon {
+  width: 58px;
+  height: 58px;
+  min-width: 58px;
+  border-radius: 50%;
+  background: #25d366;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  animation: waPulse 2s infinite;
+}
+
+.wa-icon img {
+  width: 28px;
+  height: 28px;
+  display: block;
+  filter: brightness(0) invert(1);
+}
+
+/* Text */
+.wa-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+.wa-small {
+  display: block;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #777777;
+  margin-bottom: 2px;
+}
+
+.wa-title {
+  display: block;
+  font-size: 17px;
+  line-height: 1.4;
+  font-weight: 600;
+  color: #1a1a1a;
+  letter-spacing: 0.2px;
+}
+
+/* Pulse Animation */
+@keyframes waPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.35);
+  }
+
+  70% {
+    box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+  }
+}
+
+/* ================================
+   MOBILE
+================================ */
+
+@media screen and (max-width: 768px) {
+  .whatsapp-contact {
+    margin-top: 15px;
+  }
+
+  .wa-link {
+    max-width: 100%;
+    min-height: 74px;
+    padding: 8px 20px;
+    border-radius: 18px;
+  }
+
+  .wa-icon {
+    width: 54px;
+    height: 54px;
+    min-width: 54px;
+  }
+
+  .wa-icon img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .wa-small {
+    font-size: 12px;
+  }
+
+  .wa-title {
+    font-size: 16px;
+  }
+}
+</style>
+{% schema %}
+{
+  "name": "Custom Jewelry Form",
+  "settings": [],
+  "presets": [{ "name": "Custom Jewelry Form" }]
+}
+{% endschema %}

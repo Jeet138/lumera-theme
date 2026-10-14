@@ -1,0 +1,572 @@
+{% if settings.enable_complimentary_gift and settings.complimentary_gift_product != blank %}
+  {% assign gift = settings.complimentary_gift_product %}
+  {% assign gift_variant = gift.selected_or_first_available_variant %}
+
+  {% assign gift2 = settings.complimentary_gift_product_2 %}
+  {% assign gift2_variant = gift2.selected_or_first_available_variant %}
+
+  {% assign gift_threshold = settings.complimentary_gift_amount | times: 100 %}
+
+  <div class="complimentary-gift-box js-complimentary-gift" data-threshold="{{ gift_threshold }}">
+    <div class="complimentary-gift-progress">
+      <div class="complimentary-gift-progress-line">
+        <div class="complimentary-gift-progress-fill"></div>
+      </div>
+
+      <div class="complimentary-gift-message js-complimentary-gift-message">
+        Spend {{ gift_threshold | money }} more to unlock Complimentary Gift.
+      </div>
+    </div>
+
+    <div class="complimentary-gift-success js-complimentary-gift-success">
+      🎉 Congratulations! You unlocked <strong>Complimentary Gift.</strong>
+    </div>
+
+    <div class="js-complimentary-gift-products">
+      <!-- Gift Product 1 -->
+      <div class="complimentary-gift-product js-complimentary-gift-product" data-gift-variant="{{ gift_variant.id }}">
+        <div class="complimentary-gift-image">
+          <img src="{{ gift.featured_image | image_url: width: 180 }}" alt="{{ gift.title | escape }}" loading="lazy">
+        </div>
+
+        <div class="complimentary-gift-details">
+          <h5>{{ gift.title }}</h5>
+
+          <div class="complimentary-gift-price">
+            <span class="complimentary-gift-free">$0</span>
+            <del>{{ gift.price | money }}</del>
+          </div>
+
+          {% if gift_variant.available %}
+            <button type="button" class="complimentary-gift-add js-add-complimentary-gift" data-variant-id="{{ gift_variant.id }}">
+              ADD TO CART
+            </button>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Gift Product 2 -->
+      {% if gift2 != blank %}
+        <div class="complimentary-gift-product js-complimentary-gift-product" data-gift-variant="{{ gift2_variant.id }}">
+          <div class="complimentary-gift-image">
+            <img src="{{ gift2.featured_image | image_url: width: 180 }}" alt="{{ gift2.title | escape }}" loading="lazy">
+          </div>
+
+          <div class="complimentary-gift-details">
+            <h5>{{ gift2.title }}</h5>
+
+            <div class="complimentary-gift-price">
+              <span class="complimentary-gift-free">$0</span>
+              <del>{{ gift2.price | money }}</del>
+            </div>
+
+            {% if gift2_variant.available %}
+              <button type="button" class="complimentary-gift-add js-add-complimentary-gift" data-variant-id="{{ gift2_variant.id }}">
+                ADD TO CART
+              </button>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <script>
+    window.complimentaryGiftConfig = {
+      variantIds: [
+        {{ gift_variant.id }}{% if gift2 != blank %},{{ gift2_variant.id }}{% endif %}
+      ],
+      threshold: {{ gift_threshold }}
+    };
+  </script>
+
+  <style>
+    .complimentary-gift-box {
+      margin: 18px 0;
+      padding: 0 0 18px;
+      border-bottom: 1px solid #e5e5e5;
+    }
+
+    .complimentary-gift-progress-line {
+      width: 90%;
+      height: 4px;
+      background: #dddddd;
+      border-radius: 20px;
+      margin: 0 auto 12px;
+      overflow: hidden;
+    }
+
+    .complimentary-gift-progress-fill {
+      width: 0%;
+      height: 100%;
+      background: #003b70;
+      border-radius: 20px;
+      transition: width .35s ease;
+    }
+
+    .complimentary-gift-message {
+      display: block;
+      text-align: center;
+      font-size: 15px;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+
+    .complimentary-gift-success {
+      display: none;
+      text-align: center;
+      font-size: 15px;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .js-complimentary-gift-products {
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .complimentary-gift-product {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .complimentary-gift-image {
+      width: 100px;
+      min-width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .complimentary-gift-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .complimentary-gift-details {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .complimentary-gift-details h5 {
+      margin: 0 0 7px;
+      font-size: 15px;
+      line-height: 1.35;
+      font-weight: 600;
+    }
+
+    .complimentary-gift-price {
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .complimentary-gift-free {
+      font-weight: 700;
+      margin-right: 7px;
+    }
+
+    .complimentary-gift-price del {
+      opacity: .55;
+    }
+
+    .complimentary-gift-add {
+      border: 0;
+      background: #fef8f1;
+      color: #181616;
+      padding: 10px 15px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      min-width: 130px;
+    }
+
+    .complimentary-gift-add:hover {
+      opacity: .9;
+    }
+
+    .complimentary-gift-add:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+
+    /* UNLOCKED STATE (controlled only by this class) */
+    .complimentary-gift-box.gift-unlocked .complimentary-gift-message {
+      display: none;
+    }
+
+    .complimentary-gift-box.gift-unlocked .complimentary-gift-success {
+      display: block;
+    }
+
+    .complimentary-gift-box.gift-unlocked .js-complimentary-gift-products {
+      display: flex;
+    }
+
+    @media (max-width: 480px) {
+      .complimentary-gift-product {
+        gap: 10px;
+      }
+
+      .complimentary-gift-image {
+        width: 80px;
+        min-width: 80px;
+        height: 80px;
+      }
+
+      .complimentary-gift-details h5 {
+        font-size: 14px;
+      }
+
+      .complimentary-gift-add {
+        width: 100%;
+        min-width: 0;
+      }
+    }
+  </style>
+
+  <script>
+    (function () {
+      'use strict';
+
+      if (window.__complimentaryGiftInit) {
+        return;
+      }
+      window.__complimentaryGiftInit = true;
+
+      var settings = window.complimentaryGiftConfig;
+
+      if (!settings || !settings.variantIds || !settings.variantIds.length || !settings.threshold) {
+        return;
+      }
+
+      var selector = '.js-complimentary-gift';
+      var isRemovingGift = false;
+
+      function money(value) {
+        if (window.theme && theme.Currency && theme.Currency.formatMoney) {
+          return theme.Currency.formatMoney(value, theme.moneyFormat);
+        }
+        return Shopify.formatMoney(value, theme.moneyFormat);
+      }
+
+      function isGiftVariantId(variantId) {
+        for (var i = 0; i < settings.variantIds.length; i++) {
+          if (Number(settings.variantIds[i]) === Number(variantId)) {
+            return true;
+          }
+        }
+        return false;
+      }
+
+      function findGiftLineItems(cart) {
+        var found = [];
+
+        if (!cart || !cart.items) {
+          return found;
+        }
+
+        for (var i = 0; i < cart.items.length; i++) {
+          var item = cart.items[i];
+          var flagged = item.properties && item.properties._complimentary_gift === 'true';
+
+          if (flagged && isGiftVariantId(item.variant_id)) {
+            found.push(item);
+          }
+        }
+
+        return found;
+      }
+
+      function syncProductButtons(cart) {
+        var giftItems = findGiftLineItems(cart);
+        var selectedVariantId = giftItems.length ? Number(giftItems[0].variant_id) : null;
+
+        document.querySelectorAll(selector).forEach(function (box) {
+          box.querySelectorAll('.js-complimentary-gift-product').forEach(function (productEl) {
+            var variantId = Number(productEl.getAttribute('data-gift-variant'));
+            var addButton = productEl.querySelector('.js-add-complimentary-gift');
+
+            if (!addButton) {
+              return;
+            }
+
+            addButton.disabled = false;
+
+            if (selectedVariantId !== null && variantId === selectedVariantId) {
+              addButton.classList.add('is-added');
+              addButton.textContent = 'REMOVE';
+            } else {
+              addButton.classList.remove('is-added');
+              addButton.textContent = 'ADD TO CART';
+            }
+          });
+        });
+      }
+
+      /* Only toggles the "gift-unlocked" class + text.
+         All show/hide is done by CSS, no inline display styles. */
+      function refreshGift(cart) {
+        var boxes = document.querySelectorAll(selector);
+
+        if (!boxes.length) {
+          return;
+        }
+
+        var total = Number(cart.total_price) || 0;
+        var threshold = Number(settings.threshold) || 0;
+        var percentage = threshold > 0 ? Math.min((total / threshold) * 100, 100) : 0;
+
+        boxes.forEach(function (box) {
+          var message = box.querySelector('.js-complimentary-gift-message');
+          var progress = box.querySelector('.complimentary-gift-progress-fill');
+
+          if (progress) {
+            progress.style.width = percentage + '%';
+          }
+
+          if (total >= threshold) {
+            box.classList.add('gift-unlocked');
+          } else {
+            box.classList.remove('gift-unlocked');
+
+            if (message) {
+              message.innerHTML =
+                'Spend <strong>' + money(threshold - total) + '</strong> more to unlock Complimentary Gift.';
+            }
+          }
+        });
+
+        syncProductButtons(cart);
+      }
+
+      function updateThemeCart() {
+        try {
+          if (window.theme && theme.miniCart && typeof theme.miniCart.generateCart === 'function') {
+            theme.miniCart.generateCart();
+          }
+        } catch (error) {
+          console.error('Mini cart refresh error:', error);
+        }
+      }
+
+      function refreshCartPage() {
+        if (!/^\/cart\/?$/.test(window.location.pathname)) {
+          return;
+        }
+
+        var cartSection = document.querySelector('[data-section-type="cart"]');
+
+        if (!cartSection) {
+          return;
+        }
+
+        var sectionId = cartSection.getAttribute('data-section-id');
+
+        fetch((window.Shopify.routes.root || '/') + 'cart?section_id=' + sectionId)
+          .then(function (response) {
+            return response.text();
+          })
+          .then(function (html) {
+            var doc = new DOMParser().parseFromString(html, 'text/html');
+
+            var newProducts = doc.getElementById('CartProducts');
+            var oldProducts = document.getElementById('CartProducts');
+            if (newProducts && oldProducts) {
+              oldProducts.innerHTML = newProducts.innerHTML;
+            }
+
+            var newSubtotal = doc.getElementById('CartSubtotal');
+            var oldSubtotal = document.getElementById('CartSubtotal');
+            if (newSubtotal && oldSubtotal) {
+              oldSubtotal.innerHTML = newSubtotal.innerHTML;
+            }
+          })
+          .catch(function (error) {
+            console.error('Cart Page Refresh Error:', error);
+          });
+      }
+
+      function removeGiftFromCart(cart, callback) {
+        var giftItems = findGiftLineItems(cart);
+
+        if (!giftItems.length) {
+          if (callback) {
+            callback(cart);
+          }
+          return;
+        }
+
+        if (isRemovingGift) {
+          return;
+        }
+
+        isRemovingGift = true;
+
+        var updates = {};
+
+        giftItems.forEach(function (item) {
+          updates[item.key] = 0;
+        });
+
+        fetch((window.Shopify.routes.root || '/') + 'cart/update.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          },
+          body: JSON.stringify({ updates: updates })
+        })
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (updatedCart) {
+            isRemovingGift = false;
+            updateThemeCart();
+
+            if (callback) {
+              callback(updatedCart);
+            }
+          })
+          .catch(function (error) {
+            isRemovingGift = false;
+            console.error('Complimentary Gift Remove Error:', error);
+
+            if (callback) {
+              callback(cart);
+            }
+          });
+      }
+
+      /* Single entry point.
+         Called by theme.miniCart on EVERY cart change (via theme.js bridge)
+         and also on page load. */
+      function syncWithCart(cart) {
+        var total = Number(cart.total_price) || 0;
+        var threshold = Number(settings.threshold) || 0;
+
+        if (total < threshold && findGiftLineItems(cart).length) {
+          removeGiftFromCart(cart, function (updatedCart) {
+            refreshGift(updatedCart || cart);
+          });
+        } else {
+          refreshGift(cart);
+        }
+      }
+
+      function checkGift() {
+        fetch((window.Shopify.routes.root || '/') + 'cart.js')
+          .then(function (response) {
+            return response.json();
+          })
+          .then(syncWithCart)
+          .catch(function (error) {
+            console.error('Complimentary Gift Cart Error:', error);
+          });
+      }
+
+      window.complimentaryGiftSync = syncWithCart;
+
+      function addGiftVariant(variantId, onDone) {
+        fetch((window.Shopify.routes.root || '/') + 'cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          },
+          body: JSON.stringify({
+            items: [
+              {
+                id: variantId,
+                quantity: 1,
+                properties: { _complimentary_gift: 'true' }
+              }
+            ]
+          })
+        })
+          .then(function (response) {
+            return response.json().then(function (data) {
+              if (!response.ok) {
+                throw new Error(data.description || data.message || 'Unable to add gift.');
+              }
+              return data;
+            });
+          })
+          .then(function () {
+            onDone(null);
+          })
+          .catch(function (error) {
+            onDone(error);
+          });
+      }
+
+      function addGift(button) {
+        var variantId = Number(button.getAttribute('data-variant-id'));
+
+        if (!variantId) {
+          return;
+        }
+
+        var isTogglingOff = button.classList.contains('is-added');
+
+        button.disabled = true;
+        button.textContent = isTogglingOff ? 'REMOVING...' : 'ADDING...';
+
+        fetch((window.Shopify.routes.root || '/') + 'cart.js')
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (cart) {
+            if (isTogglingOff) {
+              removeGiftFromCart(cart, function () {
+                updateThemeCart();
+                refreshCartPage();
+                checkGift();
+              });
+              return;
+            }
+
+            /* switching gifts: clear existing gift first, then add new one */
+            removeGiftFromCart(cart, function () {
+              addGiftVariant(variantId, function (error) {
+                if (error) {
+                  console.error('Complimentary Gift Error:', error);
+                  button.disabled = false;
+                  button.textContent = 'ADD TO CART';
+                  alert(error.message);
+                  return;
+                }
+
+                updateThemeCart();
+                refreshCartPage();
+                checkGift();
+              });
+            });
+          })
+          .catch(function (error) {
+            console.error('Complimentary Gift Error:', error);
+            button.disabled = false;
+            button.textContent = isTogglingOff ? 'REMOVE' : 'ADD TO CART';
+          });
+      }
+
+      document.addEventListener('click', function (event) {
+        var button = event.target.closest('.js-add-complimentary-gift');
+
+        if (!button) {
+          return;
+        }
+
+        event.preventDefault();
+        addGift(button);
+      });
+
+      checkGift();
+    })();
+  </script>
+{% endif %}

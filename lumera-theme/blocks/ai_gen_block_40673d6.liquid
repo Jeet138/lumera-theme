@@ -1,0 +1,775 @@
+{% doc %}
+  @prompt
+    Create a professional FAQ accordion section for a luxury jewelry and lab-grown diamond e-commerce store. The section should have: An elegant centered heading like "Frequently Asked Questions" with gold luxury styling, a subtitle below the heading, pre-filled FAQ items about lab-grown diamonds (What are lab-grown diamonds?, How to buy lab-grown diamonds?, Are lab-grown diamonds real?, Difference between natural and lab-grown diamonds?, Do lab-grown diamonds come with certification?), clean accordion expand/collapse functionality, premium dark and gold color scheme matching a luxury jewelry brand, elegant typography and spacing, mobile responsive design
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-faq-section-{{ ai_gen_id }} {
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: {{ block.settings.section_padding_top }}px 20px {{ block.settings.section_padding_bottom }}px;
+    background-color: {{ block.settings.background_color }};
+    display: block;
+  }
+
+  .ai-faq-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: {{ block.settings.header_spacing }}px;
+  }
+
+  .ai-faq-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    font-weight: {{ block.settings.heading_weight }};
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 {{ block.settings.subtitle_spacing }}px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .ai-faq-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    color: {{ block.settings.subtitle_color }};
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .ai-faq-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.content_max_width }}px;
+    margin: 0 auto;
+  }
+
+  .ai-faq-item-{{ ai_gen_id }} {
+    border-bottom: {{ block.settings.divider_width }}px solid {{ block.settings.divider_color }};
+    margin-bottom: 0;
+  }
+
+  .ai-faq-item-{{ ai_gen_id }}:last-child {
+    border-bottom: none;
+  }
+
+  .ai-faq-question-{{ ai_gen_id }} {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: {{ block.settings.question_padding }}px 40px {{ block.settings.question_padding }}px 0;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: {{ block.settings.question_size }}px;
+    font-weight: {{ block.settings.question_weight }};
+    color: {{ block.settings.question_color }};
+    transition: color 0.3s ease;
+    position: relative;
+  }
+
+  .ai-faq-question-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.question_hover_color }};
+  }
+
+  .ai-faq-question-text-{{ ai_gen_id }} {
+    flex: 1;
+    padding-right: 20px;
+  }
+
+  .ai-faq-icon-{{ ai_gen_id }} {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+    color: {{ block.settings.icon_color }};
+  }
+
+  .ai-faq-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .ai-faq-item-{{ ai_gen_id }}.active .ai-faq-icon-{{ ai_gen_id }} {
+    transform: translateY(-50%) rotate(180deg);
+  }
+
+  .ai-faq-answer-{{ ai_gen_id }} {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .ai-faq-answer-content-{{ ai_gen_id }} {
+    padding: 0 0 {{ block.settings.answer_padding }}px 0;
+    font-size: {{ block.settings.answer_size }}px;
+    color: {{ block.settings.answer_color }};
+    line-height: 1.8;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-faq-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.7 }}px;
+    }
+
+    .ai-faq-subtitle-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subtitle_size | times: 0.9 }}px;
+    }
+
+    .ai-faq-question-{{ ai_gen_id }} {
+      font-size: {{ block.settings.question_size | times: 0.9 }}px;
+      padding: {{ block.settings.question_padding | times: 0.8 }}px 40px {{ block.settings.question_padding | times: 0.8 }}px 0;
+    }
+
+    .ai-faq-answer-content-{{ ai_gen_id }} {
+      font-size: {{ block.settings.answer_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<faq-accordion-{{ ai_gen_id }} class="ai-faq-section-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-faq-header-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank %}
+      <h2 class="ai-faq-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+    {% endif %}
+    {% if block.settings.subtitle != blank %}
+      <div class="ai-faq-subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</div>
+    {% endif %}
+  </div>
+
+  <div class="ai-faq-container-{{ ai_gen_id }}">
+    {% if block.settings.faq_1_question != blank %}
+      <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+        <button
+          class="ai-faq-question-{{ ai_gen_id }}"
+          aria-expanded="false"
+          data-faq-button
+        >
+          <span class="ai-faq-question-text-{{ ai_gen_id }}">{{ block.settings.faq_1_question }}</span>
+          <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+          <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+            {{ block.settings.faq_1_answer }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.faq_2_question != blank %}
+      <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+        <button
+          class="ai-faq-question-{{ ai_gen_id }}"
+          aria-expanded="false"
+          data-faq-button
+        >
+          <span class="ai-faq-question-text-{{ ai_gen_id }}">{{ block.settings.faq_2_question }}</span>
+          <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+          <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+            {{ block.settings.faq_2_answer }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.faq_3_question != blank %}
+      <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+        <button
+          class="ai-faq-question-{{ ai_gen_id }}"
+          aria-expanded="false"
+          data-faq-button
+        >
+          <span class="ai-faq-question-text-{{ ai_gen_id }}">{{ block.settings.faq_3_question }}</span>
+          <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+          <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+            {{ block.settings.faq_3_answer }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.faq_4_question != blank %}
+      <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+        <button
+          class="ai-faq-question-{{ ai_gen_id }}"
+          aria-expanded="false"
+          data-faq-button
+        >
+          <span class="ai-faq-question-text-{{ ai_gen_id }}">{{ block.settings.faq_4_question }}</span>
+          <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+          <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+            {{ block.settings.faq_4_answer }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.faq_5_question != blank %}
+      <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+        <button
+          class="ai-faq-question-{{ ai_gen_id }}"
+          aria-expanded="false"
+          data-faq-button
+        >
+          <span class="ai-faq-question-text-{{ ai_gen_id }}">{{ block.settings.faq_5_question }}</span>
+          <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </span>
+        </button>
+        <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+          <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+            {{ block.settings.faq_5_answer }}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+     {% if block.settings.faq_6_question != blank %}
+  <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+    <button
+      class="ai-faq-question-{{ ai_gen_id }}"
+      aria-expanded="false"
+      data-faq-button
+    >
+      <span class="ai-faq-question-text-{{ ai_gen_id }}">{{ block.settings.faq_6_question }}</span>
+      <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </span>
+    </button>
+    <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+      <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+        {{ block.settings.faq_6_answer }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if block.settings.faq_7_question != blank %}
+  <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+    <button
+      class="ai-faq-question-{{ ai_gen_id }}"
+      aria-expanded="false"
+      data-faq-button
+    >
+      <span class="ai-faq-question-text-{{ ai_gen_id }}">{{ block.settings.faq_7_question }}</span>
+      <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </span>
+    </button>
+    <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+      <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+        {{ block.settings.faq_7_answer }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if block.settings.faq_8_question != blank %}
+  <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+    <button
+      class="ai-faq-question-{{ ai_gen_id }}"
+      aria-expanded="false"
+      data-faq-button
+    >
+      <span class="ai-faq-question-text-{{ ai_gen_id }}">{{ block.settings.faq_8_question }}</span>
+      <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </span>
+    </button>
+    <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+      <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+        {{ block.settings.faq_8_answer }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if block.settings.faq_9_question != blank %}
+  <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+    <button
+      class="ai-faq-question-{{ ai_gen_id }}"
+      aria-expanded="false"
+      data-faq-button
+    >
+      <span class="ai-faq-question-text-{{ ai_gen_id }}">{{ block.settings.faq_9_question }}</span>
+      <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </span>
+    </button>
+    <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+      <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+        {{ block.settings.faq_9_answer }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+
+{% if block.settings.faq_10_question != blank %}
+  <div class="ai-faq-item-{{ ai_gen_id }}" data-faq-item>
+    <button
+      class="ai-faq-question-{{ ai_gen_id }}"
+      aria-expanded="false"
+      data-faq-button
+    >
+      <span class="ai-faq-question-text-{{ ai_gen_id }}">{{ block.settings.faq_10_question }}</span>
+      <span class="ai-faq-icon-{{ ai_gen_id }}" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </span>
+    </button>
+    <div class="ai-faq-answer-{{ ai_gen_id }}" data-faq-answer>
+      <div class="ai-faq-answer-content-{{ ai_gen_id }}">
+        {{ block.settings.faq_10_answer }}
+      </div>
+    </div>
+  </div>
+{% endif %}
+  </div>
+</faq-accordion-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class FaqAccordion{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.items = this.querySelectorAll('[data-faq-item]');
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        this.items.forEach((item) => {
+          const button = item.querySelector('[data-faq-button]');
+          const answer = item.querySelector('[data-faq-answer]');
+
+          button.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+
+            this.items.forEach((otherItem) => {
+              if (otherItem !== item) {
+                otherItem.classList.remove('active');
+                const otherButton = otherItem.querySelector('[data-faq-button]');
+                const otherAnswer = otherItem.querySelector('[data-faq-answer]');
+                otherButton.setAttribute('aria-expanded', 'false');
+                otherAnswer.style.maxHeight = null;
+              }
+            });
+
+            if (isActive) {
+              item.classList.remove('active');
+              button.setAttribute('aria-expanded', 'false');
+              answer.style.maxHeight = null;
+            } else {
+              item.classList.add('active');
+              button.setAttribute('aria-expanded', 'true');
+              answer.style.maxHeight = answer.scrollHeight + 'px';
+            }
+          });
+        });
+      }
+    }
+
+    customElements.define('faq-accordion-{{ ai_gen_id }}', FaqAccordion{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "FAQ accordion",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section heading"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 36
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "300"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#D4AF37"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Everything you need to know about our lab-grown diamonds"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle color",
+      "default": "#999999"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_spacing",
+      "label": "Subtitle spacing",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "label": "Header bottom spacing",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "FAQ 1"
+    },
+    {
+      "type": "text",
+      "id": "faq_1_question",
+      "label": "Question",
+      "default": "What are lab-grown diamonds?"
+    },
+    {
+      "type": "richtext",
+      "id": "faq_1_answer",
+      "label": "Answer",
+      "default": "<p>Lab-grown diamonds are real diamonds created in controlled laboratory environments using advanced technology that replicates the natural diamond formation process. They have the same physical, chemical, and optical properties as mined diamonds.</p>"
+    },
+    {
+      "type": "header",
+      "content": "FAQ 2"
+    },
+    {
+      "type": "text",
+      "id": "faq_2_question",
+      "label": "Question",
+      "default": "How to buy lab-grown diamonds?"
+    },
+    {
+      "type": "richtext",
+      "id": "faq_2_answer",
+      "label": "Answer",
+      "default": "<p>Browse our collection of certified lab-grown diamonds, select your preferred cut, carat, color, and clarity. Add to cart and complete your purchase securely. Each diamond comes with a certification of authenticity and detailed specifications.</p>"
+    },
+    {
+      "type": "header",
+      "content": "FAQ 3"
+    },
+    {
+      "type": "text",
+      "id": "faq_3_question",
+      "label": "Question",
+      "default": "Are lab-grown diamonds real?"
+    },
+    {
+      "type": "richtext",
+      "id": "faq_3_answer",
+      "label": "Answer",
+      "default": "<p>Yes, lab-grown diamonds are 100% real diamonds. They are chemically, physically, and optically identical to mined diamonds. The only difference is their origin - one is created in a lab, the other formed naturally underground over billions of years.</p>"
+    },
+    {
+      "type": "header",
+      "content": "FAQ 4"
+    },
+    {
+      "type": "text",
+      "id": "faq_4_question",
+      "label": "Question",
+      "default": "What is the difference between natural and lab-grown diamonds?"
+    },
+    {
+      "type": "richtext",
+      "id": "faq_4_answer",
+      "label": "Answer",
+      "default": "<p>The primary difference is origin. Natural diamonds form deep within the Earth over billions of years, while lab-grown diamonds are created in weeks using advanced technology. Both are real diamonds with identical properties, but lab-grown diamonds are more sustainable and typically cost 30-40% less.</p>"
+    },
+    {
+      "type": "header",
+      "content": "FAQ 5"
+    },
+    {
+      "type": "text",
+      "id": "faq_5_question",
+      "label": "Question",
+      "default": "Do lab-grown diamonds come with certification?"
+    },
+    {
+      "type": "richtext",
+      "id": "faq_5_answer",
+      "label": "Answer",
+      "default": "<p>Yes, all our lab-grown diamonds come with certification from internationally recognized gemological laboratories such as IGI, GIA, or GCAL. Each certificate details the diamond's cut, color, clarity, carat weight, and confirms its lab-grown origin.</p>"
+    },
+    
+{
+  "type": "header",
+  "content": "FAQ 6"
+},
+{
+  "type": "text",
+  "id": "faq_6_question",
+  "label": "Question",
+  "default": "Are lab-grown diamonds certified?"
+},
+{
+  "type": "richtext",
+  "id": "faq_6_answer",
+  "label": "Answer",
+  "default": "<p>Yes, our lab-grown diamonds are certified by leading gemological laboratories such as IGI and GIA, ensuring authenticity and quality.</p>"
+},
+{
+  "type": "header",
+  "content": "FAQ 7"
+},
+{
+  "type": "text",
+  "id": "faq_7_question",
+  "label": "Question",
+  "default": "Do lab-grown diamonds sparkle like natural diamonds?"
+},
+{
+  "type": "richtext",
+  "id": "faq_7_answer",
+  "label": "Answer",
+  "default": "<p>Yes, our lab-grown diamonds are certified by leading gemological laboratories such as IGI and GIA, ensuring authenticity and quality.</p>"
+},
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content max width",
+      "min": 600,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "default": 900
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Section padding top",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Section padding bottom",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "question_color",
+      "label": "Question",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "question_hover_color",
+      "label": "Question hover",
+      "default": "#D4AF37"
+    },
+    {
+      "type": "color",
+      "id": "answer_color",
+      "label": "Answer",
+      "default": "#cccccc"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon",
+      "default": "#D4AF37"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "question_size",
+      "label": "Question size",
+      "min": 14,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "select",
+      "id": "question_weight",
+      "label": "Question weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "range",
+      "id": "answer_size",
+      "label": "Answer size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "question_padding",
+      "label": "Question padding",
+      "min": 15,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "answer_padding",
+      "label": "Answer padding",
+      "min": 15,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 25
+    },
+    {
+      "type": "range",
+      "id": "divider_width",
+      "label": "Divider width",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ accordion"
+    }
+  ]
+}
+{% endschema %}

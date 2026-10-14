@@ -1,0 +1,1221 @@
+{%- liquid
+  assign checkImg = section.settings.show_collection_image
+  assign colorH = section.settings.image_text_color
+  assign colorBg = section.settings.bg_color
+  assign opOverlay = section.settings.image_overlay_opacity | divided_by: 100.0
+  if collection.image != blank
+    assign collectionImage = collection.image
+  elsif collection.handle == 'all'
+    assign collectionImage = section.settings.img_bannercollection
+  endif
+  assign img_height = section.settings.img_height
+  assign style_banner = section.settings.style_banner
+  assign title_all = section.settings.title_all
+  assign des_all = section.settings.des_all
+  assign save_allproducts = section.settings.save_allproducts
+
+  assign show_breadcrumb = section.settings.show_breadcrumb
+  assign width_breadcrumb = section.settings.width_breadcrumb
+-%}
+
+<style>
+  .main-content {
+    padding: 0;
+  }
+
+  /* =========================================================
+     COLLECTION HERO
+  ========================================================= */
+
+  .collection-hero {
+    position: relative;
+    overflow: hidden;
+    --section-height: {{ img_height }};
+    --section-overlay:
+      {{ section.settings.image_overlay_color.red }},
+      {{ section.settings.image_overlay_color.blue }},
+      {{ section.settings.image_overlay_color.green }};
+    --section-opacity: {{ opOverlay }};
+  }
+
+  .collection-hero-container {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
+
+  .collection-hero__title,
+  .collection-hero__description {
+    color: {{ colorH }};
+    --color-body-text: {{ colorH }};
+    --g-color-heading: {{ colorH }};
+  }
+
+  @media screen and (min-width: 750px) {
+    .collection-hero {
+      padding: 0;
+    }
+
+    .collection-hero__description {
+      padding: 0 16rem;
+    }
+  }
+
+  {% if checkImg and collectionImage != blank %}
+
+    .collection-hero .image-content__image {
+      object-fit: cover;
+      object-position: center;
+      height: 100%;
+    }
+
+    .collection-hero-container {
+      min-height: var(--section-height);
+    }
+
+    .collection-hero-banner {
+      padding-top: 0 !important;
+    }
+
+    .collection-hero::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .breadcrumbs-collection .breadcrumbs,
+    .breadcrumbs-collection .breadcrumbs a,
+    .breadcrumbs-collection .breadcrumbs span {
+      --color-body-text: {{ colorH }};
+      color: {{ colorH }};
+    }
+
+    .breadcrumbs-collection {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      z-index: 10;
+    }
+
+  {% endif %}
+
+
+  /* =========================================================
+     BREADCRUMBS
+  ========================================================= */
+
+  .breadcrumbs__item {
+    display: flex;
+    align-items: center;
+  }
+
+  .breadcrumbs-collection .breadcrumbs .breadcrumb__divider {
+    padding: 0 0.5rem;
+    line-height: 20px;
+    display: inline-block;
+  }
+
+  .breadcrumbs__list {
+    list-style-type: none;
+  }
+
+
+  /* =========================================================
+     COLLECTION DESCRIPTION - 4 LINES + READ MORE
+     (single source of truth - no fixed max-height)
+  ========================================================= */
+
+  .collection-description-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  .collection-description-text {
+    display: -webkit-box !important;
+    -webkit-box-orient: vertical !important;
+    -webkit-line-clamp: 4 !important;
+    line-clamp: 4 !important;
+    overflow: hidden !important;
+    max-height: none !important;
+    margin: 0 !important;
+    line-height: 1.6 !important;
+  }
+
+  /* andar ke p / div ki spacing normal rakho */
+  .collection-description-text p {
+    margin: 0 0 8px !important;
+    line-height: inherit !important;
+    font-size: inherit !important;
+  }
+
+  .collection-description-text p:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  /* Read more - base (full banner: text ke neeche) */
+  .collection-read-more {
+    display: none;
+    position: static;
+
+    border: 0 !important;
+    outline: none !important;
+    background: none !important;
+
+    padding: 0 !important;
+    margin: 6px 0 0 auto !important;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600 !important;
+    line-height: 1.6;
+
+    color: inherit !important;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .collection-description-wrap.has-more .collection-read-more {
+    display: block !important;
+  }
+
+  /* Expanded */
+  .collection-description-wrap.is-expanded .collection-description-text {
+    display: block !important;
+    overflow: visible !important;
+    -webkit-line-clamp: unset !important;
+    line-clamp: unset !important;
+  }
+
+  /* SPLIT BANNER: "... Read more" 4th line ke end me, text ke saath same line */
+  .mbanner-left .collection-description-wrap:not(.is-expanded) .collection-read-more {
+    position: absolute !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    margin: 0 !important;
+    padding: 0 0 0 40px !important;
+    text-align: right;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--desc-bg) 32px
+    ) !important;
+  }
+
+  /* SPLIT BANNER: "Show less" expanded text ke neeche right me */
+  .mbanner-left .collection-description-wrap.is-expanded .collection-read-more {
+    position: static !important;
+    display: block !important;
+    margin: 6px 0 0 auto !important;
+    padding: 0 !important;
+    background: none !important;
+  }
+
+  .collection-description-wrap.is-expanded .collection-read-more {
+    display: block !important;
+  }
+
+
+  /* =========================================================
+     SPLIT BANNER
+  ========================================================= */
+
+  .collection-split {
+    --section-height: {{ img_height }};
+    --desc-bg: {{ colorBg | default: '#e8e8e8' }};
+
+    display: flex;
+    width: 100%;
+  }
+
+  .mbanner-left,
+  .mbanner-right {
+    width: 50%;
+    flex: 0 0 50%;
+  }
+
+  .mbanner-left {
+    display: flex;
+    align-items: center;
+
+    --mbanner-color-left:
+      {{ colorH.red }},
+      {{ colorH.green }},
+      {{ colorH.blue }};
+  }
+
+  .mbanner-left--content {
+    max-width: 550px;
+    width: 100%;
+  }
+
+  .mbanner-left .collection-description-wrap {
+    width: 100%;
+  }
+
+  .mbanner-left .collection-hero__description {
+    color: rgba(var(--mbanner-color-left), 0.7);
+    padding: 0 !important;
+  }
+
+
+  /* =========================================================
+     SPLIT BANNER HEIGHT / SPACING
+  ========================================================= */
+
+  .collection-split .collection-hero-container,
+  .collection-split .collection-hero-banner {
+    min-height: var(--section-height);
+  }
+
+  .collection-split .collection-hero-container {
+    width: 100%;
+    padding-left: 1.2rem;
+    padding-right: 4rem;
+  }
+
+  /* =========================================================
+     DESKTOP / LAPTOP ALIGNMENT
+  ========================================================= */
+
+  @media screen and (min-width: 992px) {
+    .collection-split .collection-hero-container {
+      padding-left: max(
+        40px,
+        calc((100vw - var(--g-container) + var(--g-hgutter)) / 2)
+      );
+
+      padding-right: 4rem;
+      box-sizing: border-box;
+    }
+  }
+
+  /* 14-15 INCH LAPTOP: 1200px - 1599px */
+  @media screen and (min-width: 1200px) and (max-width: 1599px) {
+    .collection-split .collection-hero-container {
+      padding-left: max(
+        70px,
+        calc((100vw - 1440px) / 2 + 70px)
+      ) !important;
+
+      padding-right: 50px !important;
+    }
+
+    .mbanner-left--content {
+      max-width: 500px;
+      width: 100%;
+    }
+  }
+
+  /* LARGE DESKTOP: 1600px+ */
+  @media screen and (min-width: 1600px) {
+    .collection-split .collection-hero-container {
+      padding-left: calc(
+        (100vw - var(--g-container) + var(--g-hgutter)) / 2
+      );
+
+      padding-right: 4rem;
+    }
+  }
+
+
+  /* =========================================================
+     SPLIT BANNER IMAGE
+  ========================================================= */
+
+  .mbanner-right {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mbanner-right .collection-hero {
+    width: 100%;
+    height: 100%;
+    min-height: var(--section-height);
+
+    position: relative;
+  }
+
+  .mbanner-right .image-content__image {
+    width: 45%;
+    height: 80%;
+
+    object-fit: cover;
+    object-position: center;
+
+    display: block;
+  }
+
+
+  /* =========================================================
+     FIXED IMAGE HEIGHT (DESKTOP)
+     Description badhne par sirf banner ki height badhegi,
+     image ki height fixed rahegi (top pe align)
+  ========================================================= */
+
+  @media screen and (min-width: 992px) {
+
+    .mbanner-right {
+      align-self: flex-start;
+    }
+
+    {% if img_height != 'orginal' %}
+      .mbanner-right .collection-hero {
+        height: var(--section-height);
+        min-height: var(--section-height);
+      }
+    {% endif %}
+
+  }
+
+
+  /* =========================================================
+     COLLECTION LIST
+  ========================================================= */
+
+  .collection-list .list-inline-item:not(:last-child) {
+    margin-right: 1.5rem;
+  }
+
+  .collection-list li a {
+    position: relative;
+  }
+
+  .collection-list li a::before {
+    content: "";
+
+    position: absolute;
+    right: 0;
+    bottom: -4px;
+
+    width: 0;
+
+    border-bottom: 1px solid var(--color-body-text);
+
+    transition: width .3s ease;
+
+    z-index: 7;
+  }
+
+  .collection-list li a:hover::before,
+  .collection-list li a.active::before {
+    width: 100%;
+    left: 0;
+  }
+
+
+  /* =========================================================
+     MOBILE
+  ========================================================= */
+
+  @media (max-width: 749px) {
+
+    .collection-split {
+      display: grid !important;
+      grid-template-columns: 100%;
+      width: 100%;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .mbanner-left {
+      display: contents !important;
+      width: 100% !important;
+      flex: none !important;
+    }
+
+    .mbanner-left > .collection-hero-container {
+      display: contents !important;
+      width: 100% !important;
+      height: auto !important;
+      min-height: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .mbanner-left--content {
+      display: contents !important;
+      width: 100% !important;
+      max-width: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    /* MOBILE TITLE */
+    .mbanner-left--content .collection-hero__title {
+      grid-column: 1;
+      grid-row: 1;
+
+      display: block !important;
+      width: 100% !important;
+      box-sizing: border-box;
+      margin: 0 !important;
+      padding: 55px 24px 22px !important;
+      text-align: left !important;
+
+      font-size: 32px;
+      line-height: 1.15;
+    }
+
+    /* MOBILE IMAGE */
+    .mbanner-right {
+      grid-column: 1;
+      grid-row: 2;
+
+      display: block !important;
+      width: 100% !important;
+      height: 320px !important;
+      min-height: 0 !important;
+      flex: none !important;
+
+      position: relative;
+      overflow: hidden;
+
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .mbanner-right .collection-hero {
+      display: block !important;
+      width: 100% !important;
+      height: 320px !important;
+      min-height: 0 !important;
+      padding-top: 0 !important;
+      margin: 0 !important;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mbanner-right .collection-hero-banner {
+      min-height: 0 !important;
+      height: 320px !important;
+      padding-top: 0 !important;
+    }
+
+    .mbanner-right .image-content__image-wrapper {
+      width: 100% !important;
+      height: 320px !important;
+      padding-top: 0 !important;
+      margin: 0 !important;
+    }
+
+    .mbanner-right .image-content__image {
+      display: block !important;
+      width: 100% !important;
+      height: 320px !important;
+      min-height: 0 !important;
+      max-width: none !important;
+      object-fit: cover !important;
+      object-position: 60% center !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    /* MOBILE DESCRIPTION */
+    .mbanner-left--content .collection-description-wrap {
+      grid-column: 1;
+      grid-row: 3;
+
+      display: block !important;
+      width: 100% !important;
+      box-sizing: border-box;
+      margin: 0 !important;
+      padding: 25px 24px 40px !important;
+      text-align: left !important;
+    }
+
+    /* wrap me padding (25px 24px 40px) hai, isliye button ko usi hisaab se upar/andar rakho */
+    .mbanner-left .collection-description-wrap:not(.is-expanded) .collection-read-more {
+      bottom: 40px !important;
+      right: 24px !important;
+    }
+
+    .mbanner-left--content .collection-description-text {
+      width: 100% !important;
+      box-sizing: border-box;
+      margin: 0 !important;
+      padding: 0 !important;
+      text-align: left !important;
+      font-size: 14px;
+      line-height: 1.6 !important;
+    }
+
+    .collection-split .collection-hero-container {
+      width: 100% !important;
+      height: auto !important;
+      min-height: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .mbanner-right .collection-hero::before {
+      display: none !important;
+    }
+  }
+
+
+  /* =========================================================
+     COLLECTION TRUST ITEMS
+  ========================================================= */
+
+  .collection-hero-container .collection-trust-items {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 35px !important;
+
+    width: 100% !important;
+    margin-top: 22px !important;
+
+    position: relative !important;
+    z-index: 20 !important;
+  }
+
+  .collection-hero-container .collection-trust-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    gap: 8px !important;
+
+    color: #0b3158 !important;
+    font-size: 14px !important;
+    line-height: 1.3 !important;
+
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .collection-hero-container .collection-trust-item img.collection-trust-icon {
+    display: block !important;
+
+    width: 38px !important;
+    height: 38px !important;
+    min-width: 38px !important;
+    min-height: 38px !important;
+    max-width: 38px !important;
+    max-height: 38px !important;
+
+    object-fit: contain !important;
+
+    visibility: visible !important;
+    opacity: 1 !important;
+
+    position: relative !important;
+    z-index: 21 !important;
+  }
+
+  .collection-hero-container .collection-trust-item span {
+    display: inline-block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  @media (max-width: 749px) {
+
+    .collection-hero-container .collection-trust-items {
+      gap: 18px !important;
+      margin-top: 18px !important;
+    }
+
+    .collection-hero-container .collection-trust-item {
+      font-size: 12px !important;
+      gap: 6px !important;
+    }
+
+    .collection-hero-container .collection-trust-item img.collection-trust-icon {
+      width: 30px !important;
+      height: 30px !important;
+      min-width: 30px !important;
+      min-height: 30px !important;
+      max-width: 30px !important;
+      max-height: 30px !important;
+    }
+
+  }
+</style>
+
+
+<div class="collection-banner position-relative">
+  <!--
+    =====================================================
+         BREADCRUMBS
+    ======================================================
+  -->
+
+  {%- if show_breadcrumb -%}
+    <div class="breadcrumbs-collection py-3">
+      <nav
+        class="breadcrumbs {{ width_breadcrumb }}"
+        role="navigation"
+        aria-label="breadcrumbs"
+      >
+        <ol class="breadcrumbs__list d-flex">
+          <li class="breadcrumbs__item">
+            <a
+              href="/"
+              title="{{ 'general.breadcrumb.home' | t }}"
+            >
+              {{ 'general.breadcrumb.home' | t }}
+            </a>
+
+            <span
+              class="breadcrumb__divider"
+              aria-hidden="true"
+            >
+              /
+            </span>
+          </li>
+
+          {%- if template contains 'collection' and collection.handle -%}
+            {%- if current_tags -%}
+              <li class="breadcrumbs__item">
+                {{ collection.title | link_to: collection.url }}
+
+                <span
+                  class="breadcrumb__divider"
+                  aria-hidden="true"
+                >
+                  /
+                </span>
+              </li>
+
+              <li class="breadcrumbs__item">
+                {%- capture tag_url -%}
+                  {{ collection.url }}/{{ current_tags | join: "+" }}
+                {%- endcapture -%}
+
+                <a
+                  class="breadcrumbs__link"
+                  href="{{ tag_url }}"
+                  aria-current="page"
+                >
+                  {{- current_tags | join: ' + ' -}}
+                </a>
+
+                <span
+                  class="breadcrumb__divider"
+                  aria-hidden="true"
+                >
+                  /
+                </span>
+              </li>
+
+            {%- else -%}
+              <li class="breadcrumbs__item">
+                <span
+                  class="breadcrumbs__link"
+                  aria-current="page"
+                >
+                  {{ collection.title }}
+                </span>
+              </li>
+            {%- endif -%}
+          {%- endif -%}
+        </ol>
+      </nav>
+    </div>
+  {%- endif -%}
+
+  <!--
+    =====================================================
+         FULL BANNER
+    ======================================================
+  -->
+
+  {%- if style_banner == 'full' -%}
+    <div
+      class="image-content__image-wrapper d-flex align-items-center collection-hero {% if img_height != 'orginal' %}collection-hero-banner{% endif %}"
+      {% if checkImg and collectionImage != blank %}
+        style="padding-top:{{ 1 | divided_by: collectionImage.aspect_ratio | times: 100 }}%;"
+      {% endif %}
+    >
+      {%- if checkImg and collectionImage != blank -%}
+        {%- liquid
+          assign sizes = '100vw'
+          assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+          assign fetch_priority = 'high'
+          assign height = collectionImage.width | divided_by: collectionImage.aspect_ratio | round
+        -%}
+
+        {{
+          collectionImage
+          | image_url: width: 3840
+          | image_tag:
+            height: height,
+            width: collectionImage.width,
+            sizes: sizes,
+            widths: widths,
+            fetchpriority: fetch_priority,
+            class: 'image-content__image lazyload scale-in'
+        }}
+      {%- endif -%}
+
+      <div class="py-5 collection-hero-container d-flex align-items-center justify-content-center">
+        <div class="container text-center">
+          <h1 class="collection-hero__title {{ section.settings.heading_size }}">
+            <span class="visually-hidden"> {{ 'sections.collection_template.title' | t }}: </span>
+
+            {% if collection.handle == 'all' and save_allproducts %}
+              {{- title_all -}}
+            {% else %}
+              {{- collection.title | escape -}}
+            {% endif %}
+          </h1>
+
+          {%- if section.settings.show_collection_description -%}
+            <div class="collection-description-wrap">
+              <div class="collection-hero__description rte collection-description-text">
+                {% if collection.handle == 'all' and save_allproducts %}
+                  {{ des_all }}
+                {% else %}
+                  {{ collection.description }}
+                {% endif %}
+              </div>
+
+              <button
+                type="button"
+                class="collection-read-more"
+                aria-expanded="false"
+              >
+                ... Read more
+              </button>
+            </div>
+          {%- endif -%}
+          <div class="collection-trust-items">
+            <div class="collection-trust-item">
+              <img
+                class="collection-trust-icon"
+                src="https://cdn.shopify.com/s/files/1/0790/0876/0059/files/worldwide.png?v=1789216179"
+                alt="Ready to ship worldwide"
+                width="38"
+                height="38"
+              >
+              <span>Ready to ship worldwide</span>
+            </div>
+
+            <div class="collection-trust-item">
+              <img
+                class="collection-trust-icon"
+                src="https://cdn.shopify.com/s/files/1/0790/0876/0059/files/30_days.png?v=1789216193"
+                alt="Easy 30-day returns"
+                width="38"
+                height="38"
+              >
+              <span>Easy 30-day returns</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--
+      =====================================================
+           SPLIT BANNER
+      ======================================================
+    -->
+
+  {%- else -%}
+    <div
+      class="d-flex flex-lg-row flex-column collection-split"
+      style="background-color:{{ colorBg }};"
+    >
+      <!-- LEFT CONTENT -->
+
+      <div class="mbanner-left">
+        <div class="py-5 collection-hero-container d-flex align-items-center">
+          <div class="text-left mbanner-left--content">
+            <h1 class="collection-hero__title {{ section.settings.heading_size }}">
+              <span class="visually-hidden"> {{ 'sections.collection_template.title' | t }}: </span>
+
+              {% if collection.handle == 'all' and save_allproducts %}
+                {{- title_all -}}
+              {% else %}
+                {{- collection.title | escape -}}
+              {% endif %}
+            </h1>
+
+            {%- if section.settings.show_collection_description -%}
+              <div class="collection-description-wrap">
+                <div class="collection-hero__description rte collection-description-text">
+                  {% if collection.handle == 'all' and save_allproducts %}
+                    {{ des_all }}
+                  {% else %}
+                    {{ collection.description }}
+                  {% endif %}
+                </div>
+
+                <button
+                  type="button"
+                  class="collection-read-more"
+                  aria-expanded="false"
+                >
+                  ... Read more
+                </button>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT IMAGE -->
+
+      <div class="mbanner-right">
+        <div
+          class="image-content__image-wrapper d-flex align-items-center collection-hero {% if img_height != 'orginal' %}collection-hero-banner{% endif %}"
+          {% if checkImg and collectionImage != blank %}
+            style="padding-top:{{ 1 | divided_by: collectionImage.aspect_ratio | times: 100 }}%;"
+          {% endif %}
+        >
+          {%- if checkImg and collectionImage != blank -%}
+            {%- liquid
+              assign sizes = '100vw'
+              assign widths = '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840'
+              assign fetch_priority = 'high'
+              assign height = collectionImage.width | divided_by: collectionImage.aspect_ratio | round
+            -%}
+
+            {{
+              collectionImage
+              | image_url: width: 3840
+              | image_tag:
+                height: height,
+                width: collectionImage.width,
+                sizes: sizes,
+                widths: widths,
+                fetchpriority: fetch_priority,
+                class: 'image-content__image lazyload scale-in'
+            }}
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+
+  <!--
+    =====================================================
+         COLLECTION LINKS
+    ======================================================
+  -->
+
+  {%- if linklists[section.settings.link_list_head].title != blank and section.settings.enable_collection -%}
+    <div class="container">
+      <ul class="site-head__list list-inline text-center py-4 collection-list border-bottom">
+        {%- for link in linklists[section.settings.link_list_head].links -%}
+          {% assign collection_handle = link.url | split: 'collections/' | last %}
+          {% assign current_collection = collections[collection_handle] %}
+
+          <li class="site-head__list__list-item list-inline-item">
+            <a
+              href="{{ link.url }}"
+              {% if link.current %}
+                class="active"
+              {% endif %}
+            >
+              {{- link.title }}
+
+              {%- if section.settings.enable_count -%}
+                <span class="d-inline-block ml-1 txt-body-50"> ({{ current_collection.all_products_count }}) </span>
+              {%- endif -%}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+</div>
+
+<!--
+  =========================================================
+       READ MORE / SHOW LESS JAVASCRIPT
+  =========================================================
+-->
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    function initCollectionReadMore() {
+      const wraps = document.querySelectorAll('.collection-description-wrap');
+
+      wraps.forEach(function (wrap) {
+        const text = wrap.querySelector('.collection-description-text');
+        const button = wrap.querySelector('.collection-read-more');
+
+        if (!text || !button) return;
+
+        function syncButtonStyle() {
+          const s = window.getComputedStyle(text);
+          button.style.fontSize = s.fontSize;
+          button.style.lineHeight = s.lineHeight;
+          button.style.height = s.lineHeight;
+        }
+
+        function checkDescriptionHeight() {
+          syncButtonStyle();
+
+          // expanded ho to button (Show less) dikhta rahe
+          if (wrap.classList.contains('is-expanded')) {
+            button.style.height = 'auto';
+            wrap.classList.add('has-more');
+            return;
+          }
+
+          wrap.classList.remove('has-more');
+
+          // text clamp hua hai ya nahi (pixel guess nahi)
+          if (text.scrollHeight > text.clientHeight + 1) {
+            wrap.classList.add('has-more');
+          }
+        }
+
+        /* Initial check */
+        checkDescriptionHeight();
+
+        /* Fonts / images load hone ke baad dobara check */
+        window.addEventListener('load', checkDescriptionHeight);
+
+        /* Read More / Show less click */
+        button.addEventListener('click', function () {
+          const expanded = wrap.classList.contains('is-expanded');
+
+          if (expanded) {
+            wrap.classList.remove('is-expanded');
+            button.setAttribute('aria-expanded', 'false');
+            button.textContent = '... Read more';
+          } else {
+            wrap.classList.add('is-expanded');
+            button.setAttribute('aria-expanded', 'true');
+            button.textContent = 'Show less';
+          }
+
+          checkDescriptionHeight();
+        });
+
+        /* Resize */
+        let resizeTimer;
+
+        window.addEventListener('resize', function () {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(checkDescriptionHeight, 200);
+        });
+      });
+    }
+
+    initCollectionReadMore();
+  });
+</script>
+{% schema %}
+{
+  "name": "Collection Banner",
+  "class": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumb",
+      "default": true,
+      "label": "Show Breadcrumb"
+    },
+    {
+      "type": "select",
+      "id": "width_breadcrumb",
+      "label": "Width Breadcrumb",
+      "default": "container",
+      "options": [
+        {
+          "value": "container",
+          "label": "Box"
+        },
+        {
+          "value": "container-fluid",
+          "label": "Container Fluid"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Collection Banner"
+    },
+    {
+      "type": "paragraph",
+      "content": "Add a description or image by editing your collection. [Learn more](https://help.shopify.com/manual/products/collections/collection-layout)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_description",
+      "default": true,
+      "label": "Show collection description"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_image",
+      "default": false,
+      "label": "Show collection image",
+      "info": "For best results, use an image with a 16:9 aspect ratio. [Learn more](https://help.shopify.com/manual/shopify-admin/productivity-tools/image-editor#understanding-image-aspect-ratio)"
+    },
+    {
+      "type": "header",
+      "content": "All Products",
+      "info": "Config default All Products"
+    },
+    {
+      "type": "checkbox",
+      "id": "save_allproducts",
+      "default": true,
+      "label": "Apply to all product collection",
+      "info": "collection handle 'all' will use this configuration"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_bannercollection",
+      "label": "Background All Products"
+    },
+    {
+      "type": "text",
+      "id": "title_all",
+      "label": "Title All Products",
+      "default": "All Products"
+    },
+    {
+      "type": "richtext",
+      "id": "des_all",
+      "label": "Descripion All Products",
+      "default": "<p>Shop now, not later. Browse the best of our favorite sale styles and brands.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "select",
+      "id": "style_banner",
+      "label": "Style Banner",
+      "options": [
+        {
+          "value": "full",
+          "label": "Banner Full"
+        },
+        {
+          "value": "split",
+          "label": "Banner Split"
+        }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "options": [
+        {
+          "value": "h1",
+          "label": "H1"
+        },
+        {
+          "value": "h2",
+          "label": "H2"
+        },
+        {
+          "value": "h3",
+          "label": "H3"
+        }
+      ],
+      "default": "h2"
+    },
+    {
+      "type": "select",
+      "id": "img_height",
+      "label": "Image Height",
+      "options": [
+        {
+          "value": "orginal",
+          "label": "Original Image"
+        },
+        {
+          "value": "250px",
+          "label": "250px"
+        },
+        {
+          "value": "350px",
+          "label": "350px"
+        },
+        {
+          "value": "450px",
+          "label": "450px"
+        },
+        {
+          "value": "550px",
+          "label": "550px"
+        },
+        {
+          "value": "750px",
+          "label": "750px"
+        }
+      ],
+      "default": "350px"
+    },
+    {
+      "type": "header",
+      "content": "Color",
+      "info": "Only applicable when collection image is used."
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "image_text_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "image_overlay_color",
+      "label": "Overlay",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Link Menu Collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_collection",
+      "default": true,
+      "label": "Show Menu Collections"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_count",
+      "default": true,
+      "label": "Show items number"
+    },
+    {
+      "id": "link_list_head",
+      "type": "link_list",
+      "label": "Menu",
+      "info": "This menu won't show dropdown items"
+    }
+  ]
+}
+{% endschema %}

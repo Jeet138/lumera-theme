@@ -1,0 +1,412 @@
+{% doc %}
+  @prompt
+    Create a "Luxury & Elegance" horizontal scrolling video gallery section. Layout:
+    - Heading "Luxury & Elegance" (left-aligned)
+    - Subtitle text below heading (small, gray)
+    - 5 video slots in a single horizontally scrolling row
+    - Each video: autoplay, muted, looped, no controls
+    - Portrait aspect ratio (taller than wide)
+    - Slightly rounded corners
+    - Small gaps between videos
+    - Works on both desktop and mobile with horizontal scroll
+    - Each video slot configurable in theme editor
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-video-gallery-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.section_padding_top }}px 0 {{ block.settings.section_padding_bottom }}px;
+  }
+
+  .ai-video-gallery-container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 30px;
+  }
+
+  .ai-video-gallery-header-{{ ai_gen_id }} {
+    margin-bottom: {{ block.settings.header_spacing }}px;
+  }
+
+  .ai-video-gallery-heading-{{ ai_gen_id }} {
+    font-size: {{ block.settings.heading_size }}px;
+    color: {{ block.settings.heading_color }};
+    margin: 0 0 8px 0;
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 1.2;
+    text-align: left;
+  }
+
+  .ai-video-gallery-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    color: {{ block.settings.subtitle_color }};
+    margin: 0;
+    line-height: 1.6;
+    text-align: left;
+  }
+
+  .ai-video-gallery-scroll-wrapper-{{ ai_gen_id }} {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: {{ block.settings.scrollbar_color }} transparent;
+  }
+
+  .ai-video-gallery-scroll-wrapper-{{ ai_gen_id }}::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .ai-video-gallery-scroll-wrapper-{{ ai_gen_id }}::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .ai-video-gallery-scroll-wrapper-{{ ai_gen_id }}::-webkit-scrollbar-thumb {
+    background-color: {{ block.settings.scrollbar_color }};
+    border-radius: 4px;
+  }
+
+  .ai-video-gallery-row-{{ ai_gen_id }} {
+    display: flex;
+    gap: {{ block.settings.video_gap }}px;
+    width: fit-content;
+  }
+
+  .ai-video-gallery-item-{{ ai_gen_id }} {
+    flex-shrink: 0;
+    width: {{ block.settings.video_width }}px;
+    position: relative;
+  }
+
+  .ai-video-gallery-video-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    aspect-ratio: {{ block.settings.aspect_ratio_width }} / {{ block.settings.aspect_ratio_height }};
+    border-radius: {{ block.settings.border_radius }}px;
+    overflow: hidden;
+    background-color: #f4f4f4;
+  }
+
+  .ai-video-gallery-video-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ai-video-gallery-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f4f4f4;
+    color: #999;
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-video-gallery-container-{{ ai_gen_id }} {
+      padding: 0 20px;
+    }
+
+    .ai-video-gallery-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.6 }}px;
+    }
+
+    .ai-video-gallery-subtitle-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subtitle_size | times: 0.9 }}px;
+    }
+
+    .ai-video-gallery-item-{{ ai_gen_id }} {
+      width: {{ block.settings.video_width | times: 0.7 }}px;
+    }
+  }
+{% endstyle %}
+
+<luxury-video-gallery-{{ ai_gen_id }} class="ai-video-gallery-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-video-gallery-container-{{ ai_gen_id }}">
+    <div class="ai-video-gallery-header-{{ ai_gen_id }}">
+      {% if block.settings.heading != blank %}
+        <h2 class="ai-video-gallery-heading-{{ ai_gen_id }}">{{ block.settings.heading }}</h2>
+      {% endif %}
+      {% if block.settings.subtitle != blank %}
+        <p class="ai-video-gallery-subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</p>
+      {% endif %}
+    </div>
+
+    <div class="ai-video-gallery-scroll-wrapper-{{ ai_gen_id }}">
+      <div class="ai-video-gallery-row-{{ ai_gen_id }}">
+        {% for i in (1..5) %}
+          {% liquid
+            assign video_key = 'video_' | append: i
+            assign video = block.settings[video_key]
+          %}
+          <div class="ai-video-gallery-item-{{ ai_gen_id }}">
+            <div class="ai-video-gallery-video-wrapper-{{ ai_gen_id }}">
+              {% if video != blank %}
+                <video
+                  class="ai-video-gallery-video-{{ ai_gen_id }}"
+                  autoplay
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  aria-label="Video {{ i }}"
+                >
+                  {% for source in video.sources %}
+                    <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                  {% endfor %}
+                </video>
+              {% else %}
+                <div class="ai-video-gallery-placeholder-{{ ai_gen_id }}">
+                  Add video {{ i }}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</luxury-video-gallery-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class LuxuryVideoGallery{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.videos = this.querySelectorAll('.ai-video-gallery-video-{{ ai_gen_id }}');
+        this.setupIntersectionObserver();
+      }
+
+      setupIntersectionObserver() {
+        const options = {
+          root: null,
+          rootMargin: '0px',
+          threshold: 0.5
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            const video = entry.target;
+            if (entry.isIntersecting) {
+              video.play().catch(() => {});
+            } else {
+              video.pause();
+            }
+          });
+        }, options);
+
+        this.videos.forEach((video) => {
+          observer.observe(video);
+        });
+      }
+    }
+
+    customElements.define('luxury-video-gallery-{{ ai_gen_id }}', LuxuryVideoGallery{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Luxury video gallery",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Luxury & Elegance"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Discover our exquisite collection"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "label": "Header spacing",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Videos"
+    },
+    {
+      "type": "video",
+      "id": "video_1",
+      "label": "Video 1"
+    },
+    {
+      "type": "video",
+      "id": "video_2",
+      "label": "Video 2"
+    },
+    {
+      "type": "video",
+      "id": "video_3",
+      "label": "Video 3"
+    },
+    {
+      "type": "video",
+      "id": "video_4",
+      "label": "Video 4"
+    },
+    {
+      "type": "video",
+      "id": "video_5",
+      "label": "Video 5"
+    },
+    {
+      "type": "header",
+      "content": "Video layout"
+    },
+    {
+      "type": "range",
+      "id": "video_width",
+      "label": "Video width",
+      "min": 200,
+      "max": 500,
+      "step": 10,
+      "unit": "px",
+      "default": 300
+    },
+    {
+      "type": "range",
+      "id": "video_gap",
+      "label": "Gap between videos",
+      "min": 5,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "aspect_ratio_width",
+      "label": "Aspect ratio width",
+      "min": 1,
+      "max": 16,
+      "step": 1,
+      "default": 9
+    },
+    {
+      "type": "range",
+      "id": "aspect_ratio_height",
+      "label": "Aspect ratio height",
+      "min": 1,
+      "max": 16,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#1a1a1a"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "scrollbar_color",
+      "label": "Scrollbar",
+      "default": "#cccccc"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "Luxury video gallery"
+    }
+  ]
+}
+{% endschema %}

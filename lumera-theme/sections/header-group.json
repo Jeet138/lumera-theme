@@ -1,0 +1,318 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header Group",
+  "sections": {
+    "announcement-bar-slide": {
+      "type": "announcement-bar-slide",
+      "blocks": {
+        "item_3TJVCY": {
+          "type": "Item",
+          "settings": {
+            "code": "Use HTML to format your text so it can be easily read.",
+            "button_text": "Shop Now",
+            "button_link": ""
+          }
+        },
+        "item_rL98qW": {
+          "type": "Item",
+          "settings": {
+            "code": "Use HTML to format your text so it can be easily read.",
+            "button_text": "Shop Now",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "item_3TJVCY",
+        "item_rL98qW"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".announcement-item__in {text-transform: uppercase;}"
+      ],
+      "settings": {
+        "enable": true,
+        "animation": "fade",
+        "size_text": "small",
+        "announ_type": "scroll",
+        "scroll_dot": "dot",
+        "size_icon": 24,
+        "speed": 20,
+        "scroll_type": "from-right",
+        "background": "#f4d574",
+        "gradient_bg": "",
+        "text": "#252525"
+      }
+    },
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_Wiz4TY": {
+          "type": "announcement",
+          "settings": {
+            "text": "New Arrivals Up to 35% Off",
+            "link_text": "Shop Now",
+            "link": "shopify://collections"
+          }
+        },
+        "announcement_hGJBRN": {
+          "type": "announcement",
+          "settings": {
+            "text": "Limited-time Offer: Save Up To 35%",
+            "link_text": "Shop Now",
+            "link": "shopify://collections"
+          }
+        }
+      },
+      "block_order": [
+        "announcement_Wiz4TY",
+        "announcement_hGJBRN"
+      ],
+      "settings": {
+        "enable": true,
+        "animation": "fade",
+        "setwidth": "container",
+        "background": "#053931",
+        "gradient_bg": "",
+        "text_color": "#ffffff",
+        "font_size_topbar": 13,
+        "enable_image": true,
+        "enable_name": false,
+        "enable_money_topbar": false,
+        "enable_language_topbar": false,
+        "enable_social_topbar": false,
+        "enable_login_topbar": true,
+        "enable_marquee": true,
+        "left_icon": "",
+        "left_text": "Worldwide Delivery | Free Shipping | 30-Day Easy Returns",
+        "left_link": "#",
+        "enable_block_link": true,
+        "topbar_phone": "(+91 )9712757576",
+        "topbar_email": "",
+        "topbar_store": "",
+        "topbar_store_link": "",
+        "topbar_appointment": "Virtual Appointment ",
+        "topbar_page_appointment": "https://calendly.com/lumerafinejewellery-info/30min?back=1&month=2026-06",
+        "right_icon": "",
+        "right_text": "",
+        "right_link": "",
+        "enable_countdown": false,
+        "text_countdown": "Hello",
+        "data_countdown": ""
+      }
+    },
+    "header": {
+      "type": "header",
+      "blocks": {
+        "96e8331c-f8e4-4b9d-802b-4a659893f052": {
+          "type": "menu-banner-classic",
+          "disabled": true,
+          "settings": {
+            "menu_title": "Engagement Ring",
+            "menu_width": "container",
+            "menu_column": 6,
+            "enable_menu_banner": true,
+            "image_size": "auto",
+            "menu_banner_width": 25,
+            "menu_banner_image_1": "shopify://shop_images/WhatsApp_Image_2026-06-27_at_10.01.13_AM.jpg",
+            "menu_banner_html_1": "",
+            "menu_banner_btn_1": "",
+            "menu_banner_link_1": "shopify://collections/halo",
+            "menu_banner_image_2": "shopify://shop_images/metal.png",
+            "menu_banner_html_2": "",
+            "menu_banner_btn_2": "",
+            "menu_banner_link_2": "shopify://collections/solitaire",
+            "menu_banner_html_3": "",
+            "menu_banner_btn_3": "",
+            "menu_banner_link_3": "",
+            "menu_banner_html_4": "",
+            "menu_banner_btn_4": "",
+            "menu_banner_link_4": "",
+            "menu_banner_html_5": "",
+            "menu_banner_btn_5": "",
+            "menu_banner_link_5": "",
+            "menu_banner_html_6": "",
+            "menu_banner_btn_6": "",
+            "menu_banner_link_6": ""
+          }
+        },
+        "menu_banner_classic_ryizFt": {
+          "type": "menu-banner-classic",
+          "disabled": true,
+          "settings": {
+            "menu_title": "Wedding Rings",
+            "menu_width": "container",
+            "menu_column": 3,
+            "enable_menu_banner": true,
+            "image_size": "wide",
+            "menu_banner_width": 30,
+            "menu_banner_html_1": "<h5 class=\"mb-0\">Flat 50% Off</h5>\n<p>Our products are designed for everyone.</p>",
+            "menu_banner_btn_1": "Shop now",
+            "menu_banner_link_1": "shopify://collections",
+            "menu_banner_html_2": "<h5 class=\"mb-0\">Flat 50% Off</h5>\n<p>sss</p>",
+            "menu_banner_btn_2": "",
+            "menu_banner_link_2": "",
+            "menu_banner_html_3": "",
+            "menu_banner_btn_3": "",
+            "menu_banner_link_3": "",
+            "menu_banner_html_4": "",
+            "menu_banner_btn_4": "",
+            "menu_banner_link_4": "",
+            "menu_banner_html_5": "",
+            "menu_banner_btn_5": "",
+            "menu_banner_link_5": "",
+            "menu_banner_html_6": "",
+            "menu_banner_btn_6": "",
+            "menu_banner_link_6": ""
+          }
+        },
+        "menu_banner_classic_rGTNUe": {
+          "type": "menu-banner-classic",
+          "disabled": true,
+          "settings": {
+            "menu_title": "Fine Jewelry",
+            "menu_width": "container",
+            "menu_column": 3,
+            "enable_menu_banner": true,
+            "image_size": "wide",
+            "menu_banner_width": 30,
+            "menu_banner_html_1": "<h5 class=\"mb-0\">Flat 50% Off</h5>\n<p>Our products are designed for everyone.</p>",
+            "menu_banner_btn_1": "Shop now",
+            "menu_banner_link_1": "shopify://collections",
+            "menu_banner_html_2": "<h5 class=\"mb-0\">Flat 50% Off</h5>\n<p>sss</p>",
+            "menu_banner_btn_2": "",
+            "menu_banner_link_2": "",
+            "menu_banner_html_3": "",
+            "menu_banner_btn_3": "",
+            "menu_banner_link_3": "",
+            "menu_banner_html_4": "",
+            "menu_banner_btn_4": "",
+            "menu_banner_link_4": "",
+            "menu_banner_html_5": "",
+            "menu_banner_btn_5": "",
+            "menu_banner_link_5": "",
+            "menu_banner_html_6": "",
+            "menu_banner_btn_6": "",
+            "menu_banner_link_6": ""
+          }
+        },
+        "menu_banner_classic_fPKFJx": {
+          "type": "menu-banner-classic",
+          "disabled": true,
+          "settings": {
+            "menu_title": "Gifts",
+            "menu_width": "container",
+            "menu_column": 6,
+            "enable_menu_banner": true,
+            "image_size": "auto",
+            "menu_banner_width": 40,
+            "menu_banner_html_1": "<h5 class=\"mb-0\">Flat 50% Off</h5>\n<p>Our products are designed for everyone.</p>",
+            "menu_banner_btn_1": "Shop now",
+            "menu_banner_link_1": "shopify://collections",
+            "menu_banner_html_2": "<h5 class=\"mb-0\">Flat 50% Off</h5>\n<p>sss</p>",
+            "menu_banner_btn_2": "",
+            "menu_banner_link_2": "",
+            "menu_banner_html_3": "",
+            "menu_banner_btn_3": "",
+            "menu_banner_link_3": "",
+            "menu_banner_html_4": "",
+            "menu_banner_btn_4": "",
+            "menu_banner_link_4": "",
+            "menu_banner_html_5": "",
+            "menu_banner_btn_5": "",
+            "menu_banner_link_5": "",
+            "menu_banner_html_6": "",
+            "menu_banner_btn_6": "",
+            "menu_banner_link_6": ""
+          }
+        }
+      },
+      "block_order": [
+        "96e8331c-f8e4-4b9d-802b-4a659893f052",
+        "menu_banner_classic_ryizFt",
+        "menu_banner_classic_rGTNUe",
+        "menu_banner_classic_fPKFJx"
+      ],
+      "settings": {
+        "logo": "shopify://shop_images/diamond-logo.png",
+        "logo_max_width": 100,
+        "enable_transparent": false,
+        "hover_transparent": false,
+        "enable_white": false,
+        "setwidth": "container-fluid",
+        "layout_header": "logo-center-navigation-split",
+        "type_sticky": "sticky-top",
+        "height_header": "small",
+        "background": "#fef8f1",
+        "textcolor": "#000000",
+        "linkcolor": "#002a41",
+        "linkhover": "#1b1b21",
+        "color_indicator": "#000000",
+        "menutext": "#1b1b21",
+        "menutexthover": "#1b1b21",
+        "menudroptexttitle": "#002a41",
+        "menudroptext": "#1b1b21",
+        "menudropbg": "#ffffff",
+        "menudropborder": "#f1f1f1",
+        "main_linklist": "main-menue",
+        "font_family_menu": "--g-font-2",
+        "font_sizemenu": "15px",
+        "font_weight": "400",
+        "menu_spacing": 0,
+        "menu_space": 0.7,
+        "type_menu": "uppercase",
+        "menu_active": "thick-line",
+        "menu_label_text": "#ffffff",
+        "menu_label_new": "#34bf49",
+        "menu_label_hot": "#d24418",
+        "menu_label_sale": "#ffa800",
+        "menu_label_other": "#848484",
+        "enable_menu_vertical": true,
+        "sl_menu_vertical": "click-menu",
+        "main_linklist_vertical": "main-menue",
+        "link_list_search": "",
+        "sidebar_search": true,
+        "e_hd_currency": false,
+        "enable_image": false,
+        "enable_name": false,
+        "enable_language_selector": false,
+        "icon_cart": "icon",
+        "svg_cart": "cart-1",
+        "icon_wishlist": "icon",
+        "icon_login": "icon",
+        "e_link_login": "popup",
+        "icon_search": "icon",
+        "enable_sidebar_option": true
+      }
+    },
+    "store-messages": {
+      "type": "store-messages",
+      "settings": {
+        "enable": false,
+        "enable_homepage": false,
+        "background": "#000000",
+        "gradient_bg": "",
+        "text": "#ffffff",
+        "paddingsection": "8px 0px 8px 0px",
+        "paddingmobile": "4px 0px 4px 0px",
+        "marginsection": "0px 0px 0px 0px",
+        "marginmobile": "0px 0px 0px 0px"
+      }
+    }
+  },
+  "order": [
+    "announcement-bar-slide",
+    "announcement-bar",
+    "header",
+    "store-messages"
+  ]
+}

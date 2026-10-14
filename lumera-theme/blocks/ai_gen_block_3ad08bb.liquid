@@ -1,0 +1,643 @@
+{% doc %}
+  @prompt
+    
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-consultation-cta-{{ ai_gen_id }} {
+      background-color: {{ block.settings.background_color }};
+      padding: {{ block.settings.padding_top }}px {{ block.settings.padding_horizontal }}px {{ block.settings.padding_bottom }}px;
+      margin-top: 0px;
+      margin-bottom: 0px;
+  }
+
+
+    .ai-consultation-cta-container-{{ ai_gen_id }} {
+      max-width: {{ block.settings.container_width }}px;
+      margin: 0 auto;
+    }
+
+    .ai-consultation-cta-wrapper-{{ ai_gen_id }} {
+      display: flex;
+      gap: {{ block.settings.column_gap }}px;
+      align-items: center;
+    }
+
+    {% if block.settings.reverse_layout %}
+      .ai-consultation-cta-wrapper-{{ ai_gen_id }} {
+        flex-direction: row-reverse;
+      }
+    {% endif %}
+
+    .ai-consultation-cta-content-{{ ai_gen_id }} {
+      flex: 1;
+      color: {{ block.settings.text_color }};
+    }
+
+    .ai-consultation-cta-heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size }}px;
+      color: {{ block.settings.text_color }};
+      margin: 0 0 {{ block.settings.heading_spacing }}px;
+      line-height: 1.2;
+    }
+
+    .ai-consultation-cta-subtext-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subtext_size }}px;
+      color: {{ block.settings.subtext_color }};
+      margin: 0 0 {{ block.settings.subtext_spacing }}px;
+      line-height: 1.6;
+    }
+    .ai-consultation-cta-subtext-{{ ai_gen_id }} * {
+    color: {{ block.settings.subtext_color }} !important;
+  }
+
+    .ai-consultation-cta-buttons-{{ ai_gen_id }} {
+      display: flex;
+      gap: {{ block.settings.button_gap }}px;
+      flex-wrap: wrap;
+    }
+
+    .ai-consultation-cta-button-{{ ai_gen_id }} {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: {{ block.settings.button_padding_vertical }}px {{ block.settings.button_padding_horizontal }}px;
+      background-color: {{ block.settings.primary_button_bg }};
+      color: {{ block.settings.primary_button_color }};
+      text-decoration: none;
+      border-radius: {{ block.settings.button_border_radius }}px;
+      font-size: {{ block.settings.button_font_size }}px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border: 2px solid {{ block.settings.primary_button_bg }};
+      text-align: center;
+    }
+
+    .ai-consultation-cta-button-{{ ai_gen_id }}:hover {
+      background-color: {{ block.settings.primary_button_hover_bg }};
+      color: {{ block.settings.primary_button_hover_color }};
+      border-color: {{ block.settings.primary_button_hover_bg }};
+    }
+
+    .ai-consultation-cta-button-secondary-{{ ai_gen_id }} {
+      background-color: transparent;
+      color: {{ block.settings.secondary_button_color }};
+      border: 2px solid {{ block.settings.secondary_button_border }};
+    }
+
+    .ai-consultation-cta-button-secondary-{{ ai_gen_id }}:hover {
+      background-color: {{ block.settings.secondary_button_hover_bg }};
+      color: {{ block.settings.secondary_button_hover_color }};
+      border-color: {{ block.settings.secondary_button_hover_bg }};
+    }
+
+    .ai-consultation-cta-images-{{ ai_gen_id }} {
+      flex: 1;
+      display: flex;
+      gap: {{ block.settings.image_gap }}px;
+    }
+
+    .ai-consultation-cta-image-wrapper-{{ ai_gen_id }} {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+      border-radius: {{ block.settings.image_border_radius }}px;
+      {% if block.settings.image_shadow %}
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      {% endif %}
+    }
+
+    .ai-consultation-cta-image-wrapper-{{ ai_gen_id }} img {
+      width: 100%;
+      height: {{ block.settings.image_height }}px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .ai-consultation-cta-image-placeholder-{{ ai_gen_id }} {
+      width: 100%;
+      height: {{ block.settings.image_height }}px;
+      background-color: #f4f4f4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .ai-consultation-cta-image-placeholder-{{ ai_gen_id }} svg {
+      width: 100%;
+      height: 100%;
+      max-width: 200px;
+      max-height: 200px;
+      opacity: 0.3;
+    }
+
+    .ai-consultation-cta-empty-state-{{ ai_gen_id }} {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 12px 20px;
+      font-size: 14px;
+      color: #666;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    @media screen and (max-width: 989px) {
+      .ai-consultation-cta-wrapper-{{ ai_gen_id }} {
+        flex-direction: column;
+        {% if block.settings.mobile_image_position == 'top' %}
+          flex-direction: column-reverse;
+        {% endif %}
+      }
+
+      .ai-consultation-cta-heading-{{ ai_gen_id }} {
+        font-size: {{ block.settings.heading_size | times: 0.7 }}px;
+      }
+
+      .ai-consultation-cta-subtext-{{ ai_gen_id }} {
+        font-size: {{ block.settings.subtext_size | times: 0.9 }}px;
+      }
+
+      .ai-consultation-cta-buttons-{{ ai_gen_id }} {
+        flex-direction: column;
+      }
+
+      .ai-consultation-cta-button-{{ ai_gen_id }} {
+        width: 100%;
+      }
+
+      .ai-consultation-cta-images-{{ ai_gen_id }} {
+        width: 100%;
+      }
+
+      .ai-consultation-cta-image-wrapper-{{ ai_gen_id }} img,
+      .ai-consultation-cta-image-placeholder-{{ ai_gen_id }} {
+        height: {{ block.settings.image_height | times: 0.75 }}px;
+      }
+    }
+
+    @media screen and (max-width: 749px) {
+      .ai-consultation-cta-{{ ai_gen_id }} {
+        padding: {{ block.settings.padding_top | times: 0.6 }}px {{ block.settings.padding_horizontal | times: 0.5 }}px {{ block.settings.padding_bottom | times: 0.6 }}px;
+      }
+
+      .ai-consultation-cta-heading-{{ ai_gen_id }} {
+        font-size: {{ block.settings.heading_size | times: 0.6 }}px;
+      }
+
+      .ai-consultation-cta-image-wrapper-{{ ai_gen_id }} img,
+      .ai-consultation-cta-image-placeholder-{{ ai_gen_id }} {
+        height: {{ block.settings.image_height | times: 0.6 }}px;
+      }
+    }
+{% endstyle %}
+
+<div class="ai-consultation-cta-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-consultation-cta-container-{{ ai_gen_id }}">
+    <div class="ai-consultation-cta-wrapper-{{ ai_gen_id }}">
+      <div class="ai-consultation-cta-content-{{ ai_gen_id }}">
+        {% if block.settings.heading != blank %}
+          <h2 class="ai-consultation-cta-heading-{{ ai_gen_id }}">
+            {{ block.settings.heading }}
+          </h2>
+        {% endif %}
+
+        {% if block.settings.subtext != blank %}
+          <div class="ai-consultation-cta-subtext-{{ ai_gen_id }}">
+            {{ block.settings.subtext }}
+          </div>
+        {% endif %}
+
+        <div class="ai-consultation-cta-buttons-{{ ai_gen_id }}">
+          {% if block.settings.primary_button_label != blank %}
+            <a
+              href="{{ block.settings.primary_button_link }}"
+              class="ai-consultation-cta-button-{{ ai_gen_id }}"
+            >
+              {{ block.settings.primary_button_label }}
+            </a>
+          {% endif %}
+
+         {% if block.settings.secondary_button_label != blank %}
+  <a
+    href="tel:{{ block.settings.phone_number | remove: ' ' }}"
+    class="ai-consultation-cta-button-{{ ai_gen_id }} ai-consultation-cta-button-secondary-{{ ai_gen_id }}"
+  >
+    {{ block.settings.secondary_button_label }}
+  </a>
+{% endif %}
+        </div>
+      </div>
+
+      <div class="ai-consultation-cta-images-{{ ai_gen_id }}">
+        <div class="ai-consultation-cta-image-wrapper-{{ ai_gen_id }}">
+          {% if block.settings.image_1 %}
+            <img
+              src="{{ block.settings.image_1 | image_url: width: 800 }}"
+              alt="{{ block.settings.image_1.alt | escape }}"
+              loading="lazy"
+              width="{{ block.settings.image_1.width }}"
+              height="{{ block.settings.image_1.height }}"
+            >
+          {% else %}
+            <div class="ai-consultation-cta-image-placeholder-{{ ai_gen_id }}">
+              {{ 'image' | placeholder_svg_tag }}
+              <div class="ai-consultation-cta-empty-state-{{ ai_gen_id }}">Add first image</div>
+            </div>
+          {% endif %}
+        </div>
+
+        <div class="ai-consultation-cta-image-wrapper-{{ ai_gen_id }}">
+          {% if block.settings.image_2 %}
+            <img
+              src="{{ block.settings.image_2 | image_url: width: 800 }}"
+              alt="{{ block.settings.image_2.alt | escape }}"
+              loading="lazy"
+              width="{{ block.settings.image_2.width }}"
+              height="{{ block.settings.image_2.height }}"
+            >
+          {% else %}
+            <div class="ai-consultation-cta-image-placeholder-{{ ai_gen_id }}">
+              {{ 'image' | placeholder_svg_tag }}
+              <div class="ai-consultation-cta-empty-state-{{ ai_gen_id }}">Add second image</div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Consultation CTA",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Margin top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "unit": "px",
+      "label": "Margin bottom",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 1000,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Container width",
+      "default": 1300
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding horizontal",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "label": "Column gap",
+      "default": 60
+    },
+    {
+      "type": "checkbox",
+      "id": "reverse_layout",
+      "label": "Reverse layout",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "mobile_image_position",
+      "label": "Mobile image position",
+      "options": [
+        {
+          "value": "top",
+          "label": "Above text"
+        },
+        {
+          "value": "bottom",
+          "label": "Below text"
+        }
+      ],
+      "default": "top"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#002F5D"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Heading",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "subtext_color",
+      "label": "Subtext",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Get Personalized Guidance from Our Experts"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading spacing",
+      "default": 20
+    },
+    {
+      "type": "richtext",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "<p>Schedule a complimentary virtual consultation with our jewelry specialists. Discover the perfect piece tailored to your style and preferences.</p>"
+    },
+    {
+      "type": "range",
+      "id": "subtext_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtext size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "subtext_spacing",
+      "min": 20,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Subtext spacing",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Primary button"
+    },
+    {
+      "type": "text",
+      "id": "primary_button_label",
+      "label": "Label",
+      "default": "BOOK VIRTUAL APPOINTMENT"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "Link"
+    },
+    {
+      "type": "color",
+      "id": "primary_button_bg",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "primary_button_color",
+      "label": "Text",
+      "default": "#002F5D"
+    },
+    {
+      "type": "color",
+      "id": "primary_button_hover_bg",
+      "label": "Hover background",
+      "default": "#f0f0f0"
+    },
+    {
+      "type": "color",
+      "id": "primary_button_hover_color",
+      "label": "Hover text",
+      "default": "#002F5D"
+    },
+    {
+      "type": "header",
+      "content": "Secondary button"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Label",
+      "default": "+1 (800) 123-4567"
+    },
+   {
+  "type": "text",
+  "id": "phone_number",
+  "label": "Phone Number",
+  "default": "+919876543210"
+},
+    {
+      "type": "color",
+      "id": "secondary_button_color",
+      "label": "Text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "secondary_button_border",
+      "label": "Border",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "secondary_button_hover_bg",
+      "label": "Hover background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "secondary_button_hover_color",
+      "label": "Hover text",
+      "default": "#002F5D"
+    },
+    {
+      "type": "header",
+      "content": "Button style"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Font size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "min": 10,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "label": "Padding vertical",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding horizontal",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "button_gap",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Gap between buttons",
+      "default": 15
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_1",
+      "label": "First image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_2",
+      "label": "Second image"
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "min": 50,
+      "max": 700,
+      "step": 50,
+      "unit": "px",
+      "label": "Image height",
+      "default": 500
+    },
+    {
+      "type": "range",
+      "id": "image_gap",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Gap between images",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "image_shadow",
+      "label": "Add shadow",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Consultation CTA"
+    }
+  ]
+}
+{% endschema %}

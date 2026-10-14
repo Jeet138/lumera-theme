@@ -1,0 +1,2843 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Cadiant",
+    "theme_author": "shopifytemplate@gmail.com",
+    "theme_version": "9.0",
+    "theme_documentation_url": "https://shopifytemplate.gitbook.io/december-os2.0/",
+    "theme_support_email": "shopifytemplate@gmail.com"
+  },
+  {
+    "name": "General settings",
+    "settings": [
+      {
+        "type": "range",
+        "id": "container",
+        "min": 1200,
+        "max": 1920,
+        "step": 10,
+        "unit": "px",
+        "label": "Container width",
+        "default": 1200
+      },
+      {
+        "type": "range",
+        "id": "gutter",
+        "min": 10,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "label": "Gutter width",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "Layout 🕹️"
+      },
+      {
+        "type": "select",
+        "id": "slideshow",
+        "label": "Slideshow",
+        "default": "slideshow-1",
+        "options": [
+          {
+            "value": "slideshow-1",
+            "label": "Slideshow 1"
+          },
+          {
+            "value": "slideshow-2",
+            "label": "Slideshow 2"
+          },
+          {
+            "value": "slideshow-3",
+            "label": "Slideshow 3"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "sectionheading",
+        "label": "Section heading",
+        "default": "heading-1",
+        "options": [
+          {
+            "value": "heading-1",
+            "label": "Layout 1"
+          },
+          {
+            "value": "heading-2",
+            "label": "Layout 2"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "size_text_heading",
+        "default": "h2",
+        "options": [
+          {
+            "value": "h1",
+            "label": "H1"
+          },
+          {
+            "value": "h2",
+            "label": "H2"
+          },
+          {
+            "value": "h3",
+            "label": "H3"
+          },
+          {
+            "value": "h4",
+            "label": "H4"
+          },
+          {
+            "value": "h5",
+            "label": "H5"
+          },
+          {
+            "value": "h6",
+            "label": "H6"
+          }
+        ],
+        "label": "Heading Size"
+      },
+      {
+        "type": "header",
+        "content": "Other"
+      },
+      {
+        "type": "select",
+        "id": "loading",
+        "label": "Loading effect",
+        "default": "grow",
+        "options": [
+          {
+            "value": "border",
+            "label": "Border"
+          },
+          {
+            "value": "grow",
+            "label": "Grow"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Favicon"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Image",
+        "info": "Will be scaled down to 32 x 32px"
+      },
+      {
+        "type": "header",
+        "content": "Meta Description"
+      },
+      {
+        "type": "textarea",
+        "id": "meta_description",
+        "label": "Meta Description Homepage",
+        "default": "December Shopify Template with multiple layouts and styles allows you to create different structures and satisfies any specific requirements for different kinds of business.",
+        "info": "A meta description is an element in the HTML code of a web page that provides a brief description of the content of that page."
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_radius_allimg",
+        "label": "Enable Radius Image",
+        "default": false
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Theme color"
+      },
+      {
+        "type": "color",
+        "id": "color_primary",
+        "label": "Primary color",
+        "default": "#ad2c34",
+        "info": "Button Background Hover, Link Hover, Button Outline Hover"
+      },
+      {
+        "type": "color",
+        "id": "color_secondary",
+        "label": "Secondary color",
+        "default": "#348a5c",
+        "info": "Button Underline Hover"
+      },
+      {
+        "type": "header",
+        "content": "Page"
+      },
+      {
+        "type": "color",
+        "id": "color_body_bg",
+        "label": "Page background",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "color_content_bg",
+        "label": "Content background",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "color_body_headings",
+        "label": "Heading text",
+        "default": "#1a1a1a"
+      },
+      {
+        "type": "color",
+        "id": "color_sub",
+        "label": "Sub Top text",
+        "default": "#030303"
+      },
+      {
+        "type": "color",
+        "id": "color_body_text",
+        "label": "Body text",
+        "default": "#666"
+      },
+      {
+        "type": "header",
+        "content": "Background Item Product"
+      },
+      {
+        "type": "color",
+        "id": "item_product_bg",
+        "label": "Item Product Background",
+        "default": "#f7f7f7"
+      },
+      {
+        "type": "header",
+        "content": "Button Solid"
+      },
+      {
+        "type": "color",
+        "id": "color_cta",
+        "label": "CTA Button color",
+        "default": "#000000",
+        "info": "Button Solid"
+      },
+      {
+        "type": "color",
+        "id": "color_button_text",
+        "label": "Button text",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "btn_hover_color",
+        "label": "Button text hover",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Button Outline, Underline"
+      },
+      {
+        "type": "color",
+        "id": "btn_color_outline",
+        "label": "Button Outline",
+        "default": "#000000",
+        "info": "Button Outline, Underline"
+      },
+      {
+        "type": "header",
+        "content": "Alert & message"
+      },
+      {
+        "type": "color",
+        "id": "alert_text",
+        "label": "Text",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "alert_bg",
+        "label": "Background",
+        "default": "#000"
+      },
+      {
+        "type": "color",
+        "id": "alert_bd",
+        "label": "Border",
+        "default": "#000"
+      },
+      {
+        "type": "header",
+        "content": "Color Shipping bar"
+      },
+      {
+        "type": "color",
+        "id": "shipping_bar",
+        "label": "Background Shipping Bar",
+        "default": "#343a40"
+      },
+      {
+        "type": "color",
+        "id": "shipping_color",
+        "label": "Color Shipping Bar",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "shipping_active",
+        "label": "Background Shipping Bar Active",
+        "default": "#407c5d"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Custom Font Assets"
+      },
+      {
+        "type": "checkbox",
+        "id": "font_family_custom",
+        "label": " Custom Font ",
+        "info": " Font Heading"
+      },
+      {
+        "type": "checkbox",
+        "id": "font_family_custom_body",
+        "label": " Enable Font 2 body",
+        "default": true,
+        "info": "If disable Font 2 body, Font body is Custom Font Main "
+      },
+      {
+        "type": "header",
+        "content": "Font main"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_family",
+        "label": "Shopify font",
+        "default": "karla_n4"
+      },
+      {
+        "type": "text",
+        "id": "font_family_google",
+        "label": "Google font",
+        "info": "💡 [Find more Google fonts](https://fonts.google.com)",
+        "default": "Staatliches"
+      },
+      {
+        "type": "paragraph",
+        "content": "💡 Set blank to use Shopify font"
+      },
+      {
+        "type": "header",
+        "content": "Font 2"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_family2",
+        "label": "Shopify font",
+        "default": "unica_one_n4"
+      },
+      {
+        "type": "text",
+        "id": "font_family2_google",
+        "label": "Google font",
+        "info": "💡 [Find more Google fonts](https://fonts.google.com)",
+        "default": "Staatliches"
+      },
+      {
+        "type": "paragraph",
+        "content": "💡 Set blank to use Shopify font"
+      },
+      {
+        "type": "header",
+        "content": "------------- Title slideshow "
+      },
+      {
+        "type": "range",
+        "id": "slide_font_size",
+        "label": "Title slideshow  Font Size",
+        "max": 100,
+        "min": 12,
+        "step": 1,
+        "unit": " px",
+        "default": 90
+      },
+      {
+        "type": "range",
+        "id": "slide_font_size_mobile",
+        "label": "Title slideshow  Font Size Mobile",
+        "max": 100,
+        "min": 12,
+        "step": 1,
+        "unit": " px",
+        "default": 32
+      },
+      {
+        "type": "select",
+        "id": "slide_font_weight",
+        "label": "Title slideshow  Font Weight",
+        "default": "400",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "slide_font_transform",
+        "label": "Slide Font Transform",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "capitalize",
+            "label": "Capitalize"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          },
+          {
+            "value": "lowercase",
+            "label": "Lowercase"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "slide_font_lineheight",
+        "label": "Title slideshow  Line Height",
+        "default": "1.2"
+      },
+      {
+        "type": "text",
+        "id": "slide_font_spacing",
+        "label": "Title slideshow  Spacing",
+        "default": "0"
+      },
+      {
+        "type": "header",
+        "content": "------------- H1"
+      },
+      {
+        "type": "range",
+        "id": "h1_font_size",
+        "label": "H1 Font Size",
+        "max": 90,
+        "min": 12,
+        "step": 1,
+        "unit": " px",
+        "default": 68
+      },
+      {
+        "type": "range",
+        "id": "h1_font_size_mobile",
+        "label": "H1 Font Size Mobile",
+        "max": 90,
+        "min": 12,
+        "step": 1,
+        "unit": " px",
+        "default": 32
+      },
+      {
+        "type": "select",
+        "id": "h1_font_weight",
+        "label": "H1 Font Weight",
+        "default": "300",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "h1_font_transform",
+        "label": "H1 Font Transform",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "capitalize",
+            "label": "Capitalize"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          },
+          {
+            "value": "lowercase",
+            "label": "Lowercase"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "h1_font_lineheight",
+        "label": "H1 Line Height",
+        "default": "1.2"
+      },
+      {
+        "type": "text",
+        "id": "h1_font_spacing",
+        "label": "H1 Spacing",
+        "default": "0"
+      },
+      {
+        "type": "header",
+        "content": "------------- H2"
+      },
+      {
+        "type": "range",
+        "id": "h2_font_size",
+        "label": "H2 Font Size",
+        "max": 90,
+        "min": 12,
+        "step": 1,
+        "unit": " px",
+        "default": 60
+      },
+      {
+        "type": "range",
+        "id": "h2_font_size_mobile",
+        "label": "H2 Font Size Mobile",
+        "max": 90,
+        "min": 12,
+        "step": 1,
+        "unit": " px",
+        "default": 26
+      },
+      {
+        "type": "select",
+        "id": "h2_font_weight",
+        "label": "H2 Font Weight",
+        "default": "300",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "h2_font_transform",
+        "label": "H2 Font Transform",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "capitalize",
+            "label": "Capitalize"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          },
+          {
+            "value": "lowercase",
+            "label": "Lowercase"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "h2_font_lineheight",
+        "label": "H2 Line Height",
+        "default": "1.2"
+      },
+      {
+        "type": "text",
+        "id": "h2_font_spacing",
+        "label": "H2 Spacing",
+        "default": "0"
+      },
+      {
+        "type": "header",
+        "content": "------------- H3"
+      },
+      {
+        "type": "range",
+        "id": "h3_font_size",
+        "label": "H3 Font Size",
+        "max": 90,
+        "min": 12,
+        "step": 1,
+        "unit": " px",
+        "default": 36
+      },
+      {
+        "type": "range",
+        "id": "h3_font_size_mobile",
+        "label": "H3 Font Size Mobile",
+        "max": 90,
+        "min": 12,
+        "step": 1,
+        "unit": " px",
+        "default": 20
+      },
+      {
+        "type": "select",
+        "id": "h3_font_weight",
+        "label": "H3 Font Weight",
+        "default": "300",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "h3_font_transform",
+        "label": "H3 Font Transform",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "capitalize",
+            "label": "Capitalize"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          },
+          {
+            "value": "lowercase",
+            "label": "Lowercase"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "h3_font_lineheight",
+        "label": "H3 Line Height",
+        "default": "1.2"
+      },
+      {
+        "type": "text",
+        "id": "h3_font_spacing",
+        "label": "H3 Spacing",
+        "default": "0"
+      },
+      {
+        "type": "header",
+        "content": "------------- H4"
+      },
+      {
+        "type": "range",
+        "id": "h4_font_size",
+        "label": "H4 Font Size",
+        "max": 90,
+        "min": 12,
+        "step": 1,
+        "unit": " px",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "h4_font_size_mobile",
+        "label": "H4 Font Size Mobile",
+        "max": 90,
+        "min": 12,
+        "step": 1,
+        "unit": " px",
+        "default": 18
+      },
+      {
+        "type": "select",
+        "id": "h4_font_weight",
+        "label": "H4 Font Weight",
+        "default": "400",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "h4_font_transform",
+        "label": "H4 Font Transform",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "capitalize",
+            "label": "Capitalize"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          },
+          {
+            "value": "lowercase",
+            "label": "Lowercase"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "h4_font_lineheight",
+        "label": "H4 Line Height",
+        "default": "1.2"
+      },
+      {
+        "type": "text",
+        "id": "h4_font_spacing",
+        "label": "H4 Spacing",
+        "default": "0"
+      },
+      {
+        "type": "header",
+        "content": "------------- H5"
+      },
+      {
+        "type": "range",
+        "id": "h5_font_size",
+        "label": "H5 Font Size",
+        "max": 90,
+        "min": 12,
+        "step": 1,
+        "unit": " px",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "h5_font_size_mobile",
+        "label": "H5 Font Size Mobile",
+        "max": 90,
+        "min": 12,
+        "step": 1,
+        "unit": " px",
+        "default": 16
+      },
+      {
+        "type": "select",
+        "id": "h5_font_weight",
+        "label": "H5 Font Weight",
+        "default": "500",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "h5_font_transform",
+        "label": "H5 Font Transform",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "capitalize",
+            "label": "Capitalize"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          },
+          {
+            "value": "lowercase",
+            "label": "Lowercase"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "h5_font_lineheight",
+        "label": "H5 Line Height",
+        "default": "1.2"
+      },
+      {
+        "type": "text",
+        "id": "h5_font_spacing",
+        "label": "H5 Spacing",
+        "default": "0"
+      },
+      {
+        "type": "header",
+        "content": "------------- H6"
+      },
+      {
+        "type": "range",
+        "id": "h6_font_size",
+        "label": "H6 Font Size",
+        "max": 90,
+        "min": 12,
+        "step": 1,
+        "unit": " px",
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "h6_font_size_mobile",
+        "label": "H6 Font Size Mobile",
+        "max": 90,
+        "min": 12,
+        "step": 1,
+        "unit": " px",
+        "default": 14
+      },
+      {
+        "type": "select",
+        "id": "h6_font_weight",
+        "label": "H6 Font Weight",
+        "default": "600",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "h6_font_transform",
+        "label": "H6 Font Transform",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "capitalize",
+            "label": "Capitalize"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          },
+          {
+            "value": "lowercase",
+            "label": "Lowercase"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "h6_font_lineheight",
+        "label": "H6 Line Height",
+        "default": "1.2"
+      },
+      {
+        "type": "text",
+        "id": "h6_font_spacing",
+        "label": "H6 Spacing",
+        "default": "0"
+      },
+      {
+        "type": "header",
+        "content": "Font Body"
+      },
+      {
+        "type": "select",
+        "id": "font_weight_body",
+        "label": "Font Weight Body",
+        "default": "400",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "base_size",
+        "label": "Size",
+        "max": 20,
+        "min": 12,
+        "step": 1,
+        "unit": " px",
+        "default": 14
+      },
+      {
+        "type": "text",
+        "id": "body_font_lineheight",
+        "label": "Body Line Height",
+        "default": "1.6"
+      },
+      {
+        "type": "header",
+        "content": "Font Title Product"
+      },
+      {
+        "type": "select",
+        "id": "font_family_product",
+        "label": "Font Family Product",
+        "default": "--g-font-1",
+        "options": [
+          {
+            "value": "--g-font-1",
+            "label": "Heading"
+          },
+          {
+            "value": "--g-font-2",
+            "label": "Body"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "font_weight_product",
+        "label": "Font Weight Product",
+        "default": "400",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "font_transform_product",
+        "label": "Font Transform Product",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "capitalize",
+            "label": "Capitalize"
+          },
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          },
+          {
+            "value": "lowercase",
+            "label": "Lowercase"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "font_size_product",
+        "label": "Font Size Product",
+        "max": 20,
+        "min": 12,
+        "step": 1,
+        "unit": " px",
+        "default": 20
+      },
+      {
+        "type": "range",
+        "id": "letter_spacing_product",
+        "label": "Letter Spacing Product",
+        "max": 1,
+        "min": 0,
+        "step": 0.1,
+        "unit": " em",
+        "default": 0
+      },
+      {
+        "type": "text",
+        "id": "font_lineheight_product",
+        "label": "Line Height Product",
+        "default": "1.6"
+      },
+      {
+        "type": "header",
+        "content": "Font SubTop"
+      },
+      {
+        "type": "select",
+        "id": "font_weight_sub",
+        "label": "Font Weight Subtop",
+        "default": "600",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "base_size_sup",
+        "label": "Size",
+        "max": 20,
+        "min": 10,
+        "step": 1,
+        "unit": " px",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "letter_spacing_sub",
+        "label": "Letter Spacing",
+        "max": 1,
+        "min": 0,
+        "step": 0.1,
+        "unit": " em",
+        "default": 0.3
+      }
+    ]
+  },
+  {
+    "name": "Menu Mobile",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "main_linklist",
+        "label": "Menu Mobile",
+        "default": "main-menu"
+      },
+      {
+        "type": "checkbox",
+        "id": "login_enable",
+        "label": "Enable Login",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "lang_enable",
+        "label": "Enable Languages",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "currency_enable",
+        "label": "Enable Currency",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "currency_enable_image",
+        "label": "Enable Image Currency",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "selector_enable_name",
+        "label": "Enable Country Name",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "mobile_phone",
+        "label": "Mobile Phone",
+        "default": "+012345678"
+      },
+      {
+        "type": "text",
+        "id": "mobile_email",
+        "label": "Mobile Email",
+        "default": "mailsupport@gmail.com"
+      }
+    ]
+  },
+  {
+    "name": "Breadcrumb",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Breadcrumb"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_breadcrumb",
+        "label": "Enable Breadcrumbs",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_post",
+        "label": "Enable Blog Post",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_article",
+        "label": "Enable Article",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_collection",
+        "label": "Enable Collection page",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_product",
+        "label": "Enable Product page",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_customer",
+        "label": "Enable Customer page",
+        "default": true
+      },
+      {
+        "type": "textarea",
+        "id": "page_breadcrumb",
+        "label": "Disable breadcrumb customize page",
+        "info": "Separate by a comma (Example: \"about-us,contact\")"
+      },
+      {
+        "type": "header",
+        "content": "--* Breadcrumbs *--"
+      },
+      {
+        "type": "color",
+        "id": "color_breadcrumbs",
+        "label": "Color Breadcrumbs",
+        "default": "#666666"
+      },
+      {
+        "type": "color",
+        "id": "color_breadcrumbs_active",
+        "label": "Color Breadcrumbs Active",
+        "default": "#222222"
+      },
+      {
+        "type": "color",
+        "id": "border_breadcrumb",
+        "label": "Border Top",
+        "default": "#f4efe9"
+      },
+      {
+        "type": "color",
+        "id": "bg_breadcrumb",
+        "label": "Background Breadcrumbs",
+        "default": "#f4efe9"
+      },
+      {
+        "type": "select",
+        "id": "align_bread",
+        "label": "Alignment Title Breadcrumbs ",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ],
+        "default": "left"
+      },
+      {
+        "type": "select",
+        "id": "layout_bread",
+        "label": "Layout Breadcrumbs",
+        "options": [
+          {
+            "value": "container",
+            "label": "Container"
+          },
+          {
+            "value": "container-fluid",
+            "label": "Container Fluid"
+          }
+        ],
+        "default": "container"
+      }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Social sharing image"
+      },
+      {
+        "type": "image_picker",
+        "id": "share_image",
+        "label": "Image",
+        "info": "Shown when sharing a link on social media. [Learn more](https://help.shopify.com/manual/using-themes/troubleshooting/showing-social-media-thumbnail-images/) about image thumbnails."
+      },
+      {
+        "type": "header",
+        "content": "Accounts"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook",
+        "info": "https://www.facebook.com/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "Twitter",
+        "info": "https://twitter.com/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest",
+        "info": "https://www.pinterest.com/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram",
+        "info": "https://instagram.com/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_tumblr_link",
+        "label": "Tumblr",
+        "info": "http://shopify.tumblr.com"
+      },
+      {
+        "type": "text",
+        "id": "social_snapchat_link",
+        "label": "Snapchat",
+        "info": "https://www.snapchat.com/add/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "YouTube",
+        "info": "https://www.youtube.com/user/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_vimeo_link",
+        "label": "Vimeo",
+        "info": "https://vimeo.com/shopify"
+      },
+      {
+        "type": "text",
+        "id": "social_tiktok_link",
+        "label": "Tiktok",
+        "info": "https://tiktok.com/shopify"
+      },
+      {
+        "type": "header",
+        "content": "Sharing"
+      },
+      {
+        "type": "checkbox",
+        "id": "share_facebook",
+        "label": "Share on Facebook",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_twitter",
+        "label": "Tweet on Twitter",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_pinterest",
+        "label": "Pin on Pinterest",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Sidebar blog pages",
+    "settings": [
+      {
+        "type": "header",
+        "content": "HTML"
+      },
+      {
+        "type": "text",
+        "id": "sidebar_html_title_top",
+        "default": "Something here",
+        "label": "Title"
+      },
+      {
+        "type": "textarea",
+        "id": "sidebar_html_top",
+        "label": "HTML code"
+      },
+      {
+        "type": "header",
+        "content": "Tags"
+      },
+      {
+        "type": "checkbox",
+        "id": "sidebar_tag",
+        "default": true,
+        "label": "Show tags"
+      },
+      {
+        "type": "header",
+        "content": "Recent Post"
+      },
+      {
+        "type": "checkbox",
+        "id": "sidebar_post",
+        "default": true,
+        "label": "Enable"
+      },
+      {
+        "type": "text",
+        "id": "sidebar_post_title",
+        "default": "Recent Post",
+        "label": "Title"
+      },
+      {
+        "type": "range",
+        "id": "sidebar_post_limit",
+        "min": 2,
+        "max": 6,
+        "step": 1,
+        "label": "Limit",
+        "default": 5
+      },
+      {
+        "type": "header",
+        "content": "HTML"
+      },
+      {
+        "type": "text",
+        "id": "sidebar_html_title",
+        "default": "Something here",
+        "label": "Title"
+      },
+      {
+        "type": "textarea",
+        "id": "sidebar_html",
+        "label": "HTML code"
+      }
+    ]
+  },
+  {
+    "name": "Compare & Wishlist",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Compare"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_compare",
+        "label": "Enable"
+      },
+      {
+        "type": "header",
+        "content": "Wishlist"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_wishlsit",
+        "label": "Enable"
+      },
+      {
+        "type": "page",
+        "id": "page_wishlist",
+        "label": "Wishlist page",
+        "info": "[Create new page](/admin/pages/new) and select template suffix is page.wishlist"
+      },
+      {
+        "type": "header",
+        "content": "Text Popup Newsletter"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_popuptext",
+        "default": true,
+        "label": "Enable"
+      },
+      {
+        "type": "text",
+        "id": "enable_popuptext_new",
+        "default": "Get 10% Off",
+        "label": "Text Popup Newsletter "
+      }
+    ]
+  },
+  {
+    "name": "Search Page",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Product suggestions"
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_enabled",
+        "default": true,
+        "label": "Enable product suggestions"
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_vendor",
+        "default": false,
+        "label": "Enable vendor"
+      },
+      {
+        "type": "checkbox",
+        "id": "predictive_search_show_price",
+        "default": false,
+        "label": "Show price",
+        "info": "Visible when product suggestions enabled."
+      }
+    ]
+  },
+  {
+    "name": "Product Card",
+    "settings": [
+      {
+        "type": "select",
+        "id": "productgrid",
+        "label": "Item Hover Style ",
+        "default": "product-7",
+        "options": [
+          {
+            "value": "product-1",
+            "label": "Style - 1"
+          },
+          {
+            "value": "product-2",
+            "label": "Style - 2"
+          },
+          {
+            "value": "product-3",
+            "label": "Style - 3"
+          },
+          {
+            "value": "product-4",
+            "label": "Style - 4"
+          },
+          {
+            "value": "product-5",
+            "label": "Style - 5"
+          },
+          {
+            "value": "product-6",
+            "label": "Style - 6"
+          },
+          {
+            "value": "product-7",
+            "label": "Style - 7"
+          },
+          {
+            "value": "product-8",
+            "label": "Style - 8"
+          },
+          {
+            "value": "product-9",
+            "label": "Style - 9"
+          },
+          {
+            "value": "product-10",
+            "label": "Style - 10"
+          },
+          {
+            "value": "product-11",
+            "label": "Style - 11"
+          },
+          {
+            "value": "product-12",
+            "label": "Style - 12"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "size_image_grid",
+        "label": "Size Image Product Grid",
+        "default": "auto",
+        "options": [
+          {
+            "value": "auto",
+            "label": "Natural"
+          },
+          {
+            "value": "square",
+            "label": "Square (1:1)"
+          },
+          {
+            "value": "landscape",
+            "label": "Landscape (4:3)"
+          },
+          {
+            "value": "portrait",
+            "label": "Portrait (2:3)"
+          },
+          {
+            "value": "wide",
+            "label": "Wide (16:9)"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_type",
+        "label": "Enable Vendor Product",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "t_product",
+        "label": "Title Uppercase",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "second_image",
+        "label": "Enable Second Image",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_option",
+        "label": "Enable Information Variant",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "e_swatch",
+        "label": "Enable Swatch",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "swatch_color",
+        "label": "Enable Swatch Color",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "swatch_color_circle",
+        "label": "Circle Swatch Color",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_countdown_card",
+        "label": "Enable Countdown",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_bg_info",
+        "label": "Enable Background Info",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_border_item",
+        "label": "Enable Border Item Product",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "🏷️ Config label"
+      },
+      {
+        "type": "range",
+        "id": "menu_label_size",
+        "min": 0,
+        "max": 24,
+        "step": 1,
+        "label": "Font size",
+        "unit": " px",
+        "default": 12
+      },
+      {
+        "type": "range",
+        "id": "menu_label_space",
+        "min": 0,
+        "max": 1,
+        "step": 0.1,
+        "label": "Spacing",
+        "unit": " em",
+        "default": 0.1
+      },
+      {
+        "type": "checkbox",
+        "id": "txtuppercase",
+        "default": false,
+        "label": "Enable Text Uppercase"
+      },
+      {
+        "type": "checkbox",
+        "id": "e_rotatelabel",
+        "default": true,
+        "label": "Enable Rotate Label"
+      },
+      {
+        "type": "select",
+        "id": "style_label",
+        "label": "Style Label",
+        "default": "rectangular_label",
+        "options": [
+          {
+            "value": "rectangular_label",
+            "label": "Rectangular"
+          },
+          {
+            "value": "square_label",
+            "label": "Square"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Position Label"
+      },
+      {
+        "type": "range",
+        "id": "top_label",
+        "min": 0,
+        "max": 24,
+        "step": 1,
+        "label": "Top Label",
+        "unit": " px",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "left_label",
+        "min": 0,
+        "max": 24,
+        "step": 1,
+        "label": "Left Label",
+        "unit": " px",
+        "default": 10
+      },
+      {
+        "type": "range",
+        "id": "radius_label",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "label": "Border Radius Label",
+        "unit": " px",
+        "default": 25
+      },
+      {
+        "type": "header",
+        "content": "🏷️ New label"
+      },
+      {
+        "type": "checkbox",
+        "id": "new_label_enable",
+        "default": true,
+        "label": "Enable"
+      },
+      {
+        "type": "text",
+        "id": "new_label_text",
+        "default": "New",
+        "label": "Text"
+      },
+      {
+        "type": "color",
+        "id": "new_label_bg",
+        "default": "#34bf49",
+        "label": "Background"
+      },
+      {
+        "type": "color",
+        "id": "new_label_cl",
+        "default": "#ffffff",
+        "label": "Text"
+      },
+      {
+        "type": "range",
+        "id": "new_label_day",
+        "min": 1,
+        "max": 100,
+        "step": 1,
+        "label": "Number of days for which the product is considered 'new'",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "🏷️ Sale label"
+      },
+      {
+        "type": "checkbox",
+        "id": "sale_label_enable",
+        "default": true,
+        "label": "Enable"
+      },
+      {
+        "type": "text",
+        "id": "sale_label_text",
+        "default": "On Sale",
+        "label": "Text"
+      },
+      {
+        "type": "select",
+        "id": "tagsale",
+        "label": "Tag Sale Product",
+        "default": "percent",
+        "options": [
+          {
+            "value": "percent",
+            "label": "%"
+          },
+          {
+            "value": "txt",
+            "label": "Text"
+          },
+          {
+            "value": "txtandnumber",
+            "label": "Number and Text"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "sale_label_bg",
+        "default": "#eb7025",
+        "label": "Background"
+      },
+      {
+        "type": "color",
+        "id": "sale_label_cl",
+        "default": "#ffffff",
+        "label": "Text"
+      },
+      {
+        "type": "header",
+        "content": "Sale Label Product Detail"
+      },
+      {
+        "type": "color",
+        "id": "sale_label_bg_product",
+        "default": "#d73f0f",
+        "label": "Background  "
+      },
+      {
+        "type": "color",
+        "id": "sale_label_cl_product",
+        "default": "#ffffff",
+        "label": "Text"
+      },
+      {
+        "type": "header",
+        "content": "🏷️ Custom label 1"
+      },
+      {
+        "type": "checkbox",
+        "id": "label_e1",
+        "default": true,
+        "label": "Enable Custom Tag 1"
+      },
+      {
+        "type": "text",
+        "id": "label_text1",
+        "default": "Tag1",
+        "label": "Text Custom Tag 1"
+      },
+      {
+        "type": "color",
+        "id": "label_bg1",
+        "default": "#eb7025",
+        "label": "Background"
+      },
+      {
+        "type": "color",
+        "id": "label_cl1",
+        "default": "#ffffff",
+        "label": "Text Color"
+      },
+      {
+        "type": "header",
+        "content": "🏷️ Custom label 2"
+      },
+      {
+        "type": "checkbox",
+        "id": "label_e2",
+        "default": true,
+        "label": "Enable Custom Tag 2"
+      },
+      {
+        "type": "text",
+        "id": "label_text2",
+        "default": "Tag1",
+        "label": "Text Custom Tag 2"
+      },
+      {
+        "type": "color",
+        "id": "label_bg2",
+        "default": "#eb7025",
+        "label": "Background"
+      },
+      {
+        "type": "color",
+        "id": "label_cl2",
+        "default": "#ffffff",
+        "label": "Text Color"
+      },
+      {
+        "type": "header",
+        "content": "🏷️ Custom label 3"
+      },
+      {
+        "type": "checkbox",
+        "id": "label_e3",
+        "default": true,
+        "label": "Enable Custom Tag 3"
+      },
+      {
+        "type": "text",
+        "id": "label_text3",
+        "default": "Tag1",
+        "label": "Text Custom Tag 3"
+      },
+      {
+        "type": "color",
+        "id": "label_bg3",
+        "default": "#eb7025",
+        "label": "Background"
+      },
+      {
+        "type": "color",
+        "id": "label_cl3",
+        "default": "#ffffff",
+        "label": "Text Color"
+      },
+      {
+        "type": "header",
+        "content": "=== Sold Out"
+      },
+      {
+        "type": "color",
+        "id": "sold_bg",
+        "default": "#FF9551",
+        "label": "Background Sold Out"
+      },
+      {
+        "type": "color",
+        "id": "sold_cl",
+        "default": "#ffffff",
+        "label": "Text Sold Out"
+      }
+    ]
+  },
+  {
+    "name": "Product Generate",
+    "settings": [
+      {
+        "type": "text",
+        "id": "contain_color",
+        "default": "Color",
+        "label": "Contains the Color 1"
+      },
+      {
+        "type": "text",
+        "id": "contain_color_2",
+        "default": "Setting",
+        "label": "Contains the Color 2"
+      }
+    ]
+  },
+  {
+    "name": "Quick View 👁️",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "qv_box",
+        "label": "Enable QuickView",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "select_product_option_display",
+        "label": "Display Variant",
+        "default": "dropdown",
+        "options": [
+          {
+            "value": "dropdown",
+            "label": "Dropdown"
+          },
+          {
+            "value": "list",
+            "label": "List"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "qv_des",
+        "label": "Enable Description",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "qv_sku",
+        "label": "Enable SKU",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "qv_type",
+        "label": "Enable Type",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "qv_vendor",
+        "label": "Enable Vendor",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Variant Color"
+      },
+      {
+        "type": "checkbox",
+        "id": "qv_variant",
+        "label": "Enable Variant Color",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "type_color",
+        "label": "Type Color",
+        "default": "circle",
+        "options": [
+          {
+            "value": "circle",
+            "label": "Circle"
+          },
+          {
+            "value": "square",
+            "label": "Square"
+          },
+          {
+            "value": "square-text",
+            "label": "Square Color Text"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Button & Input",
+    "settings": [
+      {
+        "type": "header",
+        "content": "--- Button"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_button_hover",
+        "label": "Enable Btn Hover Animation",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_button_shadow",
+        "label": "Enable Btn Shadow",
+        "default": false
+      },
+      {
+        "type": "color",
+        "id": "btn_shadow_color",
+        "label": "Color Btn Shadow",
+        "default": "#000000",
+        "info": "Style Box Shadow"
+      },
+      {
+        "type": "select",
+        "id": "text_transform_btn",
+        "label": "Text Transform",
+        "default": "uppercase",
+        "options": [
+          {
+            "value": "uppercase",
+            "label": "Uppercase"
+          },
+          {
+            "value": "capitalize",
+            "label": "Capitalize"
+          },
+          {
+            "value": "inherit",
+            "label": "Inherit"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "font_family_button",
+        "label": "Font Family",
+        "default": "--g-font-2",
+        "options": [
+          {
+            "value": "--g-font-1",
+            "label": "Heading"
+          },
+          {
+            "value": "--g-font-2",
+            "label": "Body"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "font_weight_button",
+        "label": "Font Weight",
+        "default": "600",
+        "options": [
+          {
+            "value": "300",
+            "label": "Light"
+          },
+          {
+            "value": "400",
+            "label": "Normal"
+          },
+          {
+            "value": "500",
+            "label": "Medium"
+          },
+          {
+            "value": "600",
+            "label": "Semi"
+          },
+          {
+            "value": "700",
+            "label": "Bold"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "base_size_button",
+        "label": "Size Button",
+        "max": 20,
+        "min": 10,
+        "step": 1,
+        "unit": " px",
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "letter_spacing_button",
+        "label": "Letter Spacing Button",
+        "max": 1,
+        "min": 0,
+        "step": 0.1,
+        "unit": " em",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "border_radius_btn",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "unit": " px",
+        "label": "Border Radius Button",
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "padding_vertical_btn",
+        "min": 0,
+        "max": 32,
+        "step": 1,
+        "unit": " px",
+        "label": "Padding Vertical",
+        "default": 11
+      },
+      {
+        "type": "range",
+        "id": "padding_hoz_btn",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": " px",
+        "label": "Padding Horizontal",
+        "default": 30
+      },
+      {
+        "type": "header",
+        "content": "--- Button Second (Bottom Line)"
+      },
+      {
+        "type": "range",
+        "id": "height_border_btn",
+        "min": 0,
+        "max": 5,
+        "step": 1,
+        "label": "Height Border Bottom",
+        "default": 2
+      },
+      {
+        "type": "header",
+        "content": "--- Input"
+      },
+      {
+        "type": "color",
+        "id": "input_bg",
+        "label": "Background Input "
+      },
+      {
+        "type": "color",
+        "id": "input_border",
+        "label": "Border Input",
+        "default": "#dee2e6"
+      },
+      {
+        "type": "range",
+        "id": "input_height",
+        "min": 32,
+        "max": 60,
+        "step": 1,
+        "unit": " px",
+        "label": "Height Input",
+        "default": 48
+      },
+      {
+        "type": "range",
+        "id": "input_round",
+        "min": 0,
+        "max": 40,
+        "step": 1,
+        "unit": " px",
+        "label": "Radius Input",
+        "default": 0
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Style Cart"
+      },
+      {
+        "type": "select",
+        "id": "svg_cart",
+        "label": "Icon Cart",
+        "default": "cart-1",
+        "options": [
+          {
+            "value": "cart-1",
+            "label": "Icon Cart 1"
+          },
+          {
+            "value": "cart-2",
+            "label": "Icon Cart 2"
+          },
+          {
+            "value": "cart-3",
+            "label": "Icon Cart 3"
+          },
+          {
+            "value": "cart-4",
+            "label": "Icon Cart 4"
+          },
+          {
+            "value": "cart-5",
+            "label": "Icon Cart 5"
+          },
+          {
+            "value": "cart-6",
+            "label": "Icon Cart 6"
+          },
+          {
+            "value": "cart-7",
+            "label": "Icon Cart 7"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "cartdraw",
+        "label": "Cart Drawer",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "e_notecart",
+        "label": "Enable Order Note",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "e_upsellcart",
+        "label": "Enable Upsell Cart",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "title_upsell",
+        "label": "Title",
+        "default": "You may also like"
+      },
+      {
+        "type": "product_list",
+        "id": "product_list",
+        "label": "Products",
+        "limit": 8,
+        "info": "Add a product reference (list of products)"
+      },
+      {
+        "type": "header",
+        "content": "🎁 Complimentary Gift"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_complimentary_gift",
+        "label": "Enable Complimentary Gift",
+        "default": true
+      },
+      {
+        "type": "product",
+        "id": "complimentary_gift_product",
+        "label": "Complimentary Gift Product"
+      },
+      {
+        "type": "product",
+        "id": "complimentary_gift_product_2",
+        "label": "Complimentary Gift Product 2"
+      },
+      {
+        "type": "text",
+        "id": "complimentary_gift_amount",
+        "label": "Gift Minimum Amount",
+        "default": "1000"
+      },
+      {
+        "type": "text",
+        "id": "gift_progress_text",
+        "label": "Progress Text",
+        "default": "Spend [amount] more to unlock Complimentary Gift."
+      },
+      {
+        "type": "text",
+        "id": "gift_success_text",
+        "label": "Success Text",
+        "default": "🎉 Congratulations! You unlocked Complimentary Gift."
+      },
+      {
+        "type": "header",
+        "content": "🏷 Coupon Code"
+      },
+      {
+        "type": "checkbox",
+        "id": "coupon_code_enable",
+        "label": "Enable Coupon Code",
+        "default": true,
+        "info": "Coupon Code will auto add in Checkout Page"
+      },
+      {
+        "type": "text",
+        "id": "coupon_code_title",
+        "label": "Title",
+        "default": "List Coupon"
+      },
+      {
+        "type": "richtext",
+        "id": "coupon_code_content",
+        "label": "Content",
+        "default": "<p>Discount Code</p>"
+      },
+      {
+        "type": "header",
+        "content": "🚚 Free shipping"
+      },
+      {
+        "type": "checkbox",
+        "id": "free_shipping_enable",
+        "label": "Enable",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "free_shipping_value",
+        "min": 0,
+        "max": 1000,
+        "step": 10,
+        "label": "Minimum order value to be free shipping",
+        "default": 100
+      },
+      {
+        "type": "text",
+        "id": "free_first",
+        "default": "Spend",
+        "label": "First Text Price"
+      },
+      {
+        "type": "text",
+        "id": "free_end",
+        "default": "for <b>FREE SHIPPING</b>",
+        "label": "End Text Price"
+      },
+      {
+        "type": "text",
+        "id": "free_shipping_text",
+        "default": "Your order is free delivery !",
+        "label": "Text"
+      },
+      {
+        "type": "header",
+        "content": "📦 Shipping Rates Calculator"
+      },
+      {
+        "type": "checkbox",
+        "id": "shipping_calculator",
+        "label": "Enable",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "shipping_calculator_heading",
+        "label": "Heading text",
+        "default": "Get shipping estimates"
+      },
+      {
+        "type": "text",
+        "id": "shipping_calculator_default_country",
+        "label": "Default country selection",
+        "default": "United States"
+      },
+      {
+        "type": "paragraph",
+        "content": "If your customer is logged-in, the country in his default shipping address will be selected. If you are not sure about the  spelling to use here, refer to the first checkout page."
+      },
+      {
+        "type": "text",
+        "id": "shipping_calculator_submit_button_label",
+        "label": "Submit button label",
+        "default": "Calculate shipping"
+      },
+      {
+        "type": "text",
+        "id": "shipping_calculator_submit_button_label_disabled",
+        "label": "Submit button label when calculating",
+        "default": "Calculating..."
+      },
+      {
+        "type": "paragraph",
+        "content": "Do not forget to include the snippet shipping-calculator in your cart.liquid template where you want the shipping calculator to appear. You can get the snippet here: [shipping-calculator.liquid](https://github.com/carolineschnapp/shipping-calculator/blob/master/shipping-calculator.liquid) ."
+      },
+      {
+        "type": "header",
+        "content": "Term Checkbox"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_term",
+        "label": "Enable Checkbox",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "agree_text",
+        "label": "Text before",
+        "default": "I agree with the"
+      },
+      {
+        "type": "text",
+        "id": "terms_and_condition",
+        "label": "Text after",
+        "default": "terms and conditions"
+      },
+      {
+        "type": "url",
+        "id": "terms_link",
+        "label": "Link Term"
+      },
+      {
+        "type": "header",
+        "content": "Safe checkout image"
+      },
+      {
+        "type": "paragraph",
+        "content": "💡 [Find safe checkout image?](http://bit.ly/2ZLhS4V)"
+      },
+      {
+        "type": "image_picker",
+        "id": "safe_checkout_pcart",
+        "label": "Image in popup cart"
+      },
+      {
+        "type": "image_picker",
+        "id": "safe_checkout_cart",
+        "label": "Image in cart page"
+      }
+    ]
+  },
+  {
+    "name": "Whatsapp",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_whatsapp",
+        "label": "Show Whatsapp",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_number",
+        "label": "Please Enter Your Phone Number"
+      },
+      {
+        "type": "text",
+        "id": "whatsapp_msg",
+        "label": "Please Enter Your Msg"
+      }
+    ]
+  },
+  {
+    "name": "Swym Wishlist Product Button",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Button Placement",
+        "info": "We recommend using the Admin App to configure these settings. [Open App](/admin/apps/swym-relay)"
+      },
+      {
+        "type": "select",
+        "id": "swym_button_position",
+        "label": "Select Position",
+        "info": "Choose where the wishlist button appears on your product page. Select 'Custom Placement' to manually specify a location using a CSS selector. [Help](https://help.getswym.com/en/articles/13249541-how-to-find-css-selectors-for-custom-button-placement)",
+        "default": "default",
+        "options": [
+          {
+            "value": "default",
+            "label": "Inline with Product Details"
+          },
+          {
+            "value": "product_image",
+            "label": "Overlay on Product Image"
+          },
+          {
+            "value": "product_title",
+            "label": "Near Product Title"
+          },
+          {
+            "value": "custom",
+            "label": "Custom Placement"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "swym_custom_selector",
+        "label": "Custom Placement Selector",
+        "info": "Enter a CSS selector of the parent element to anchor the button. Only used if Button Position is set to 'Custom' Placement. [Help](https://help.getswym.com/en/articles/13249541-how-to-find-css-selectors-for-custom-button-placement)",
+        "default": "#swym-custom-wishlist-button"
+      },
+      {
+        "type": "header",
+        "content": "Button Appearance",
+        "info": "We recommend using the Admin App to configure these settings. [Open App](/admin/apps/swym-relay)"
+      },
+      {
+        "type": "html",
+        "id": "swym_wishlist_custom_button_before_html",
+        "label": "Add to Wishlist HTML",
+        "info": "Customize the button's appearance for products not yet saved to the wishlist.",
+        "default": "<button class=\"swym-icon-text\" type=\"button\">\n\t<svg class=\"swym-icon\" width=\"20\" height=\"20\" viewbox=\"0 0 24 24\">\n\t\t<path d=\"M19.6706 5.4736C17.6806 3.8336 14.7206 4.1236 12.8906 5.9536L12.0006 6.8436L11.1106 5.9536C9.29063 4.1336 6.32064 3.8336 4.33064 5.4736C2.05064 7.3536 1.93063 10.7436 3.97063 12.7836L11.6406 20.4536C11.8406 20.6536 12.1506 20.6536 12.3506 20.4536L20.0206 12.7836C22.0706 10.7436 21.9506 7.3636 19.6706 5.4736Z\" stroke=\"currentColor\" stroke-width=\"1.75px\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n\t</svg>\n\t<span class=\"swym-custom-btn-txt\">{{WishlistAddCTA}}</span>\n</button>"
+      },
+      {
+        "type": "html",
+        "id": "swym_wishlist_custom_button_after_html",
+        "label": "Added to Wishlist HTML",
+        "info": "Customize the button's appearance for products already in the wishlist.",
+        "default": "<button class=\"swym-icon-text\" type=\"button\">\n\t<svg class=\"swym-icon\" width=\"20\" height=\"20\" viewbox=\"0 0 24 24\">\n\t\t<path d=\"M19.6706 5.4736C17.6806 3.8336 14.7206 4.1236 12.8906 5.9536L12.0006 6.8436L11.1106 5.9536C9.29063 4.1336 6.32064 3.8336 4.33064 5.4736C2.05064 7.3536 1.93063 10.7436 3.97063 12.7836L11.6406 20.4536C11.8406 20.6536 12.1506 20.6536 12.3506 20.4536L20.0206 12.7836C22.0706 10.7436 21.9506 7.3636 19.6706 5.4736Z\" stroke=\"currentColor\" stroke-width=\"1.75px\" fill=\"currentColor\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n\t</svg>\n\t<span class=\"swym-custom-btn-txt\">{{WishlistAddedCTA}}</span>\n</button>"
+      },
+      {
+        "type": "textarea",
+        "id": "swym_wishlist_custom_button_css",
+        "label": "Custom Styling (CSS)",
+        "info": "Modify CSS here to fine-tune the button's design and ensure it matches your theme perfectly.",
+        "default": "/* Base button styles using CSS variables (set by JavaScript) */\n/* Loading state for user interactions */\n.swym-loading .swym-button-content button,\n.swym-loading .swym-button-content [role=\"button\"],\n.swym-loading .swym-button-content .btn,\n.swym-loading .swym-button-content a {\n  opacity: 0.6;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n.swym-button-content > button,\n.swym-button-content > [role=\"button\"],\n.swym-button-content > span,\n.swym-button-content > a {\n  color: #fff;  \n  background: #000;\n  border: 1px solid #000;\n  font-family: inherit;\n  padding: 12px 16px;\n  font-size: 14px;\n  font-weight: normal;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  cursor: pointer;\n  transition: all 0.2s ease;\n  text-align: center;\n  pointer-events: auto;\n  min-height: 45px;\n  width: 100%;\n  letter-spacing: normal;\n}\n\n/* Focus styles for accessibility */\n.swym-button-content button:focus-visible,\n.swym-button-content [role=\"button\"]:focus-visible,\n.swym-button-content .btn:focus-visible,\n.swym-button-content a:focus-visible {\n  outline: 2px solid currentColor;\n  outline-offset: 2px;\n}\n/* Disabled state styles */\n.swym-button-content button:disabled,\n.swym-button-content [role=\"button\"][aria-disabled=\"true\"],\n.swym-button-content .btn:disabled,\n.swym-button-content a[aria-disabled=\"true\"] {\n  opacity: 0.5;\n  cursor: not-allowed;\n  pointer-events: none;\n}\n/* Product image position styling (top-left default) */\n.swym-atw-btn-wrapper-for-img.swym-btn-position-product-img {\n  position: absolute;\n  top: 10px;\n  left: 10px;\n  z-index: 10;\n  width: fit-content!important;\n}\n.swym-custom-pdp-button.swym-btn-position-product-title {\n  width: fit-content;\n}\n.swym-button-content.swym-btn-custom-position {\n  margin-top: 8px;\n} \n.swym-button-content button.swym-icon-text svg {\n  margin-right: 5px;\n}\n/* ACCESSIBILITY IMPROVEMENTS */\n@media (prefers-reduced-motion: reduce) {\n  .swym-button-content,\n  .swym-button-content button,\n  .swym-button-content [role=\"button\"],\n  .swym-button-content .btn,\n  .swym-button-content a {\n    transition: none;\n    animation: none;\n  }  \n  .swym-button-content.swym-initialized button:hover,\n  .swym-button-content.swym-initialized [role=\"button\"]:hover,\n  .swym-button-content.swym-initialized .btn:hover,\n  .swym-button-content.swym-initialized a:hover {\n    transform: none;\n  }\n}\n/* HIGH CONTRAST MODE SUPPORT */\n@media (prefers-contrast: high) {\n  .swym-atw-btn-wrapper-for-img .swym-button-content button,\n  .swym-atw-btn-wrapper-for-img .swym-button-content [role=\"button\"],\n  .swym-atw-btn-wrapper-for-img .swym-button-content .btn,\n  .swym-atw-btn-wrapper-for-img .swym-button-content a {\n    border: 2px solid;\n    background: #fff;\n  }\n}"
+      }
+    ]
+  },
+  {
+    "name": "Swym Wishlist Collections Button",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Configure the wishlist button that appears on collection pages. This button allows customers to add products to their wishlist directly from collection listings. [Help](https://help.getswym.com/en/articles/13712073-customizing-the-advanced-wishlist-button-on-collections-pages)",
+        "info": "We recommend using the Admin App to configure these settings. [Open App](/admin/apps/swym-relay)"
+      },
+      {
+        "type": "checkbox",
+        "id": "swym_advanced_collections_wishlist_enabled",
+        "label": "Enable Quick Save Button",
+        "default": false,
+        "info": "Enable Quick Save Button on Collections Pages"
+      },
+      {
+        "type": "checkbox",
+        "id": "swym_advanced_collections_wishlist_social_count",
+        "label": "Show Social Count",
+        "default": false,
+        "info": "Display the number of times a product has been wishlisted"
+      },
+      {
+        "type": "header",
+        "content": "Button HTML Templates"
+      },
+      {
+        "type": "html",
+        "id": "swym_advanced_collections_wishlist_button_before_html",
+        "label": "Button HTML (Before Adding)",
+        "default": "<button\n  type=\"button\"\n  class=\"swym-advanced-wishlist-collections\"\n  aria-label=\"{{ADD_TO_WISHLIST}}\"\n  aria-pressed=\"false\"\n  style=\"color:{{ICON_COLOR}}; transform:{{ICON_POSITION}};\"\n>\n  <div class=\"swym-advanced-wishlist-collections-social-count\">\n    {{SOCIAL_COUNT}}\n  </div>\n  <svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M19.6706 5.4736C17.6806 3.8336 14.7206 4.1236 12.8906 5.9536L12.0006 6.8436L11.1106 5.9536C9.29063 4.1336 6.32064 3.8336 4.33064 5.4736C2.05064 7.3536 1.93063 10.7436 3.97063 12.7836L11.6406 20.4536C11.8406 20.6536 12.1506 20.6536 12.3506 20.4536L20.0206 12.7836C22.0706 10.7436 21.9506 7.3636 19.6706 5.4736Z\" stroke=\"{{ICON_COLOR}}\" stroke-width=\"{{ICON_WIDTH}}\" fill=\"none\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n  </svg>\n</button>",
+        "info": "Custom HTML for the wishlist button before a product is added. Leave empty to use default"
+      },
+      {
+        "type": "html",
+        "id": "swym_advanced_collections_wishlist_button_after_html",
+        "label": "Button HTML (After Adding)",
+        "default": "<button\n  type=\"button\"\n  class=\"swym-advanced-wishlist-collections\"\n  aria-label=\"{{ADDED_TO_WISHLIST}}\"\n  aria-pressed=\"true\"\n  style=\"color:{{ICON_COLOR}}; transform:{{ICON_POSITION}};\"\n>\n  <div class=\"swym-advanced-wishlist-collections-social-count\">\n    {{SOCIAL_COUNT}}\n  </div>\n  <svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n    <path d=\"M19.6706 5.4736C17.6806 3.8336 14.7206 4.1236 12.8906 5.9536L12.0006 6.8436L11.1106 5.9536C9.29063 4.1336 6.32064 3.8336 4.33064 5.4736C2.05064 7.3536 1.93063 10.7436 3.97063 12.7836L11.6406 20.4536C11.8406 20.6536 12.1506 20.6536 12.3506 20.4536L20.0206 12.7836C22.0706 10.7436 21.9506 7.3636 19.6706 5.4736Z\" stroke=\"{{ICON_COLOR}}\" stroke-width=\"{{ICON_WIDTH}}\" fill=\"{{ICON_COLOR}}\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n  </svg>\n</button>",
+        "info": "Custom HTML for the wishlist button after a product is added. Leave empty to use default"
+      },
+      {
+        "type": "header",
+        "content": "Button Styling"
+      },
+      {
+        "type": "textarea",
+        "id": "swym_advanced_collections_wishlist_button_css",
+        "label": "Button CSS",
+        "default": ".swym-advanced-wishlist-collections-container {\n  position: absolute;\n  top: 0;\n  left: 0;\n  padding: 10px;\n  z-index: 5;\n  cursor: pointer;\n  width: 60px;\n  height: 40px;\n}\n\n.swym-advanced-wishlist-collections,\n.swym-advanced-wishlist-collections svg {\n  cursor: pointer;\n  background: unset;\n  border: unset;\n  display: flex;\n  align-items: center;\n  flex-direction: row-reverse;\n  gap: 5px;\n  color: currentColor;\n  min-width: 24px;\n  min-height: 24px;\n}\n\n.swym-advanced-wishlist-collections svg path {\n  stroke: currentColor;\n}\n\n.swym-advanced-wishlist-collections\n  .swym-advanced-wishlist-collections-social-count {\n  font-size: 14px;\n  font-weight: 500;\n  color: currentColor;\n}\n\n.swym-sr-only {\n  clip: rect(0 0 0 0);\n  clip-path: inset(50%);\n  height: 1px;\n  width: 1px;\n  overflow: hidden;\n  white-space: nowrap;\n  position: absolute;\n}\n",
+        "info": "CSS styles for the wishlist button. Leave empty to use default styles."
+      },
+      {
+        "type": "header",
+        "content": "Theme Integration (Advanced)"
+      },
+      {
+        "type": "text",
+        "id": "swym_advanced_collections_wishlist_product_url_selector",
+        "label": "Product URL Selector",
+        "default": "not_found",
+        "info": "CSS selector to find product links on collection pages. [Help](https://help.getswym.com/en/articles/13712096-finding-selectors-for-advanced-collections-quick-save)"
+      },
+      {
+        "type": "text",
+        "id": "swym_advanced_collections_wishlist_attach_button_selector",
+        "label": "Button Container Selector",
+        "default": "not_found",
+        "info": "CSS selector for where to attach the wishlist button. [Help](https://help.getswym.com/en/articles/13712096-finding-selectors-for-advanced-collections-quick-save)"
+      },
+      {
+        "label": "Button Position on tile",
+        "id": "swym_advanced_collections_wishlist_icon_position",
+        "type": "select",
+        "default": "top-left",
+        "options": [
+          {
+            "value": "top-right",
+            "label": "Top right of the tile"
+          },
+          {
+            "value": "top-left",
+            "label": "Top left of the tile"
+          },
+          {
+            "value": "bottom-left",
+            "label": "Bottom left of the tile"
+          },
+          {
+            "value": "bottom-right",
+            "label": "Bottom right of the tile"
+          }
+        ]
+      },
+      {
+        "label": "Icon Color",
+        "id": "swym_advanced_collections_wishlist_icon_color",
+        "type": "color",
+        "default": "#000000"
+      },
+      {
+        "type": "range",
+        "label": "Icon Thickness",
+        "id": "swym_advanced_collections_wishlist_icon_width",
+        "min": 1,
+        "max": 2.5,
+        "step": 0.1,
+        "unit": "px",
+        "default": 1.7
+      }
+    ]
+  },
+  {
+    "name": "Swym Wishlist Launcher Button",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Configure the wishlist launcher icon that appears in your store header. This icon provides quick access to the wishlist page and can display the count of saved products.",
+        "info": "We recommend using the Admin App to configure these settings. [Open App](/admin/apps/swym-relay)"
+      },
+      {
+        "type": "header",
+        "content": "General Settings"
+      },
+      {
+        "type": "checkbox",
+        "id": "swym_header_icon_enabled",
+        "label": "Enable Header Icon",
+        "default": false,
+        "info": "Enable or disable the wishlist launcher icon in your store header"
+      },
+      {
+        "type": "checkbox",
+        "id": "swym_header_icon_show_count",
+        "label": "Show Wishlist Count",
+        "default": false,
+        "info": "Display the total number of products wishlisted by the customer"
+      },
+      {
+        "type": "header",
+        "content": "Icon HTML Templates"
+      },
+      {
+        "type": "html",
+        "id": "swym_header_icon_custom_html",
+        "label": "Icon HTML",
+        "default": "not_found",
+        "info": "Custom HTML for the wishlist icon. Leave empty to use default"
+      },
+      {
+        "type": "html",
+        "id": "swym_header_icon_count_bubble_html",
+        "label": "Count Bubble HTML",
+        "default": "not_found",
+        "info": "Custom HTML for the count bubble that displays the number of wishlisted items"
+      },
+      {
+        "type": "header",
+        "content": "Icon Styling"
+      },
+      {
+        "type": "textarea",
+        "id": "swym_header_icon_custom_css",
+        "label": "Custom CSS",
+        "default": "not_found",
+        "info": "CSS styles for the header icon. Leave empty to use default styles."
+      },
+      {
+        "type": "header",
+        "content": "Theme Integration (Advanced)"
+      },
+      {
+        "type": "text",
+        "id": "swym_header_icon_selector_desktop",
+        "label": "Desktop Placement Selector",
+        "default": "not_found",
+        "info": "CSS selector for where to attach the icon on desktop view"
+      },
+      {
+        "type": "text",
+        "id": "swym_header_icon_selector_mobile",
+        "label": "Mobile Placement Selector",
+        "default": "not_found",
+        "info": "CSS selector for where to attach the icon on mobile view"
+      },
+    ]
+  },
+]
