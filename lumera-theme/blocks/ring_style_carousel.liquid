@@ -1,514 +1,1331 @@
-{%- comment -%}
-  Ring style U-slider: slides sit on a U-shaped arc (center lowest and largest,
-  sides rise, shrink and tilt). Motion is a rAF spring that only runs while moving;
-  only transform/opacity are animated. Supports drag/swipe, trackpad, keyboard and autoplay.
-{%- endcomment -%}
-{%- assign s = block.settings -%}
-<u-ring-slider
-  class="urs"
-  {{ block.shopify_attributes }}
-  data-autoplay="{{ s.autoplay }}"
-  data-speed="{{ s.autoplay_speed | times: 1000 }}"
-  data-depth="{{ s.curve_depth }}"
-  style="--urs-w:{{ s.desktop_width_percent }}%;--urs-pad:{{ s.section_padding }}px;--urs-text:{{ s.text_color }};--urs-title:{{ s.title_size }}px;--urs-sub:{{ s.subtitle_size }}px;--urs-ptitle:{{ s.product_title_size }}px;--urs-psub:{{ s.product_subtitle_size }}px;--urs-arrow:{{ s.arrow_size }}px;--urs-arrow-bg:{{ s.arrow_bg_color }};--urs-arrow-bd:{{ s.arrow_border_color }};--urs-arrow-ic:{{ s.arrow_icon_color }};--urs-arrow-hover:{{ s.arrow_hover_bg }};--urs-shadow:{{ s.shadow_color }};--urs-shadow-y:{{ s.shadow_offset }}px;--urs-shadow-blur:{{ s.shadow_blur }}px;"
->
-  {%- if s.main_title != blank or s.main_subtitle != blank -%}
-    <div class="urs__head">
-      {%- if s.main_title != blank -%}<h2 class="urs__title">{{ s.main_title | escape }}</h2>{%- endif -%}
-      {%- if s.main_subtitle != blank -%}<p class="urs__sub">{{ s.main_subtitle | escape }}</p>{%- endif -%}
-    </div>
-  {%- endif -%}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
-  <div class="urs__stage" data-stage role="region" aria-roledescription="carousel" aria-label="{{ s.main_title | default: 'Ring styles' | escape }}">
-    {%- assign count = 0 -%}
-    {%- for i in (1..15) -%}
-      {%- liquid
-        assign k_img = 'ring_image_' | append: i
-        assign k_title = 'ring_title_' | append: i
-        assign k_sub = 'ring_subtitle_' | append: i
-        assign k_link = 'ring_link_' | append: i
-        assign img = s[k_img]
-        assign title = s[k_title]
-        assign sub = s[k_sub]
-        assign link = s[k_link]
-        if img == blank and title == blank
-          continue
-        endif
-        assign count = count | plus: 1
-        if count == 1
-          assign first_title = title
-          assign first_sub = sub
-          assign first_link = link
-        endif
-        if link != blank
-          assign tag = 'a'
-        else
-          assign tag = 'div'
-        endif
-      -%}
-      <{{ tag }}
-        class="urs__item{% if count == 1 %} is-active{% endif %}"
-        data-item
-        {% if link != blank %}href="{{ link }}"{% endif %}
-        data-title="{{ title | escape }}"
-        data-sub="{{ sub | escape }}"
-        aria-label="{{ title | escape }}"
-        tabindex="-1"
-        draggable="false"
-      >
-        <span class="urs__media">
-          {%- if img != blank -%}
-            {{ img | image_url: width: 900 | image_tag: widths: '300, 450, 600, 900', sizes: '(min-width: 1200px) 440px, (min-width: 750px) 34vw, 55vw', loading: 'lazy', class: 'urs__img', alt: title, draggable: 'false' }}
-          {%- else -%}
-            {{ 'product-1' | placeholder_svg_tag: 'urs__img' }}
-          {%- endif -%}
-        </span>
-      </{{ tag }}>
-    {%- endfor -%}
-    <span class="urs__floor" aria-hidden="true"></span>
-  </div>
+{% style %}
 
-  {%- if count > 0 -%}
-    <div class="urs__nav">
-      <button type="button" class="urs__arrow" data-prev aria-label="Previous style"{% if count < 2 %} hidden{% endif %}>
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <div class="urs__caption" aria-live="polite">
-        <h3 class="urs__ptitle"><a data-ctitle {% if first_link != blank %}href="{{ first_link }}"{% endif %}>{{ first_title | escape }}</a></h3>
-        <p class="urs__psub" data-csub>{{ first_sub | escape }}</p>
-      </div>
-      <button type="button" class="urs__arrow" data-next aria-label="Next style"{% if count < 2 %} hidden{% endif %}>
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </div>
-  {%- endif -%}
-</u-ring-slider>
+  /* =========================================================
+     MAIN SECTION
+  ========================================================= */
 
-{% stylesheet %}
-  .urs {
-    --urs-size: clamp(180px, 15vw + 140px, 440px);
-    display: block;
-    width: var(--urs-w, 100%);
+  .ai-ring-carousel-{{ ai_gen_id }} {
+    width: {{ block.settings.desktop_width_percent }}%;
     max-width: 100%;
-    margin: 0 auto;
-    padding: var(--urs-pad) 0;
-    color: var(--urs-text);
+    padding: 0px 0;
+    background: #FEF8F1;
+    display: block;
     overflow: hidden;
   }
-  .urs__head { text-align: center; padding: 0 20px; margin-bottom: clamp(4px, 1.5vw, 20px); }
-  .urs__title {
-    margin: 0 0 0.35em;
-    font-size: min(var(--urs-title), calc(18px + 3vw));
+
+
+  /* =========================================================
+     HEADER
+  ========================================================= */
+
+  .ai-ring-carousel-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 0px;
+  }
+
+  .ai-ring-carousel-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 16px;
     font-weight: 400;
-    line-height: 1.15;
-    color: inherit;
+    letter-spacing: 0.5px;
   }
-  .urs__sub {
-    max-width: 760px;
+
+  .ai-ring-carousel-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    color: {{ block.settings.text_color }};
     margin: 0 auto;
-    font-size: min(var(--urs-sub), calc(12px + 0.6vw));
-    line-height: 1.7;
     opacity: 0.8;
+    max-width: 600px;
+    line-height: 1.6;
   }
 
-  .urs__stage {
+
+  /* =========================================================
+     WRAPPER
+  ========================================================= */
+
+  .ai-ring-carousel-wrapper-{{ ai_gen_id }} {
     position: relative;
-    height: calc(var(--urs-size) * 1.35);
-    touch-action: pan-y;
-    user-select: none;
-    -webkit-user-select: none;
-    cursor: grab;
-  }
-  .urs__stage.is-dragging { cursor: grabbing; }
-  .urs__item {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    z-index: 1;
-    width: var(--urs-size);
-    height: var(--urs-size);
-    margin-left: calc(var(--urs-size) / -2);
-    display: block;
-    visibility: hidden;
-    opacity: 0;
-    transform-origin: 50% 50%;
-    will-change: transform, opacity;
-    backface-visibility: hidden;
-    -webkit-user-drag: none;
-    -webkit-tap-highlight-color: transparent;
-    outline: none;
-  }
-  .urs.is-ready .urs__item { visibility: visible; }
-  .urs:not(.is-ready) .urs__item.is-active { top: auto; bottom: 24px; visibility: visible; opacity: 1; }
-  .urs__media {
-    display: block;
     width: 100%;
-    height: 100%;
-    border-radius: 14px;
-    overflow: hidden;
-    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-  }
-  .urs__item.is-active:hover .urs__media { transform: scale(1.04); }
-  .urs__item:focus-visible .urs__media { outline: 2px solid currentColor; outline-offset: 4px; }
-  .urs__img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    pointer-events: none;
-  }
-  .urs__floor {
-    position: absolute;
-    left: 50%;
-    bottom: calc(24px - var(--urs-shadow-y) * 0.6);
-    z-index: 0;
-    width: calc(var(--urs-size) * 0.62);
-    height: calc(var(--urs-shadow-blur) * 0.9);
-    transform: translateX(-50%);
-    border-radius: 50%;
-    background: radial-gradient(closest-side, var(--urs-shadow), transparent);
-    pointer-events: none;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 0 40px;
+    overflow: visible;
   }
 
-  .urs__nav {
+
+  /* =========================================================
+     TRACK
+  ========================================================= */
+
+  .ai-ring-carousel-track-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    height: 430px;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: clamp(12px, 3vw, 36px);
-    margin-top: clamp(8px, 1.5vw, 20px);
-    padding: 0 16px;
+
+    overflow: visible;
+
+    touch-action: pan-y;
+    user-select: none;
+    -webkit-user-select: none;
   }
-  .urs__arrow {
-    flex: none;
-    display: grid;
-    place-items: center;
-    width: var(--urs-arrow);
-    height: var(--urs-arrow);
-    padding: 0;
-    border: 1.5px solid var(--urs-arrow-bd);
-    border-radius: 50%;
-    background: var(--urs-arrow-bg);
-    color: var(--urs-arrow-ic);
+
+
+  /* =========================================================
+     IMAGE ITEM
+     
+     IMPORTANT:
+     Fixed width + height prevents 9th/10th image
+     from becoming huge.
+  ========================================================= */
+
+  .ai-ring-carousel-item-{{ ai_gen_id }} {
+    position: absolute;
+
+    width: 560px;
+    height: 400px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     cursor: pointer;
-    transition: background-color 0.25s, transform 0.25s;
+
+    opacity: 0;
+    pointer-events: none;
+
+    transition:
+      transform 0.55s cubic-bezier(.22,.61,.36,1),
+      opacity 0.35s ease;
+
+    will-change: transform, opacity;
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+
+    transform-style: preserve-3d;
+
+    overflow: hidden;
   }
-  .urs__arrow:hover { background: var(--urs-arrow-hover); transform: scale(1.06); }
-  .urs__arrow:active { transform: scale(0.94); }
-  .urs__arrow:focus-visible { outline: 2px solid var(--urs-arrow-bd); outline-offset: 3px; }
-  .urs__arrow svg { width: 38%; height: 38%; }
-  .urs__caption { width: clamp(150px, 36vw, 320px); min-width: 0; text-align: center; }
-  .urs__ptitle {
-    margin: 0 0 4px;
-    font-size: min(var(--urs-ptitle), calc(15px + 1vw));
-    font-weight: 400;
-    line-height: 1.25;
-    color: inherit;
+
+
+  /* =========================================================
+     ACTIVE IMAGE
+  ========================================================= */
+
+  .ai-ring-carousel-item-{{ ai_gen_id }}.active {
+    opacity: 1;
+    pointer-events: auto;
   }
-  .urs__ptitle a { color: inherit; text-decoration: none; }
-  .urs__ptitle a[href]:hover { text-decoration: underline; text-underline-offset: 4px; }
-  .urs__psub { margin: 0; font-size: min(var(--urs-psub), calc(12px + 0.5vw)); opacity: 0.75; }
 
-  @media (max-width: 699px) {
-    .urs { --urs-size: min(60vw, 300px); }
+
+  /* =========================================================
+     IMAGE
+  ========================================================= */
+
+  .ai-ring-carousel-item-{{ ai_gen_id }} img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+    object-position: center;
+
+    display: block;
+
+    transform: translateZ(0);
+
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
-  @media (max-width: 749px) {
-    .urs__arrow { width: min(var(--urs-arrow), 46px); height: min(var(--urs-arrow), 46px); }
+
+
+  /* =========================================================
+     CONTROLS
+  ========================================================= */
+
+  .ai-ring-carousel-controls-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0;
+
+    margin-top: -33px;
+
+    position: relative;
+    z-index: 20;
   }
-{% endstylesheet %}
 
-{% javascript %}
-  (function () {
-    if (customElements.get('u-ring-slider')) return;
 
-    var mod = function (i, n) { return ((i % n) + n) % n; };
+  /* =========================================================
+     ARROWS
+  ========================================================= */
 
-    class URingSlider extends HTMLElement {
-      connectedCallback() {
-        if (this._init) return;
-        this.stage = this.querySelector('[data-stage]');
-        this.items = Array.prototype.slice.call(this.querySelectorAll('[data-item]'));
-        this.n = this.items.length;
-        if (!this.stage || !this.n) return;
-        this._init = true;
+  .ai-ring-carousel-arrow-{{ ai_gen_id }} {
+    width: {{ block.settings.arrow_size }}px;
+    height: {{ block.settings.arrow_size }}px;
 
-        this.floor = this.querySelector('.urs__floor');
-        this.cTitle = this.querySelector('[data-ctitle]');
-        this.cSub = this.querySelector('[data-csub]');
-        this.reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        this.depth = (parseFloat(this.dataset.depth) || 0) / 100;
-        this.speed = parseInt(this.dataset.speed, 10) || 4000;
-        this.autoplay = this.dataset.autoplay === 'true' && !this.reduce && this.n > 1;
+    background: {{ block.settings.arrow_bg_color }};
 
-        this.pos = 0;
-        this.target = 0;
-        this.vel = 0;
-        this.active = 0;
-        this.raf = 0;
-        this.paused = { hover: false, focus: false, view: true, tab: false };
-        this.frame = this.frame.bind(this);
+    border: 2px solid {{ block.settings.arrow_border_color }};
 
-        this.layout();
-        this.render();
-        this.setActive(0, true);
-        this.classList.add('is-ready');
+    border-radius: 50%;
 
-        this.bind();
-      }
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-      disconnectedCallback() {
-        if (!this._init) return;
-        cancelAnimationFrame(this.raf);
-        clearTimeout(this.timer);
-        if (this.ro) this.ro.disconnect();
-        if (this.io) this.io.disconnect();
-        document.removeEventListener('visibilitychange', this.onVis);
-        this._init = false;
-        this.raf = 0;
-      }
+    cursor: pointer;
 
-      /* ---------- geometry ---------- */
-      layout() {
-        var W = this.stage.clientWidth || window.innerWidth;
-        var size = W < 700 ? Math.min(W * 0.6, 300) : Math.min(440, 0.15 * W + 140);
-        var sp = size * 0.78;
-        var vis = Math.max(1, Math.min(3, Math.round(W / 2 / sp)));
-        this.vis = Math.max(0, Math.min(vis, Math.floor((this.n - 1) / 2)));
-        this.size = size;
-        this.sp = sp;
-        this.lift = this.depth * size;
-        this.liftNorm = Math.max(this.vis, 2);
-        this.tilt = 4 + 6 * this.depth;
+    transition:
+      background 0.3s ease,
+      transform 0.3s ease;
 
-        /* Highest visual top among visible slots decides the baseline. */
-        var minTop = 0;
-        for (var a = 1; a <= this.vis; a++) {
-          var top = -this.rise(a) + (size * (1 - this.scale(a))) / 2;
-          if (top < minTop) minTop = top;
-        }
-        this.baseY = Math.ceil(-minTop) + 8;
-        this.style.setProperty('--urs-size', size + 'px');
-        this.stage.style.height = this.baseY + size + 24 + 'px';
-      }
+    color: {{ block.settings.arrow_icon_color }};
 
-      rise(a) { return this.lift * Math.pow(a / this.liftNorm, 1.5); }
-      scale(a) { return Math.max(0.35, 1 - 0.16 * a); }
+    flex-shrink: 0;
 
-      render() {
-        var n = this.n, vis = this.vis;
-        for (var i = 0; i < n; i++) {
-          var el = this.items[i];
-          var d = mod(i - this.pos, n);
-          if (d > n / 2) d -= n;
-          var a = Math.abs(d);
-          if (a >= vis + 1) {
-            if (!el._hid) { el.style.visibility = 'hidden'; el._hid = true; }
-            continue;
-          }
-          if (el._hid) { el.style.visibility = ''; el._hid = false; }
-          var x = d * this.sp * (1 - 0.06 * a);
-          var y = this.baseY - this.rise(a);
-          var op = a <= vis ? 1 - 0.1 * a : (1 - 0.1 * vis) * (vis + 1 - a);
-          el.style.transform =
-            'translate3d(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px,0) rotate(' +
-            (-d * this.tilt).toFixed(2) + 'deg) scale(' + this.scale(a).toFixed(4) + ')';
-          el.style.opacity = op.toFixed(3);
-          el.style.zIndex = 100 - Math.round(a * 10);
-        }
-      }
+    padding: 0;
+  }
 
-      /* ---------- motion (spring, runs only while moving) ---------- */
-      kick() {
-        if (!this.raf) { this.last = 0; this.raf = requestAnimationFrame(this.frame); }
-      }
 
-      frame(now) {
-        var dt = this.last ? Math.min(32, now - this.last) / 1000 : 1 / 60;
-        this.last = now;
-        if (!this.dragging) {
-          if (this.reduce) {
-            this.pos = this.target; this.vel = 0;
-          } else {
-            this.vel += (170 * (this.target - this.pos) - 24 * this.vel) * dt;
-            this.pos += this.vel * dt;
-            if (Math.abs(this.target - this.pos) < 0.0008 && Math.abs(this.vel) < 0.002) {
-              this.pos = this.target; this.vel = 0;
-            }
-          }
-        }
-        this.render();
-        var idx = mod(Math.round(this.pos), this.n);
-        if (idx !== this.active) this.setActive(idx);
-        if (this.dragging || this.pos !== this.target) {
-          this.raf = requestAnimationFrame(this.frame);
-        } else {
-          this.raf = 0;
-          /* Keep numbers small after many laps. */
-          var base = this.n * Math.floor(this.target / this.n);
-          this.pos -= base; this.target -= base;
-        }
-      }
+  .ai-ring-carousel-arrow-{{ ai_gen_id }}:hover {
+    background: {{ block.settings.arrow_hover_bg }};
+    transform: scale(1.08);
+  }
 
-      go(t) {
-        if (this.n < 2) return;
-        this.target = t;
-        this.kick();
-        this.schedule();
-      }
 
-      setActive(idx, silent) {
-        var prev = this.items[this.active];
-        var cur = this.items[idx];
-        this.active = idx;
-        if (prev) { prev.classList.remove('is-active'); prev.tabIndex = -1; }
-        cur.classList.add('is-active');
-        cur.tabIndex = cur.hasAttribute('href') ? 0 : -1;
-        for (var i = 0; i < this.n; i++) {
-          var d = Math.abs(mod(i - idx + Math.floor(this.n / 2), this.n) - Math.floor(this.n / 2));
-          this.items[i].setAttribute('aria-hidden', d > this.vis ? 'true' : 'false');
-        }
-        if (this.cTitle) {
-          this.cTitle.textContent = cur.dataset.title || '';
-          if (cur.hasAttribute('href')) this.cTitle.setAttribute('href', cur.getAttribute('href'));
-          else this.cTitle.removeAttribute('href');
-        }
-        if (this.cSub) this.cSub.textContent = cur.dataset.sub || '';
-        if (silent || this.reduce || !this.cTitle || !this.cTitle.animate) return;
-        var ease = 'cubic-bezier(0.22, 1, 0.36, 1)';
-        var dir = this._dir || 1;
-        this.cTitle.parentNode.animate(
-          [{ opacity: 0, transform: 'translateX(' + 18 * dir + 'px)' }, { opacity: 1, transform: 'none' }],
-          { duration: 520, easing: ease }
-        );
-        if (this.cSub) {
-          this.cSub.animate(
-            [{ opacity: 0, transform: 'translateY(6px)' }, { opacity: 0.75, transform: 'none' }],
-            { duration: 620, delay: 60, easing: ease, fill: 'backwards' }
-          );
-        }
-        if (this.floor) {
-          this.floor.animate(
-            [{ transform: 'translateX(-50%) scaleX(0.55)', opacity: 0.35 }, { transform: 'translateX(-50%) scaleX(1)', opacity: 1 }],
-            { duration: 700, easing: ease }
-          );
-        }
-      }
+  .ai-ring-carousel-arrow-{{ ai_gen_id }}:active {
+    transform: scale(0.96);
+  }
 
-      step(dir) { this._dir = dir; this.go(this.target + dir); }
 
-      /* ---------- input ---------- */
-      bind() {
-        var self = this;
-        var prev = this.querySelector('[data-prev]');
-        var next = this.querySelector('[data-next]');
-        if (prev) prev.addEventListener('click', function () { self.step(-1); });
-        if (next) next.addEventListener('click', function () { self.step(1); });
+  .ai-ring-carousel-arrow-{{ ai_gen_id }} svg {
+    width: 20px;
+    height: 20px;
+  }
 
-        this.addEventListener('keydown', function (e) {
-          if (e.key === 'ArrowLeft') { e.preventDefault(); self.step(-1); }
-          else if (e.key === 'ArrowRight') { e.preventDefault(); self.step(1); }
-        });
 
-        /* Click a side slide to bring it to the center; follow the link only when it is centered. */
-        this.stage.addEventListener('click', function (e) {
-          var item = e.target.closest('[data-item]');
-          if (self.moved) { e.preventDefault(); self.moved = false; return; }
-          if (!item) return;
-          var i = self.items.indexOf(item);
-          if (i === self.active) return;
-          e.preventDefault();
-          var d = mod(i - self.target, self.n);
-          if (d > self.n / 2) d -= self.n;
-          self._dir = d > 0 ? 1 : -1;
-          self.go(self.target + d);
-        });
-        this.stage.addEventListener('dragstart', function (e) { e.preventDefault(); });
+  /* =========================================================
+     INFO
+  ========================================================= */
 
-        /* Pointer drag / swipe with momentum. */
-        var x0 = 0, y0 = 0, pos0 = 0, lastX = 0, lastT = 0, vx = 0, pid = null, locked = false;
-        this.stage.addEventListener('pointerdown', function (e) {
-          if (e.button !== 0 || self.n < 2) return;
-          pid = e.pointerId; x0 = lastX = e.clientX; y0 = e.clientY; lastT = e.timeStamp;
-          pos0 = self.pos; vx = 0; locked = false; self.moved = false;
-        });
-        this.stage.addEventListener('pointermove', function (e) {
-          if (e.pointerId !== pid) return;
-          var dx = e.clientX - x0;
-          if (!locked) {
-            if (Math.abs(dx) < 6) return;
-            if (Math.abs(e.clientY - y0) > Math.abs(dx)) { pid = null; return; }
-            locked = true; self.dragging = true; self.moved = true;
-            self.stage.classList.add('is-dragging');
-            try { self.stage.setPointerCapture(pid); } catch (err) {}
-            clearTimeout(self.timer);
-            self.kick();
-          }
-          var dt = e.timeStamp - lastT;
-          if (dt > 0) vx = 0.8 * ((e.clientX - lastX) / dt) + 0.2 * vx;
-          lastX = e.clientX; lastT = e.timeStamp;
-          self.pos = pos0 - dx / self.sp;
-        });
-        var end = function (e) {
-          if (e.pointerId !== pid) return;
-          pid = null;
-          if (!locked) return;
-          self.dragging = false;
-          self.stage.classList.remove('is-dragging');
-          var fling = Math.max(-3, Math.min(3, (-vx * 220) / self.sp));
-          var t = Math.round(self.pos + fling);
-          self._dir = t >= self.target ? 1 : -1;
-          self.vel = Math.max(-12, Math.min(12, (-vx * 1000) / self.sp));
-          self.go(t);
-        };
-        this.stage.addEventListener('pointerup', end);
-        this.stage.addEventListener('pointercancel', end);
+  .ai-ring-carousel-info-{{ ai_gen_id }} {
+    text-align: center;
 
-        /* Horizontal trackpad swipe. */
-        var wheelLock = 0;
-        this.stage.addEventListener('wheel', function (e) {
-          if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) || Math.abs(e.deltaX) < 12) return;
-          e.preventDefault();
-          if (e.timeStamp < wheelLock) return;
-          wheelLock = e.timeStamp + 450;
-          self.step(e.deltaX > 0 ? 1 : -1);
-        }, { passive: false });
+    min-width: 200px;
+    max-width: 300px;
 
-        /* Re-layout on resize (only when width actually changes). */
-        var lastW = this.stage.clientWidth;
-        this.ro = new ResizeObserver(function () {
-          var w = self.stage.clientWidth;
-          if (w === lastW) return;
-          lastW = w;
-          self.layout();
-          self.render();
-        });
-        this.ro.observe(this.stage);
+    padding: 0 15px;
+  }
 
-        if (!this.autoplay) return;
-        this.addEventListener('pointerenter', function (e) { if (e.pointerType === 'mouse') { self.paused.hover = true; self.schedule(); } });
-        this.addEventListener('pointerleave', function () { self.paused.hover = false; self.schedule(); });
-        this.addEventListener('focusin', function () { self.paused.focus = true; self.schedule(); });
-        this.addEventListener('focusout', function () { self.paused.focus = false; self.schedule(); });
-        this.onVis = function () { self.paused.tab = document.hidden; self.schedule(); };
-        document.addEventListener('visibilitychange', this.onVis);
-        this.io = new IntersectionObserver(function (entries) {
-          self.paused.view = !entries[0].isIntersecting;
-          self.schedule();
-        }, { threshold: 0.25 });
-        this.io.observe(this);
-      }
 
-      schedule() {
-        clearTimeout(this.timer);
-        var p = this.paused;
-        if (!this.autoplay || p.hover || p.focus || p.view || p.tab || this.dragging) return;
-        var self = this;
-        this.timer = setTimeout(function () { self.step(1); }, this.speed);
-      }
+  .ai-ring-carousel-product-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.product_title_size }}px;
+
+    color: {{ block.settings.text_color }};
+
+    margin: 0 0 8px;
+
+    font-weight: 500;
+  }
+
+
+  .ai-ring-carousel-product-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.product_subtitle_size }}px;
+
+    color: {{ block.settings.text_color }};
+
+    margin: 0;
+
+    opacity: 0.7;
+  }
+
+
+  /* =========================================================
+     LARGE DESKTOP
+     1600px+
+  ========================================================= */
+
+  @media screen and (min-width: 1600px) {
+
+    .ai-ring-carousel-track-{{ ai_gen_id }} {
+      height: 400px;
     }
 
-    customElements.define('u-ring-slider', URingSlider);
-  })();
-{% endjavascript %}
+    .ai-ring-carousel-item-{{ ai_gen_id }} {
+      width: 560px;
+      height: 400px;
+    }
+
+  }
+
+
+  /* =========================================================
+     DESKTOP
+     1201px - 1599px
+  ========================================================= */
+
+  @media screen and (min-width: 1201px) and (max-width: 1599px) {
+
+    .ai-ring-carousel-track-{{ ai_gen_id }} {
+      height: 350px;
+    }
+
+    .ai-ring-carousel-item-{{ ai_gen_id }} {
+      width: 500px;
+      height: 360px;
+    }
+
+  }
+
+
+  /* =========================================================
+     TABLET
+     769px - 1200px
+  ========================================================= */
+
+  @media screen and (min-width: 769px) and (max-width: 1200px) {
+
+    .ai-ring-carousel-wrapper-{{ ai_gen_id }} {
+      padding: 0 20px;
+    }
+
+    .ai-ring-carousel-track-{{ ai_gen_id }} {
+      height: 360px;
+    }
+
+    .ai-ring-carousel-item-{{ ai_gen_id }} {
+      width: 430px;
+      height: 320px;
+    }
+
+  }
+
+
+  /* =========================================================
+     MOBILE
+  ========================================================= */
+
+  @media screen and (max-width: 768px) {
+
+    .ai-ring-carousel-wrapper-{{ ai_gen_id }} {
+      padding: 0 10px;
+    }
+
+    .ai-ring-carousel-track-{{ ai_gen_id }} {
+      height: 280px;
+      margin-bottom: 0px;
+    }
+
+    .ai-ring-carousel-item-{{ ai_gen_id }} {
+      width: 280px;
+      height: 230px;
+    }
+
+    .ai-ring-carousel-title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.7 }}px;
+    }
+
+    .ai-ring-carousel-subtitle-{{ ai_gen_id }} {
+      font-size: {{ block.settings.subtitle_size | times: 0.9 }}px;
+    }
+
+    .ai-ring-carousel-arrow-{{ ai_gen_id }} {
+      width: {{ block.settings.arrow_size | times: 0.8 }}px;
+      height: {{ block.settings.arrow_size | times: 0.8 }}px;
+    }
+
+    .ai-ring-carousel-controls-{{ ai_gen_id }} {
+      gap: 18px;
+    }
+
+    .ai-ring-carousel-info-{{ ai_gen_id }} {
+      min-width: 150px;
+      max-width: 200px;
+    }
+
+  }
+
+
+  /* =========================================================
+     SMALL MOBILE
+  ========================================================= */
+
+  @media screen and (max-width: 480px) {
+
+    .ai-ring-carousel-track-{{ ai_gen_id }} {
+      height: 195px;
+    }
+
+    .ai-ring-carousel-item-{{ ai_gen_id }} {
+      width: 230px;
+      height: 195px;
+    }
+
+    .ai-ring-carousel-controls-{{ ai_gen_id }} {
+      gap: 12px;
+    }
+
+    .ai-ring-carousel-info-{{ ai_gen_id }} {
+      min-width: 135px;
+      max-width: 170px;
+    }
+
+  }
+
+{% endstyle %}
+
+
+<ring-carousel-{{ ai_gen_id }} class="ai-ring-carousel-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-ring-carousel-header-{{ ai_gen_id }}">
+    {% if block.settings.main_title != blank %}
+      <h2 class="ai-ring-carousel-title-{{ ai_gen_id }}">{{ block.settings.main_title }}</h2>
+    {% endif %}
+    {% if block.settings.main_subtitle != blank %}
+      <p class="ai-ring-carousel-subtitle-{{ ai_gen_id }}">{{ block.settings.main_subtitle }}</p>
+    {% endif %}
+  </div>
+
+  <div class="ai-ring-carousel-wrapper-{{ ai_gen_id }}">
+    <div class="ai-ring-carousel-track-{{ ai_gen_id }}" data-track>
+      {% for i in (1..15) %}
+        {% assign image_key = 'ring_image_' | append: i %}
+        {% assign title_key = 'ring_title_' | append: i %}
+        {% assign subtitle_key = 'ring_subtitle_' | append: i %}
+        {% assign link_key = 'ring_link_' | append: i %}
+
+        {% assign ring_image = block.settings[image_key] %}
+        {% assign ring_title = block.settings[title_key] %}
+        {% assign ring_subtitle = block.settings[subtitle_key] %}
+        {% assign ring_link = block.settings[link_key] %}
+
+        {% if ring_image != blank %}
+          <div
+            class="ai-ring-carousel-item-{{ ai_gen_id }}"
+            data-index="{{ forloop.index0 }}"
+            data-link="{{ ring_link }}"
+            data-title="{{ ring_title }}"
+            data-subtitle="{{ ring_subtitle }}"
+          >
+            <img
+              src="{{ ring_image | image_url: width: 800 }}"
+              alt="{{ ring_title | escape }}"
+              loading="lazy"
+              width="800"
+              height="800"
+            >
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <div class="ai-ring-carousel-controls-{{ ai_gen_id }}">
+      <button class="ai-ring-carousel-arrow-{{ ai_gen_id }}" data-prev aria-label="Previous ring">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <div class="ai-ring-carousel-info-{{ ai_gen_id }}" data-info>
+        <h3 class="ai-ring-carousel-product-title-{{ ai_gen_id }}" data-product-title></h3>
+        <p class="ai-ring-carousel-product-subtitle-{{ ai_gen_id }}" data-product-subtitle></p>
+      </div>
+
+      <button class="ai-ring-carousel-arrow-{{ ai_gen_id }}" data-next aria-label="Next ring">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+  </div>
+</ring-carousel-{{ ai_gen_id }}>
+
+<script>
+(function() {
+
+  class RingCarousel{{ ai_gen_id }} extends HTMLElement {
+
+    constructor() {
+
+      super();
+
+      this.currentIndex = 0;
+
+      this.items = [];
+
+      this.totalItems = 0;
+
+      this.isAnimating = false;
+
+      this.startX = 0;
+      this.startY = 0;
+
+      this.endX = 0;
+      this.endY = 0;
+
+    }
+
+
+    /* =========================================================
+       INITIALIZE
+    ========================================================= */
+
+    connectedCallback() {
+
+      this.track =
+        this.querySelector('[data-track]');
+
+      this.prevBtn =
+        this.querySelector('[data-prev]');
+
+      this.nextBtn =
+        this.querySelector('[data-next]');
+
+      this.infoContainer =
+        this.querySelector('[data-info]');
+
+      this.titleEl =
+        this.querySelector('[data-product-title]');
+
+      this.subtitleEl =
+        this.querySelector('[data-product-subtitle]');
+
+
+      this.items = Array.from(
+        this.querySelectorAll(
+          '.ai-ring-carousel-item-{{ ai_gen_id }}'
+        )
+      );
+
+
+      this.totalItems =
+        this.items.length;
+
+
+      if (
+        !this.track ||
+        this.totalItems === 0
+      ) {
+
+        return;
+
+      }
+
+
+      /* Initialize only once */
+
+      this.setupEventListeners();
+
+      this.setupTouch();
+
+      this.updateCarousel();
+
+    }
+
+
+    /* =========================================================
+       BUTTONS + IMAGE CLICK
+    ========================================================= */
+
+    setupEventListeners() {
+
+      if (this.prevBtn) {
+
+        this.prevBtn.addEventListener(
+          'click',
+          () => {
+
+            this.navigate(-1);
+
+          }
+        );
+
+      }
+
+
+      if (this.nextBtn) {
+
+        this.nextBtn.addEventListener(
+          'click',
+          () => {
+
+            this.navigate(1);
+
+          }
+        );
+
+      }
+
+
+      this.items.forEach(
+        (item) => {
+
+          item.addEventListener(
+            'click',
+            () => {
+
+              const link =
+                item.getAttribute(
+                  'data-link'
+                );
+
+
+              if (
+                link &&
+                link !== ''
+              ) {
+
+                window.location.href =
+                  link;
+
+              }
+
+            }
+          );
+
+        }
+      );
+
+    }
+
+
+    /* =========================================================
+       TOUCH / SWIPE
+    ========================================================= */
+
+    setupTouch() {
+
+      let startX = 0;
+      let startY = 0;
+
+      let endX = 0;
+      let endY = 0;
+
+
+      this.track.addEventListener(
+        'touchstart',
+        (e) => {
+
+          if (
+            !e.touches ||
+            !e.touches.length
+          ) {
+
+            return;
+
+          }
+
+
+          startX =
+            e.touches[0].clientX;
+
+          startY =
+            e.touches[0].clientY;
+
+          endX = startX;
+
+          endY = startY;
+
+        },
+        {
+          passive: true
+        }
+      );
+
+
+      this.track.addEventListener(
+        'touchmove',
+        (e) => {
+
+          if (
+            !e.touches ||
+            !e.touches.length
+          ) {
+
+            return;
+
+          }
+
+
+          endX =
+            e.touches[0].clientX;
+
+          endY =
+            e.touches[0].clientY;
+
+        },
+        {
+          passive: true
+        }
+      );
+
+
+      this.track.addEventListener(
+        'touchend',
+        () => {
+
+          const diffX =
+            startX - endX;
+
+          const diffY =
+            startY - endY;
+
+
+          /* Ignore vertical scrolling */
+
+          if (
+            Math.abs(diffY) >
+            Math.abs(diffX)
+          ) {
+
+            return;
+
+          }
+
+
+          /* Ignore small swipe */
+
+          if (
+            Math.abs(diffX) < 40
+          ) {
+
+            return;
+
+          }
+
+
+          if (diffX > 0) {
+
+            /* Swipe left = next */
+
+            this.navigate(1);
+
+          } else {
+
+            /* Swipe right = previous */
+
+            this.navigate(-1);
+
+          }
+
+        }
+      );
+
+    }
+
+
+    /* =========================================================
+       NAVIGATION
+    ========================================================= */
+
+    navigate(direction) {
+
+      if (
+        this.isAnimating ||
+        this.totalItems === 0
+      ) {
+
+        return;
+
+      }
+
+
+      this.isAnimating = true;
+
+
+      this.currentIndex =
+        (
+          this.currentIndex +
+          direction +
+          this.totalItems
+        ) %
+        this.totalItems;
+
+
+      this.updateCarousel();
+
+
+      setTimeout(
+        () => {
+
+          this.isAnimating = false;
+
+        },
+        600
+      );
+
+    }
+
+
+    /* =========================================================
+       RESPONSIVE VALUES
+       
+       Automatically changes image positioning
+       according to screen width.
+    ========================================================= */
+
+    getResponsiveValues() {
+
+      const width =
+        window.innerWidth;
+
+
+      /* -----------------------------------------
+         LARGE DESKTOP
+         1600px+
+      ----------------------------------------- */
+
+      if (width >= 1600) {
+
+        return {
+
+          sideX: 455,
+
+          secondX: 760,
+
+          sideY: -35,
+
+          secondY: -55,
+
+          sideScale: 0.68,
+
+          secondScale: 0.48
+
+        };
+
+      }
+
+
+      /* -----------------------------------------
+         DESKTOP
+         1201 - 1599
+      ----------------------------------------- */
+
+      if (width >= 1201) {
+
+        return {
+
+          sideX: 405,
+
+          secondX: 680,
+
+          sideY: -35,
+
+          secondY: -50,
+
+          sideScale: 0.66,
+
+          secondScale: 0.46
+
+        };
+
+      }
+
+
+      /* -----------------------------------------
+         TABLET
+         769 - 1200
+      ----------------------------------------- */
+
+      if (width >= 769) {
+
+        return {
+
+          sideX: 330,
+
+          secondX: 560,
+
+          sideY: -25,
+
+          secondY: -40,
+
+          sideScale: 0.64,
+
+          secondScale: 0.44
+
+        };
+
+      }
+
+
+      /* -----------------------------------------
+         MOBILE
+         481 - 768
+      ----------------------------------------- */
+
+      if (width >= 481) {
+
+        return {
+
+          sideX: 225,
+
+          secondX: 380,
+
+          sideY: -15,
+
+          secondY: -25,
+
+          sideScale: 0.62,
+
+          secondScale: 0.42
+
+        };
+
+      }
+
+
+      /* -----------------------------------------
+         SMALL MOBILE
+         480px and below
+      ----------------------------------------- */
+
+      return {
+
+        sideX: 185,
+
+        secondX: 300,
+
+        sideY: -10,
+
+        secondY: -20,
+
+        sideScale: 0.60,
+
+        secondScale: 0.40
+
+      };
+
+    }
+
+
+    /* =========================================================
+       UPDATE CAROUSEL
+    ========================================================= */
+
+    updateCarousel() {
+
+      const positions =
+        this.calculatePositions();
+
+
+      this.items.forEach(
+        (item, index) => {
+
+          const pos =
+            positions[index];
+
+
+          if (!pos) {
+
+            return;
+
+          }
+
+
+          item.classList.toggle(
+            'active',
+            pos.active
+          );
+
+
+          item.style.transform =
+            `translate3d(
+              ${pos.x}px,
+              ${pos.y}px,
+              0
+            ) scale(${pos.scale})`;
+
+
+          item.style.zIndex =
+            pos.zIndex;
+
+
+          item.style.opacity =
+            pos.opacity;
+
+        }
+      );
+
+
+      /* -----------------------------------------
+         UPDATE CENTER TEXT
+      ----------------------------------------- */
+
+      const centerItem =
+        this.items[
+          this.currentIndex
+        ];
+
+
+      if (!centerItem) {
+
+        return;
+
+      }
+
+
+      const title =
+        centerItem.getAttribute(
+          'data-title'
+        ) || '';
+
+
+      const subtitle =
+        centerItem.getAttribute(
+          'data-subtitle'
+        ) || '';
+
+
+      if (this.titleEl) {
+
+        this.titleEl.textContent =
+          title;
+
+      }
+
+
+      if (this.subtitleEl) {
+
+        this.subtitleEl.textContent =
+          subtitle;
+
+      }
+
+    }
+
+
+    /* =========================================================
+       CALCULATE POSITIONS
+    ========================================================= */
+
+    calculatePositions() {
+
+      const positions = [];
+
+
+      const responsive =
+        this.getResponsiveValues();
+
+
+      for (
+        let i = 0;
+        i < this.totalItems;
+        i++
+      ) {
+
+        let diff =
+          i - this.currentIndex;
+
+
+        /* -----------------------------------------
+           CIRCULAR POSITION
+        ----------------------------------------- */
+
+        if (
+          diff >
+          this.totalItems / 2
+        ) {
+
+          diff -=
+            this.totalItems;
+
+        }
+
+
+        if (
+          diff <
+          -this.totalItems / 2
+        ) {
+
+          diff +=
+            this.totalItems;
+
+        }
+
+
+        let pos = {
+
+          x: 0,
+
+          y: 0,
+
+          scale: 0,
+
+          zIndex: 0,
+
+          opacity: 0,
+
+          active: false
+
+        };
+
+
+        /* =====================================================
+           CENTER IMAGE
+        ===================================================== */
+
+        switch (diff) {
+
+
+          case 0:
+
+            pos = {
+
+              x: 0,
+
+              y: 0,
+
+              /*
+               * CENTER IMAGE
+               * Full size
+               */
+
+              scale: 1,
+
+              zIndex: 10,
+
+              opacity: 1,
+
+              active: true
+
+            };
+
+            break;
+
+
+          /* =====================================================
+             RIGHT FIRST IMAGE
+          ===================================================== */
+
+          case 1:
+
+            pos = {
+
+              x:
+                responsive.sideX,
+
+              y:
+                responsive.sideY,
+
+              /*
+               * LEFT / RIGHT IMAGE
+               * Bigger than previous version
+               */
+
+              scale:
+                responsive.sideScale,
+
+              zIndex: 8,
+
+              opacity: 1,
+
+              active: true
+
+            };
+
+            break;
+
+
+          /* =====================================================
+             RIGHT SECOND IMAGE
+          ===================================================== */
+
+          case 2:
+
+            pos = {
+
+              x:
+                responsive.secondX,
+
+              y:
+                responsive.secondY,
+
+              scale:
+                responsive.secondScale,
+
+              zIndex: 6,
+
+              opacity: 0.82,
+
+              active: true
+
+            };
+
+            break;
+
+
+          /* =====================================================
+             LEFT FIRST IMAGE
+          ===================================================== */
+
+          case -1:
+
+            pos = {
+
+              x:
+                -responsive.sideX,
+
+              y:
+                responsive.sideY,
+
+              scale:
+                responsive.sideScale,
+
+              zIndex: 8,
+
+              opacity: 1,
+
+              active: true
+
+            };
+
+            break;
+
+
+          /* =====================================================
+             LEFT SECOND IMAGE
+          ===================================================== */
+
+          case -2:
+
+            pos = {
+
+              x:
+                -responsive.secondX,
+
+              y:
+                responsive.secondY,
+
+              scale:
+                responsive.secondScale,
+
+              zIndex: 6,
+
+              opacity: 0.82,
+
+              active: true
+
+            };
+
+            break;
+
+
+          /* =====================================================
+             ALL OTHER IMAGES
+             
+             9th, 10th, 11th, 12th etc.
+             stay hidden until they become active.
+          ===================================================== */
+
+          default:
+
+            pos = {
+
+              x:
+                diff * 430,
+
+              y: -80,
+
+              scale: 0.25,
+
+              zIndex: 1,
+
+              opacity: 0,
+
+              active: false
+
+            };
+
+            break;
+
+        }
+
+
+        positions.push(pos);
+
+      }
+
+
+      return positions;
+
+    }
+
+  }
+
+
+  /* =========================================================
+     DEFINE CUSTOM ELEMENT
+  ========================================================= */
+
+  if (
+    !customElements.get(
+      'ring-carousel-{{ ai_gen_id }}'
+    )
+  ) {
+
+    customElements.define(
+      'ring-carousel-{{ ai_gen_id }}',
+      RingCarousel{{ ai_gen_id }}
+    );
+
+  }
+
+
+  /* =========================================================
+     HANDLE RESIZE
+     
+     Recalculate positions when browser width changes.
+  ========================================================= */
+
+  window.addEventListener(
+    'resize',
+    () => {
+
+      const carousel =
+        document.querySelector(
+          'ring-carousel-{{ ai_gen_id }}'
+        );
+
+
+      if (
+        carousel &&
+        typeof carousel.updateCarousel ===
+        'function'
+      ) {
+
+        carousel.updateCarousel();
+
+      }
+
+    }
+  );
+
+})();
+</script>
 
 {% schema %}
 {
@@ -940,36 +1757,6 @@
       "type": "url",
       "id": "ring_link_15",
       "label": "Collection link"
-    },
-    {
-      "type": "header",
-      "content": "U-slider"
-    },
-    {
-      "type": "range",
-      "id": "curve_depth",
-      "label": "U curve depth",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "%",
-      "default": 60
-    },
-    {
-      "type": "checkbox",
-      "id": "autoplay",
-      "label": "Autoplay",
-      "default": true
-    },
-    {
-      "type": "range",
-      "id": "autoplay_speed",
-      "label": "Autoplay delay",
-      "min": 2,
-      "max": 10,
-      "step": 1,
-      "unit": "s",
-      "default": 4
     },
     {
       "type": "header",

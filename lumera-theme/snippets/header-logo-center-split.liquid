@@ -1,72 +1,47 @@
-{%- comment -%}
-  Logo center + split navigation header.
-
-  Layout (CSS grid, logo always exactly centered):
-  - 992px+ (menu fits)       : [search | menu-left]  LOGO  [menu-right | icons]   (one row)
-  - 992px+ (menu doesn't fit): [search]  LOGO  [icons]  + full menu centered in a 2nd row
-                               (class "lh--stack", set by the small script below; always
-                               on below 1280px, above that only if the menu overflows)
-  - below 992px              : [burger + search]  LOGO  [wishlist + cart]
-
-  Class names used by theme.js / header.liquid JS are kept:
-  .toggle-menu-mobile, .modal__toggle-search-mobile, .menudesk-left, .menudesk-right,
-  .col-logo, .header-bottom__right
-{%- endcomment -%}
 {%- liquid
-  assign link_count = linklists[main_linklist].links.size
-  assign link_half = link_count | plus: 1 | divided_by: 2
+  assign link_count = 0
+  for link in linklists[main_linklist].links
+    assign link_count = link_count | plus: 1
+  endfor
+  assign link_half = link_count | divided_by: 2
 -%}
 
-<div class="{{ container }} lh-container">
-  <div class="lh">
-    <div class="lh__side lh__side--left menudesk-left">
-      <div class="lh__tools">
-        <div class="d-flex d-lg-none toggle-menu-mobile align-items-center">
-          {%- render 'button-toggle-menu-mobile' -%}
-          <span
-            class="modal__toggle-search-mobile"
-            role="button"
-            tabindex="0"
-            aria-label="{{ 'general.search.search' | t }}"
-          >
-            {%- render 'icon-search' -%}
-          </span>
-        </div>
+<div class="{{ container }}">
+  <div class="d-flex align-items-center header-flex-row">
 
+    <div class="d-flex d-lg-none toggle-menu-mobile align-items-center">
+      {%- render 'button-toggle-menu-mobile' -%}
+      <span class="modal__toggle-search-mobile" aria-hidden="true" focusable="false" role="presentation">
+        {% render 'icon-search' %}
+      </span>
+    </div>
+
+    <div class="menudesk-left pr-2 d-flex header-col header-col--left">
+      <div class="col_bottom__left d-flex align-items-center">
         {%- render 'header-search', link_list_search: section.settings.link_list_search, e_search: section.settings.sidebar_search -%}
-
-        <div class="lh__localization d-none d-lg-flex align-items-center">
+        <div class="d-none d-lg-flex align-items-center">
           {%- liquid
             assign enable_image = section.settings.enable_image
             assign enable_name = section.settings.enable_name
             if section.settings.e_hd_currency and localization.available_countries.size > 1
-              render 'localization', id: 'HeaderCountryForm', enable_image: enable_image, enable_name: enable_name
+              render 'localization' id: 'HeaderCountryForm', enable_image: enable_image, enable_name: enable_name
             endif
             if section.settings.enable_language_selector and localization.available_languages.size > 1
               render 'localization-language', id: 'HeaderLanguageForm', enable_name: enable_name
             endif
           -%}
         </div>
-
-        {%- comment -%} Market / currency dropdown (BUCKS Currency Converter app) yahan move hota hai - script neeche {%- endcomment -%}
-        <div class="lh__market d-none d-lg-flex align-items-center"></div>
       </div>
-
-      <div class="lh__nav lh__nav--left">
-        {%- render 'block-menu-split', limit: link_half, main_linklist: main_linklist, blocks: blocks -%}
-      </div>
+      {%- render 'block-menu-split', limit: link_half, main_linklist: main_linklist, blocks: blocks -%}
     </div>
 
-    <div class="lh__logo col-logo">
+    <div class="px-2 col-logo text-center header-col header-col--center">
       {%- render 'site-logo' -%}
     </div>
 
-    <div class="lh__side lh__side--right menudesk-right">
-      <div class="lh__nav lh__nav--right">
-        {%- render 'block-menu-split', offset: link_half, main_linklist: main_linklist, blocks: blocks -%}
-      </div>
-
-      <div class="lh__icons header-bottom__right col-bottom__right">
+    <div class="menudesk-right pl-2 d-flex header-col header-col--right">
+      {%- render 'block-menu-split', offset: link_half, main_linklist: main_linklist, blocks: blocks -%}
+      <div class="header-bottom__right col-bottom__right">
         {%- render 'header-login' -%}
         {%- render 'block-wishlist' -%}
         {%- render 'block-cart' -%}
@@ -76,406 +51,25 @@
               {%- render 'option-sidebar', block: block -%}
             {%- endif -%}
           {%- endfor -%}
-        {%- endif -%}
+        {% endif %}
       </div>
     </div>
+
   </div>
 </div>
 
-{%- assign logo_w = section.settings.logo_max_width | default: 100 -%}
 <style>
-  /* =========================================================
-     SPLIT HEADER - RESPONSIVE LAYOUT
-     ========================================================= */
-  /* top bar (.tb-container) ke saath same padding, taaki dono ke edges line me rahe */
-  .site-header .lh-container {
-    max-width: 100% !important;
-    width: 100% !important;
-    padding-left: clamp(14px, 2.5vw, 40px) !important;
-    padding-right: clamp(14px, 2.5vw, 40px) !important;
-  }
-
-  .site-header .lh {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
-    align-items: center;
-    column-gap: clamp(12px, 2vw, 32px);
-    width: 100%;
-    min-height: 64px;
-  }
-
-  .site-header .lh__side {
-    display: flex !important;
-    align-items: center;
-    min-width: 0;
-    flex: none !important;
-  }
-
-  .site-header .lh__side--right {
-    justify-content: flex-end;
-  }
-
-  .site-header .lh__tools {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    flex-shrink: 0;
-  }
-
-  .site-header .lh__tools .site-header__search-wrap {
-    margin-right: 0 !important;
-  }
-
-  .site-header .lh__market:empty {
-    display: none !important;
-  }
-
-  .site-header .lh__market .buckscc-currency-box {
-    margin: 0 !important;
-  }
-
-  /* app ki list right-align hoti hai; left side par hai to list right ki taraf khule */
-  .site-header .lh__market .buckscc-select-options {
-    left: 0 !important;
-    right: auto !important;
-  }
-
-  .site-header .lh__icons {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: clamp(4px, 0.8vw, 12px);
-    flex-shrink: 0;
-  }
-
-  .site-header .lh__icons .site-header__link {
-    padding-left: 6px;
-    padding-right: 6px;
-  }
-
-  /* ---------- Header icons: fixed size, kabhi shrink nahi honge ---------- */
-  .site-header .lh .toggle-menu-mobile .site-header__link,
-  .site-header .lh .modal__toggle-search-mobile,
-  .site-header .lh .modal__toggle-open,
-  .site-header .lh .header--acount,
-  .site-header .lh .site-account,
-  .site-header .lh .site-header__wishlist,
-  .site-header .lh .site-header__cart,
-  .site-header .lh .js-toggle-cart {
-    flex-shrink: 0 !important;
-    min-width: max-content;
-  }
-
-  .site-header .lh .toggle-menu-mobile .site-header__link svg,
-  .site-header .lh .modal__toggle-search-mobile svg,
-  .site-header .lh .modal__toggle-open svg,
-  .site-header .lh .site-account svg,
-  .site-header .lh .site-header__wishlist svg,
-  .site-header .lh .js-toggle-cart svg {
-    width: var(--lh-icon, 22px) !important;
-    height: var(--lh-icon, 22px) !important;
-    min-width: var(--lh-icon, 22px) !important;
-    max-width: none !important;
-    flex: 0 0 auto !important;
-    display: block;
-  }
-
-  /* ---------- Logo (always centered) ---------- */
-  .site-header .lh__logo {
-    display: flex !important;
-    align-items: center;
-    justify-content: center;
-    flex: none !important;
-    max-width: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-  }
-
-  .site-header .lh__logo .site-header__logo {
-    position: static !important;
-    transform: none !important;
-    display: block;
-    margin: 0 !important;
-    width: auto !important;
-    max-width: none !important;
-  }
-
-  .site-header .lh__logo .site-header__logo-link {
-    display: block !important;
-  }
-
-  .site-header .lh__logo .site-header__logo img {
-    display: block !important;
-    width: {{ logo_w }}px !important;
-    max-width: none !important;
-    height: auto !important;
-    max-height: 64px;
-    object-fit: contain;
-    margin: 0 auto !important;
-  }
-
-  /* ---------- Navigation ---------- */
-  .site-header .lh__nav {
-    min-width: 0;
-  }
-
-  .site-header .lh__nav .nav-bar {
-    flex: none !important;
-  }
-
-  .site-header .lh__nav .site-nav {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    margin: 0;
-  }
-
-  .site-header .lh__nav .site-nav > li > a {
-    white-space: nowrap;
-    font-size: clamp(12.5px, 0.95vw, 14.5px) !important;
-    letter-spacing: 0.04em !important;
-    padding-left: clamp(7px, 0.7vw, 14px) !important;
-    padding-right: clamp(7px, 0.7vw, 14px) !important;
-  }
-
-  /* =========================================================
-     DESKTOP : single row
-     ========================================================= */
-  @media (min-width: 992px) {
-    .site-header .lh__side--left .lh__nav {
-      margin-left: auto;
-    }
-
-    .site-header .lh__side--right .lh__nav {
-      margin-right: auto;
-    }
-  }
-
-  /* =========================================================
-     DESKTOP STACKED (.lh--stack) : two rows
-     row 1 -> search | logo | icons
-     row 2 -> full menu, centered
-     ========================================================= */
-  @media (min-width: 992px) {
-    .site-header .lh.lh--stack {
-      grid-template-columns: minmax(0, 1fr) auto auto minmax(0, 1fr);
-      grid-template-areas:
-        'tools logo logo icons'
-        '.     navl navr .';
-      row-gap: 0;
-      column-gap: 0;
-      min-height: 0;
-    }
-
-    .site-header .lh--stack .lh__side {
-      display: contents !important;
-    }
-
-    .site-header .lh--stack .lh__tools {
-      grid-area: tools;
-      justify-self: start;
-    }
-
-    .site-header .lh--stack .lh__logo {
-      grid-area: logo;
-      padding: 4px 24px 0 !important;
-    }
-
-    .site-header .lh--stack .lh__icons {
-      grid-area: icons;
-      justify-self: end;
-    }
-
-    .site-header .lh--stack .lh__nav {
-      margin: 0 !important;
-    }
-
-    .site-header .lh--stack .lh__nav--left {
-      grid-area: navl;
-      justify-self: end;
-    }
-
-    .site-header .lh--stack .lh__nav--right {
-      grid-area: navr;
-      justify-self: start;
-    }
-
-    .site-header .lh--stack .lh__logo .site-header__logo img {
-      width: {{ logo_w | times: 0.75 | round }}px !important;
-      max-height: 52px;
-    }
-
-    .site-header .lh--stack .lh__nav .site-nav > li > a {
-      font-size: 13.5px !important;
-      padding: 10px 12px !important;
-    }
-  }
-
-  /* =========================================================
-     TABLET + MOBILE (below 992px)
-     ========================================================= */
-  @media (max-width: 991.98px) {
-    .site-header .header-bottom {
-      padding-top: 4px !important;
-      padding-bottom: 4px !important;
-    }
-
-    .site-header .lh {
-      min-height: 60px;
-      column-gap: 8px;
-    }
-
-    .site-header .lh__nav,
-    .site-header .lh__localization {
-      display: none !important;
-    }
-
-    .site-header .lh__tools .toggle-menu-mobile {
-      display: flex !important;
-      gap: 4px;
-    }
-
-    .site-header .lh__tools .toggle-menu-mobile .site-header__link,
-    .site-header .lh__tools .modal__toggle-search-mobile {
-      display: inline-flex !important;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      padding: 0 !important;
-      cursor: pointer;
-    }
-
-    .site-header .lh__logo .site-header__logo img {
-      width: {{ logo_w | times: 0.75 | round }}px !important;
-      max-height: 54px;
-    }
-
-    .site-header .lh__icons {
-      gap: 0;
-    }
-
-    .site-header .lh__icons .site-header__link {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 40px;
-      height: 40px;
-      padding: 0 !important;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .site-header .lh-container {
-      padding-left: 10px !important;
-      padding-right: 10px !important;
-    }
-
-    .site-header .lh {
-      min-height: 56px;
-    }
-
-    .site-header .lh__logo .site-header__logo img {
-      width: {{ logo_w | times: 0.62 | round }}px !important;
-      max-height: 46px;
-    }
-
-    .site-header .lh__tools .toggle-menu-mobile .site-header__link,
-    .site-header .lh__tools .modal__toggle-search-mobile,
-    .site-header .lh__icons .site-header__link {
-      width: 36px;
-      min-width: 36px;
-      height: 36px;
-    }
-  }
+  .header-flex-row {
+  display: flex;
+  align-items: center;
+}
+.header-col--left,
+.header-col--right {
+  flex: 1 1 0;
+}
+.header-col--left { justify-content: flex-start; }
+.header-col--right { justify-content: flex-end; }
+.header-col--center {
+  flex: 0 0 auto;
+}
 </style>
-
-<script>
-  (function () {
-    var lh = document.currentScript.parentNode.querySelector('.lh');
-    if (!lh) return;
-
-    var STACK_BELOW = 1280;
-
-    // Menu items ki asli position check karte hain (widths jodna kaafi nahi:
-    // items ke beech margin hota hai, aur scrollWidth me hidden dropdowns bhi aate hain).
-    // Overflow = menu search/market se takraye, icons se takraye, ya apne half se bahar jaaye.
-    var GAP = 12;
-
-    function sideOverflows(side) {
-      if (!side) return false;
-      var items = side.querySelectorAll('.lh__nav .site-nav > li');
-      if (!items.length) return false;
-
-      var first = items[0].getBoundingClientRect();
-      var last = items[items.length - 1].getBoundingClientRect();
-      var box = side.getBoundingClientRect();
-      var tools = side.querySelector('.lh__tools');
-      var icons = side.querySelector('.lh__icons');
-
-      if (tools && tools.getBoundingClientRect().right + GAP > first.left) return true;
-      if (icons && last.right + GAP > icons.getBoundingClientRect().left) return true;
-      return first.left < box.left - 1 || last.right > box.right + 1;
-    }
-
-    function update() {
-      var w = window.innerWidth;
-
-      // mobile / tablet: grid ka apna layout, stack class ki zaroorat nahi
-      if (w < 992) {
-        lh.classList.remove('lh--stack');
-        return;
-      }
-
-      if (w < STACK_BELOW) {
-        lh.classList.add('lh--stack');
-        return;
-      }
-
-      // bade screen: pehle 1 row try karo, menu fit na ho to 2 row
-      lh.classList.remove('lh--stack');
-      var overflow =
-        sideOverflows(lh.querySelector('.lh__side--left')) ||
-        sideOverflows(lh.querySelector('.lh__side--right'));
-      lh.classList.toggle('lh--stack', overflow);
-    }
-
-    // paint se pehle hi sahi layout lagao (flash na ho)
-    update();
-
-    /* ---- Market dropdown: search ke saath left side ----
-       BUCKS Currency Converter app apna dropdown login button ke andar daalta hai
-       (page load ke baad). Header wala dropdown yahan slot me shift karte hain.
-       Mobile drawer wala dropdown jaisa hai waisa rehta hai. */
-    var marketSlot = lh.querySelector('.lh__market');
-    var header = lh.closest('.site-header') || lh;
-
-    function moveMarket() {
-      if (!marketSlot) return;
-      var boxes = header.querySelectorAll('.buckscc-currency-box');
-      for (var i = 0; i < boxes.length; i++) {
-        if (!marketSlot.contains(boxes[i])) {
-          marketSlot.appendChild(boxes[i]);
-          update();
-        }
-      }
-    }
-
-    moveMarket();
-    if (marketSlot && window.MutationObserver) {
-      new MutationObserver(moveMarket).observe(header, { childList: true, subtree: true });
-    }
-
-    var timer;
-    window.addEventListener('resize', function () {
-      clearTimeout(timer);
-      timer = setTimeout(update, 100);
-    });
-
-    // web font load hone ke baad text ki width badal sakti hai
-    window.addEventListener('load', update);
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(update);
-    }
-  })();
-</script>
