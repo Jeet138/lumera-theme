@@ -209,7 +209,7 @@
   }
 {% endstyle %}
 
-<div class="ai-who-we-are-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+<div class="ai-who-we-are-{{ ai_gen_id }}"{% if block.settings.anchor_id != blank %} id="{{ block.settings.anchor_id | handleize }}"{% endif %} {{ block.shopify_attributes }}>
   {% if block.settings.show_decorations %}
     <div class="ai-who-we-are-decorative-{{ ai_gen_id }} ai-who-we-are-diamond-1-{{ ai_gen_id }}">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -294,6 +294,13 @@
 {
   "name": "Who we are",
   "settings": [
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "info": "Link to this section from a menu with /#anchor-id, e.g. /#about-us",
+      "default": "about-us"
+    },
     {
       "type": "header",
       "content": "Label"

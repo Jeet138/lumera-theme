@@ -355,6 +355,62 @@
   });
 </script>
 
+<script>
+  /* In-page anchors (e.g. menu link "/#about-us"): land just below the sticky header. */
+  (function () {
+    var sticky = document.getElementById('shopify-section-{{ section.id }}');
+    var root = document.documentElement;
+    if (!sticky) return;
+
+    function headerHeight() {
+      return Math.ceil(sticky.getBoundingClientRect().height);
+    }
+
+    /* Native jumps (and anything else that scrolls to an id) use this offset too. */
+    function syncOffset() {
+      root.style.scrollPaddingTop = headerHeight() + 'px';
+    }
+    syncOffset();
+    if (window.ResizeObserver) new ResizeObserver(syncOffset).observe(sticky);
+
+    function targetOf(hash) {
+      if (!hash || hash.length < 2) return null;
+      try {
+        return document.getElementById(decodeURIComponent(hash.slice(1)));
+      } catch (e) {
+        return null;
+      }
+    }
+
+    function scrollToTarget(el, smooth) {
+      var top = el.getBoundingClientRect().top + window.pageYOffset - headerHeight();
+      window.scrollTo({ top: Math.max(0, top), behavior: smooth ? 'smooth' : 'auto' });
+    }
+
+    /* Link to a section on the current page: scroll smoothly instead of reloading, and close the mobile menu. */
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest && e.target.closest('a[href*="#"]');
+      if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var url = new URL(a.href, location.href);
+      if (url.origin !== location.origin || url.pathname !== location.pathname) return;
+      var el = targetOf(url.hash);
+      if (!el) return;
+      e.preventDefault();
+      if (window.theme && theme.NavDrawer && theme.NavDrawer.drawerIsOpen) theme.NavDrawer.close();
+      history.pushState(null, '', url.hash);
+      scrollToTarget(el, !window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    });
+
+    /* Arriving from another page: sliders and images above the section change height while loading, so re-align once loaded. */
+    if (targetOf(location.hash)) {
+      window.addEventListener('load', function () {
+        var el = targetOf(location.hash);
+        if (el) scrollToTarget(el, false);
+      });
+    }
+  })();
+</script>
+
 <div class="group-fixed d-lg-flex d-none">
   {% render 'show-newlleter' %}
   {%- if settings.enable_compare and settings.enable_popuptext -%}—{%- endif -%}
