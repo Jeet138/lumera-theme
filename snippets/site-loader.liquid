@@ -1,0 +1,188 @@
+{%- comment -%}
+  Site loader: shown on every page load. When the page has loaded, the centre logo
+  flies into the header logo (.site-header .lh__logo img) while the rest fades out.
+  Rendered at the very top of <body> in layout/theme.liquid.
+{%- endcomment -%}
+<style>
+#site-loader{
+  position:fixed; inset:0; z-index:2147483647;
+  background:#fef8f1;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  transition:opacity .6s ease, visibility .6s ease;
+}
+#site-loader.loaded{ opacity:0; visibility:hidden; }
+
+.ld-wrap{ position:relative; width:150px; height:150px; display:flex; align-items:center; justify-content:center; }
+
+/* rotating gold ring */
+.ld-ring{
+  position:absolute; inset:0; border-radius:50%;
+  background:conic-gradient(from 0deg, transparent 0 55%, #c9a84c 100%);
+  -webkit-mask:radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+          mask:radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px));
+  animation:ldSpin 1.8s linear infinite;
+}
+.ld-ring--2{
+  inset:12px;
+  background:conic-gradient(from 180deg, transparent 0 60%, #123f3a 100%);
+  animation:ldSpin 2.6s linear infinite reverse;
+}
+
+/* logo + shimmer */
+.ld-logo{ position:relative; width:96px; height:96px; border-radius:50%; overflow:hidden; animation:ldPulse 2s ease-in-out infinite; }
+.ld-logo img{ width:100%; height:100%; object-fit:contain; display:block; mix-blend-mode:multiply; }
+.ld-logo::after{
+  content:""; position:absolute; top:0; left:-80%; width:50%; height:100%;
+  background:linear-gradient(100deg, transparent, rgba(255,255,255,.85), transparent);
+  transform:skewX(-20deg);
+  animation:ldShine 2s ease-in-out infinite;
+}
+
+/* sparkles */
+.ld-spark{
+  position:absolute; width:12px; height:12px; background:#c9a84c;
+  clip-path:polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  opacity:0; animation:ldTwinkle 2s ease-in-out infinite;
+}
+.ld-spark.s1{ top:-6px;  left:70%;  animation-delay:0s; }
+.ld-spark.s2{ top:60%;   right:-8px; animation-delay:.5s; width:9px; height:9px; }
+.ld-spark.s3{ bottom:-6px; left:20%; animation-delay:1s; }
+.ld-spark.s4{ top:25%;   left:-8px; animation-delay:1.5s; width:9px; height:9px; }
+
+/* text */
+.ld-brand{
+  margin-top:26px; font-family:Georgia,'Times New Roman',serif;
+  font-size:24px; color:#123f3a; letter-spacing:4px;
+  animation:ldSpace 2.4s ease-in-out infinite;
+}
+.ld-sub{ margin-top:4px; font-size:11px; letter-spacing:5px; color:#9a7b2f; }
+
+/* progress line */
+.ld-line{ margin-top:22px; width:140px; height:2px; background:rgba(18,63,58,.12); overflow:hidden; border-radius:2px; }
+.ld-line span{
+  display:block; width:45%; height:100%;
+  background:linear-gradient(90deg, transparent, #c9a84c, transparent);
+  animation:ldSlide 1.2s ease-in-out infinite;
+}
+
+@keyframes ldSpin{ to{ transform:rotate(360deg); } }
+@keyframes ldPulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.06); } }
+@keyframes ldShine{ 0%{ left:-80%; } 60%,100%{ left:140%; } }
+@keyframes ldTwinkle{ 0%,100%{ opacity:0; transform:scale(.3) rotate(0); } 50%{ opacity:1; transform:scale(1) rotate(45deg); } }
+@keyframes ldSpace{ 0%,100%{ letter-spacing:4px; } 50%{ letter-spacing:7px; } }
+@keyframes ldSlide{ 0%{ transform:translateX(-100%); } 100%{ transform:translateX(260%); } }
+
+@media (max-width:767px){
+  .ld-wrap{ width:130px; height:130px; }
+  .ld-logo{ width:84px; height:84px; }
+  .ld-brand{ font-size:20px; }
+}
+
+/* Exit: the logo flies into the header logo while everything else fades away */
+#site-loader .ld-wrap{ transition:transform .9s cubic-bezier(.7,0,.25,1) .1s; will-change:transform; }
+#site-loader.is-leaving{ background-color:transparent; pointer-events:none; transition:background-color .7s ease .15s; }
+#site-loader.is-leaving .ld-ring,
+#site-loader.is-leaving .ld-spark,
+#site-loader.is-leaving .ld-brand,
+#site-loader.is-leaving .ld-sub,
+#site-loader.is-leaving .ld-line{ opacity:0; transition:opacity .3s ease; }
+#site-loader.is-leaving .ld-logo{ animation:none; border-radius:0; overflow:visible; }
+#site-loader.is-leaving .ld-logo::after{ display:none; }
+/* In flight, cross-fade from the round loader image to a copy of the transparent header logo */
+#site-loader .ld-logo img{ transition:opacity .35s ease; }
+#site-loader .ld-ghost{ position:absolute; inset:0; width:100%; height:100%; object-fit:contain; mix-blend-mode:normal; opacity:0; }
+#site-loader.is-leaving .ld-ghost{ opacity:1; }
+#site-loader.is-leaving .ld-logo img:not(.ld-ghost){ opacity:0; }
+#site-loader .ld-logo{ transition:opacity .3s ease; }
+#site-loader.is-landed .ld-logo{ opacity:0; }
+/* The header logo stays hidden until the flying logo lands on it */
+html.ld-on .site-header .lh__logo img{ opacity:0 !important; }
+html.ld-reveal .site-header .lh__logo img{ transition:opacity .35s ease; }
+</style>
+
+<div id="site-loader" aria-hidden="true">
+  <div class="ld-wrap">
+    <span class="ld-ring"></span>
+    <span class="ld-ring ld-ring--2"></span>
+    <div class="ld-logo">
+      <img src="{{ 'diamond-logo.jpeg' | asset_url }}" alt="Lumera Fine Jewellery" width="96" height="96">
+    </div>
+    <i class="ld-spark s1"></i>
+    <i class="ld-spark s2"></i>
+    <i class="ld-spark s3"></i>
+    <i class="ld-spark s4"></i>
+  </div>
+  <div class="ld-brand">LUMERA</div>
+  <div class="ld-sub">FINE JEWELLERY</div>
+  <div class="ld-line"><span></span></div>
+</div>
+
+<script>
+  (function () {
+    var loader = document.getElementById('site-loader');
+    if (!loader) return;
+
+    var root = document.documentElement;
+    var done = false;
+
+    /* Plays on every page load; the header logo stays hidden until the loader logo lands on it. */
+    root.classList.add('ld-on');
+
+    function finish() {
+      root.classList.remove('ld-on', 'ld-reveal');
+      if (loader.parentNode) loader.remove();
+    }
+
+    /* Plain fade: reduced motion, or no visible header logo to land on. */
+    function fadeOut() {
+      loader.classList.add('loaded');
+      root.classList.remove('ld-on');
+      setTimeout(finish, 600);
+    }
+
+    function hideLoader() {
+      if (done) return;
+      done = true;
+
+      var logo = loader.querySelector('.ld-logo');
+      var target = document.querySelector('.site-header .lh__logo img');
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var t = target && target.getBoundingClientRect();
+      if (reduce || !logo || !t || !t.width || t.bottom < 0 || t.top > window.innerHeight) return fadeOut();
+
+      /* Copy of the header logo to cross-fade into during the flight. */
+      var ghost = document.createElement('img');
+      ghost.className = 'ld-ghost';
+      ghost.alt = '';
+      ghost.src = target.currentSrc || target.src;
+      logo.appendChild(ghost);
+      void ghost.offsetWidth; /* commit opacity:0 first so the cross-fade transitions */
+
+      /* is-leaving stops the pulse, so the logo is measured at its true size. */
+      loader.classList.add('is-leaving');
+
+      /* Fly onto the header logo: same centre, and the same drawn size (both use object-fit: contain). */
+      var l = logo.getBoundingClientRect();
+      var ratio = target.naturalWidth && target.naturalHeight ? target.naturalWidth / target.naturalHeight : 1;
+      var s = Math.min(t.width, t.height * ratio) / Math.min(l.width, l.height * ratio);
+      var dx = t.left + t.width / 2 - (l.left + l.width / 2);
+      var dy = t.top + t.height / 2 - (l.top + l.height / 2);
+      loader.querySelector('.ld-wrap').style.transform =
+        'translate(' + dx + 'px,' + dy + 'px) scale(' + s + ')';
+
+      /* Landed: swap to the real header logo, then clean up. */
+      setTimeout(function () {
+        root.classList.add('ld-reveal');
+        root.classList.remove('ld-on');
+        loader.classList.add('is-landed');
+      }, 1000);
+      setTimeout(finish, 1400);
+    }
+
+    if (document.readyState === 'complete') hideLoader();
+    else window.addEventListener('load', hideLoader);
+
+    setTimeout(hideLoader, 3000); // safety
+  })();
+</script>
