@@ -393,6 +393,7 @@
         "ai_gen_block_3392770_E3pg4d",
         "ai_gen_block_3392770_XhG8qG"
       ],
+      "name": "Section-1",
       "settings": {}
     },
     "1775562066ba14d317": {
@@ -443,6 +444,12 @@
             "main_subtitle": "Find the perfect engagement ring style that reflects your personality, crafted with exceptional artistry and brilliant diamonds for life's most cherished moments.",
             "title_size": 48,
             "subtitle_size": 16,
+            "curve_angle": 15,
+            "autoplay": true,
+            "autoplay_speed": 4,
+            "slide_size": 100,
+            "slide_spacing": 80,
+            "edge_fade": 16,
             "product_title_size": 24,
             "product_subtitle_size": 16,
             "arrow_size": 60,
@@ -465,7 +472,8 @@
                 "title": "Classic Solitaire",
                 "subtitle": "Timeless elegance",
                 "link": "shopify://collections/solitaire"
-              }
+              },
+              "blocks": {}
             },
             "ring_slide_2": {
               "type": "_ring_slide",
@@ -474,7 +482,8 @@
                 "title": "Halo Design",
                 "subtitle": "Halo brilliance",
                 "link": "shopify://collections/halo"
-              }
+              },
+              "blocks": {}
             },
             "ring_slide_3": {
               "type": "_ring_slide",
@@ -483,7 +492,8 @@
                 "title": "Vintage Style",
                 "subtitle": "Classic romance",
                 "link": "shopify://collections/vintage"
-              }
+              },
+              "blocks": {}
             },
             "ring_slide_4": {
               "type": "_ring_slide",
@@ -492,7 +502,8 @@
                 "title": "Three Stone",
                 "subtitle": "Past, present, future",
                 "link": "shopify://collections/three-stone"
-              }
+              },
+              "blocks": {}
             },
             "ring_slide_5": {
               "type": "_ring_slide",
@@ -501,7 +512,8 @@
                 "title": "Pave Band",
                 "subtitle": "Sparkling detail",
                 "link": "shopify://collections/pave"
-              }
+              },
+              "blocks": {}
             },
             "ring_slide_6": {
               "type": "_ring_slide",
@@ -510,7 +522,8 @@
                 "title": "Modern nature",
                 "subtitle": "Contemporary chic",
                 "link": "shopify://collections/nature-inspired"
-              }
+              },
+              "blocks": {}
             },
             "ring_slide_7": {
               "type": "_ring_slide",
@@ -519,7 +532,8 @@
                 "title": "Hidden halo",
                 "subtitle": "Unique design",
                 "link": "shopify://collections/hidden-halo"
-              }
+              },
+              "blocks": {}
             },
             "ring_slide_8": {
               "type": "_ring_slide",
@@ -528,7 +542,8 @@
                 "title": "Open gap",
                 "subtitle": "Architectural beauty",
                 "link": "shopify://collections/open-gap"
-              }
+              },
+              "blocks": {}
             },
             "ring_slide_9": {
               "type": "_ring_slide",
@@ -537,7 +552,8 @@
                 "title": "Color Stone",
                 "subtitle": "Modern innovation",
                 "link": "shopify://collections/color-stone-ring"
-              }
+              },
+              "blocks": {}
             },
             "ring_slide_10": {
               "type": "_ring_slide",
@@ -546,7 +562,8 @@
                 "title": "toi et moi",
                 "subtitle": "Dazzling arrangement",
                 "link": "shopify://collections/toi-et-moi-ring"
-              }
+              },
+              "blocks": {}
             },
             "ring_slide_11": {
               "type": "_ring_slide",
@@ -555,7 +572,8 @@
                 "title": "Bezel",
                 "subtitle": "Eternal love",
                 "link": ""
-              }
+              },
+              "blocks": {}
             },
             "ring_slide_12": {
               "type": "_ring_slide",
@@ -564,7 +582,8 @@
                 "title": "Bypass",
                 "subtitle": "Geometric glamour",
                 "link": "shopify://collections/bypass"
-              }
+              },
+              "blocks": {}
             },
             "ring_slide_13": {
               "type": "_ring_slide",
@@ -573,7 +592,8 @@
                 "title": "multi Row",
                 "subtitle": "Eternal love",
                 "link": "shopify://collections/multi-row-pave"
-              }
+              },
+              "blocks": {}
             },
             "ring_slide_14": {
               "type": "_ring_slide",
@@ -582,7 +602,8 @@
                 "title": "half bazel",
                 "subtitle": "Eternal love",
                 "link": "shopify://collections/half-bezel"
-              }
+              },
+              "blocks": {}
             },
             "ring_slide_15": {
               "type": "_ring_slide",
@@ -591,7 +612,8 @@
                 "title": "Side stone",
                 "subtitle": "Eternal love",
                 "link": "shopify://collections/side-stone"
-              }
+              },
+              "blocks": {}
             }
           },
           "block_order": [
@@ -712,7 +734,8 @@
                 "title": "Round",
                 "subtitle": "",
                 "link": "shopify://collections/round"
-              }
+              },
+              "blocks": {}
             },
             "shape_slide_2": {
               "type": "_ring_slide",
@@ -721,7 +744,8 @@
                 "title": "Princess",
                 "subtitle": "",
                 "link": "shopify://collections/princess"
-              }
+              },
+              "blocks": {}
             },
             "shape_slide_3": {
               "type": "_ring_slide",
@@ -730,7 +754,8 @@
                 "title": "Cushion",
                 "subtitle": "",
                 "link": "shopify://collections/cushion"
-              }
+              },
+              "blocks": {}
             },
             "shape_slide_4": {
               "type": "_ring_slide",
@@ -739,7 +764,8 @@
                 "title": "Emerald",
                 "subtitle": "",
                 "link": "shopify://collections/emerald"
-              }
+              },
+              "blocks": {}
             },
             "shape_slide_5": {
               "type": "_ring_slide",
@@ -748,7 +774,8 @@
                 "title": "Oval",
                 "subtitle": "",
                 "link": "shopify://collections/oval"
-              }
+              },
+              "blocks": {}
             },
             "shape_slide_6": {
               "type": "_ring_slide",
@@ -757,7 +784,8 @@
                 "title": "Pear",
                 "subtitle": "",
                 "link": "shopify://collections/pear"
-              }
+              },
+              "blocks": {}
             },
             "shape_slide_7": {
               "type": "_ring_slide",
@@ -766,7 +794,8 @@
                 "title": "Marquise",
                 "subtitle": "",
                 "link": "shopify://collections/marquise-1"
-              }
+              },
+              "blocks": {}
             },
             "shape_slide_8": {
               "type": "_ring_slide",
@@ -775,7 +804,8 @@
                 "title": "Radiant",
                 "subtitle": "",
                 "link": "shopify://collections/radiant-1"
-              }
+              },
+              "blocks": {}
             },
             "shape_slide_9": {
               "type": "_ring_slide",
@@ -784,7 +814,8 @@
                 "title": "Asscher",
                 "subtitle": "",
                 "link": "shopify://collections/asscher"
-              }
+              },
+              "blocks": {}
             },
             "shape_slide_10": {
               "type": "_ring_slide",
@@ -793,7 +824,8 @@
                 "title": "Heart",
                 "subtitle": "",
                 "link": "shopify://collections/heart"
-              }
+              },
+              "blocks": {}
             },
             "shape_slide_11": {
               "type": "_ring_slide",
@@ -802,7 +834,8 @@
                 "title": "Trillion",
                 "subtitle": "",
                 "link": "shopify://collections/trillion"
-              }
+              },
+              "blocks": {}
             },
             "shape_slide_12": {
               "type": "_ring_slide",
@@ -811,7 +844,8 @@
                 "title": "Baguette",
                 "subtitle": "",
                 "link": "shopify://collections/baguette"
-              }
+              },
+              "blocks": {}
             },
             "shape_slide_13": {
               "type": "_ring_slide",
@@ -820,7 +854,8 @@
                 "title": "Half moon",
                 "subtitle": "",
                 "link": "shopify://collections/half-mooon"
-              }
+              },
+              "blocks": {}
             },
             "shape_slide_14": {
               "type": "_ring_slide",
@@ -829,7 +864,8 @@
                 "title": "Cadillac",
                 "subtitle": "",
                 "link": "shopify://collections/cadillac"
-              }
+              },
+              "blocks": {}
             },
             "shape_slide_15": {
               "type": "_ring_slide",
@@ -838,7 +874,8 @@
                 "title": "Trapezoid",
                 "subtitle": "",
                 "link": "shopify://collections/trapezoid"
-              }
+              },
+              "blocks": {}
             },
             "shape_slide_16": {
               "type": "_ring_slide",
@@ -847,7 +884,8 @@
                 "title": "Antique cut",
                 "subtitle": "",
                 "link": "shopify://collections/antique-cut"
-              }
+              },
+              "blocks": {}
             }
           },
           "block_order": [
