@@ -914,80 +914,6 @@
       "name": "section-5",
       "settings": {}
     },
-    "promise_to_you_V3MA8A": {
-      "type": "promise-to-you",
-      "blocks": {
-        "feature_AJjwAM": {
-          "type": "feature",
-          "settings": {
-            "icon": "shopify://shop_images/diamond_f3162daa-a50a-4055-803b-e67c48afec9a.avif",
-            "title": "Pure Diamond Brilliance",
-            "description": "Same structure and sparkle as mined diamonds."
-          }
-        },
-        "feature_8pRV8a": {
-          "type": "feature",
-          "settings": {
-            "icon": "shopify://shop_images/superior.avif",
-            "title": "Superior Finish",
-            "description": "Expert-cut, hand-selected brilliance."
-          }
-        },
-        "feature_ngwXEa": {
-          "type": "feature",
-          "settings": {
-            "icon": "shopify://shop_images/Sparkle.webp",
-            "title": "More Value, More Sparkle",
-            "description": "Get a bigger, better diamond for the same budget."
-          }
-        },
-        "feature_ywrKTD": {
-          "type": "feature",
-          "settings": {
-            "icon": "shopify://shop_images/ethicaly.avif",
-            "title": "Ethically Made",
-            "description": "100% conflict-free and responsibly created."
-          }
-        },
-        "feature_dgPMpg": {
-          "type": "feature",
-          "settings": {
-            "icon": "shopify://shop_images/Planet.avif",
-            "title": "Planet-Friendly",
-            "description": "Lower water & energy use, zero land damage."
-          }
-        }
-      },
-      "block_order": [
-        "feature_AJjwAM",
-        "feature_8pRV8a",
-        "feature_ngwXEa",
-        "feature_ywrKTD",
-        "feature_dgPMpg"
-      ],
-      "name": "section-8",
-      "settings": {
-        "main_title": "Our Promise to You",
-        "title_font": "playfair_display_n4",
-        "subtitle": "Discover the promise we make to every customer",
-        "title_size": 40,
-        "subtitle_size": 16,
-        "header_spacing": 48,
-        "grid_gap": 24,
-        "item_background": "#fef8f1",
-        "icon_color": "#3a2f28",
-        "item_title_size": 17,
-        "item_description_size": 14,
-        "background_color": "#fef8f1",
-        "title_color": "#1a1a1a",
-        "subtitle_color": "#5c5c5c",
-        "item_title_color": "#1a1a1a",
-        "item_description_color": "#6b6b6b",
-        "section_padding_top": 60,
-        "section_padding_bottom": 60,
-        "section_padding_horizontal": 20
-      }
-    },
     "custom_design_inqury_6WPtGD": {
       "type": "custom-design-inqury",
       "blocks": {
@@ -1081,7 +1007,7 @@
     },
     "lab_diamond_story_AFj7Kx": {
       "type": "lab-diamond-story",
-      "name": "Lab Diamond Story",
+      "name": "section-7",
       "settings": {
         "image": "shopify://shop_images/banner_608a1cd8-9f99-4553-9593-e1675b40d80a.png",
         "show_icon": true,
@@ -1094,6 +1020,80 @@
         "panel_color": "#efeae1",
         "text_color": "#2b2420",
         "accent_color": "#8a5a3b"
+      }
+    },
+    "promise_to_you_V3MA8A": {
+      "type": "promise-to-you",
+      "blocks": {
+        "feature_AJjwAM": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/diamond_f3162daa-a50a-4055-803b-e67c48afec9a.avif",
+            "title": "Pure Diamond Brilliance",
+            "description": "Same structure and sparkle as mined diamonds."
+          }
+        },
+        "feature_8pRV8a": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/superior.avif",
+            "title": "Superior Finish",
+            "description": "Expert-cut, hand-selected brilliance."
+          }
+        },
+        "feature_ngwXEa": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/Sparkle.webp",
+            "title": "More Value, More Sparkle",
+            "description": "Get a bigger, better diamond for the same budget."
+          }
+        },
+        "feature_ywrKTD": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/ethicaly.avif",
+            "title": "Ethically Made",
+            "description": "100% conflict-free and responsibly created."
+          }
+        },
+        "feature_dgPMpg": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/Planet.avif",
+            "title": "Planet-Friendly",
+            "description": "Lower water & energy use, zero land damage."
+          }
+        }
+      },
+      "block_order": [
+        "feature_AJjwAM",
+        "feature_8pRV8a",
+        "feature_ngwXEa",
+        "feature_ywrKTD",
+        "feature_dgPMpg"
+      ],
+      "name": "section-8",
+      "settings": {
+        "main_title": "Our Promise to You",
+        "title_font": "playfair_display_n4",
+        "subtitle": "Discover the promise we make to every customer",
+        "title_size": 40,
+        "subtitle_size": 16,
+        "header_spacing": 48,
+        "grid_gap": 24,
+        "item_background": "#fef8f1",
+        "icon_color": "#3a2f28",
+        "item_title_size": 17,
+        "item_description_size": 14,
+        "background_color": "#fef8f1",
+        "title_color": "#1a1a1a",
+        "subtitle_color": "#5c5c5c",
+        "item_title_color": "#1a1a1a",
+        "item_description_color": "#6b6b6b",
+        "section_padding_top": 60,
+        "section_padding_bottom": 60,
+        "section_padding_horizontal": 20
       }
     },
     "featured_products_VwQmxV": {
@@ -2220,8 +2220,8 @@
     "engagement_story_CbHjpC",
     "176241402580841a4b",
     "custom_design_inqury_6WPtGD",
-    "promise_to_you_V3MA8A",
     "lab_diamond_story_AFj7Kx",
+    "promise_to_you_V3MA8A",
     "featured_products_VwQmxV",
     "blocks_czWfKK",
     "blocks_4jwQtL",
