@@ -1073,7 +1073,7 @@
         "feature_ywrKTD",
         "feature_dgPMpg"
       ],
-      "name": "section-8",
+      "name": "section",
       "settings": {
         "main_title": "Our Promise to You",
         "title_font": "playfair_display_n4",
@@ -1098,7 +1098,7 @@
     },
     "featured_products_VwQmxV": {
       "type": "featured-products",
-      "name": "Product Grid",
+      "name": "section-8",
       "settings": {
         "animation": "fade-down-right",
         "setwidth": "container",
@@ -1125,11 +1125,6 @@
         "marginsection": "0px 0px 0px 0px",
         "marginmobile": "0px 0px 0px 0px"
       }
-    },
-    "blocks_czWfKK": {
-      "type": "_blocks",
-      "name": "Custom design showcase",
-      "settings": {}
     },
     "blocks_4jwQtL": {
       "type": "_blocks",
@@ -1616,7 +1611,12 @@
         "ai_gen_block_a35e6d9_9mCQzj",
         "ai_gen_block_b43c0a0_EqAxNY"
       ],
-      "name": "Shop By Ring Shape",
+      "name": "section-10",
+      "settings": {}
+    },
+    "blocks_czWfKK": {
+      "type": "_blocks",
+      "name": "Custom design showcase",
       "settings": {}
     },
     "blocks_FUWTT9": {
@@ -2224,8 +2224,8 @@
     "lab_diamond_story_AFj7Kx",
     "promise_to_you_V3MA8A",
     "featured_products_VwQmxV",
-    "blocks_czWfKK",
     "blocks_4jwQtL",
+    "blocks_czWfKK",
     "blocks_FUWTT9",
     "1762776393aa1a33fd",
     "1763362664f0e41e84",
