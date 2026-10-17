@@ -1024,6 +1024,7 @@
     },
     "featured_products_VwQmxV": {
       "type": "featured-products",
+      "disabled": true,
       "name": "section-8",
       "settings": {
         "animation": "fade-down-right",
