@@ -74,6 +74,20 @@
     display: none;
   }
 
+  /* Mouse drag (touch devices use native swipe) */
+  @media (hover: hover) and (pointer: fine) {
+    .bss-{{ uid }} .bss-track:not(.is-expanded) {
+      cursor: grab;
+    }
+  }
+
+  .bss-{{ uid }} .bss-track.is-dragging {
+    cursor: grabbing;
+    scroll-snap-type: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
   .bss-{{ uid }} .bss-item {
     flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--gap)) / var(--per-view));
     min-width: 0;
@@ -303,24 +317,65 @@
     if (!track) return;
 
     var timer = null;
+    var settleTimer = null;
     var expanded = false;
+    var hovering = false;
+    var inView = true;
     var autoplay = track.dataset.autoplay === 'true';
     var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var speed = (parseInt(track.dataset.speed, 10) || 3) * 1000;
 
-    function step() {
+    /* Endless loop without clones: the real cards are rotated (first <-> last) after each
+       scroll settles, keeping the visible window in the middle of the list. */
+    var original = Array.prototype.slice.call(track.children);
+    var count = original.length;
+
+    function slideWidth() {
       var first = track.firstElementChild;
-      if (!first) return;
+      if (!first) return 0;
+      return first.getBoundingClientRect().width + (parseFloat(getComputedStyle(track).columnGap) || 0);
+    }
 
-      var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-      var amount = first.getBoundingClientRect().width + gap;
-      var atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 5;
+    function perView() {
+      var w = slideWidth();
+      return w ? Math.round(track.clientWidth / w) : count;
+    }
 
-      if (atEnd) {
-        track.scrollTo({ left: 0, behavior: 'smooth' });
+    function canLoop() {
+      return !expanded && count > perView() + 1;
+    }
+
+    /* Number of cards kept off-screen on the left, so the user can also swipe backwards. */
+    function buffer() {
+      return Math.floor((count - perView()) / 2);
+    }
+
+    function rebalance() {
+      if (drag || track.classList.contains('is-dragging') || !canLoop()) return;
+      var w = slideWidth();
+      if (!w) return;
+      var shift = Math.round(track.scrollLeft / w) - buffer();
+      if (!shift) return;
+      var i;
+      if (shift > 0) {
+        for (i = 0; i < shift; i++) track.appendChild(track.firstElementChild);
       } else {
-        track.scrollBy({ left: amount, behavior: 'smooth' });
+        for (i = 0; i < -shift; i++) track.insertBefore(track.lastElementChild, track.firstElementChild);
       }
+      /* Absolute, not relative: with scroll-snap the browser may already have re-snapped to the moved card. */
+      track.scrollLeft = buffer() * w;
+    }
+
+    function init() {
+      if (!canLoop()) return;
+      /* Move the last few cards in front so the first product still shows first. */
+      for (var i = 0; i < buffer(); i++) track.insertBefore(track.lastElementChild, track.firstElementChild);
+      track.scrollLeft = buffer() * slideWidth();
+    }
+
+    function step() {
+      if (!canLoop()) return;
+      track.scrollBy({ left: slideWidth(), behavior: 'smooth' });
     }
 
     function stop() {
@@ -332,14 +387,111 @@
 
     function start() {
       stop();
-      if (!autoplay || reduceMotion || expanded) return;
+      if (!autoplay || reduceMotion || expanded || hovering || !inView || document.hidden) return;
       timer = setInterval(step, speed);
     }
 
-    track.addEventListener('mouseenter', stop);
-    track.addEventListener('mouseleave', start);
+    /* After a drag, snap stays off until the glide to the nearest card has finished. */
+    function settle() {
+      if (drag) return;
+      /* Ignore scroll-end signals left over from the drag itself while the glide is still travelling. */
+      if (glide !== null && Math.abs(track.scrollLeft - glide.to) > 1 && Date.now() < glide.until) return;
+      glide = null;
+      track.classList.remove('is-dragging');
+      rebalance();
+    }
+
+    /* Rebalance only once scrolling has fully finished (never mid-animation). */
+    if ('onscrollend' in window) {
+      track.addEventListener('scrollend', settle);
+    } else {
+      track.addEventListener('scroll', function () {
+        clearTimeout(settleTimer);
+        settleTimer = setTimeout(settle, 250);
+      }, { passive: true });
+    }
+
+    /* Mouse drag with momentum. */
+    var drag = null;
+    var glide = null;
+    var suppressClick = false;
+
+    track.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0 || expanded) return;
+      drag = { id: e.pointerId, x: e.clientX, left: track.scrollLeft, lastX: e.clientX, lastT: e.timeStamp, v: 0, moved: false };
+    });
+
+    track.addEventListener('pointermove', function (e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var dx = e.clientX - drag.x;
+      if (!drag.moved) {
+        if (Math.abs(dx) < 5) return;
+        drag.moved = true;
+        track.classList.add('is-dragging');
+        try { track.setPointerCapture(drag.id); } catch (err) {}
+        stop();
+      }
+      var dt = e.timeStamp - drag.lastT;
+      if (dt > 0) drag.v = 0.8 * ((e.clientX - drag.lastX) / dt) + 0.2 * drag.v;
+      drag.lastX = e.clientX;
+      drag.lastT = e.timeStamp;
+      track.scrollLeft = drag.left - dx;
+    });
+
+    function endDrag(e) {
+      if (!drag || e.pointerId !== drag.id) return;
+      var d = drag;
+      drag = null;
+      if (!d.moved) return;
+      suppressClick = true;
+      setTimeout(function () { suppressClick = false; }, 0);
+      var w = slideWidth();
+      var fling = Math.max(-3, Math.min(3, (-d.v * 250) / w));
+      var target = Math.round(track.scrollLeft / w + fling) * w;
+      if (Math.abs(target - track.scrollLeft) < 1) {
+        settle();
+      } else {
+        glide = { to: target, until: Date.now() + 2500 };
+        track.scrollTo({ left: target, behavior: 'smooth' });
+        /* Safety net in case the glide is interrupted and no further scroll-end arrives. */
+        setTimeout(settle, 2600);
+      }
+      start();
+    }
+
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+
+    /* A drag must not open the product under the cursor. */
+    track.addEventListener('click', function (e) {
+      if (!suppressClick) return;
+      e.preventDefault();
+      e.stopPropagation();
+      suppressClick = false;
+    }, true);
+
+    track.addEventListener('dragstart', function (e) { e.preventDefault(); });
+
+    track.addEventListener('mouseenter', function () { hovering = true; stop(); });
+    track.addEventListener('mouseleave', function () { hovering = false; start(); });
     track.addEventListener('touchstart', stop, { passive: true });
     track.addEventListener('touchend', start, { passive: true });
+    document.addEventListener('visibilitychange', start);
+
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        inView = entries[0].isIntersecting;
+        start();
+      }).observe(track);
+    }
+
+    var lastWidth = track.clientWidth;
+    window.addEventListener('resize', function () {
+      if (track.clientWidth === lastWidth) return;
+      lastWidth = track.clientWidth;
+      clearTimeout(settleTimer);
+      settleTimer = setTimeout(rebalance, 150);
+    });
 
     if (moreBtn) {
       moreBtn.addEventListener('click', function () {
@@ -347,16 +499,20 @@
         track.classList.toggle('is-expanded', expanded);
 
         if (expanded) {
+          /* Show the full grid in the original product order. */
+          original.forEach(function (el) { track.appendChild(el); });
           track.scrollTo({ left: 0 });
           moreBtn.textContent = moreBtn.dataset.lessText;
           stop();
         } else {
           moreBtn.textContent = moreBtn.dataset.moreText;
+          init();
           start();
         }
       });
     }
 
+    init();
     start();
   })();
 </script>
