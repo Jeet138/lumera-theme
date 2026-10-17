@@ -684,7 +684,7 @@
             "main_subtitle": "Discover your perfect diamond shape",
             "title_size": 38,
             "subtitle_size": 16,
-            "curve_depth": 60,
+            "curve_angle": 15,
             "autoplay": true,
             "autoplay_speed": 4,
             "slide_size": 55,

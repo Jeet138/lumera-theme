@@ -1,5 +1,5 @@
 {%- comment -%}
-  Ring style U-slider: slides sit on a U-shaped arc (center lowest and largest,
+  Ring style slider: slides sit on a shallow arc (center lowest and largest,
   sides rise, shrink and tilt). Motion is a rAF spring that only runs while moving;
   only transform/opacity are animated. Supports drag/swipe, trackpad, keyboard and autoplay.
   Slides are nested "_ring_slide" blocks.
@@ -16,7 +16,7 @@
   {{ block.shopify_attributes }}
   data-autoplay="{{ s.autoplay }}"
   data-speed="{{ s.autoplay_speed | times: 1000 }}"
-  data-depth="{{ s.curve_depth }}"
+  data-angle="{{ s.curve_angle }}"
   data-scale="{{ s.slide_size }}"
   data-spacing="{{ s.slide_spacing }}"
   style="--urs-w:{{ s.desktop_width_percent }}%;--urs-pad:{{ s.section_padding }}px;--urs-text:{{ s.text_color }};--urs-title:{{ s.title_size }}px;--urs-sub:{{ s.subtitle_size }}px;--urs-ptitle:{{ s.product_title_size }}px;--urs-psub:{{ s.product_subtitle_size }}px;--urs-arrow:{{ s.arrow_size }}px;--urs-arrow-bg:{{ s.arrow_bg_color }};--urs-arrow-bd:{{ s.arrow_border_color }};--urs-arrow-ic:{{ s.arrow_icon_color }};--urs-arrow-hover:{{ s.arrow_hover_bg }};--urs-shadow:{{ s.shadow_color }};--urs-shadow-y:{{ s.shadow_offset }}px;--urs-shadow-blur:{{ s.shadow_blur }}px;--urs-fade-set:{{ s.edge_fade }}%;--urs-scale:{{ s.slide_size | divided_by: 100.0 }};"
@@ -224,7 +224,7 @@
         this.cTitle = this.querySelector('[data-ctitle]');
         this.cSub = this.querySelector('[data-csub]');
         this.reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        this.depth = (parseFloat(this.dataset.depth) || 0) / 100;
+        this.angle = ((parseFloat(this.dataset.angle) || 0) * Math.PI) / 180;
         this.scaleSet = (parseFloat(this.dataset.scale) || 100) / 100;
         this.spacing = (parseFloat(this.dataset.spacing) || 78) / 100;
         this.speed = parseInt(this.dataset.speed, 10) || 4000;
@@ -268,9 +268,9 @@
         this.vis = Math.max(0, Math.min(vis, Math.floor((this.n - 1) / 2)));
         this.size = size;
         this.sp = sp;
-        this.lift = this.depth * size;
-        this.liftNorm = Math.max(this.vis, 2);
-        this.tilt = 4 + 6 * this.depth;
+        /* Slides sit on a shallow arc y = k*x^2 whose slope at the outermost visible slide equals the curve angle. */
+        var edge = this.x(Math.max(this.vis, 1));
+        this.k = Math.tan(this.angle) / (2 * edge);
 
         /* Highest visual top among visible slots decides the baseline. */
         var minTop = 0;
@@ -283,7 +283,8 @@
         this.stage.style.height = this.baseY + size + 24 + 'px';
       }
 
-      rise(a) { return this.lift * Math.pow(a / this.liftNorm, 1.5); }
+      x(d) { return d * this.sp * (1 - 0.06 * Math.abs(d)); }
+      rise(a) { var x = this.x(a); return this.k * x * x; }
       scale(a) { return Math.max(0.35, 1 - 0.16 * a); }
 
       render() {
@@ -298,12 +299,13 @@
             continue;
           }
           if (el._hid) { el.style.visibility = ''; el._hid = false; }
-          var x = d * this.sp * (1 - 0.06 * a);
-          var y = this.baseY - this.rise(a);
+          var x = this.x(d);
+          var y = this.baseY - this.k * x * x;
+          var rot = (Math.atan(-2 * this.k * x) * 180) / Math.PI;
           var op = a <= vis ? 1 - 0.1 * a : (1 - 0.1 * vis) * (vis + 1 - a);
           el.style.transform =
             'translate3d(' + x.toFixed(2) + 'px,' + y.toFixed(2) + 'px,0) rotate(' +
-            (-d * this.tilt).toFixed(2) + 'deg) scale(' + this.scale(a).toFixed(4) + ')';
+            rot.toFixed(2) + 'deg) scale(' + this.scale(a).toFixed(4) + ')';
           el.style.opacity = op.toFixed(3);
           el.style.zIndex = 100 - Math.round(a * 10);
         }
@@ -562,13 +564,14 @@
     },
     {
       "type": "range",
-      "id": "curve_depth",
-      "label": "U curve depth",
+      "id": "curve_angle",
+      "label": "Curve angle",
+      "info": "Tilt of the outermost slides. 0 is a straight line.",
       "min": 0,
-      "max": 100,
-      "step": 5,
-      "unit": "%",
-      "default": 60
+      "max": 20,
+      "step": 1,
+      "unit": "°",
+      "default": 15
     },
     {
       "type": "checkbox",
