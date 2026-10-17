@@ -1022,80 +1022,6 @@
         "accent_color": "#8a5a3b"
       }
     },
-    "promise_to_you_V3MA8A": {
-      "type": "promise-to-you",
-      "blocks": {
-        "feature_AJjwAM": {
-          "type": "feature",
-          "settings": {
-            "icon": "shopify://shop_images/diamond_f3162daa-a50a-4055-803b-e67c48afec9a.avif",
-            "title": "Pure Diamond Brilliance",
-            "description": "Same structure and sparkle as mined diamonds."
-          }
-        },
-        "feature_8pRV8a": {
-          "type": "feature",
-          "settings": {
-            "icon": "shopify://shop_images/superior.avif",
-            "title": "Superior Finish",
-            "description": "Expert-cut, hand-selected brilliance."
-          }
-        },
-        "feature_ngwXEa": {
-          "type": "feature",
-          "settings": {
-            "icon": "shopify://shop_images/Sparkle.webp",
-            "title": "More Value, More Sparkle",
-            "description": "Get a bigger, better diamond for the same budget."
-          }
-        },
-        "feature_ywrKTD": {
-          "type": "feature",
-          "settings": {
-            "icon": "shopify://shop_images/ethicaly.avif",
-            "title": "Ethically Made",
-            "description": "100% conflict-free and responsibly created."
-          }
-        },
-        "feature_dgPMpg": {
-          "type": "feature",
-          "settings": {
-            "icon": "shopify://shop_images/Planet.avif",
-            "title": "Planet-Friendly",
-            "description": "Lower water & energy use, zero land damage."
-          }
-        }
-      },
-      "block_order": [
-        "feature_AJjwAM",
-        "feature_8pRV8a",
-        "feature_ngwXEa",
-        "feature_ywrKTD",
-        "feature_dgPMpg"
-      ],
-      "name": "section",
-      "settings": {
-        "main_title": "Our Promise to You",
-        "title_font": "playfair_display_n4",
-        "subtitle": "Discover the promise we make to every customer",
-        "title_size": 40,
-        "subtitle_size": 16,
-        "header_spacing": 48,
-        "grid_gap": 24,
-        "item_background": "#fef8f1",
-        "icon_color": "#3a2f28",
-        "item_title_size": 17,
-        "item_description_size": 14,
-        "background_color": "#fef8f1",
-        "title_color": "#1a1a1a",
-        "subtitle_color": "#5c5c5c",
-        "item_title_color": "#1a1a1a",
-        "item_description_color": "#6b6b6b",
-        "section_padding_top": 60,
-        "section_padding_bottom": 60,
-        "section_padding_horizontal": 20
-      }
-    },
     "featured_products_VwQmxV": {
       "type": "featured-products",
       "name": "section-8",
@@ -1614,6 +1540,138 @@
       "name": "section-10",
       "settings": {}
     },
+    "1775909805012dc7d8": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_2d0744d_PLt8wG": {
+          "type": "ai_gen_block_2d0744d",
+          "settings": {
+            "heading": "Follow us on Instagram",
+            "subtitle": "<em>See what our community is sharing</em>",
+            "text_alignment": "center",
+            "heading_size": 24,
+            "subtitle_size": 15,
+            "header_spacing": 36,
+            "container_width": 1600,
+            "columns_mobile": "1",
+            "grid_gap": 12,
+            "video_aspect_ratio": "9 / 16",
+            "video_border_radius": 0,
+            "video_url_1": "https://cdn.shopify.com/videos/c/o/v/804ee55f13184847894f58bea3765b2b.mp4",
+            "caption_1": "",
+            "link_1": "https://www.instagram.com/lumerafine_jewellery/",
+            "video_url_2": "https://cdn.shopify.com/videos/c/o/v/7e47e6a26a7d4469a68ec018e06c26b4.mp4",
+            "caption_2": "",
+            "link_2": "https://www.instagram.com/reel/DW8q9tviGLM/",
+            "video_url_3": "https://cdn.shopify.com/videos/c/o/v/cd6e18a3993842c49665403ea4e4671d.mp4",
+            "caption_3": "",
+            "link_3": "https://www.instagram.com/reel/DXdanZbiMtz/",
+            "video_url_4": "https://cdn.shopify.com/videos/c/o/v/1e8763c3676b4155aa2fb14874efd515.mp4",
+            "caption_4": "",
+            "link_4": "https://www.instagram.com/reel/DXI8s37iFRE/",
+            "video_url_5": "https://cdn.shopify.com/videos/c/o/v/e7c04965f64541169823c21766c331b7.mp4",
+            "caption_5": "",
+            "link_5": "https://www.instagram.com/reel/DaF76gqEii6/",
+            "video_url_6": "https://cdn.shopify.com/videos/c/o/v/0d159c902d5a418fb90184b149bd8de5.mp4",
+            "caption_6": "",
+            "link_6": "https://www.instagram.com/p/DW5Y2f6CNYa/",
+            "cta_text": "Follow on Instagram",
+            "cta_link": "https://www.instagram.com/lumerafine_jewellery/",
+            "button_spacing": 28,
+            "background_color": "#fef8f1",
+            "heading_color": "#000000",
+            "text_color": "#000000",
+            "button_bg_color": "#000000",
+            "button_hover_bg_color": "#041c07",
+            "button_text_color": "#ffffff",
+            "button_border_radius": 4,
+            "overlay_opacity": 0.6,
+            "section_padding_top": 40,
+            "section_padding_bottom": 40
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_2d0744d_PLt8wG"
+      ],
+      "name": "Section-12",
+      "settings": {}
+    },
+    "promise_to_you_V3MA8A": {
+      "type": "promise-to-you",
+      "blocks": {
+        "feature_AJjwAM": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/diamond_f3162daa-a50a-4055-803b-e67c48afec9a.avif",
+            "title": "Pure Diamond Brilliance",
+            "description": "Same structure and sparkle as mined diamonds."
+          }
+        },
+        "feature_8pRV8a": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/superior.avif",
+            "title": "Superior Finish",
+            "description": "Expert-cut, hand-selected brilliance."
+          }
+        },
+        "feature_ngwXEa": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/Sparkle.webp",
+            "title": "More Value, More Sparkle",
+            "description": "Get a bigger, better diamond for the same budget."
+          }
+        },
+        "feature_ywrKTD": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/ethicaly.avif",
+            "title": "Ethically Made",
+            "description": "100% conflict-free and responsibly created."
+          }
+        },
+        "feature_dgPMpg": {
+          "type": "feature",
+          "settings": {
+            "icon": "shopify://shop_images/Planet.avif",
+            "title": "Planet-Friendly",
+            "description": "Lower water & energy use, zero land damage."
+          }
+        }
+      },
+      "block_order": [
+        "feature_AJjwAM",
+        "feature_8pRV8a",
+        "feature_ngwXEa",
+        "feature_ywrKTD",
+        "feature_dgPMpg"
+      ],
+      "name": "section",
+      "settings": {
+        "main_title": "Our Promise to You",
+        "title_font": "playfair_display_n4",
+        "subtitle": "Discover the promise we make to every customer",
+        "title_size": 40,
+        "subtitle_size": 16,
+        "header_spacing": 48,
+        "grid_gap": 24,
+        "item_background": "#fef8f1",
+        "icon_color": "#3a2f28",
+        "item_title_size": 17,
+        "item_description_size": 14,
+        "background_color": "#fef8f1",
+        "title_color": "#1a1a1a",
+        "subtitle_color": "#5c5c5c",
+        "item_title_color": "#1a1a1a",
+        "item_description_color": "#6b6b6b",
+        "section_padding_top": 60,
+        "section_padding_bottom": 60,
+        "section_padding_horizontal": 20
+      }
+    },
     "blocks_czWfKK": {
       "type": "_blocks",
       "name": "Custom design showcase",
@@ -2049,63 +2107,6 @@
         "marginmobile": "0px 0px 0px 0px"
       }
     },
-    "1775909805012dc7d8": {
-      "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_2d0744d_PLt8wG": {
-          "type": "ai_gen_block_2d0744d",
-          "settings": {
-            "heading": "Follow us on Instagram",
-            "subtitle": "<em>See what our community is sharing</em>",
-            "text_alignment": "center",
-            "heading_size": 24,
-            "subtitle_size": 15,
-            "header_spacing": 36,
-            "container_width": 1600,
-            "columns_mobile": "1",
-            "grid_gap": 12,
-            "video_aspect_ratio": "9 / 16",
-            "video_border_radius": 0,
-            "video_url_1": "https://cdn.shopify.com/videos/c/o/v/804ee55f13184847894f58bea3765b2b.mp4",
-            "caption_1": "",
-            "link_1": "https://www.instagram.com/lumerafine_jewellery/",
-            "video_url_2": "https://cdn.shopify.com/videos/c/o/v/7e47e6a26a7d4469a68ec018e06c26b4.mp4",
-            "caption_2": "",
-            "link_2": "https://www.instagram.com/reel/DW8q9tviGLM/",
-            "video_url_3": "https://cdn.shopify.com/videos/c/o/v/cd6e18a3993842c49665403ea4e4671d.mp4",
-            "caption_3": "",
-            "link_3": "https://www.instagram.com/reel/DXdanZbiMtz/",
-            "video_url_4": "https://cdn.shopify.com/videos/c/o/v/1e8763c3676b4155aa2fb14874efd515.mp4",
-            "caption_4": "",
-            "link_4": "https://www.instagram.com/reel/DXI8s37iFRE/",
-            "video_url_5": "https://cdn.shopify.com/videos/c/o/v/e7c04965f64541169823c21766c331b7.mp4",
-            "caption_5": "",
-            "link_5": "https://www.instagram.com/reel/DaF76gqEii6/",
-            "video_url_6": "https://cdn.shopify.com/videos/c/o/v/0d159c902d5a418fb90184b149bd8de5.mp4",
-            "caption_6": "",
-            "link_6": "https://www.instagram.com/p/DW5Y2f6CNYa/",
-            "cta_text": "Follow on Instagram",
-            "cta_link": "https://www.instagram.com/lumerafine_jewellery/",
-            "button_spacing": 28,
-            "background_color": "#fef8f1",
-            "heading_color": "#000000",
-            "text_color": "#000000",
-            "button_bg_color": "#000000",
-            "button_hover_bg_color": "#041c07",
-            "button_text_color": "#ffffff",
-            "button_border_radius": 4,
-            "overlay_opacity": 0.6,
-            "section_padding_top": 40,
-            "section_padding_bottom": 40
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_2d0744d_PLt8wG"
-      ],
-      "settings": {}
-    },
     "177650094471651f89": {
       "type": "_blocks",
       "blocks": {
@@ -2159,6 +2160,7 @@
         },
         "ai_gen_block_40673d6_9QyCfC": {
           "type": "ai_gen_block_40673d6",
+          "name": "section-13",
           "settings": {
             "heading": "Frequently Asked Questions",
             "heading_size": 36,
@@ -2222,16 +2224,16 @@
     "176241402580841a4b",
     "custom_design_inqury_6WPtGD",
     "lab_diamond_story_AFj7Kx",
-    "promise_to_you_V3MA8A",
     "featured_products_VwQmxV",
     "blocks_4jwQtL",
+    "1775909805012dc7d8",
+    "promise_to_you_V3MA8A",
     "blocks_czWfKK",
     "blocks_FUWTT9",
     "1762776393aa1a33fd",
     "1763362664f0e41e84",
     "17633656775d14bf5f",
     "faq_accordion_3Qhy8q",
-    "1775909805012dc7d8",
     "177650094471651f89"
   ]
 }
