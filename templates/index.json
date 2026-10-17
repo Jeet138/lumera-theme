@@ -639,12 +639,12 @@
         "ai_gen_block_758de18_JtCpX6"
       ],
       "custom_css": [],
-      "name": "Ring style ",
+      "name": "section-3",
       "settings": {}
     },
     "best_selling_slider_section_Mga7nR": {
       "type": "best-selling-slider-section",
-      "name": "Best selling slider",
+      "name": "section-2",
       "settings": {
         "heading": "Best Selling Products",
         "subheading": "Discover our most popular items",
@@ -675,7 +675,7 @@
     },
     "engagement_story_CbHjpC": {
       "type": "engagement-story",
-      "name": "Lumera Engagement Story",
+      "name": "section-4",
       "settings": {
         "eyebrow": "Made for Your Forever",
         "heading": "The Ring That Begins Your Forever",
@@ -911,7 +911,7 @@
       "block_order": [
         "shape_u_slider"
       ],
-      "name": "Shop by Shape",
+      "name": "section-5",
       "settings": {}
     },
     "promise_to_you_V3MA8A": {
@@ -965,7 +965,7 @@
         "feature_ywrKTD",
         "feature_dgPMpg"
       ],
-      "name": "Our Promise section",
+      "name": "section-8",
       "settings": {
         "main_title": "Our Promise to You",
         "title_font": "playfair_display_n4",
@@ -1054,7 +1054,7 @@
         "slide_ftwYRe",
         "slide_AepyQP"
       ],
-      "name": "Custom Inquiry Slider",
+      "name": "section-6",
       "settings": {
         "bg_color": "#053931",
         "pad_top": 120,
