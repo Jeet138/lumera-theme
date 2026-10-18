@@ -193,7 +193,7 @@
   .urs__psub { margin: 0; font-size: min(var(--urs-psub), calc(12px + 0.5vw)); opacity: 0.75; }
 
   @media (max-width: 699px) {
-    .urs { --urs-size: calc(min(60vw, 300px) * var(--urs-scale, 1)); }
+    .urs { --urs-size: calc(min(50vw, 300px) * var(--urs-scale, 1)); }
     /* Phones: side slides are already cut by the screen edge, so fade a slightly wider band. */
     .urs__stage { --urs-fade: clamp(0px, calc(var(--urs-fade-set, 15%) * 1.3), 30%); }
   }
@@ -262,8 +262,17 @@
       /* ---------- geometry ---------- */
       layout() {
         var W = this.stage.clientWidth || window.innerWidth;
-        var size = (W < 700 ? Math.min(W * 0.6, 300) : Math.min(440, 0.15 * W + 140)) * this.scaleSet;
+        var size = (W < 700 ? Math.min(W * 0.52, 300) : Math.min(440, 0.15 * W + 140)) * this.scaleSet;
         var sp = size * this.spacing;
+        /* Phones and tablets (incl. iPad landscape): slides are large relative to the screen, so keep neighbouring images
+           apart (photos typically fill ~85% of their frame) with a visible gap. */
+        if (W < 1200) {
+          var gap = Math.max(20, size * 0.1);
+          for (var g = 0; g < 3; g++) {
+            var need = (0.85 * size * (this.scale(g) + this.scale(g + 1)) / 2 + gap) / (1 - 0.06 * (2 * g + 1));
+            if (need > sp) sp = need;
+          }
+        }
         var vis = Math.max(1, Math.min(5, Math.round(W / 2 / sp)));
         this.vis = Math.max(0, Math.min(vis, Math.floor((this.n - 1) / 2)));
         this.size = size;
