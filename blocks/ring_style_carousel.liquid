@@ -18,7 +18,9 @@
   data-speed="{{ s.autoplay_speed | times: 1000 }}"
   data-angle="{{ s.curve_angle }}"
   data-scale="{{ s.slide_size }}"
-  data-spacing="{{ s.slide_spacing }}"
+  data-gap-desktop="{{ s.gap_desktop }}"
+  data-gap-tablet="{{ s.gap_tablet }}"
+  data-gap-mobile="{{ s.gap_mobile }}"
   style="--urs-w:{{ s.desktop_width_percent }}%;--urs-pad:{{ s.section_padding }}px;--urs-text:{{ s.text_color }};--urs-title:{{ s.title_size }}px;--urs-sub:{{ s.subtitle_size }}px;--urs-ptitle:{{ s.product_title_size }}px;--urs-psub:{{ s.product_subtitle_size }}px;--urs-arrow:{{ s.arrow_size }}px;--urs-arrow-bg:{{ s.arrow_bg_color }};--urs-arrow-bd:{{ s.arrow_border_color }};--urs-arrow-ic:{{ s.arrow_icon_color }};--urs-arrow-hover:{{ s.arrow_hover_bg }};--urs-shadow:{{ s.shadow_color }};--urs-shadow-y:{{ s.shadow_offset }}px;--urs-shadow-blur:{{ s.shadow_blur }}px;--urs-fade-set:{{ s.edge_fade }}%;--urs-scale:{{ s.slide_size | divided_by: 100.0 }};"
 >
   {%- if s.main_title != blank or s.main_subtitle != blank -%}
@@ -226,7 +228,12 @@
         this.reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         this.angle = ((parseFloat(this.dataset.angle) || 0) * Math.PI) / 180;
         this.scaleSet = (parseFloat(this.dataset.scale) || 100) / 100;
-        this.spacing = (parseFloat(this.dataset.spacing) || 78) / 100;
+        var num = function (v, d) { v = parseFloat(v); return isNaN(v) ? d : v; };
+        this.gaps = {
+          desktop: num(this.dataset.gapDesktop, 18),
+          tablet: num(this.dataset.gapTablet, 48),
+          mobile: num(this.dataset.gapMobile, 36)
+        };
         this.speed = parseInt(this.dataset.speed, 10) || 4000;
         this.autoplay = this.dataset.autoplay === 'true' && !this.reduce && this.n > 1 && !(window.Shopify && Shopify.designMode);
 
@@ -263,15 +270,13 @@
       layout() {
         var W = this.stage.clientWidth || window.innerWidth;
         var size = (W < 700 ? Math.min(W * 0.52, 300) : Math.min(440, 0.15 * W + 140)) * this.scaleSet;
-        var sp = size * this.spacing;
-        /* Phones and tablets (incl. iPad landscape): slides are large relative to the screen, so keep neighbouring images
-           apart (photos typically fill ~85% of their frame) with a visible gap. */
-        if (W < 1200) {
-          var gap = Math.max(20, size * 0.1);
-          for (var g = 0; g < 3; g++) {
-            var need = (0.85 * size * (this.scale(g) + this.scale(g + 1)) / 2 + gap) / (1 - 0.06 * (2 * g + 1));
-            if (need > sp) sp = need;
-          }
+        /* Spacing so that neighbouring images are about "Gap between items" px apart (per device).
+           Photos typically fill ~76% of their frame width; side slides are smaller and slightly closer. */
+        var gap = W < 700 ? this.gaps.mobile : W < 1200 ? this.gaps.tablet : this.gaps.desktop;
+        var sp = 0;
+        for (var g = 0; g < 3; g++) {
+          var need = (0.76 * size * (this.scale(g) + this.scale(g + 1)) / 2 + gap) / (1 - 0.06 * (2 * g + 1));
+          if (need > sp) sp = need;
         }
         var vis = Math.max(1, Math.min(5, Math.round(W / 2 / sp)));
         this.vis = Math.max(0, Math.min(vis, Math.floor((this.n - 1) / 2)));
@@ -610,15 +615,41 @@
       "default": 100
     },
     {
+      "type": "header",
+      "content": "Gap between items"
+    },
+    {
       "type": "range",
-      "id": "slide_spacing",
-      "label": "Slide spacing",
-      "info": "Distance between slides. Raise it if images touch or overlap.",
-      "min": 60,
-      "max": 160,
-      "step": 5,
-      "unit": "%",
-      "default": 80
+      "id": "gap_desktop",
+      "label": "Desktop",
+      "info": "Screens 1200px and wider",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "gap_tablet",
+      "label": "Tablet",
+      "info": "Screens 700–1199px",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "gap_mobile",
+      "label": "Mobile",
+      "info": "Screens below 700px",
+      "min": 0,
+      "max": 150,
+      "step": 2,
+      "unit": "px",
+      "default": 36
     },
     {
       "type": "range",
