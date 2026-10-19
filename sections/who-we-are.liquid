@@ -1,0 +1,667 @@
+{% assign ai_gen_id = section.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-who-we-are-{{ ai_gen_id }} {
+    padding: {{ section.settings.padding_top }}px 20px {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.background_color }};
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ai-who-we-are-container-{{ ai_gen_id }} {
+    max-width: {{ section.settings.container_width }}px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .ai-who-we-are-content-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: {{ section.settings.content_spacing }}px;
+    align-items: center;
+  }
+
+  .ai-who-we-are-text-wrapper-{{ ai_gen_id }} {
+    text-align: {{ section.settings.text_alignment }};
+  }
+
+  .ai-who-we-are-label-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: {{ section.settings.label_background }};
+    color: {{ section.settings.label_color }};
+    font-size: {{ section.settings.label_size }}px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-radius: 50px;
+    margin-bottom: {{ section.settings.label_spacing }}px;
+  }
+
+  .ai-who-we-are-label-icon-{{ ai_gen_id }} {
+    width: 16px;
+    height: 16px;
+  }
+
+  .ai-who-we-are-label-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+
+  .ai-who-we-are-heading-{{ ai_gen_id }} {
+    color: {{ section.settings.heading_color }};
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: {{ section.settings.heading_weight }};
+    line-height: 1.2;
+    margin: 0 0 {{ section.settings.heading_spacing }}px;
+    letter-spacing: -0.02em;
+  }
+
+  .ai-who-we-are-text-{{ ai_gen_id }} {
+    color: {{ section.settings.text_color }};
+    font-size: {{ section.settings.text_size }}px;
+    line-height: 1.7;
+    margin: 0;
+    max-width: {{ section.settings.text_max_width }}px;
+    {% if section.settings.text_alignment == 'center' %}
+      margin-left: auto;
+      margin-right: auto;
+    {% elsif section.settings.text_alignment == 'right' %}
+      margin-left: auto;
+    {% endif %}
+  }
+
+  .ai-who-we-are-decorative-{{ ai_gen_id }} {
+    position: absolute;
+    pointer-events: none;
+    opacity: {{ section.settings.decoration_opacity | divided_by: 100.0 }};
+  }
+
+  .ai-who-we-are-diamond-1-{{ ai_gen_id }} {
+    top: 10%;
+    left: 5%;
+    width: 80px;
+    height: 80px;
+    transform: rotate(15deg);
+  }
+
+  .ai-who-we-are-diamond-2-{{ ai_gen_id }} {
+    bottom: 15%;
+    right: 8%;
+    width: 60px;
+    height: 60px;
+    transform: rotate(-20deg);
+  }
+
+  .ai-who-we-are-diamond-3-{{ ai_gen_id }} {
+    top: 50%;
+    right: 3%;
+    width: 40px;
+    height: 40px;
+    transform: rotate(45deg);
+  }
+
+  .ai-who-we-are-decorative-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    fill: {{ section.settings.decoration_color }};
+  }
+
+  .ai-who-we-are-stats-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 30px;
+    margin-top: {{ section.settings.stats_spacing }}px;
+    padding-top: {{ section.settings.stats_spacing }}px;
+    border-top: 1px solid {{ section.settings.divider_color }};
+  }
+
+  .ai-who-we-are-stat-{{ ai_gen_id }} {
+    text-align: center;
+  }
+
+  .ai-who-we-are-stat-number-{{ ai_gen_id }} {
+    display: block;
+    font-size: {{ section.settings.stat_number_size }}px;
+    font-weight: 700;
+    color: {{ section.settings.stat_number_color }};
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .ai-who-we-are-stat-label-{{ ai_gen_id }} {
+    display: block;
+    font-size: {{ section.settings.stat_label_size }}px;
+    color: {{ section.settings.stat_label_color }};
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-who-we-are-content-{{ ai_gen_id }} {
+      {% if section.settings.layout == 'two-column' %}
+        grid-template-columns: 1fr 1fr;
+      {% endif %}
+    }
+
+    .ai-who-we-are-diamond-1-{{ ai_gen_id }} {
+      width: 120px;
+      height: 120px;
+    }
+
+    .ai-who-we-are-diamond-2-{{ ai_gen_id }} {
+      width: 90px;
+      height: 90px;
+    }
+
+    .ai-who-we-are-diamond-3-{{ ai_gen_id }} {
+      width: 60px;
+      height: 60px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-who-we-are-{{ ai_gen_id }} {
+      padding: {{ section.settings.padding_top | times: 0.6 }}px 16px {{ section.settings.padding_bottom | times: 0.6 }}px;
+    }
+
+    .ai-who-we-are-heading-{{ ai_gen_id }} {
+      font-size: {{ section.settings.heading_size | times: 0.65 }}px;
+    }
+
+    .ai-who-we-are-text-{{ ai_gen_id }} {
+      font-size: {{ section.settings.text_size | times: 0.9 }}px;
+    }
+
+    .ai-who-we-are-label-{{ ai_gen_id }} {
+      font-size: {{ section.settings.label_size | times: 0.85 }}px;
+    }
+
+    .ai-who-we-are-stat-number-{{ ai_gen_id }} {
+      font-size: {{ section.settings.stat_number_size | times: 0.75 }}px;
+    }
+
+    .ai-who-we-are-stat-label-{{ ai_gen_id }} {
+      font-size: {{ section.settings.stat_label_size | times: 0.9 }}px;
+    }
+
+    .ai-who-we-are-stats-{{ ai_gen_id }} {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .ai-who-we-are-diamond-1-{{ ai_gen_id }},
+    .ai-who-we-are-diamond-2-{{ ai_gen_id }},
+    .ai-who-we-are-diamond-3-{{ ai_gen_id }} {
+      display: none;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-who-we-are-{{ ai_gen_id }}">
+  {% if section.settings.show_decorations %}
+    <div class="ai-who-we-are-decorative-{{ ai_gen_id }} ai-who-we-are-diamond-1-{{ ai_gen_id }}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 2L4 8l8 14 8-14-8-6zm0 2.5L17.5 8h-11L12 4.5zM6.5 10h11l-5.5 9.5L6.5 10z"/>
+      </svg>
+    </div>
+    <div class="ai-who-we-are-decorative-{{ ai_gen_id }} ai-who-we-are-diamond-2-{{ ai_gen_id }}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 2L4 8l8 14 8-14-8-6zm0 2.5L17.5 8h-11L12 4.5zM6.5 10h11l-5.5 9.5L6.5 10z"/>
+      </svg>
+    </div>
+    <div class="ai-who-we-are-decorative-{{ ai_gen_id }} ai-who-we-are-diamond-3-{{ ai_gen_id }}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M12 2L4 8l8 14 8-14-8-6zm0 2.5L17.5 8h-11L12 4.5zM6.5 10h11l-5.5 9.5L6.5 10z"/>
+      </svg>
+    </div>
+  {% endif %}
+
+  <div class="ai-who-we-are-container-{{ ai_gen_id }}">
+    <div class="ai-who-we-are-content-{{ ai_gen_id }}">
+      <div class="ai-who-we-are-text-wrapper-{{ ai_gen_id }}">
+        {% if section.settings.show_label %}
+          <div class="ai-who-we-are-label-{{ ai_gen_id }}">
+            <span class="ai-who-we-are-label-icon-{{ ai_gen_id }}">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M12 2L4 8l8 14 8-14-8-6zm0 2.5L17.5 8h-11L12 4.5zM6.5 10h11l-5.5 9.5L6.5 10z"/>
+              </svg>
+            </span>
+            {{ section.settings.label_text }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h2 class="ai-who-we-are-heading-{{ ai_gen_id }}">
+            {{ section.settings.heading }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.text != blank %}
+          <div class="ai-who-we-are-text-{{ ai_gen_id }}">
+            {{ section.settings.text }}
+          </div>
+        {% endif %}
+
+        {% if section.settings.show_stats %}
+          <div class="ai-who-we-are-stats-{{ ai_gen_id }}">
+            {% if section.settings.stat_1_number != blank %}
+              <div class="ai-who-we-are-stat-{{ ai_gen_id }}">
+                <span class="ai-who-we-are-stat-number-{{ ai_gen_id }}">{{ section.settings.stat_1_number }}</span>
+                <span class="ai-who-we-are-stat-label-{{ ai_gen_id }}">{{ section.settings.stat_1_label }}</span>
+              </div>
+            {% endif %}
+
+            {% if section.settings.stat_2_number != blank %}
+              <div class="ai-who-we-are-stat-{{ ai_gen_id }}">
+                <span class="ai-who-we-are-stat-number-{{ ai_gen_id }}">{{ section.settings.stat_2_number }}</span>
+                <span class="ai-who-we-are-stat-label-{{ ai_gen_id }}">{{ section.settings.stat_2_label }}</span>
+              </div>
+            {% endif %}
+
+            {% if section.settings.stat_3_number != blank %}
+              <div class="ai-who-we-are-stat-{{ ai_gen_id }}">
+                <span class="ai-who-we-are-stat-number-{{ ai_gen_id }}">{{ section.settings.stat_3_number }}</span>
+                <span class="ai-who-we-are-stat-label-{{ ai_gen_id }}">{{ section.settings.stat_3_label }}</span>
+              </div>
+            {% endif %}
+
+            {% if section.settings.stat_4_number != blank %}
+              <div class="ai-who-we-are-stat-{{ ai_gen_id }}">
+                <span class="ai-who-we-are-stat-number-{{ ai_gen_id }}">{{ section.settings.stat_4_number }}</span>
+                <span class="ai-who-we-are-stat-label-{{ ai_gen_id }}">{{ section.settings.stat_4_label }}</span>
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Who we are",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_label",
+      "label": "Show label",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "label_text",
+      "label": "Label text",
+      "default": "Lab Grown Diamonds"
+    },
+    {
+      "type": "range",
+      "id": "label_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Label size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "label_spacing",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Label spacing",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "label_background",
+      "label": "Label background",
+      "default": "#01305a"
+    },
+    {
+      "type": "color",
+      "id": "label_color",
+      "label": "Label text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Who We Are"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text",
+      "default": "<p>Welcome to LivaJewels.com — where timeless elegance meets ethical craftsmanship. Established in 2014, founded by Rakesh Tagadiya, Keval Goti, Chintan Goti, and Pravinbhai Goti. With a legacy built on precision and trust, we craft diamonds & fine jewelry that celebrate life's brightest moments.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Statistics"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stats",
+      "label": "Show statistics",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "stat_1_number",
+      "label": "Stat 1 number",
+      "default": "2014"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "Stat 1 label",
+      "default": "Established"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_number",
+      "label": "Stat 2 number",
+      "default": "10K+"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Stat 2 label",
+      "default": "Happy Customers"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_number",
+      "label": "Stat 3 number",
+      "default": "100%"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Stat 3 label",
+      "default": "Ethical Sourcing"
+    },
+    {
+      "type": "text",
+      "id": "stat_4_number",
+      "label": "Stat 4 number",
+      "default": "4"
+    },
+    {
+      "type": "text",
+      "id": "stat_4_label",
+      "label": "Stat 4 label",
+      "default": "Expert Founders"
+    },
+    {
+      "type": "range",
+      "id": "stats_spacing",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Stats spacing",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Decorations"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_decorations",
+      "label": "Show diamond decorations",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "decoration_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Decoration opacity",
+      "default": 10
+    },
+    {
+      "type": "color",
+      "id": "decoration_color",
+      "label": "Decoration color",
+      "default": "#01305a"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "Layout",
+      "options": [
+        {
+          "value": "single-column",
+          "label": "Single column"
+        },
+        {
+          "value": "two-column",
+          "label": "Two column"
+        }
+      ],
+      "default": "single-column"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "min": 600,
+      "max": 1400,
+      "step": 50,
+      "unit": "px",
+      "label": "Container width",
+      "default": 1000
+    },
+    {
+      "type": "range",
+      "id": "text_max_width",
+      "min": 400,
+      "max": 1000,
+      "step": 50,
+      "unit": "px",
+      "label": "Text max width",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "content_spacing",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Content spacing",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading",
+      "default": "#01305a"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#01305a"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "color",
+      "id": "stat_number_color",
+      "label": "Stat number",
+      "default": "#01305a"
+    },
+    {
+      "type": "color",
+      "id": "stat_label_color",
+      "label": "Stat label",
+      "default": "#01305a"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading size",
+      "default": 48
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Heading spacing",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Text size",
+      "default": 17
+    },
+    {
+      "type": "range",
+      "id": "stat_number_size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Stat number size",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "stat_label_size",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Stat label size",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 10,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 80
+    }
+  ],
+  "presets": [
+    {
+      "name": "Who we are"
+    }
+  ]
+}
+{% endschema %}
