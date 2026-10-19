@@ -1230,8 +1230,10 @@
         "ai_gen_block_59b6abb_9FQQGr": {
           "type": "ai_gen_block_59b6abb",
           "name": "Who we are",
+          "disabled": true,
           "settings": {
             "anchor_id": "about-us",
+            "only_on_page": "",
             "show_label": true,
             "label_text": "Lab Grown Diamonds",
             "label_size": 12,
