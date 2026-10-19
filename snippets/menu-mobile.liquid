@@ -1,10 +1,14 @@
+{%- comment -%}
+  Mobile menu drawer. Rendered by sections/header.liquid with the header's "Main menu",
+  so desktop and mobile always show the same links.
+{%- endcomment -%}
 <div id="NavDrawer" class="drawer drawer--left">
   <div class="drawer__inner">
     <div class="modal-header js-drawer-close py-4">
       <button type="button" class="close"></button>
     </div>
     <ul class="drawer__nav menu-mobile-footer-content">
-      {%- for link in linklists[settings.main_linklist].links -%}
+      {%- for link in linklists[menu].links -%}
         {%- assign child_list_handle = link.title | handleize -%}
         {%- if link.links != blank -%}
           <li class="drawer__nav-item">

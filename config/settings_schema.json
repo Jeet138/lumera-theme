@@ -1178,12 +1178,6 @@
     "name": "Menu Mobile",
     "settings": [
       {
-        "type": "link_list",
-        "id": "main_linklist",
-        "label": "Menu Mobile",
-        "default": "main-menu"
-      },
-      {
         "type": "checkbox",
         "id": "login_enable",
         "label": "Enable Login",

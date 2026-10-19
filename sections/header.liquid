@@ -51,6 +51,18 @@
   {%- endif -%}
 </header>
 
+{%- render 'menu-mobile', menu: main_linklist -%}
+<script>
+  /* The drawer is fixed-position; keep it a direct child of <body> so it is not trapped in the sticky header's stacking context.
+     On a theme-editor reload of this section, the freshly rendered drawer replaces the old one. */
+  (function () {
+    var drawers = document.querySelectorAll('#NavDrawer');
+    var drawer = drawers[drawers.length - 1];
+    for (var i = 0; i < drawers.length - 1; i++) drawers[i].remove();
+    if (drawer && drawer.parentNode !== document.body) document.body.appendChild(drawer);
+  })();
+</script>
+
 <style>
   /* ===== MEGA MENU HEADING ===== */
   .site-nav .meganav .mega-heading a {
