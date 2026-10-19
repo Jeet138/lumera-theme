@@ -9,6 +9,11 @@
  */
 {
   "sections": {
+    "who_we_are": {
+      "type": "_blocks",
+      "name": "Who we are",
+      "settings": {}
+    },
     "main": {
       "type": "main-page",
       "settings": {}
@@ -18,159 +23,57 @@
       "name": "About us",
       "settings": {}
     },
-    "177804913837dc5337": {
-      "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_60c8a0c_fc48Az": {
-          "type": "ai_gen_block_60c8a0c",
-          "disabled": true,
-          "settings": {
-            "layout": "image_left",
-            "desktop_width_percent": 70,
-            "content_gap": 60,
-            "section_padding_top": 60,
-            "section_padding_bottom": 60,
-            "background_color": "#ffffff",
-            "image": "shopify://shop_images/WhatsApp_Image_2026-05-26_at_5.20.47_PM.jpg",
-            "image_border_radius": 0,
-            "heading": "<h6>From Founder & Designer</h6>",
-            "heading_size": 48,
-            "heading_color": "#1a1a1a",
-            "heading_spacing": 20,
-            "text": "<p><br/>Hi, I'm Keval Goti, the CEO of Lumera Fine Jewellery. With a passion for fine craftsmanship and timeless elegance, I founded Lumera to create jewelry that celebrates life's most meaningful moments. My vision is to blend exceptional quality, modern design, and ethical sourcing to offer pieces that are both beautiful and enduring. Every collection reflects our commitment to luxury, authenticity, and helping our customers express their unique style with confidence.</p>",
-            "text_size": 14,
-            "text_color": "#666666",
-            "text_spacing": 30,
-            "content_padding": 40,
-            "button_text": "Learn more",
-            "button_link": "shopify://collections/all",
-            "button_font_size": 14,
-            "button_padding_vertical": 12,
-            "button_padding_horizontal": 26,
-            "button_border_radius": 8,
-            "button_bg_color": "#000000",
-            "button_text_color": "#ffffff",
-            "button_hover_bg_color": "#0b3511",
-            "button_hover_text_color": "#ffffff",
-            "image_position_mobile": "top",
-            "mobile_gap": 30,
-            "mobile_heading_size": 32,
-            "mobile_text_size": 14,
-            "mobile_content_padding": 20
-          },
-          "blocks": {}
-        },
-        "ai_gen_block_60c8a0c_CPLgh6": {
-          "type": "ai_gen_block_60c8a0c",
-          "name": "About us",
-          "disabled": true,
-          "settings": {
-            "layout": "image_right",
-            "desktop_width_percent": 75,
-            "content_gap": 60,
-            "section_padding_top": 60,
-            "section_padding_bottom": 60,
-            "background_color": "#ffffff",
-            "image": "shopify://shop_images/Manna-Jewellers-Expert-Craftmanship_1600x_c89a3012-7154-4ced-a88c-af2eda695b6b.webp",
-            "image_border_radius": 0,
-            "heading": "<h6>Our Craftmanship</h6>",
-            "heading_size": 48,
-            "heading_color": "#1a1a1a",
-            "heading_spacing": 20,
-            "text": "<p>Our jewelry is meticulously crafted by hand from scratch, ensuring each piece is distinct and personally tailored. We take great pride in every item we create. Certified gemologists carefully select the diamonds we use, guaranteeing that only the finest, perfectly cut, and polished gems are incorporated into our designs. Our skilled craftsmen then fashion these exquisite pieces, ensuring they are not only perfect in appearance but also comfortable for everyday wear.</p>",
-            "text_size": 17,
-            "text_color": "#666666",
-            "text_spacing": 32,
-            "content_padding": 40,
-            "button_text": "Learn more",
-            "button_link": "",
-            "button_font_size": 14,
-            "button_padding_vertical": 12,
-            "button_padding_horizontal": 30,
-            "button_border_radius": 0,
-            "button_bg_color": "#000000",
-            "button_text_color": "#ffffff",
-            "button_hover_bg_color": "#ad2c34",
-            "button_hover_text_color": "#ffffff",
-            "image_position_mobile": "top",
-            "mobile_gap": 30,
-            "mobile_heading_size": 32,
-            "mobile_text_size": 14,
-            "mobile_content_padding": 20
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_60c8a0c_fc48Az",
-        "ai_gen_block_60c8a0c_CPLgh6"
-      ],
-      "settings": {}
-    },
-    "who_we_are": {
-      "type": "_blocks",
+    "who_we_are_xmd4Ej": {
+      "type": "who-we-are",
       "name": "Who we are",
-      "blocks": {
-        "who_we_are_block": {
-          "type": "ai_gen_block_59b6abb",
-          "name": "Who we are",
-          "settings": {
-            "anchor_id": "about-us",
-            "show_label": true,
-            "label_text": "Lab Grown Diamonds",
-            "label_size": 12,
-            "label_spacing": 10,
-            "label_background": "#053931",
-            "label_color": "#ffffff",
-            "heading": "Who We Are",
-            "text": "<p>Welcome to Lumera Fine Jewellery — where timeless elegance meets ethical craftsmanship. Established in 2014, Lumera Fine Jewellery is built on a legacy of precision, trust, and exceptional artistry. We create exquisite diamonds and fine jewellery that celebrate life's most meaningful moments, combining timeless design with superior craftsmanship to craft pieces that are cherished for generations.</p>",
-            "show_stats": true,
-            "stat_1_number": "2014",
-            "stat_1_label": "Established",
-            "stat_2_number": "10K+",
-            "stat_2_label": "Happy Customers",
-            "stat_3_number": "100%",
-            "stat_3_label": "Ethical Sourcing",
-            "stat_4_number": "4",
-            "stat_4_label": "Expert Founders",
-            "stats_spacing": 40,
-            "show_decorations": true,
-            "decoration_opacity": 10,
-            "decoration_color": "#053931",
-            "layout": "single-column",
-            "text_alignment": "center",
-            "container_width": 1000,
-            "text_max_width": 800,
-            "content_spacing": 30,
-            "background_color": "#fef8f1",
-            "heading_color": "#053931",
-            "text_color": "#053931",
-            "divider_color": "#e0e0e0",
-            "stat_number_color": "#053931",
-            "stat_label_color": "#053931",
-            "heading_size": 48,
-            "heading_weight": "600",
-            "heading_spacing": 20,
-            "text_size": 17,
-            "stat_number_size": 40,
-            "stat_label_size": 12,
-            "padding_top": 80,
-            "padding_bottom": 80,
-            "only_on_page": "about-us"
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "who_we_are_block"
-      ],
-      "settings": {}
+      "settings": {
+        "show_label": true,
+        "label_text": "Lab Grown Diamonds",
+        "label_size": 12,
+        "label_spacing": 20,
+        "label_background": "#053931",
+        "label_color": "#ffffff",
+        "heading": "Who We Are",
+        "text": "<p>Welcome to LivaJewels.com — where timeless elegance meets ethical craftsmanship. Established in 2014, founded by Rakesh Tagadiya, Keval Goti, Chintan Goti, and Pravinbhai Goti. With a legacy built on precision and trust, we craft diamonds & fine jewelry that celebrate life's brightest moments.</p>",
+        "show_stats": true,
+        "stat_1_number": "2014",
+        "stat_1_label": "Established",
+        "stat_2_number": "10K+",
+        "stat_2_label": "Happy Customers",
+        "stat_3_number": "100%",
+        "stat_3_label": "Ethical Sourcing",
+        "stat_4_number": "4",
+        "stat_4_label": "Expert Founders",
+        "stats_spacing": 40,
+        "show_decorations": true,
+        "decoration_opacity": 10,
+        "decoration_color": "#053931",
+        "layout": "single-column",
+        "text_alignment": "center",
+        "container_width": 1000,
+        "text_max_width": 800,
+        "content_spacing": 30,
+        "background_color": "#ffffff",
+        "heading_color": "#053931",
+        "text_color": "#053931",
+        "divider_color": "#e0e0e0",
+        "stat_number_color": "#053931",
+        "stat_label_color": "#053931",
+        "heading_size": 48,
+        "heading_weight": "600",
+        "heading_spacing": 20,
+        "text_size": 17,
+        "stat_number_size": 40,
+        "stat_label_size": 12,
+        "padding_top": 80,
+        "padding_bottom": 80
+      }
     }
   },
   "order": [
     "who_we_are",
     "main",
     "blocks_EL4nyF",
-    "177804913837dc5337"
+    "who_we_are_xmd4Ej"
   ]
 }
