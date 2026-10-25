@@ -741,36 +741,6 @@
               },
               "blocks": {}
             },
-            "shape_slide_2": {
-              "type": "_ring_slide",
-              "settings": {
-                "image": "shopify://shop_images/PRINCESS_1.webp",
-                "title": "Princess",
-                "subtitle": "",
-                "link": "shopify://collections/princess"
-              },
-              "blocks": {}
-            },
-            "shape_slide_3": {
-              "type": "_ring_slide",
-              "settings": {
-                "image": "shopify://shop_images/120x120.png",
-                "title": "Cushion",
-                "subtitle": "",
-                "link": "shopify://collections/cushion"
-              },
-              "blocks": {}
-            },
-            "shape_slide_4": {
-              "type": "_ring_slide",
-              "settings": {
-                "image": "shopify://shop_images/emerald_2.png",
-                "title": "Emerald",
-                "subtitle": "",
-                "link": "shopify://collections/emerald"
-              },
-              "blocks": {}
-            },
             "shape_slide_5": {
               "type": "_ring_slide",
               "settings": {
@@ -781,13 +751,13 @@
               },
               "blocks": {}
             },
-            "shape_slide_6": {
+            "shape_slide_8": {
               "type": "_ring_slide",
               "settings": {
-                "image": "shopify://shop_images/pear_png.webp",
-                "title": "Pear",
+                "image": "shopify://shop_images/radiant_png.webp",
+                "title": "Radiant",
                 "subtitle": "",
-                "link": "shopify://collections/pear"
+                "link": "shopify://collections/radiant-1"
               },
               "blocks": {}
             },
@@ -801,13 +771,73 @@
               },
               "blocks": {}
             },
-            "shape_slide_8": {
+            "shape_slide_2": {
               "type": "_ring_slide",
               "settings": {
-                "image": "shopify://shop_images/radiant_png.webp",
-                "title": "Radiant",
+                "image": "shopify://shop_images/PRINCESS_1.webp",
+                "title": "Princess",
                 "subtitle": "",
-                "link": "shopify://collections/radiant-1"
+                "link": "shopify://collections/princess"
+              },
+              "blocks": {}
+            },
+            "shape_slide_11": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/ChatGPT_Image_Aug_7_2026_11_07_18_AM.png",
+                "title": "Trillion",
+                "subtitle": "",
+                "link": "shopify://collections/trillion"
+              },
+              "blocks": {}
+            },
+            "shape_slide_14": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/cadillac.png",
+                "title": "Cadillac",
+                "subtitle": "",
+                "link": "shopify://collections/cadillac"
+              },
+              "blocks": {}
+            },
+            "shape_slide_12": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/Baguette_Diamond.png",
+                "title": "Baguette",
+                "subtitle": "",
+                "link": "shopify://collections/baguette"
+              },
+              "blocks": {}
+            },
+            "shape_slide_16": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/Lily-Loose-Diamond.png",
+                "title": "Antique cut",
+                "subtitle": "",
+                "link": "shopify://collections/antique-cut"
+              },
+              "blocks": {}
+            },
+            "shape_slide_13": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/half_moon_1100e365-2154-4d50-8488-42e053d2893f.png",
+                "title": "Half moon",
+                "subtitle": "",
+                "link": "shopify://collections/half-mooon"
+              },
+              "blocks": {}
+            },
+            "shape_slide_6": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/pear_png.webp",
+                "title": "Pear",
+                "subtitle": "",
+                "link": "shopify://collections/pear"
               },
               "blocks": {}
             },
@@ -831,43 +861,23 @@
               },
               "blocks": {}
             },
-            "shape_slide_11": {
+            "shape_slide_3": {
               "type": "_ring_slide",
               "settings": {
-                "image": "shopify://shop_images/ChatGPT_Image_Aug_7_2026_11_07_18_AM.png",
-                "title": "Trillion",
+                "image": "shopify://shop_images/120x120.png",
+                "title": "Cushion",
                 "subtitle": "",
-                "link": "shopify://collections/trillion"
+                "link": "shopify://collections/cushion"
               },
               "blocks": {}
             },
-            "shape_slide_12": {
+            "shape_slide_4": {
               "type": "_ring_slide",
               "settings": {
-                "image": "shopify://shop_images/Baguette_Diamond.png",
-                "title": "Baguette",
+                "image": "shopify://shop_images/emerald_2.png",
+                "title": "Emerald",
                 "subtitle": "",
-                "link": "shopify://collections/baguette"
-              },
-              "blocks": {}
-            },
-            "shape_slide_13": {
-              "type": "_ring_slide",
-              "settings": {
-                "image": "shopify://shop_images/half_moon_1100e365-2154-4d50-8488-42e053d2893f.png",
-                "title": "Half moon",
-                "subtitle": "",
-                "link": "shopify://collections/half-mooon"
-              },
-              "blocks": {}
-            },
-            "shape_slide_14": {
-              "type": "_ring_slide",
-              "settings": {
-                "image": "shopify://shop_images/cadillac.png",
-                "title": "Cadillac",
-                "subtitle": "",
-                "link": "shopify://collections/cadillac"
+                "link": "shopify://collections/emerald"
               },
               "blocks": {}
             },
@@ -880,35 +890,25 @@
                 "link": "shopify://collections/trapezoid"
               },
               "blocks": {}
-            },
-            "shape_slide_16": {
-              "type": "_ring_slide",
-              "settings": {
-                "image": "shopify://shop_images/Lily-Loose-Diamond.png",
-                "title": "Antique cut",
-                "subtitle": "",
-                "link": "shopify://collections/antique-cut"
-              },
-              "blocks": {}
             }
           },
           "block_order": [
             "shape_slide_1",
-            "shape_slide_2",
-            "shape_slide_3",
-            "shape_slide_4",
             "shape_slide_5",
-            "shape_slide_6",
-            "shape_slide_7",
             "shape_slide_8",
+            "shape_slide_7",
+            "shape_slide_2",
+            "shape_slide_11",
+            "shape_slide_14",
+            "shape_slide_12",
+            "shape_slide_16",
+            "shape_slide_13",
+            "shape_slide_6",
             "shape_slide_9",
             "shape_slide_10",
-            "shape_slide_11",
-            "shape_slide_12",
-            "shape_slide_13",
-            "shape_slide_14",
-            "shape_slide_15",
-            "shape_slide_16"
+            "shape_slide_3",
+            "shape_slide_4",
+            "shape_slide_15"
           ]
         }
       },
