@@ -831,6 +831,16 @@
               },
               "blocks": {}
             },
+            "shape_slide_15": {
+              "type": "_ring_slide",
+              "settings": {
+                "image": "shopify://shop_images/trapzoid.png",
+                "title": "Trapezoid",
+                "subtitle": "",
+                "link": "shopify://collections/trapezoid"
+              },
+              "blocks": {}
+            },
             "shape_slide_9": {
               "type": "_ring_slide",
               "settings": {
@@ -880,16 +890,6 @@
                 "link": "shopify://collections/pear"
               },
               "blocks": {}
-            },
-            "shape_slide_15": {
-              "type": "_ring_slide",
-              "settings": {
-                "image": "shopify://shop_images/trapzoid.png",
-                "title": "Trapezoid",
-                "subtitle": "",
-                "link": "shopify://collections/trapezoid"
-              },
-              "blocks": {}
             }
           },
           "block_order": [
@@ -903,12 +903,12 @@
             "shape_slide_12",
             "shape_slide_16",
             "shape_slide_13",
+            "shape_slide_15",
             "shape_slide_9",
             "shape_slide_10",
             "shape_slide_3",
             "shape_slide_4",
-            "shape_slide_6",
-            "shape_slide_15"
+            "shape_slide_6"
           ]
         }
       },
