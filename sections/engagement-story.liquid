@@ -144,59 +144,50 @@
 
     <div class="lumera-engagement-right">
 
-      <div class="lumera-jewellery-stage">
+      <div
+        class="lumera-hand-stage"
+        data-hand-stage
+        style="
+          --ring-x: {{ section.settings.ring_x }}%;
+          --ring-y: {{ section.settings.ring_y }}%;
+          --ring-size: {{ section.settings.ring_size }}%;
+          --ring-rotate: {{ section.settings.ring_rotate }}deg;
+          --p: 0;
+        "
+      >
 
-        <!-- Decorative orbit -->
-        <div class="lumera-orbit orbit-one"></div>
-        <div class="lumera-orbit orbit-two"></div>
+        <div class="lumera-hand-glow"></div>
 
-
-        <!-- IMAGE 1 -->
-
-        {% if section.settings.jewellery_image_1 != blank %}
-
-          <div class="lumera-jewellery-image jewellery-one">
-
-            <div class="lumera-image-glow"></div>
-
-            <img
-              src="{{ section.settings.jewellery_image_1 | image_url: width: 800 }}"
-              alt="{{ section.settings.jewellery_image_1.alt | escape }}"
-              loading="lazy"
-              width="{{ section.settings.jewellery_image_1.width }}"
-              height="{{ section.settings.jewellery_image_1.height }}"
-            >
-
+        {% if section.settings.hand_image != blank %}
+          <img
+            class="lumera-hand-img"
+            src="{{ section.settings.hand_image | image_url: width: 900 }}"
+            alt="{{ section.settings.hand_image.alt | escape }}"
+            loading="lazy"
+            width="{{ section.settings.hand_image.width }}"
+            height="{{ section.settings.hand_image.height }}"
+          >
+        {% else %}
+          <div class="lumera-placeholder lumera-hand-placeholder">
+            {{ 'image' | placeholder_svg_tag }}
           </div>
-
         {% endif %}
 
-
-        <!-- IMAGE 2 -->
-
-        {% if section.settings.jewellery_image_2 != blank %}
-
-          <div class="lumera-jewellery-image jewellery-two">
-
-            <div class="lumera-image-glow"></div>
-
+        {% if section.settings.ring_image != blank %}
+          <div class="lumera-hand-ring">
             <img
-              src="{{ section.settings.jewellery_image_2 | image_url: width: 800 }}"
-              alt="{{ section.settings.jewellery_image_2.alt | escape }}"
+              src="{{ section.settings.ring_image | image_url: width: 400 }}"
+              alt="{{ section.settings.ring_image.alt | escape }}"
               loading="lazy"
-              width="{{ section.settings.jewellery_image_2.width }}"
-              height="{{ section.settings.jewellery_image_2.height }}"
+              width="{{ section.settings.ring_image.width }}"
+              height="{{ section.settings.ring_image.height }}"
             >
-
           </div>
-
         {% endif %}
 
-
-        <!-- Floating sparkle -->
-        <div class="lumera-sparkle sparkle-one">✦</div>
-        <div class="lumera-sparkle sparkle-two">✧</div>
-        <div class="lumera-sparkle sparkle-three">·</div>
+        <div class="lumera-sparkle hand-spark spark-a">✦</div>
+        <div class="lumera-sparkle hand-spark spark-b">✧</div>
+        <div class="lumera-sparkle hand-spark spark-c">✦</div>
 
       </div>
 
@@ -1382,10 +1373,213 @@
   }
 
 }
+  /* ============================================
+     HAND + RING (SCROLL SET)
+  ============================================ */
 
+  .lumera-engagement-right {
+    min-height: 0;
+  }
+
+  .lumera-hand-stage {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .lumera-hand-img {
+    position: relative;
+    z-index: 2;
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 25px rgba(40,25,15,.12));
+  }
+
+  .lumera-hand-placeholder {
+    aspect-ratio: 3 / 4;
+  }
+
+  .lumera-hand-glow {
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    left: 10%;
+    top: 10%;
+    border-radius: 50%;
+    background: rgba(214,193,165,.22);
+    filter: blur(40px);
+    z-index: 0;
+    opacity: calc(.3 + var(--p, 0) * .7);
+  }
+
+  /* Ring: --p 0 = upar door, --p 1 = finger par set */
+  .lumera-hand-ring {
+    position: absolute;
+    left: var(--ring-x);
+    top: var(--ring-y);
+    width: var(--ring-size);
+    z-index: 4;
+    pointer-events: none;
+    will-change: transform, opacity;
+    opacity: calc(.1 + var(--p, 0) * .9);
+    transform:
+      translate(-50%, -50%)
+      translateY(calc((1 - var(--p, 0)) * -420%))
+      rotate(calc(var(--ring-rotate) + (1 - var(--p, 0)) * -30deg))
+      scale(calc(1.3 - var(--p, 0) * .3));
+  }
+
+  .lumera-hand-ring img {
+    width: 100%;
+    height: auto;
+    display: block;
+    filter: drop-shadow(0 8px 10px rgba(40,25,15,.25));
+  }
+
+  /* Sparkles ring set hone ke baad dikhenge */
+  .hand-spark {
+    z-index: 6;
+    opacity: 0;
+    transition: opacity .6s ease;
+  }
+
+  .lumera-hand-stage.is-set .hand-spark {
+    opacity: .85;
+    animation: sparkleAnimation 3s ease-in-out infinite;
+  }
+
+  .spark-a { left: calc(var(--ring-x) + 6%);  top: calc(var(--ring-y) - 9%); font-size: 20px; }
+  .spark-b { left: calc(var(--ring-x) - 14%); top: calc(var(--ring-y) + 4%); font-size: 15px; animation-delay: .6s; }
+  .spark-c { left: calc(var(--ring-x) + 12%); top: calc(var(--ring-y) + 8%); font-size: 12px; animation-delay: 1.1s; }
+
+  /* ============================================
+     MOBILE : content upar, hand neeche
+  ============================================ */
+
+  @media screen and (max-width: 749px) {
+
+    .lumera-engagement-inner {
+      flex-direction: column;
+      min-height: 0;
+      padding: 40px 20px 30px;
+      gap: 18px;
+    }
+
+    .lumera-engagement-content {
+      width: 100%;
+      max-width: 340px;
+    }
+
+    .lumera-eyebrow { font-size: 10px; letter-spacing: 2.5px; }
+    .lumera-eyebrow span { width: 20px; }
+
+    .lumera-engagement-heading {
+      max-width: 100%;
+      font-size: 32px;
+    }
+
+    .lumera-engagement-description {
+      max-width: 100%;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .lumera-engagement-button {
+      min-width: 180px;
+      padding: 14px 22px;
+      font-size: 11px;
+    }
+
+    .lumera-bottom-text {
+      max-width: 100%;
+      font-size: 9px;
+    }
+
+    .lumera-engagement-right {
+      position: relative;
+      left: auto;
+      top: auto;
+      width: 100%;
+      height: auto;
+      display: flex;
+      justify-content: center;
+      pointer-events: auto;
+      z-index: 2;
+    }
+
+    .lumera-hand-stage {
+      max-width: 290px;
+    }
+
+    .spark-a { font-size: 16px; }
+    .spark-b { font-size: 12px; }
+    .spark-c { font-size: 10px; }
+  }
 </style>
 
+<script>
+  (function () {
+    var root = document.querySelector('.lumera-engagement-{{ section.id }}');
+    if (!root) return;
 
+    var stage = root.querySelector('[data-hand-stage]');
+    if (!stage) return;
+
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var current = 0, target = 0, ticking = false, running = false;
+
+    function clamp(n) { return Math.min(1, Math.max(0, n)); }
+
+    function calcTarget() {
+      var rect = stage.getBoundingClientRect();
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      var start = vh * 0.95;   // stage neeche se aata hua
+      var end = vh * 0.30;     // is point par ring poori set
+      target = clamp((start - rect.top) / (start - end));
+      if (reduce) target = 1;
+    }
+
+    function render() {
+      current += (target - current) * 0.14;      // smooth easing
+      if (Math.abs(target - current) < 0.001) current = target;
+
+      stage.style.setProperty('--p', current.toFixed(4));
+      stage.classList.toggle('is-set', current > 0.97);
+
+      if (current !== target) {
+        requestAnimationFrame(render);
+      } else {
+        running = false;
+      }
+    }
+
+    function start() {
+      if (!running) {
+        running = true;
+        requestAnimationFrame(render);
+      }
+    }
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        calcTarget();
+        start();
+        ticking = false;
+      });
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    window.addEventListener('load', onScroll);
+    calcTarget();
+    start();
+  })();
+</script>
 {% schema %}
 
 {
@@ -1443,7 +1637,7 @@
 
     {
       "type": "header",
-      "content": "Images"
+      "content": "Left Image"
     },
 
     {
@@ -1453,22 +1647,72 @@
     },
 
     {
-      "type": "image_picker",
-      "id": "jewellery_image_1",
-      "label": "Jewellery image 1"
-    },
-
-    {
-      "type": "image_picker",
-      "id": "jewellery_image_2",
-      "label": "Jewellery image 2"
-    },
-
-    {
       "type": "checkbox",
       "id": "show_image_ring",
       "label": "Show decorative mini ring",
       "default": true
+    },
+
+
+    {
+      "type": "header",
+      "content": "Hand + Ring Animation"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "hand_image",
+      "label": "Hand image (transparent PNG)"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "ring_image",
+      "label": "Ring image (transparent PNG)"
+    },
+
+    {
+      "type": "range",
+      "id": "ring_x",
+      "label": "Ring position - Left/Right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 50
+    },
+
+    {
+      "type": "range",
+      "id": "ring_y",
+      "label": "Ring position - Up/Down",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 45
+    },
+
+    {
+      "type": "range",
+      "id": "ring_size",
+      "label": "Ring size",
+      "min": 5,
+      "max": 40,
+      "step": 1,
+      "unit": "%",
+      "default": 14
+    },
+
+    {
+      "type": "range",
+      "id": "ring_rotate",
+      "label": "Ring rotation",
+      "min": -45,
+      "max": 45,
+      "step": 1,
+      "unit": "°",
+      "default": 0
     },
 
 
