@@ -75,8 +75,13 @@
       {%- break -%}
     {%- endif -%}
   {%- endfor -%}
+  {%- assign is_approved = false -%}
+  {%- if customer and customer.tags contains 'premium-approved' -%}
+    {%- assign is_approved = true -%}
+  {%- endif -%}
+
   {%- assign is_locked = false -%}
-  {%- if is_premium_collection and customer == blank -%}
+  {%- if is_premium_collection and is_approved == false -%}
     {%- assign is_locked = true -%}
   {%- endif -%}
   <meta itemprop="name" content="{{ product.title }}">
@@ -855,7 +860,9 @@
                             >
                           </div>
                         </div>
-
+                        <div id="ring-size-error" class="ring-size-error" style="display:none;">
+                          Please select a Ring size
+                        </div>
                         <!-- Engraving Modal -->
                         <div class="engraving-modal" id="engraving-modal" aria-hidden="true">
                           <div
@@ -939,114 +946,122 @@
                         </div>
 
                         <style>
-                          /* ===== Ring size + Engraving row ===== */
-                          .ring-engrave-row{
-                            display:flex !important;
-                            flex-wrap:nowrap !important;
-                            align-items:flex-start !important;
-                            gap:20px !important;
-                            margin-bottom:10px;
-                          }
-                          .ring-engrave-row > .product-size-selector,
-                          .ring-engrave-row > .engraving-field{
-                            width:auto !important;
-                            flex:0 0 auto !important;
-                            margin:0 !important;
-                            padding:0 !important;
-                          }
-                          .ring-engrave-row label{
-                            display:block !important;
-                            margin:0 0 6px 0 !important;
-                          }
+                                                    /* ===== Ring size + Engraving row ===== */
+                                                    .ring-engrave-row{
+                                                      display:flex !important;
+                                                      flex-wrap:nowrap !important;
+                                                      align-items:flex-start !important;
+                                                      gap:20px !important;
+                                                      margin-bottom:10px;
+                                                    }
+                                                    .ring-engrave-row > .product-size-selector,
+                                                    .ring-engrave-row > .engraving-field{
+                                                      width:auto !important;
+                                                      flex:0 0 auto !important;
+                                                      margin:0 !important;
+                                                      padding:0 !important;
+                                                    }
+                                                    .ring-engrave-row label{
+                                                      display:block !important;
+                                                      margin:0 0 6px 0 !important;
+                                                    }
 
-                          .engraving-field{ display:flex; flex-direction:column; align-items:flex-start; }
-                          .engraving-label{ font-size:14px; }
-                          .engraving-optional{ font-size:12px; color:#888; margin-left:4px; }
+                                                    .engraving-field{ display:flex; flex-direction:column; align-items:flex-start; }
+                                                    .engraving-label{ font-size:14px; }
+                                                    .engraving-optional{ font-size:12px; color:#888; margin-left:4px; }
 
-                          .engraving-btn{
-                            display:inline-flex; align-items:center; gap:8px;
-                            padding:8px 12px;
-                            border:0.5px solid #000; border-radius:4px;
-                            background:#fff; color:#171717;
-                            font-size:14px; cursor:pointer;
-                            max-width:200px;
-                          }
-                          .engraving-btn #engraving-btn-text{
-                            overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-                          }
-                          .engraving-btn.has-value{ background:#123f3a; color:#fff; border-color:#123f3a; }
+                                                    .engraving-btn{
+                                                      display:inline-flex; align-items:center; gap:8px;
+                                                      padding:8px 12px;
+                                                      border:0.5px solid #000; border-radius:4px;
+                                                      background:#fff; color:#171717;
+                                                      font-size:14px; cursor:pointer;
+                                                      max-width:200px;
+                                                    }
+                                                    .engraving-btn #engraving-btn-text{
+                                                      overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+                                                    }
+                                                    .engraving-btn.has-value{ background:#123f3a; color:#fff; border-color:#123f3a; }
 
-                          /* ===== Modal ===== */
-                          .engraving-modal{
-                            display:none; position:fixed; inset:0; z-index:100000;
-                            background:rgba(0,0,0,.5);
-                            align-items:center; justify-content:center; padding:16px;
-                          }
-                          .engraving-modal.open{ display:flex; }
-                          .engraving-modal__box{
-                            width:100%; max-width:440px; max-height:92vh; overflow:auto;
-                            background:#fff8f1; border-radius:14px;
-                            box-shadow:0 20px 50px rgba(0,0,0,.3);
-                          }
-                          .engraving-modal__head{
-                            display:flex; align-items:center; justify-content:space-between;
-                            padding:18px 22px; background:#123f3a; color:#fff;
-                            border-radius:14px 14px 0 0;
-                          }
-                          .engraving-modal__head h4{ margin:0; color:#fff; font-size:18px; }
-                          .engraving-modal__close{
-                            background:none; border:0; color:#fff; font-size:26px; line-height:1; cursor:pointer;
-                          }
-                          .engraving-modal__body{ padding:20px 22px 22px; }
+                                                    /* ===== Modal ===== */
+                                                    .engraving-modal{
+                                                      display:none; position:fixed; inset:0; z-index:100000;
+                                                      background:rgba(0,0,0,.5);
+                                                      align-items:center; justify-content:center; padding:16px;
+                                                    }
+                                                    .engraving-modal.open{ display:flex; }
+                                                    .engraving-modal__box{
+                                                      width:100%; max-width:440px; max-height:92vh; overflow:auto;
+                                                      background:#fff8f1; border-radius:14px;
+                                                      box-shadow:0 20px 50px rgba(0,0,0,.3);
+                                                    }
+                                                    .engraving-modal__head{
+                                                      display:flex; align-items:center; justify-content:space-between;
+                                                      padding:18px 22px; background:#123f3a; color:#fff;
+                                                      border-radius:14px 14px 0 0;
+                                                    }
+                                                    .engraving-modal__head h4{ margin:0; color:#fff; font-size:18px; }
+                                                    .engraving-modal__close{
+                                                      background:none; border:0; color:#fff; font-size:26px; line-height:1; cursor:pointer;
+                                                    }
+                                                    .engraving-modal__body{ padding:20px 22px 22px; }
 
-                          .engraving-preview{
-                            margin-bottom:18px;
-                            background:#fff8f1;
-                            border-radius:8px;
-                            overflow:hidden;
-                            line-height:0;
-                          }
-                          .engraving-preview svg{ display:block; width:100%; height:auto; }
+                                                    .engraving-preview{
+                                                      margin-bottom:18px;
+                                                      background:#fff8f1;
+                                                      border-radius:8px;
+                                                      overflow:hidden;
+                                                      line-height:0;
+                                                    }
+                                                    .engraving-preview svg{ display:block; width:100%; height:auto; }
 
-                          .engraving-input-wrap{ position:relative; margin-bottom:16px; }
-                          .engraving-input-wrap input{
-                            width:100%; height:48px; padding:0 56px 0 14px;
-                            border:1px solid #123f3a; border-radius:10px; background:#fff;
-                            font-size:18px; outline:none;
-                          }
-                          .engraving-input-wrap input:focus{ box-shadow:0 0 0 3px rgba(18,63,58,.15); }
-                          #engraving-count{
-                            position:absolute; right:14px; top:50%; transform:translateY(-50%);
-                            font-size:12px; color:#888;
-                          }
+                                                    .engraving-input-wrap{ position:relative; margin-bottom:16px; }
+                                                    .engraving-input-wrap input{
+                                                      width:100%; height:48px; padding:0 56px 0 14px;
+                                                      border:1px solid #123f3a; border-radius:10px; background:#fff;
+                                                      font-size:18px; outline:none;
+                                                    }
+                                                    .engraving-input-wrap input:focus{ box-shadow:0 0 0 3px rgba(18,63,58,.15); }
+                                                    #engraving-count{
+                                                      position:absolute; right:14px; top:50%; transform:translateY(-50%);
+                                                      font-size:12px; color:#888;
+                                                    }
 
-                          .engraving-font-label{ font-size:12px; letter-spacing:1px; color:#555; margin-bottom:8px; }
-                          .engraving-fonts{ display:flex; gap:10px; margin-bottom:18px; }
-                          .engraving-font-btn{
-                            flex:1; display:flex; flex-direction:column; align-items:center; gap:2px;
-                            padding:10px 6px; border:1px solid #ddd; border-radius:10px;
-                            background:#fff; color:#111; cursor:pointer;
-                          }
-                          .engraving-font-btn small{ font-size:12px; font-weight:600; }
-                          .engraving-font-btn.active{ background:#123f3a; border-color:#123f3a; color:#fff; }
+                                                    .engraving-font-label{ font-size:12px; letter-spacing:1px; color:#555; margin-bottom:8px; }
+                                                    .engraving-fonts{ display:flex; gap:10px; margin-bottom:18px; }
+                                                    .engraving-font-btn{
+                                                      flex:1; display:flex; flex-direction:column; align-items:center; gap:2px;
+                                                      padding:10px 6px; border:1px solid #ddd; border-radius:10px;
+                                                      background:#fff; color:#111; cursor:pointer;
+                                                    }
+                                                    .engraving-font-btn small{ font-size:12px; font-weight:600; }
+                                                    .engraving-font-btn.active{ background:#123f3a; border-color:#123f3a; color:#fff; }
 
-                          .engraving-done{
-                            display:block; width:100%; height:48px; border:0; border-radius:30px;
-                            background:#123f3a; color:#fff; font-size:15px; font-weight:600; cursor:pointer;
-                          }
-                          .engraving-clear{
-                            display:block; margin:14px auto 0; background:none; border:0;
-                            color:#123f3a; font-size:14px; cursor:pointer;
-                          }
+                                                    .engraving-done{
+                                                      display:block; width:100%; height:48px; border:0; border-radius:30px;
+                                                      background:#123f3a; color:#fff; font-size:15px; font-weight:600; cursor:pointer;
+                                                    }
+                                                    .engraving-clear{
+                                                      display:block; margin:14px auto 0; background:none; border:0;
+                                                      color:#123f3a; font-size:14px; cursor:pointer;
+                                                    }
 
-                          /* Fonts */
-                          .font-script{ font-family:'Brush Script MT','Segoe Script','Lucida Handwriting',cursive; }
-                          .font-serif{ font-family:Georgia,'Times New Roman',serif; }
-                          .font-block{ font-family:Arial,Helvetica,sans-serif; text-transform:uppercase; letter-spacing:2px; font-weight:600; }
+                                                    /* Fonts */
+                                                    .font-script{ font-family:'Brush Script MT','Segoe Script','Lucida Handwriting',cursive; }
+                                                    .font-serif{ font-family:Georgia,'Times New Roman',serif; }
+                                                    .font-block{ font-family:Arial,Helvetica,sans-serif; text-transform:uppercase; letter-spacing:2px; font-weight:600; }
 
-                          @media (max-width:767px){
-                            .ring-engrave-row{ gap:12px !important; }
-                            .engraving-btn{ max-width:150px; }
+                                                    @media (max-width:767px){
+                                                      .ring-engrave-row{ gap:12px !important; }
+                                                      .engraving-btn{ max-width:150px; }
+                                                    }
+                                                    .ring-size-error{
+                            color:#e02b27;
+                            font-size:14px;
+                            margin:-2px 0 10px;
+                          }
+                          .ring-custom-select.has-error{
+                            border-color:#e02b27;
                           }
                         </style>
 
@@ -1253,6 +1268,7 @@
                               // error hatao
                               var err = document.getElementById('ring-size-error');
                               if (err) err.style.display = 'none';
+                              if (e.dropdown) e.dropdown.classList.remove('has-error');
                             }
 
                             // Capture phase: purane theme JS se conflict (double toggle) nahi hoga
@@ -1798,6 +1814,7 @@
     <div
       class="premium-page-lock-overlay"
       data-premium-page-locked="true"
+      data-premium-state="{% if customer %}pending{% else %}guest{% endif %}"
       data-product-url="{{ product.url | within: collection }}"
     >
       <div class="premium-page-lock-box">
@@ -1806,13 +1823,55 @@
             <path d="M17 8V7a5 5 0 0 0-10 0v1H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-9a2 2 0 0 0-2-2h-2zm-8-1a3 3 0 1 1 6 0v1H9V7z"/>
           </svg>
         </div>
-        <p>
-          This is an exclusive design.<br>
-          Please login to view full details.
-        </p>
-        <button type="button" class="btn btn-theme premium-login-btn">Login to view</button>
+
+        {%- if customer == blank -%}
+          <p>
+            This is an exclusive design.<br>
+            Please login to view full details.
+          </p>
+          <button type="button" class="btn btn-theme premium-login-btn">Login to view</button>
+
+        {%- else -%}
+          {%- form 'contact', id: 'premium-request-form', return_to: product.url -%}
+            {%- if form.posted_successfully? -%}
+              <p>
+                Request bhej di gayi hai.<br>
+                Approval ke baad aapko message mil jayega.
+              </p>
+              <a
+                class="btn btn-theme premium-login-btn"
+                target="_blank"
+                rel="noopener"
+                href="https://wa.me/918160308395?text={{ 'Premium access request. Name: ' | append: customer.name | append: ', Email: ' | append: customer.email | append: ', Phone: ' | append: customer.phone | url_encode }}"
+              >
+                WhatsApp par bhi bhejo
+              </a>
+            {%- else -%}
+              <p>
+                Aapka account abhi approved nahi hai.<br>
+                Access ke liye request bhejo.
+              </p>
+              <input type="hidden" name="contact[name]" value="{{ customer.name }}">
+              <input type="hidden" name="contact[email]" value="{{ customer.email }}">
+              <input type="hidden" name="contact[phone]" value="{{ customer.phone }}">
+              <input
+                type="hidden"
+                name="contact[body]"
+                value="PREMIUM ACCESS REQUEST | Name: {{ customer.name }} | Email: {{ customer.email }} | Phone: {{ customer.phone }} | Product: {{ product.title }}"
+              >
+              <button type="submit" class="btn btn-theme premium-login-btn">Request Access</button>
+            {%- endif -%}
+          {%- endform -%}
+        {%- endif -%}
       </div>
     </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        var ps = document.querySelector('#ProductSection-{{ section.id }} .product-single');
+        if (ps) ps.classList.add('premium-product-page-locked');
+      });
+    </script>
   {% endif %}
   <style>
     .js-recently-view { position: relative; }
@@ -1863,10 +1922,83 @@
       }
     }
   </style>
+  <script>
+    /* ===== Ring size validation ===== */
+    (function () {
+      if (window.__ringValidateInit) return;
+      window.__ringValidateInit = true;
 
+      function ringMissing() {
+        var input = document.getElementById('ring-size-input');
+        return !!input && !input.value;
+      }
+
+      function showError() {
+        var err = document.getElementById('ring-size-error');
+        var box = document.getElementById('ring-size-dropdown');
+        if (err) err.style.display = 'block';
+        if (box) box.classList.add('has-error');
+      }
+
+      // 1) Click / submit: sirf default action roko, theme ko apna (metal) validation chalane do
+      window.addEventListener(
+        'click',
+        function (e) {
+          var btn = e.target.closest(
+            '.product-form__cart-submit, button[name="add"], .product-form__buynow, .shopify-payment-button'
+          );
+          if (!btn || !ringMissing()) return;
+          e.preventDefault();
+          showError();
+        },
+        true
+      );
+
+      window.addEventListener(
+        'submit',
+        function (e) {
+          if (!e.target.querySelector || !e.target.querySelector('#ring-size-input')) return;
+          if (!ringMissing()) return;
+          e.preventDefault();
+          showError();
+        },
+        true
+      );
+
+      // 2) Ring size khali ho to cart add request bhi block (fetch + XHR)
+      var origFetch = window.fetch;
+      if (origFetch) {
+        window.fetch = function (input) {
+          var url = typeof input === 'string' ? input : (input && input.url) || '';
+          if (/\/cart\/add/.test(url) && ringMissing()) {
+            showError();
+            return Promise.reject(new Error('Ring size required'));
+          }
+          return origFetch.apply(this, arguments);
+        };
+      }
+
+      var origOpen = XMLHttpRequest.prototype.open;
+      var origSend = XMLHttpRequest.prototype.send;
+      XMLHttpRequest.prototype.open = function (method, url) {
+        this.__url = url;
+        return origOpen.apply(this, arguments);
+      };
+      XMLHttpRequest.prototype.send = function () {
+        if (/\/cart\/add/.test(this.__url || '') && ringMissing()) {
+          showError();
+          try {
+            this.abort();
+          } catch (err) {}
+          return;
+        }
+        return origSend.apply(this, arguments);
+      };
+    })();
+  </script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      var overlay = document.querySelector('[data-premium-page-locked="true"]');
+      var overlay = document.querySelector('[data-premium-state="guest"]');
       if (!overlay) return;
 
       overlay.addEventListener('click', function () {
@@ -1967,7 +2099,7 @@
     .ring-custom-select {
       position: relative;
       display: inline-block;
-      max-width: 150px;
+      max-width: 154px;
       cursor: pointer;
       font-size: 14px;
       border: 0.5px solid #000;
