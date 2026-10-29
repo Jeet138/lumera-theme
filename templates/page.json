@@ -62,7 +62,11 @@
         "stat_label_size": 12,
         "padding_top": 80,
         "padding_bottom": 80,
-        "only_on_page": "about-us"
+        "only_on_page": "about-us",
+        "stat_5_number": "12+",
+        "stat_5_label": "Countries We Deliver To",
+        "countries_title": "We deliver to",
+        "countries": "United States, United Kingdom, Canada, Australia, New Zealand, Germany, France, Italy, Spain, Netherlands, Belgium, Switzerland, Latvia, UAE, Japan, China, Hong Kong, Singapore, Thailand"
       }
     }
   },

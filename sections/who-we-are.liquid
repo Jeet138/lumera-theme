@@ -144,6 +144,23 @@
     letter-spacing: 0.05em;
   }
 
+  .ai-who-we-are-countries-{{ ai_gen_id }} {
+    max-width: 760px;
+    margin: 28px auto 0;
+    text-align: center;
+    font-size: {{ section.settings.stat_label_size | plus: 1 }}px;
+    line-height: 1.8;
+    color: {{ section.settings.stat_label_color }};
+  }
+
+  .ai-who-we-are-countries-title-{{ ai_gen_id }} {
+    display: block;
+    margin-bottom: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
   @media screen and (min-width: 750px) {
     .ai-who-we-are-content-{{ ai_gen_id }} {
       {% if section.settings.layout == 'two-column' %}
@@ -195,6 +212,11 @@
     .ai-who-we-are-stats-{{ ai_gen_id }} {
       grid-template-columns: repeat(2, 1fr);
       gap: 20px;
+    }
+
+    /* 5 stats on 2 columns: centre the last one on its own row */
+    .ai-who-we-are-stat-{{ ai_gen_id }}:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
     }
 
     .ai-who-we-are-diamond-1-{{ ai_gen_id }},
@@ -279,7 +301,22 @@
                 <span class="ai-who-we-are-stat-label-{{ ai_gen_id }}">{{ section.settings.stat_4_label }}</span>
               </div>
             {% endif %}
+            {% if section.settings.stat_5_number != blank %}
+              <div class="ai-who-we-are-stat-{{ ai_gen_id }}">
+                <span class="ai-who-we-are-stat-number-{{ ai_gen_id }}">{{ section.settings.stat_5_number }}</span>
+                <span class="ai-who-we-are-stat-label-{{ ai_gen_id }}">{{ section.settings.stat_5_label }}</span>
+              </div>
+            {% endif %}
           </div>
+          {% if section.settings.countries != blank %}
+            <p class="ai-who-we-are-countries-{{ ai_gen_id }}">
+              {%- if section.settings.countries_title != blank -%}
+                <span class="ai-who-we-are-countries-title-{{ ai_gen_id }}">{{ section.settings.countries_title }}</span>
+              {%- endif -%}
+              {%- assign country_list = section.settings.countries | split: ',' -%}
+              {%- for country in country_list -%}{{ country | strip }}{% unless forloop.last %}&nbsp;· {% endunless %}{%- endfor -%}
+            </p>
+          {% endif %}
         {% endif %}
       </div>
     </div>
@@ -418,6 +455,29 @@
       "id": "stat_4_label",
       "label": "Stat 4 label",
       "default": "Expert Founders"
+    },
+    {
+      "type": "text",
+      "id": "stat_5_number",
+      "label": "Stat 5 number",
+      "info": "Leave empty to show 4 stats"
+    },
+    {
+      "type": "text",
+      "id": "stat_5_label",
+      "label": "Stat 5 label"
+    },
+    {
+      "type": "text",
+      "id": "countries_title",
+      "label": "Countries title",
+      "default": "We deliver to"
+    },
+    {
+      "type": "textarea",
+      "id": "countries",
+      "label": "Countries",
+      "info": "Comma separated, e.g. United States, United Kingdom, Canada. Leave empty to hide."
     },
     {
       "type": "range",
