@@ -1,16 +1,23 @@
 {%- if section.settings.enable -%}
   {%- assign current_variant = product.selected_or_first_available_variant -%}
   <!-- sticky-cart.liquid -->
-  <style>
-    :root{
-      --sticky-cart-mix: {{ section.settings.mix_1 }};
-      --sticky-cart-mix2: {{ section.settings.mix_2 }};
-      --sticky-cart-text: {{ section.settings.text_cl.red }},{{ section.settings.text_cl.green }}, {{ section.settings.text_cl.blue }};
-      --sticky-cart-bg: {{ section.settings.cart_bg }};
-      --sticky-cart-cl: {{ section.settings.cart_cl }};
-      --sticky-cart-cl-hover: {{ section.settings.cart_cl_hover }};
-      }
-  </style>
+{%- assign sticky_bg_brightness = section.settings.mix_1 | color_brightness -%}
+{%- if sticky_bg_brightness > 140 -%}
+  {%- assign sticky_text_rgb = '31,31,31' -%}
+{%- else -%}
+  {%- assign sticky_text_rgb = '255,255,255' -%}
+{%- endif -%}
+
+<style>
+  :root{
+    --sticky-cart-mix: {{ section.settings.mix_1 }};
+    --sticky-cart-mix2: {{ section.settings.mix_2 }};
+    --sticky-cart-text: {{ sticky_text_rgb }};
+    --sticky-cart-bg: {{ section.settings.cart_bg }};
+    --sticky-cart-cl: {{ section.settings.cart_cl }};
+    --sticky-cart-cl-hover: {{ section.settings.cart_cl_hover }};
+  }
+</style>
   <style>
     .template-product{
       padding-bottom:var(--height-sticky);
