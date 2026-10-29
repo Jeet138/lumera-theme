@@ -1,4 +1,7 @@
 {% assign ai_gen_id = section.id | replace: '_', '' | downcase %}
+{%- comment -%} Optional: on a shared page template, show this section only on the page with this handle. {%- endcomment -%}
+{%- assign only_on_page = section.settings.only_on_page | handleize -%}
+{%- if only_on_page == blank or page.handle == only_on_page -%}
 
 {% style %}
   .ai-who-we-are-{{ ai_gen_id }} {
@@ -282,11 +285,18 @@
     </div>
   </div>
 </div>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Who we are",
   "settings": [
+    {
+      "type": "text",
+      "id": "only_on_page",
+      "label": "Show only on page",
+      "info": "Page handle, e.g. about-us. Leave empty to always show. Use this when the page template is shared by several pages."
+    },
     {
       "type": "header",
       "content": "Label"

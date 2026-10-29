@@ -16,53 +16,6 @@
   type_sticky: type_sticky
 %}
 <!-- header.liquid -->
-<header
-  class="{% if section.settings.menu_active == 'thick-line' %} thick-lineactive {% endif %} {{ layout_header }} size-header-{{ height_header }} section-{{ section.id }} site-header page-element is-moved-by-drawer header-{{ type_sticky }} {% if type_sticky == 'sticky' or type_sticky == 'sticky-top' %} site-header--sticky {% endif %} {% if section.settings.enable_transparent %} site-header--transparent {% if section.settings.enable_white %} site-header-white {% endif %} {% endif %} site-header--full {% if template contains 'index' %} index-header {% endif %} "
-  role="banner"
-  data-section-id="{{ section.id }}"
-  data-section-type="header"
-  data-sticky="{{ type_sticky }}"
->
-  <div class="header-bottom py-2 py-lg-0 ">
-    <div class="">
-      <div class="d-flex row-header align-items-center">
-        {%- liquid
-          case layout_header
-            when 'logo-center-navigation-center'
-              render 'header-logo-center-nav-center', container: container, enable_menu_vertical: enable_menu_vertical, sl_menu_vertical: sl_menu_vertical, main_linklist: main_linklist, blocks: blocks
-            when 'logo-left-navigation-underleft'
-              render 'header-logo-left-nav-left', container: container, enable_menu_vertical: enable_menu_vertical, sl_menu_vertical: sl_menu_vertical, main_linklist: main_linklist, blocks: blocks
-            when 'logo-center-navigation-split'
-              render 'header-logo-center-split', container: container, enable_menu_vertical: enable_menu_vertical, sl_menu_vertical: sl_menu_vertical, main_linklist: main_linklist, blocks: blocks
-            when 'logo-center-navigation-drawer'
-              render 'header-logo-center-drawer', container: container
-            else
-              render 'header-logo-left', container: container, layout_header: layout_header, enable_menu_vertical: enable_menu_vertical, sl_menu_vertical: sl_menu_vertical, main_linklist: main_linklist, blocks: blocks
-          endcase
-        -%}
-      </div>
-    </div>
-  </div>
-
-  {%- if enable_menu_vertical -%}
-    {% unless layout_header == 'logo-center-navigation-split' or layout_header == 'logo-center-navigation-drawer' %}
-      {% render 'slide-menu' %}
-    {% endunless %}
-  {%- endif -%}
-</header>
-
-{%- render 'menu-mobile', menu: main_linklist -%}
-<script>
-  /* The drawer is fixed-position; keep it a direct child of <body> so it is not trapped in the sticky header's stacking context.
-     On a theme-editor reload of this section, the freshly rendered drawer replaces the old one. */
-  (function () {
-    var drawers = document.querySelectorAll('#NavDrawer');
-    var drawer = drawers[drawers.length - 1];
-    for (var i = 0; i < drawers.length - 1; i++) drawers[i].remove();
-    if (drawer && drawer.parentNode !== document.body) document.body.appendChild(drawer);
-  })();
-</script>
-
 <style>
   /* ===== MEGA MENU HEADING ===== */
   .site-nav .meganav .mega-heading a {
@@ -226,6 +179,54 @@
     .meganav-preview { display: none !important; }
   }
 </style>
+
+<header
+  class="{% if section.settings.menu_active == 'thick-line' %} thick-lineactive {% endif %} {{ layout_header }} size-header-{{ height_header }} section-{{ section.id }} site-header page-element is-moved-by-drawer header-{{ type_sticky }} {% if type_sticky == 'sticky' or type_sticky == 'sticky-top' %} site-header--sticky {% endif %} {% if section.settings.enable_transparent %} site-header--transparent {% if section.settings.enable_white %} site-header-white {% endif %} {% endif %} site-header--full {% if template contains 'index' %} index-header {% endif %} "
+  role="banner"
+  data-section-id="{{ section.id }}"
+  data-section-type="header"
+  data-sticky="{{ type_sticky }}"
+>
+  <div class="header-bottom py-2 py-lg-0 ">
+    <div class="">
+      <div class="d-flex row-header align-items-center">
+        {%- liquid
+          case layout_header
+            when 'logo-center-navigation-center'
+              render 'header-logo-center-nav-center', container: container, enable_menu_vertical: enable_menu_vertical, sl_menu_vertical: sl_menu_vertical, main_linklist: main_linklist, blocks: blocks
+            when 'logo-left-navigation-underleft'
+              render 'header-logo-left-nav-left', container: container, enable_menu_vertical: enable_menu_vertical, sl_menu_vertical: sl_menu_vertical, main_linklist: main_linklist, blocks: blocks
+            when 'logo-center-navigation-split'
+              render 'header-logo-center-split', container: container, enable_menu_vertical: enable_menu_vertical, sl_menu_vertical: sl_menu_vertical, main_linklist: main_linklist, blocks: blocks
+            when 'logo-center-navigation-drawer'
+              render 'header-logo-center-drawer', container: container
+            else
+              render 'header-logo-left', container: container, layout_header: layout_header, enable_menu_vertical: enable_menu_vertical, sl_menu_vertical: sl_menu_vertical, main_linklist: main_linklist, blocks: blocks
+          endcase
+        -%}
+      </div>
+    </div>
+  </div>
+
+  {%- if enable_menu_vertical -%}
+    {% unless layout_header == 'logo-center-navigation-split' or layout_header == 'logo-center-navigation-drawer' %}
+      {% render 'slide-menu' %}
+    {% endunless %}
+  {%- endif -%}
+</header>
+
+{%- render 'menu-mobile', menu: main_linklist -%}
+<script>
+  /* The drawer is fixed-position; keep it a direct child of <body> so it is not trapped in the sticky header's stacking context.
+     On a theme-editor reload of this section, the freshly rendered drawer replaces the old one. */
+  (function () {
+    var drawers = document.querySelectorAll('#NavDrawer');
+    var drawer = drawers[drawers.length - 1];
+    for (var i = 0; i < drawers.length - 1; i++) drawers[i].remove();
+    if (drawer && drawer.parentNode !== document.body) document.body.appendChild(drawer);
+  })();
+</script>
+
 
 <script>
   window.MENU_HOVER_IMAGES = {

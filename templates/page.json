@@ -9,11 +9,6 @@
  */
 {
   "sections": {
-    "who_we_are": {
-      "type": "_blocks",
-      "name": "Who we are",
-      "settings": {}
-    },
     "main": {
       "type": "main-page",
       "settings": {}
@@ -34,7 +29,7 @@
         "label_background": "#053931",
         "label_color": "#ffffff",
         "heading": "Who We Are",
-        "text": "<p><br/>Welcome to <a href=\"https://lumerafinejewellery.com/\">LumeraFineJewellery.com</a>, where timeless elegance meets ethical craftsmanship. Established in 2014, founded by Keval Goti. With a legacy built on precision and trust, we craft diamonds & fine jewelry that celebrate life's brightest moments.</p>",
+        "text": "<p>Welcome to <a href=\"https://lumerafinejewellery.com/\">LumeraFineJewellery.com</a>, where timeless elegance meets ethical craftsmanship. Established in 2014, founded by Keval Goti. With a legacy built on precision and trust, we craft diamonds & fine jewelry that celebrate life's brightest moments.</p>",
         "show_stats": true,
         "stat_1_number": "2014",
         "stat_1_label": "Established",
@@ -53,7 +48,7 @@
         "container_width": 1000,
         "text_max_width": 800,
         "content_spacing": 30,
-        "background_color": "#ffffff",
+        "background_color": "#fef8f1",
         "heading_color": "#053931",
         "text_color": "#053931",
         "divider_color": "#e0e0e0",
@@ -66,14 +61,14 @@
         "stat_number_size": 40,
         "stat_label_size": 12,
         "padding_top": 80,
-        "padding_bottom": 80
+        "padding_bottom": 80,
+        "only_on_page": "about-us"
       }
     }
   },
   "order": [
-    "who_we_are",
+    "who_we_are_xmd4Ej",
     "main",
-    "blocks_EL4nyF",
-    "who_we_are_xmd4Ej"
+    "blocks_EL4nyF"
   ]
 }

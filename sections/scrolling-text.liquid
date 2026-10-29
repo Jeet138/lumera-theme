@@ -26,6 +26,7 @@
     }
     .textscroll-item .image-content__image{
       width: var(--g-w-imagescroll);
+      height: auto;
     }
     .textscroll-item{
       grid: auto / auto-flow auto max-content;
@@ -60,7 +61,8 @@
                 loading="lazy"
                 fetchpriority="auto"
                 width="{{ block.settings.image.width }}"
-                height="{{ block.settings.image.height }}">
+                height="{{ block.settings.image.height }}"
+                style="aspect-ratio: {{ block.settings.image.aspect_ratio }};">
             {% endif %}
             {{ block.settings.code }}
            </span>

@@ -476,6 +476,19 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     {%- render 'loading' -%}
     {%- sections 'header-group' -%}
+    <script>
+      /* Set the header / announcement bar heights before the page below is drawn, so full-height
+         sections (e.g. the slideshow) start at their final size instead of jumping when theme.js sets them. */
+      (function () {
+        var root = document.documentElement.style;
+        var header = document.querySelector('.site-header');
+        var bar = document.querySelector('announcement-bar');
+        var carousel = document.querySelector('.announcement-bar-carousel');
+        if (header) root.setProperty('--height-header', header.offsetHeight + 'px');
+        if (bar) root.setProperty('--height-announcementbar', bar.offsetHeight + 'px');
+        if (carousel) root.setProperty('--height-announbar', carousel.offsetHeight + 'px');
+      })();
+    </script>
     <div class="page-container page-element is-moved-by-drawer">
       {%- render 'breadcrumb' -%}
       <main class="main-content" id="MainContent" role="main">
@@ -586,6 +599,7 @@
         border-radius: 4px;
         padding: 8px 16px;
         margin: 0 0 18px 0;
+        flex: 0 0 auto;
         font-size: 14px;
         font-weight: 600;
         letter-spacing: .5px;
@@ -593,6 +607,42 @@
         cursor: pointer;
         position: static !important;
         z-index: 1;
+      }
+
+      /* "Filter By" on the left, "Sort by" + product count on the right, in one row */
+      #FacetSortForm.has-filter-toggle {
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding-left: 0 !important;
+        margin-bottom: 20px;
+      }
+
+      #FacetSortForm.has-filter-toggle #filter-toggle-bar {
+        margin: 0;
+      }
+
+      /* Sort + product count: size to their content (the theme stretches the sort block,
+         which squeezed "Sort by:" and "405 Products" onto two lines on smaller laptops) */
+      #FacetSortForm.has-filter-toggle > .d-flex {
+        margin-left: auto;
+        gap: 32px;
+      }
+
+      #FacetSortForm.has-filter-toggle .facet-filters.sorting {
+        flex: 0 0 auto;
+        width: auto;
+        padding-left: 0; /* component-facets.css pads it 27-47rem to push it right; the row now does that */
+      }
+
+      #FacetSortForm.has-filter-toggle .facet-filters__label,
+      #FacetSortForm.has-filter-toggle .product-count-vertical {
+        white-space: nowrap;
+      }
+
+      #FacetSortForm.has-filter-toggle .product-count-vertical {
+        margin-left: 0;
       }
 
       #filter-toggle-bar #filter-toggle-icon {
@@ -673,11 +723,17 @@
         bar.setAttribute('aria-label', 'Toggle filter');
         bar.innerHTML = '<span id="filter-toggle-icon">&#171;</span><span>Filter By</span>';
 
-        /* Insert the bar as a full-width block right before the
-           row that contains the sidebar + product grid, so it
-           never becomes a flex child of that row. */
-        var row = aside.closest('.facets-vertical') || aside.parentNode;
-        row.parentNode.insertBefore(bar, row);
+        /* Put the bar at the start of the "Sort by" toolbar so both sit in one row.
+           Fallback: a full-width block right before the sidebar + product grid row,
+           so it never becomes a flex child of that row. */
+        var sortForm = document.getElementById('FacetSortForm');
+        if (sortForm) {
+          sortForm.classList.add('has-filter-toggle');
+          sortForm.insertBefore(bar, sortForm.firstChild);
+        } else {
+          var row = aside.closest('.facets-vertical') || aside.parentNode;
+          row.parentNode.insertBefore(bar, row);
+        }
 
         var facetsContent = aside.querySelector('.facets-container');
 
