@@ -4510,16 +4510,31 @@ if (
         var isComplimentaryGift =
   product.properties &&
   product.properties['_complimentary_gift'] === 'true';
+        // Express service charge added by assets/production-speed.js: follows its ring, no qty buttons
+        var isExpressFee = product.properties && product.properties['_express_fee'] === '1';
+        var escapeHtml = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); };
 
         htmlCart += `<div class="mini-cart-item">`;
+        if (product.image) {
         htmlCart += `	<a class="mini-cart-image " href="${product.url}"> <span class="d-block mini-cart-img ${cartimgsize}">`;
         htmlCart += `		<img src="${product.image}&width=160"/>`;
         htmlCart += `	</span></a>`;
+        }
         htmlCart += `	<div class="mini-cart-meta">`;
+        if (isExpressFee) {
+        htmlCart += `		<div class="mb-1">${escapeHtml(product.product_title)}</div>`;
+        } else {
         htmlCart += `		<div class="mb-1"><a href="${product.url}">${product.title}</a></div>`;
+        }
         htmlCart += `		<span>${priceHtml}</span>`;
 
-if (isComplimentaryGift) {
+if (isExpressFee) {
+
+  htmlCart += `
+    <div class="mt-1 mini-cart-express-for">for: ${escapeHtml(product.properties.For || '')}</div>
+  `;
+
+} else if (isComplimentaryGift) {
 
   /* ==============================
      COMPLIMENTARY GIFT
