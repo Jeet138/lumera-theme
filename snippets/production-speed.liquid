@@ -1,0 +1,124 @@
+{%- comment -%}
+  Production speed (Standard / Express) for the product page.
+  Rendered by the "production_speed" block in sections/product-template-1.liquid.
+
+  Express is charged as its own product ("Express service charge"), one variant per price.
+  A ring uses the variant in its product metafield custom.express_tier (Product variant),
+  otherwise the block's default tier. When Express is picked, the ring and that variant are
+  added to the cart together (assets/production-speed.js); the main price never changes.
+  Optional per-product day overrides: custom.standard_days / custom.express_days (integer).
+
+  Accepts:
+  - block: the section block
+  - product: the product
+  - form_id: id of the product's add-to-cart form
+{%- endcomment -%}
+{%- liquid
+  assign s = block.settings
+  assign express_variant = product.metafields.custom.express_tier.value
+  if express_variant == blank and s.express_product != blank
+    assign express_variant = s.express_product.selected_or_first_available_variant
+    if s.default_tier != blank
+      for v in s.express_product.variants
+        if v.title == s.default_tier
+          assign express_variant = v
+          break
+        endif
+      endfor
+    endif
+  endif
+
+  assign standard_days = product.metafields.custom.standard_days.value | default: s.standard_days
+  assign express_days = product.metafields.custom.express_days.value | default: s.express_days
+  assign uid = block.id | prepend: 'ps-'
+-%}
+
+{%- if express_variant != blank and express_variant.product.id != product.id -%}
+  <production-speed
+    class="ps"
+    data-standard-days="{{ standard_days }}"
+    data-express-days="{{ express_days }}"
+    data-skip-weekends="{{ s.skip_weekends }}"
+    data-cutoff-hour="{{ s.cutoff_hour }}"
+    data-express-variant="{{ express_variant.id }}"
+    data-form="{{ form_id }}"
+    data-product-title="{{ product.title | escape }}"
+    data-locale="{{ request.locale.iso_code }}"
+    data-ships-by="{{ s.ships_by_text | escape }}"
+    {{ block.shopify_attributes }}
+  >
+    <details class="ps__box"{% if s.open_by_default %} open{% endif %}>
+      <summary class="ps__head">
+        <svg class="ps__icon" width="26" height="26" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+          <path d="M21 12a9 9 0 1 1-3.1-6.8"/><path d="M21 4v5h-5"/><path d="M12 7v5l3 2"/>
+        </svg>
+        <span class="ps__head-text">
+          <span class="ps__eyebrow">{{ s.heading | escape }}</span>
+          <span class="ps__summary" data-summary>{{ s.standard_label | escape }}</span>
+        </span>
+        <svg class="ps__chevron" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M2 8l4-4 4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </summary>
+
+      <div class="ps__options" role="radiogroup" aria-label="{{ s.heading | escape }}">
+        <label class="ps__option">
+          <input type="radio" name="{{ uid }}" value="standard" class="ps__radio" checked>
+          <span class="ps__card">
+            <span class="ps__name">{{ s.standard_label | escape }}</span>
+            <span class="ps__date" data-date="standard"></span>
+          </span>
+        </label>
+        <label class="ps__option">
+          <input type="radio" name="{{ uid }}" value="express" class="ps__radio"{% unless express_variant.available %} disabled{% endunless %}>
+          <span class="ps__card">
+            <span class="ps__name">{{ s.express_label | escape }}</span>
+            <span class="ps__price">+{{ express_variant.price | money_without_trailing_zeros | strip_html | remove: ' ' }}</span>
+            <span class="ps__date" data-date="express"></span>
+          </span>
+        </label>
+      </div>
+    </details>
+
+    {%- comment -%} Saved on the order line; filled in by the script {%- endcomment -%}
+    <input type="hidden" form="{{ form_id }}" name="properties[{{ s.heading | escape }}]" value="{{ s.standard_label | escape }}" data-prop="speed">
+    <input type="hidden" form="{{ form_id }}" name="properties[{{ s.ships_by_text | escape }}]" value="" data-prop="date">
+  </production-speed>
+
+  {%- style -%}
+    .ps {
+      display: block; margin: 16px 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .ps__box { border: 1px solid #ece5dc; border-radius: 12px; background: #fff; }
+    .ps__head { display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; list-style: none; }
+    .ps__head::-webkit-details-marker { display: none; }
+    .ps__icon { flex: 0 0 auto; width: 26px; height: 26px; color: #2b2b2b; }
+    .ps__icon, .ps__icon *, .ps__chevron, .ps__chevron * { fill: none !important; } /* theme CSS fills every svg */
+    .ps__head-text { display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; line-height: 1.25; }
+    .ps__eyebrow { font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: #8c8781; }
+    .ps__summary { margin-top: 2px; font-size: 14px; font-weight: 600; color: #1f1f1f; }
+    .ps__chevron { flex: 0 0 auto; width: 10px; height: 10px; color: #8c8781; transform: rotate(180deg); transition: transform .2s ease; }
+    .ps__box[open] .ps__chevron { transform: none; }
+    .ps__options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 12px 12px; }
+    .ps__option { position: relative; margin: 0; cursor: pointer; }
+    .ps__radio { position: absolute; opacity: 0; pointer-events: none; }
+    .ps__card {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
+      min-height: 62px; height: 100%; padding: 10px 8px; text-align: center;
+      border: 1px solid #ece3d8; border-radius: 8px; background: #fdf6ee;
+      transition: border-color .15s ease, background-color .15s ease;
+    }
+    .ps__name, .ps__price { font-size: 13px; font-weight: 600; line-height: 1.35; color: #1f1f1f; }
+    .ps__date { margin-top: 2px; font-size: 10.5px; letter-spacing: .04em; color: #a39d96; }
+    .ps__radio:checked + .ps__card { border-color: #3d1f24; background: #fff; }
+    .ps__radio:focus-visible + .ps__card { outline: 2px solid #3d1f24; outline-offset: 2px; }
+    .ps__radio:disabled + .ps__card { opacity: .45; cursor: not-allowed; }
+    /* Shopify's "Buy it now" would skip the Express charge, so it is hidden while Express is selected */
+    form.ps-express .shopify-payment-button,
+    form.ps-express buy-now { display: none !important; }
+  {%- endstyle -%}
+{%- elsif request.design_mode -%}
+  <p class="ps-setup" {{ block.shopify_attributes }} style="padding:12px;border:1px dashed #c9a84c;font-size:13px;">
+    Production speed: pick the "Express product" in this block's settings to show Standard / Express.
+  </p>
+{%- endif -%}

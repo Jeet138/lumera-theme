@@ -1,4 +1,38 @@
 <style>.page-title{margin-bottom:40px;}.main-content{padding:0;}.content-block--page ul,.content-block--page ol{padding-left:1rem;}</style>
+{%- comment -%}
+  About Us page polish. The page body (Shopify admin → Pages → About Us) uses the .lumera-about markup;
+  these rules even out spacing, image sizes and accents. They do nothing on pages without that markup.
+{%- endcomment -%}
+<style>
+  .content-block--page:has(> .lumera-about) { padding-top: 0 !important; padding-bottom: 0 !important; }
+  .content-block--page .lumera-about { padding: 72px 30px 104px; }
+  .content-block--page .lumera-about-header { margin-bottom: 96px; }
+  .content-block--page .lumera-about-header h1 { font-size: clamp(34px, 4vw, 52px); line-height: 1.15; }
+  .content-block--page .lumera-about .about-row { gap: clamp(40px, 6vw, 88px); margin-bottom: 120px; }
+  .content-block--page .lumera-about .about-row:last-child { margin-bottom: 0; }
+  /* Same photo shape in every row */
+  .content-block--page .lumera-about .about-image img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+  .content-block--page .lumera-about .about-content h2 { font-size: clamp(30px, 3vw, 42px); line-height: 1.15; margin-bottom: 30px; }
+  /* Thin gold rule under each heading */
+  .content-block--page .lumera-about .about-content h2::after {
+    content: ""; display: block; width: 56px; height: 2px; margin-top: 18px; background: #c9a84c;
+  }
+  .content-block--page .lumera-about .about-content p,
+  .content-block--page .lumera-about .about-mission-list li { color: #3d3d3d; }
+  .content-block--page .lumera-about .about-mission-list li:before { color: #c9a84c; }
+  .content-block--page .lumera-about .about-btn {
+    margin-top: 18px; padding: 15px 36px; border-radius: 0;
+    background: #053931; font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase;
+  }
+  .content-block--page .lumera-about .about-btn:hover { background: #000; opacity: 1; }
+  @media (max-width: 768px) {
+    .content-block--page .lumera-about { padding: 48px 20px 64px; }
+    .content-block--page .lumera-about-header { margin-bottom: 56px; }
+    .content-block--page .lumera-about .about-row { gap: 28px; margin-bottom: 72px; }
+    .content-block--page .lumera-about .about-content h2 { margin-bottom: 22px; }
+    .content-block--page .lumera-about .about-content h2::after { margin: 14px auto 0; }
+  }
+</style>
 <div class="container">
   <!-- <h1 class="text-center page-title">{{ page.title }}</h1> -->
   <div class="content-block--page {% if page.content != blank %} py-5 {% endif %}">

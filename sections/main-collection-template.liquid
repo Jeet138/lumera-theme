@@ -742,6 +742,8 @@
             position: sticky !important;
             top: 80px !important;
             align-self: flex-start !important;
+            /* start level with the product grid, below the "Filter By / Sort by" row (theme .v-col uses -2rem) */
+            margin-top: 0 !important;
             width: 100% !important;
             height: auto !important;
             min-height: 0 !important;
@@ -767,6 +769,9 @@
             margin: 0 !important;
             padding-top: 0 !important;
             transform: none !important;
+            /* The sidebar itself is sticky; drop the theme's sticky offset (template-collection.css),
+               which otherwise pushes the filters ~94px below "Filter By". */
+            top: auto !important;
           }
 
           /* FILTER HEADER */

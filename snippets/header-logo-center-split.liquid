@@ -15,74 +15,9 @@
 {%- liquid
   assign link_count = linklists[main_linklist].links.size
   assign link_half = link_count | plus: 1 | divided_by: 2
+  assign logo_w = section.settings.logo_max_width | default: 100
 -%}
 
-<div class="{{ container }} lh-container">
-  <div class="lh">
-    <div class="lh__side lh__side--left menudesk-left">
-      <div class="lh__tools">
-        <div class="d-flex d-lg-none toggle-menu-mobile align-items-center">
-          {%- render 'button-toggle-menu-mobile' -%}
-          <span
-            class="modal__toggle-search-mobile"
-            role="button"
-            tabindex="0"
-            aria-label="{{ 'general.search.search' | t }}"
-          >
-            {%- render 'icon-search' -%}
-          </span>
-        </div>
-
-        {%- render 'header-search', link_list_search: section.settings.link_list_search, e_search: section.settings.sidebar_search -%}
-
-        <div class="lh__localization d-none d-lg-flex align-items-center">
-          {%- liquid
-            assign enable_image = section.settings.enable_image
-            assign enable_name = section.settings.enable_name
-            if section.settings.e_hd_currency and localization.available_countries.size > 1
-              render 'localization', id: 'HeaderCountryForm', enable_image: enable_image, enable_name: enable_name
-            endif
-            if section.settings.enable_language_selector and localization.available_languages.size > 1
-              render 'localization-language', id: 'HeaderLanguageForm', enable_name: enable_name
-            endif
-          -%}
-        </div>
-
-        {%- comment -%} Market / currency dropdown (BUCKS Currency Converter app) yahan move hota hai - script neeche {%- endcomment -%}
-        <div class="lh__market d-none d-lg-flex align-items-center"></div>
-      </div>
-
-      <div class="lh__nav lh__nav--left">
-        {%- render 'block-menu-split', limit: link_half, main_linklist: main_linklist, blocks: blocks -%}
-      </div>
-    </div>
-
-    <div class="lh__logo col-logo">
-      {%- render 'site-logo' -%}
-    </div>
-
-    <div class="lh__side lh__side--right menudesk-right">
-      <div class="lh__nav lh__nav--right">
-        {%- render 'block-menu-split', offset: link_half, main_linklist: main_linklist, blocks: blocks -%}
-      </div>
-
-      <div class="lh__icons header-bottom__right col-bottom__right">
-        {%- render 'header-login' -%}
-        {%- render 'block-wishlist' -%}
-        {%- render 'block-cart' -%}
-        {%- if section.settings.enable_sidebar_option -%}
-          {%- for block in blocks -%}
-            {%- if block.type == 'option-sidebar' -%}
-              {%- render 'option-sidebar', block: block -%}
-            {%- endif -%}
-          {%- endfor -%}
-        {%- endif -%}
-      </div>
-    </div>
-  </div>
-</div>
-
-{%- assign logo_w = section.settings.logo_max_width | default: 100 -%}
 <style>
   /* =========================================================
      SPLIT HEADER - RESPONSIVE LAYOUT
@@ -132,6 +67,14 @@
 
   .site-header .lh__market .buckscc-currency-box {
     margin: 0 !important;
+    display: flex;
+    align-items: center;
+  }
+
+  /* app adds margin-top: 18px to the dropdown, which sits it below the search icon and menu */
+  .site-header .lh__market .buckscc-currency-wrapper {
+    margin: 0 !important;
+    vertical-align: middle;
   }
 
   /* app ki list right-align hoti hai; left side par hai to list right ki taraf khule */
@@ -389,6 +332,72 @@
     }
   }
 </style>
+
+<div class="{{ container }} lh-container">
+  <div class="lh">
+    <div class="lh__side lh__side--left menudesk-left">
+      <div class="lh__tools">
+        <div class="d-flex d-lg-none toggle-menu-mobile align-items-center">
+          {%- render 'button-toggle-menu-mobile' -%}
+          <span
+            class="modal__toggle-search-mobile"
+            role="button"
+            tabindex="0"
+            aria-label="{{ 'general.search.search' | t }}"
+          >
+            {%- render 'icon-search' -%}
+          </span>
+        </div>
+
+        {%- render 'header-search', link_list_search: section.settings.link_list_search, e_search: section.settings.sidebar_search -%}
+
+        <div class="lh__localization d-none d-lg-flex align-items-center">
+          {%- liquid
+            assign enable_image = section.settings.enable_image
+            assign enable_name = section.settings.enable_name
+            if section.settings.e_hd_currency and localization.available_countries.size > 1
+              render 'localization', id: 'HeaderCountryForm', enable_image: enable_image, enable_name: enable_name
+            endif
+            if section.settings.enable_language_selector and localization.available_languages.size > 1
+              render 'localization-language', id: 'HeaderLanguageForm', enable_name: enable_name
+            endif
+          -%}
+        </div>
+
+        {%- comment -%} Market / currency dropdown (BUCKS Currency Converter app) yahan move hota hai - script neeche {%- endcomment -%}
+        <div class="lh__market d-none d-lg-flex align-items-center"></div>
+      </div>
+
+      <div class="lh__nav lh__nav--left">
+        {%- render 'block-menu-split', limit: link_half, main_linklist: main_linklist, blocks: blocks -%}
+      </div>
+    </div>
+
+    <div class="lh__logo col-logo">
+      {%- render 'site-logo' -%}
+    </div>
+
+    <div class="lh__side lh__side--right menudesk-right">
+      <div class="lh__nav lh__nav--right">
+        {%- render 'block-menu-split', offset: link_half, main_linklist: main_linklist, blocks: blocks -%}
+      </div>
+
+      <div class="lh__icons header-bottom__right col-bottom__right">
+        {%- render 'header-login' -%}
+        {%- render 'block-wishlist' -%}
+        {%- render 'block-cart' -%}
+        {%- if section.settings.enable_sidebar_option -%}
+          {%- for block in blocks -%}
+            {%- if block.type == 'option-sidebar' -%}
+              {%- render 'option-sidebar', block: block -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
 
 <script>
   (function () {

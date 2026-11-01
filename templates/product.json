@@ -87,6 +87,22 @@
             "trust-heading": "Guarantee safe checkout",
             "width_image": 66
           }
+        },
+        "production_speed": {
+          "type": "production_speed",
+          "settings": {
+            "express_product": "express-production",
+            "default_tier": "Tier A",
+            "standard_days": 15,
+            "express_days": 7,
+            "skip_weekends": true,
+            "cutoff_hour": 14,
+            "open_by_default": true,
+            "heading": "Production speed",
+            "standard_label": "Standard",
+            "express_label": "Express",
+            "ships_by_text": "Ships by"
+          }
         }
       },
       "block_order": [
@@ -94,6 +110,7 @@
         "judge_me_reviews_preview_badge_LwkmLf",
         "judge_me_reviews_preview_badge_DNdty4",
         "c5c11045-e3b5-47e4-80d1-25e86ec844cc",
+        "production_speed",
         "8288910a-1ad6-47df-b127-118bc1d2ce24",
         "8d4704f6-d81d-4390-9ec5-af58698bef51",
         "b7034bf2-48fd-492f-a089-3169873730db",

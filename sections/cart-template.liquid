@@ -115,7 +115,7 @@
                           <a href="{{ item.url }}" class="h6 text-body">
                             {{ item.product.title }}
                           </a>
-                          {% unless item.variant.title contains 'Default' %}
+                          {% unless item.variant.title contains 'Default' or item.properties._express_fee %}
                             <p>{{ item.variant.title }}</p>
                           {% endunless %}
                           {%- liquid
@@ -193,7 +193,7 @@
                       <a href="{{ item.url }}" class="h6 text-body">
                         {{ item.product.title }}
                       </a>
-                      {% unless item.variant.title contains 'Default' %}
+                      {% unless item.variant.title contains 'Default' or item.properties._express_fee %}
                         <p>{{ item.variant.title }}</p>
                       {% endunless %}
 
