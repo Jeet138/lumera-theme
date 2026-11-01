@@ -11,6 +11,30 @@
     overflow: hidden;
   }
 
+  {%- assign frame = section.settings.frame_style -%}
+  {%- if frame == 'card' or frame == 'full' -%}
+  .ai-who-we-are-wrap-{{ ai_gen_id }} {
+    padding: {{ section.settings.card_margin_top }}px {% if frame == 'card' %}20px{% else %}0{% endif %} {{ section.settings.card_margin_bottom }}px;
+    background: {{ section.settings.page_background }};
+  }
+  .ai-who-we-are-wrap-{{ ai_gen_id }} .ai-who-we-are-{{ ai_gen_id }} {
+    background:
+      radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.65), rgba(255,255,255,0) 60%),
+      {{ section.settings.background_color }};
+    {%- if frame == 'card' %}
+    max-width: {{ section.settings.container_width | plus: 200 }}px;
+    margin: 0 auto;
+    border-radius: 24px;
+    border: 1px solid {{ section.settings.card_border_color }};
+    box-shadow: 0 18px 40px -28px rgba(5, 57, 49, .35);
+    {%- else %}
+    width: 100%;
+    border-top: 1px solid {{ section.settings.card_border_color }};
+    border-bottom: 1px solid {{ section.settings.card_border_color }};
+    {%- endif %}
+  }
+  {%- endif -%}
+
   .ai-who-we-are-container-{{ ai_gen_id }} {
     max-width: {{ section.settings.container_width }}px;
     margin: 0 auto;
@@ -145,20 +169,39 @@
   }
 
   .ai-who-we-are-countries-{{ ai_gen_id }} {
-    max-width: 760px;
-    margin: 28px auto 0;
+    max-width: 860px;
+    margin: 36px auto 0;
     text-align: center;
-    font-size: {{ section.settings.stat_label_size | plus: 1 }}px;
-    line-height: 1.8;
     color: {{ section.settings.stat_label_color }};
   }
 
   .ai-who-we-are-countries-title-{{ ai_gen_id }} {
     display: block;
-    margin-bottom: 4px;
+    margin: 0 0 14px;
+    font-size: {{ section.settings.stat_label_size }}px;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.12em;
+  }
+
+  .ai-who-we-are-country-list-{{ ai_gen_id }} {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ai-who-we-are-country-{{ ai_gen_id }} {
+    padding: 5px 12px;
+    border: 1px solid {{ section.settings.card_border_color }};
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .55);
+    font-size: {{ section.settings.stat_label_size | plus: 1 }}px;
+    line-height: 1.4;
+    white-space: nowrap;
   }
 
   @media screen and (min-width: 750px) {
@@ -187,6 +230,24 @@
   @media screen and (max-width: 749px) {
     .ai-who-we-are-{{ ai_gen_id }} {
       padding: {{ section.settings.padding_top | times: 0.6 }}px 16px {{ section.settings.padding_bottom | times: 0.6 }}px;
+    }
+
+    {%- if frame == 'card' -%}
+    .ai-who-we-are-wrap-{{ ai_gen_id }} {
+      padding: {{ section.settings.card_margin_top | times: 0.5 }}px 12px {{ section.settings.card_margin_bottom | times: 0.6 }}px;
+    }
+    .ai-who-we-are-wrap-{{ ai_gen_id }} .ai-who-we-are-{{ ai_gen_id }} {
+      border-radius: 18px;
+    }
+    {%- elsif frame == 'full' -%}
+    .ai-who-we-are-wrap-{{ ai_gen_id }} {
+      padding: {{ section.settings.card_margin_top | times: 0.5 }}px 0 {{ section.settings.card_margin_bottom | times: 0.6 }}px;
+    }
+    {%- endif -%}
+
+    .ai-who-we-are-country-{{ ai_gen_id }} {
+      padding: 4px 10px;
+      font-size: {{ section.settings.stat_label_size }}px;
     }
 
     .ai-who-we-are-heading-{{ ai_gen_id }} {
@@ -227,6 +288,7 @@
   }
 {% endstyle %}
 
+{%- if frame == 'card' or frame == 'full' -%}<div class="ai-who-we-are-wrap-{{ ai_gen_id }}">{%- endif -%}
 <div class="ai-who-we-are-{{ ai_gen_id }}">
   {% if section.settings.show_decorations %}
     <div class="ai-who-we-are-decorative-{{ ai_gen_id }} ai-who-we-are-diamond-1-{{ ai_gen_id }}">
@@ -309,19 +371,25 @@
             {% endif %}
           </div>
           {% if section.settings.countries != blank %}
-            <p class="ai-who-we-are-countries-{{ ai_gen_id }}">
+            <div class="ai-who-we-are-countries-{{ ai_gen_id }}">
               {%- if section.settings.countries_title != blank -%}
                 <span class="ai-who-we-are-countries-title-{{ ai_gen_id }}">{{ section.settings.countries_title }}</span>
               {%- endif -%}
-              {%- assign country_list = section.settings.countries | split: ',' -%}
-              {%- for country in country_list -%}{{ country | strip }}{% unless forloop.last %}&nbsp;· {% endunless %}{%- endfor -%}
-            </p>
+              <ul class="ai-who-we-are-country-list-{{ ai_gen_id }}">
+                {%- assign country_list = section.settings.countries | split: ',' -%}
+                {%- for country in country_list -%}
+                  {%- assign country_name = country | strip -%}
+                  {%- if country_name != blank -%}<li class="ai-who-we-are-country-{{ ai_gen_id }}">{{ country_name }}</li>{%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </div>
           {% endif %}
         {% endif %}
       </div>
     </div>
   </div>
 </div>
+{%- if frame == 'card' or frame == 'full' -%}</div>{%- endif -%}
 {%- endif -%}
 
 {% schema %}
@@ -594,6 +662,50 @@
       "id": "background_color",
       "label": "Background",
       "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "frame_style",
+      "label": "Frame",
+      "info": "Card: a rounded panel. Full width: a band across the whole screen with a line above and below. Both keep space from the content above and below.",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "card", "label": "Card" },
+        { "value": "full", "label": "Full width" }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "color",
+      "id": "page_background",
+      "label": "Background around the frame",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Frame border",
+      "default": "#e6dccd"
+    },
+    {
+      "type": "range",
+      "id": "card_margin_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Space above frame",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "card_margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Space below frame",
+      "default": 64
     },
     {
       "type": "color",

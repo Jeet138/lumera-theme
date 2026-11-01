@@ -48,7 +48,7 @@
         "container_width": 1000,
         "text_max_width": 800,
         "content_spacing": 30,
-        "background_color": "#fef8f1",
+        "background_color": "#f7ede0",
         "heading_color": "#053931",
         "text_color": "#053931",
         "divider_color": "#e0e0e0",
@@ -61,12 +61,17 @@
         "stat_number_size": 40,
         "stat_label_size": 12,
         "padding_top": 80,
-        "padding_bottom": 80,
+        "padding_bottom": 70,
         "only_on_page": "about-us",
-        "stat_5_number": "12+",
+        "stat_5_number": "30+",
         "stat_5_label": "Countries We Deliver To",
         "countries_title": "We deliver to",
-        "countries": "United States, United Kingdom, Canada, Australia, New Zealand, Germany, France, Italy, Spain, Netherlands, Belgium, Switzerland, Latvia, UAE, Japan, China, Hong Kong, Singapore, Thailand"
+        "countries": "United States, United Kingdom, Canada, Australia, New Zealand, Germany, France, Italy, Spain, Netherlands, Belgium, Switzerland, Latvia, UAE, Japan, China, Hong Kong, Singapore, Thailand, Sweden, Denmark, Norway, Finland, Ireland, Portugal, Mexico, Brazil, South Korea, Taiwan, Israel, Saudi Arabia, Turkey, South Africa",
+        "page_background": "#fef8f1",
+        "card_border_color": "#e9dcc9",
+        "card_margin_top": 20,
+        "card_margin_bottom": 60,
+        "frame_style": "full"
       }
     }
   },
