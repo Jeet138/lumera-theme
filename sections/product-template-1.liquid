@@ -620,9 +620,6 @@
                   {% render 'list-svg', icon: block.settings.icon %}
                   {{ block.settings.free_word }}
                 </div>
-              {%- when 'production_speed' -%}
-                {%- assign ps_form_id = 'AddToCartForm-' | append: section.id -%}
-                {% render 'production-speed', block: block, product: product, form_id: ps_form_id %}
               {%- when 'buttons' -%}
                 <div class="product-button-variant product-block">
                   {%- assign siblings_collection = product.metafields.theme.siblings_collection -%}
@@ -2822,101 +2819,6 @@
           "unit": "%",
           "label": "Width Image",
           "default": 65
-        }
-      ]
-    },
-    {
-      "type": "production_speed",
-      "name": "Production speed",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "paragraph",
-          "content": "Express is charged as its own product (\"Express service charge\", one variant per price). Give a ring its own price with the product metafield custom.express_tier (Product variant); others use the default tier."
-        },
-        {
-          "type": "product",
-          "id": "express_product",
-          "label": "Express product"
-        },
-        {
-          "type": "text",
-          "id": "default_tier",
-          "label": "Default Express tier",
-          "info": "Variant name used when a ring has no Express tier metafield. Empty = first variant."
-        },
-        {
-          "type": "range",
-          "id": "standard_days",
-          "min": 1,
-          "max": 60,
-          "step": 1,
-          "unit": "d",
-          "label": "Standard production time",
-          "default": 15,
-          "info": "Working days. Override per ring with metafield custom.standard_days."
-        },
-        {
-          "type": "range",
-          "id": "express_days",
-          "min": 1,
-          "max": 60,
-          "step": 1,
-          "unit": "d",
-          "label": "Express production time",
-          "default": 7,
-          "info": "Working days. Override per ring with metafield custom.express_days."
-        },
-        {
-          "type": "checkbox",
-          "id": "skip_weekends",
-          "label": "Skip weekends",
-          "default": true
-        },
-        {
-          "type": "range",
-          "id": "cutoff_hour",
-          "min": 0,
-          "max": 24,
-          "step": 1,
-          "unit": "h",
-          "label": "Daily order cut-off",
-          "default": 14,
-          "info": "Orders after this hour count from the next day. 24 = no cut-off."
-        },
-        {
-          "type": "checkbox",
-          "id": "open_by_default",
-          "label": "Show options open",
-          "default": true
-        },
-        {
-          "type": "header",
-          "content": "Text"
-        },
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Heading",
-          "default": "Production speed"
-        },
-        {
-          "type": "text",
-          "id": "standard_label",
-          "label": "Standard label",
-          "default": "Standard"
-        },
-        {
-          "type": "text",
-          "id": "express_label",
-          "label": "Express label",
-          "default": "Express"
-        },
-        {
-          "type": "text",
-          "id": "ships_by_text",
-          "label": "Date prefix",
-          "default": "Ships by"
         }
       ]
     },
