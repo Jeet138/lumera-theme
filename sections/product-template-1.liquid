@@ -285,14 +285,15 @@
                   %}
                     <div class="accordion">
                       <div
-                        class="tabcustom collapsed h6"
+                        class="tabcustom h6"
                         data-toggle="collapse"
                         data-target="#jewelry-details-{{ block.id }}"
+                        aria-expanded="true"
                       >
                         {{ details_title }}
                       </div>
 
-                      <div id="jewelry-details-{{ block.id }}" class="collapse tab-content">
+                      <div id="jewelry-details-{{ block.id }}" class="collapse show tab-content">
                         <div class="py-3">
                           {% if show_ring_diagram %}
                             <div class="ring-diagrams">
