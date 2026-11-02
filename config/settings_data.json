@@ -642,7 +642,7 @@
         "settings": {
           "enable_slideshow": true,
           "setwidthout": "full",
-          "slideshow_height_adapt": "750",
+          "slideshow_height_adapt": "650",
           "slideshow_height_mobile": "500",
           "setwidth": "container-fluid",
           "slideshow_mobile": true,
