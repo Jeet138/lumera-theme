@@ -1068,7 +1068,7 @@
           "type": "ai_gen_block_1474e00",
           "name": "Countdown timer banner",
           "settings": {
-            "end_date": "2026-10-31",
+            "end_date": "2026-11-30",
             "end_time": "23:59:59",
             "expired_message": "This offer has ended",
             "offer_text": "Limited Time Offer",
