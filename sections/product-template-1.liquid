@@ -782,9 +782,11 @@
                         {%- assign ring_sizes = ring_sizes_str | split: ',' -%}
 
                         {%- comment -%}
-                          ===== METAL TONE (Silver / Platinum): White | Rose | Yellow =====
+                          ===== METAL TONE =====
                           Ye variant nahi hai. Sirf line-item property ke roop me cart/checkout me jayega (Ring Size ki tarah).
-                          Sirf tab dikhega jab upar Silver ya Platinum select ho; Gold par hide + property nahi jayegi.
+                          - Silver  : 3 options  -> White | Rose | Yellow
+                          - Platinum: 1 option   -> Platinum (auto-selected)
+                          - Gold    : hide + property nahi jayegi
                         {%- endcomment -%}
                         <div class="tone-picker" id="tone-picker" style="display:none;">
                           <span class="tone-picker__label">
@@ -794,17 +796,24 @@
                           <input type="hidden" name="properties[Metal Tone]" id="tone-input" value="" disabled>
 
                           <div class="tone-swatches">
-                            <button type="button" class="tone-swatch" data-tone="White" aria-label="White">
+                            {%- comment -%} SILVER ke 3 options {%- endcomment -%}
+                            <button type="button" class="tone-swatch" data-tone="White" data-for="silver" aria-label="White">
                               <span class="tone-dot tone-white"></span>
                               <span class="tone-text">White</span>
                             </button>
-                            <button type="button" class="tone-swatch" data-tone="Rose" aria-label="Rose">
+                            <button type="button" class="tone-swatch" data-tone="Rose" data-for="silver" aria-label="Rose">
                               <span class="tone-dot tone-rose"></span>
                               <span class="tone-text">Rose</span>
                             </button>
-                            <button type="button" class="tone-swatch" data-tone="Yellow" aria-label="Yellow">
+                            <button type="button" class="tone-swatch" data-tone="Yellow" data-for="silver" aria-label="Yellow">
                               <span class="tone-dot tone-yellow"></span>
                               <span class="tone-text">Yellow</span>
+                            </button>
+
+                            {%- comment -%} PLATINUM ka sirf 1 option {%- endcomment -%}
+                            <button type="button" class="tone-swatch" data-tone="Platinum" data-for="platinum" aria-label="Platinum" style="display:none;">
+                              <span class="tone-dot tone-platinum"></span>
+                              <span class="tone-text">Platinum</span>
                             </button>
                           </div>
 
@@ -831,6 +840,7 @@
                           .tone-white{  background:linear-gradient(135deg,#f6f6f6 0%,#bdbdbd 100%); }
                           .tone-rose{   background:linear-gradient(135deg,#f2c4ae 0%,#c97b5f 100%); }
                           .tone-yellow{ background:linear-gradient(135deg,#efd780 0%,#c9a74a 100%); }
+                          .tone-platinum{ background:linear-gradient(135deg,#f1f3f5 0%,#a9b0b8 100%); }
                           .tone-text{ font-size:12px; font-weight:600; color:#171717; }
                           .tone-error{ display:none; color:#e02b27; font-size:14px; margin:8px 0 0; }
                         </style>
@@ -938,6 +948,22 @@
 
                               if (show) {
                                 input.disabled = false;
+
+                                // Metal ke hisaab se sirf uske swatches dikhao
+                                // silver   -> White / Rose / Yellow
+                                // platinum -> sirf Platinum
+                                swatches.forEach(function (b) {
+                                  var want = b.getAttribute('data-for') === metal ? '' : 'none';
+                                  if (b.style.display !== want) b.style.display = want;
+                                });
+
+                                if (metal === 'platinum') {
+                                  // Ek hi option hai -> auto select
+                                  if (input.value !== 'Platinum') setTone('Platinum');
+                                } else {
+                                  // Silver par Platinum wali value reh gayi ho to hata do
+                                  if (input.value === 'Platinum') setTone('');
+                                }
                               } else {
                                 input.disabled = true;
                                 if (input.value) setTone('');
