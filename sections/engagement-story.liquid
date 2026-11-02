@@ -1,17 +1,20 @@
 <section
   class="lumera-engagement-{{ section.id }}"
   style="
+    --outer-bg: {{ section.settings.outer_background }};
     --section-bg: {{ section.settings.background_color }};
     --heading-color: {{ section.settings.heading_color }};
     --text-color: {{ section.settings.text_color }};
     --button-bg: {{ section.settings.button_background }};
     --button-text: {{ section.settings.button_text }};
     --accent-color: {{ section.settings.accent_color }};
+    --box-border: {{ section.settings.box_border_color }};
+    --box-radius: {{ section.settings.box_radius }}px;
     --section-height: {{ section.settings.section_height }}px;
   "
 >
 
-  <div class="lumera-engagement-inner">
+  <div class="lumera-engagement-inner{% if section.settings.box_shadow %} has-shadow{% endif %}">
 
     <!-- =========================
          LEFT : COUPLE IMAGE
@@ -203,19 +206,25 @@
 <style>
 
   /* ============================================
-     MAIN SECTION
+     OUTER SECTION (page background)
   ============================================ */
 
   .lumera-engagement-{{ section.id }} {
     width: 100%;
-    background: var(--section-bg);
+    background: var(--outer-bg);
     overflow: hidden;
     position: relative;
+    padding: 45px 24px;
+    box-sizing: border-box;
   }
 
 
+  /* ============================================
+     HIGHLIGHT BOX
+  ============================================ */
+
   .lumera-engagement-inner {
-    width: min(1500px, 100%);
+    width: min(1320px, 100%);
     min-height: var(--section-height);
     margin: 0 auto;
     padding: 55px 60px;
@@ -224,6 +233,28 @@
     align-items: center;
     position: relative;
     box-sizing: border-box;
+    overflow: hidden;
+    background: var(--section-bg);
+    border: 1px solid var(--box-border);
+    border-radius: var(--box-radius);
+  }
+
+  .lumera-engagement-inner.has-shadow {
+    box-shadow:
+      0 25px 60px rgba(60,40,20,.12),
+      0 4px 14px rgba(60,40,20,.06);
+  }
+
+  /* Andar ki patli frame line (premium look) */
+  .lumera-engagement-inner:before {
+    content: "";
+    position: absolute;
+    inset: 10px;
+    border: 1px solid var(--box-border);
+    border-radius: calc(var(--box-radius) * .7);
+    opacity: .55;
+    pointer-events: none;
+    z-index: 1;
   }
 
 
@@ -450,6 +481,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
+    z-index: 2;
   }
 
   .lumera-hand-stage {
@@ -516,7 +548,6 @@
 
   /* ============================================
      RING SET ANIMATION : GOLD HALO + GLOW DOTS
-     (sparkle star ki jagah)
   ============================================ */
 
   .hand-halo {
@@ -609,10 +640,31 @@
 
 
   /* ============================================
+     LAPTOP / TABLET (box padding thoda kam)
+  ============================================ */
+
+  @media screen and (max-width: 1100px) {
+
+    .lumera-engagement-inner {
+      padding: 45px 30px;
+    }
+
+    .lumera-engagement-content {
+      padding: 20px 18px;
+    }
+
+  }
+
+
+  /* ============================================
      MOBILE : content upar, hand neeche
   ============================================ */
 
   @media screen and (max-width: 749px) {
+
+    .lumera-engagement-{{ section.id }} {
+      padding: 24px 14px;
+    }
 
     .lumera-engagement-inner {
       flex-direction: column;
@@ -623,6 +675,10 @@
       min-height: 0;
       padding: 40px 20px 30px;
       gap: 18px;
+    }
+
+    .lumera-engagement-inner:before {
+      inset: 7px;
     }
 
     /* couple image hide */
@@ -913,14 +969,52 @@
 
     {
       "type": "header",
-      "content": "Colors"
+      "content": "Box (highlight)"
+    },
+
+    {
+      "type": "color",
+      "id": "outer_background",
+      "label": "Outside background (page color)",
+      "default": "#FFF8F1"
     },
 
     {
       "type": "color",
       "id": "background_color",
-      "label": "Background",
-      "default": "#F5F1EB"
+      "label": "Box background",
+      "default": "#F6EDE1"
+    },
+
+    {
+      "type": "color",
+      "id": "box_border_color",
+      "label": "Box border",
+      "default": "#D9C3A5"
+    },
+
+    {
+      "type": "range",
+      "id": "box_radius",
+      "label": "Box corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+
+    {
+      "type": "checkbox",
+      "id": "box_shadow",
+      "label": "Show box shadow",
+      "default": true
+    },
+
+
+    {
+      "type": "header",
+      "content": "Colors"
     },
 
     {
