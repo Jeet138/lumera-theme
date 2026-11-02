@@ -525,7 +525,7 @@
             "settings": {
               "enable_video": true,
               "video_hosted": "",
-              "image": "shopify://shop_images/black_banner.png",
+              "image": "shopify://shop_images/black_banner.jpg",
               "banner_link": "shopify://collections/engagement-ring",
               "alignment": "center center",
               "text_alignment": "center center",
