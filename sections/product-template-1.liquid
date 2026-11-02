@@ -781,6 +781,263 @@
                         {%- capture ring_sizes_str -%}{%- for n in (3..11) -%}{{ n }},{{ n }}.25,{{ n }}.5,{{ n }}.75,{%- endfor -%}12{%- endcapture -%}
                         {%- assign ring_sizes = ring_sizes_str | split: ',' -%}
 
+                        {%- comment -%}
+                          ===== METAL TONE (Silver / Platinum): White | Rose | Yellow =====
+                          Ye variant nahi hai. Sirf line-item property ke roop me cart/checkout me jayega (Ring Size ki tarah).
+                          Sirf tab dikhega jab upar Silver ya Platinum select ho; Gold par hide + property nahi jayegi.
+                        {%- endcomment -%}
+                        <div class="tone-picker" id="tone-picker" style="display:none;">
+                          <span class="tone-picker__label">
+                            Metal Tone: <b id="tone-selected-name"></b>
+                          </span>
+
+                          <input type="hidden" name="properties[Metal Tone]" id="tone-input" value="" disabled>
+
+                          <div class="tone-swatches">
+                            <button type="button" class="tone-swatch" data-tone="White" aria-label="White">
+                              <span class="tone-dot tone-white"></span>
+                              <span class="tone-text">White</span>
+                            </button>
+                            <button type="button" class="tone-swatch" data-tone="Rose" aria-label="Rose">
+                              <span class="tone-dot tone-rose"></span>
+                              <span class="tone-text">Rose</span>
+                            </button>
+                            <button type="button" class="tone-swatch" data-tone="Yellow" aria-label="Yellow">
+                              <span class="tone-dot tone-yellow"></span>
+                              <span class="tone-text">Yellow</span>
+                            </button>
+                          </div>
+
+                          <div id="tone-error" class="tone-error">Please select a Metal Tone</div>
+                        </div>
+
+                        <style>
+                          .tone-picker{ margin:0 0 16px; }
+                          .tone-picker__label{ display:block; font-size:14px; margin:0 0 8px; color:#171717; }
+                          .tone-picker__label b{ color:#000; font-weight:700; }
+                          .tone-swatches{ display:flex; gap:16px; flex-wrap:wrap; }
+                          .tone-swatch{
+                            background:none; border:0; padding:0; cursor:pointer;
+                            display:flex; flex-direction:column; align-items:center; gap:6px;
+                          }
+                          .tone-dot{
+                            display:block; width:42px; height:42px; border-radius:50%;
+                            border:2px solid transparent;
+                            box-shadow: inset 0 0 0 2px #fff;
+                            transition: transform .2s ease, border-color .2s ease;
+                          }
+                          .tone-swatch:hover .tone-dot{ transform:scale(1.07); }
+                          .tone-swatch.active .tone-dot{ border-color:#17182a; }
+                          .tone-white{  background:linear-gradient(135deg,#f6f6f6 0%,#bdbdbd 100%); }
+                          .tone-rose{   background:linear-gradient(135deg,#f2c4ae 0%,#c97b5f 100%); }
+                          .tone-yellow{ background:linear-gradient(135deg,#efd780 0%,#c9a74a 100%); }
+                          .tone-text{ font-size:12px; font-weight:600; color:#171717; }
+                          .tone-error{ display:none; color:#e02b27; font-size:14px; margin:8px 0 0; }
+                        </style>
+
+                        <script>
+                          (function () {
+                            if (window.__toneInit) return;
+                            window.__toneInit = true;
+
+                            var picker = document.getElementById('tone-picker');
+                            var input = document.getElementById('tone-input');
+                            var nameEl = document.getElementById('tone-selected-name');
+                            var err = document.getElementById('tone-error');
+                            if (!picker || !input) return;
+                            var swatches = picker.querySelectorAll('.tone-swatch');
+
+                            function norm(t) {
+                              return (t || '').replace(/\s+/g, ' ').trim().toLowerCase();
+                            }
+                            function isMetal(t) {
+                              return t === 'silver' || t === 'gold' || t === 'platinum';
+                            }
+                            function isActive(el) {
+                              if (!el) return false;
+                              if (el.classList && (el.classList.contains('active') || el.classList.contains('selected') || el.classList.contains('is-selected') || el.classList.contains('checked'))) return true;
+                              if (el.getAttribute && el.getAttribute('aria-pressed') === 'true') return true;
+                              var inner = el.querySelector ? el.querySelector('input[type="radio"]') : null;
+                              return !!(inner && inner.checked);
+                            }
+
+                            // Upar jo metal (Silver / Gold / Platinum) selected hai wo padho
+                            function readMetal() {
+                              var scope = picker.closest('form') || document;
+                              var wrappers = scope.querySelectorAll('.selector-wrapper');
+                              var found = '';
+
+                              wrappers.forEach(function (w) {
+                                if (found) return;
+                                var hasMetal = false;
+                                var selected = '';
+
+                                // radio inputs
+                                w.querySelectorAll('input[type="radio"]').forEach(function (r) {
+                                  var lab = r.id ? w.querySelector('label[for="' + r.id + '"]') : null;
+                                  var t = norm(lab ? lab.textContent : r.value);
+                                  if (isMetal(t)) {
+                                    hasMetal = true;
+                                    if (r.checked) selected = t;
+                                  }
+                                });
+
+                                // dropdown
+                                w.querySelectorAll('select:not([name="id"])').forEach(function (sel) {
+                                  Array.prototype.forEach.call(sel.options, function (o) {
+                                    var t = norm(o.textContent);
+                                    if (isMetal(t)) {
+                                      hasMetal = true;
+                                      if (o.selected) selected = t;
+                                    }
+                                  });
+                                });
+
+                                // button / label style
+                                w.querySelectorAll('label, button, [data-value]').forEach(function (el) {
+                                  var t = norm(el.textContent);
+                                  if (isMetal(t)) {
+                                    hasMetal = true;
+                                    if (isActive(el)) selected = t;
+                                  }
+                                });
+
+                                if (hasMetal && selected) found = selected;
+                              });
+
+                              // Fallback: selected value text (jaise "10k yellow gold")
+                              if (!found) {
+                                scope.querySelectorAll('.option-selected-value').forEach(function (el) {
+                                  if (found) return;
+                                  var t = norm(el.textContent);
+                                  if (t.indexOf('platinum') > -1) found = 'platinum';
+                                  else if (t.indexOf('silver') > -1) found = 'silver';
+                                  else if (t.indexOf('gold') > -1) found = 'gold';
+                                });
+                              }
+                              return found;
+                            }
+
+                            function setTone(tone) {
+                              input.value = tone || '';
+                              swatches.forEach(function (b) {
+                                b.classList.toggle('active', !!tone && b.getAttribute('data-tone') === tone);
+                              });
+                              if (nameEl) nameEl.textContent = tone || '';
+                              if (tone) {
+                                if (err) err.style.display = 'none';
+                                picker.classList.remove('has-error');
+                              }
+                            }
+
+                            function sync() {
+                              var metal = readMetal();
+                              var show = metal === 'silver' || metal === 'platinum';
+                              var wanted = show ? '' : 'none';
+                              if (picker.style.display !== wanted) picker.style.display = wanted;
+
+                              if (show) {
+                                input.disabled = false;
+                              } else {
+                                input.disabled = true;
+                                if (input.value) setTone('');
+                                if (err) err.style.display = 'none';
+                              }
+                            }
+
+                            swatches.forEach(function (b) {
+                              b.addEventListener('click', function () {
+                                setTone(b.getAttribute('data-tone'));
+                              });
+                            });
+
+                            var timer;
+                            function queueSync() {
+                              clearTimeout(timer);
+                              timer = setTimeout(sync, 60);
+                            }
+
+                            document.addEventListener('click', function (e) {
+                              if (e.target.closest && e.target.closest('#tone-picker')) return;
+                              setTimeout(sync, 80);
+                              setTimeout(sync, 300);
+                            });
+                            document.addEventListener('change', queueSync);
+
+                            var form = picker.closest('form');
+                            if (form && window.MutationObserver) {
+                              new MutationObserver(function (list) {
+                                for (var i = 0; i < list.length; i++) {
+                                  if (!picker.contains(list[i].target)) { queueSync(); return; }
+                                }
+                              }).observe(form, {
+                                subtree: true,
+                                attributes: true,
+                                attributeFilter: ['class', 'checked', 'selected', 'aria-pressed'],
+                              });
+                            }
+
+                            document.addEventListener('DOMContentLoaded', function () {
+                              sync();
+                              setTimeout(sync, 500);
+                              setTimeout(sync, 1500);
+                            });
+                            sync();
+
+                            /* ===== Metal Tone validation (Silver / Platinum par required) ===== */
+                            function toneMissing() {
+                              return picker.style.display !== 'none' && !input.disabled && !input.value;
+                            }
+                            function showToneError() {
+                              if (err) err.style.display = 'block';
+                              picker.classList.add('has-error');
+                            }
+
+                            window.addEventListener('click', function (e) {
+                              var btn = e.target.closest(
+                                '.product-form__cart-submit, button[name="add"], .product-form__buynow, .shopify-payment-button'
+                              );
+                              if (!btn || !toneMissing()) return;
+                              e.preventDefault();
+                              showToneError();
+                            }, true);
+
+                            window.addEventListener('submit', function (e) {
+                              if (!e.target.querySelector || !e.target.querySelector('#tone-input')) return;
+                              if (!toneMissing()) return;
+                              e.preventDefault();
+                              showToneError();
+                            }, true);
+
+                            var tFetch = window.fetch;
+                            if (tFetch) {
+                              window.fetch = function (inp) {
+                                var url = typeof inp === 'string' ? inp : (inp && inp.url) || '';
+                                if (/\/cart\/add/.test(url) && toneMissing()) {
+                                  showToneError();
+                                  return Promise.reject(new Error('Metal tone required'));
+                                }
+                                return tFetch.apply(this, arguments);
+                              };
+                            }
+
+                            var tOpen = XMLHttpRequest.prototype.open;
+                            var tSend = XMLHttpRequest.prototype.send;
+                            XMLHttpRequest.prototype.open = function (method, url) {
+                              this.__toneUrl = url;
+                              return tOpen.apply(this, arguments);
+                            };
+                            XMLHttpRequest.prototype.send = function () {
+                              if (/\/cart\/add/.test(this.__toneUrl || '') && toneMissing()) {
+                                showToneError();
+                                try { this.abort(); } catch (er) {}
+                                return;
+                              }
+                              return tSend.apply(this, arguments);
+                            };
+                          })();
+                        </script>
+
                         <div class="ring-engrave-row">
                           {%- comment -%} ---------- RING SIZE ---------- {%- endcomment -%}
                           <div class="product-size-selector">
@@ -2100,6 +2357,17 @@
       .product-single__meta .product-block.salepoint {
         font-size: 13px;
       }
+    }
+
+    /* ===== Material label + selected value: dark ===== */
+    .product-single__meta .selector-wrapper.js.product-form__item > .d-flex > label {
+      color: #111 !important;
+      font-weight: 700 !important;
+    }
+
+    .product-single__meta .selector-wrapper .option-selected-value {
+      color: #000 !important;
+      font-weight: 700 !important;
     }
   </style>
 
