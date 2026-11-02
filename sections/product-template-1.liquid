@@ -3690,97 +3690,101 @@
     }
   })();
 </script>
-{% style %}
-  .product-size-selector {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      margin-bottom: 10px;
+<style>
+  .ring-diagrams{
+    display:flex;
+    gap:60px;
+    margin-bottom:20px;
+    align-items:flex-end;
   }
 
-  /* Hide native select */
-  select#custom-size {
-    display: none !important;
+  .ring-diagram-item{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
   }
 
-  /* Custom dropdown container */
-  .ring-custom-select {
-    position: relative;
-    display: inline-block;
-    max-width: 154px;
-    cursor: pointer;
-    font-size: 14px;
-    border: 0.5px solid #000;
-    border-radius: 4px;
-    width: 100%;
-    background-color: #fff;
-    padding: 10px 19px;
-    user-select: none;
-    color: #171717;
+  .ring-diagram-item img{
+    width:80px !important;
+    height:80px !important;
+    object-fit:contain !important;
   }
 
-  /* Selected value box */
-  .selected-option {
-    position: relative;
+  .ring-dim-label{
+    font-size:13px;
+    color:#333;
+    margin:0;
+    white-space:nowrap;
   }
 
-  /* Dropdown options */
-  .options-list {
-    display: none;
-    list-style: none;
-    margin: 0;
-    border-top: none;
-    width: 100%;
-    padding: 1px;
-    position: absolute;
-    top: calc(100% + 5px);
-    left: 55%;
-    transform: translateX(-50%);
-    right: 0;
-    background: #ffffff;
-    border: 1px solid #e0e0e0;
-    border-radius: 7px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    z-index: 99999;
-    max-height: 300px;
-    overflow: auto;
+  /* DETAILS SECTION */
+  .stone-details-grid{
+    display:flex;
+    gap:40px;
+    margin-top:20px;
   }
 
-  .option-item {
-    padding: 5px 10px;
-    transition: background-color 0.2s ease;
+  .stone-column{
+    flex:1;
+    background:transparent !important;
+    border:none !important;
+    padding:0 !important;
+    box-shadow:none !important;
   }
 
-  .option-item:hover {
-    background-color: #f2f2f2;
+  /* HEADING */
+  .stone-heading{
+    font-size:15px;
+    font-weight:700;
+    color:#0a1628;
+    margin:0 0 12px 0;
   }
 
-  /* Show dropdown */
-  .options-list.show {
-    display: block;
+  /* ROW */
+  .stone-row{
+    display:flex;
+    align-items:flex-start;
+    gap:6px;
+    margin-bottom:8px;
+    font-size:13px;
+    line-height:1.5;
+    flex-wrap:nowrap;
   }
 
- /* ===== Salepoint: 2 columns (float, parent ko touch nahi karta) ===== */
-.product-single__meta .product-block.salepoint {
-  float: left;
-  width: 50%;
-  box-sizing: border-box;
-  margin: 0 !important;
-  padding: 6px 8px 6px 0 !important;
-}
-
-/* salepoint ke turant baad wala block neeche se shuru ho */
-.product-single__meta .product-block.salepoint + :not(.salepoint) {
-  clear: both;
-}
-
-@media (max-width: 480px) {
-  .product-single__meta .product-block.salepoint {
-    font-size: 13px;
+  /* LABEL */
+  .stone-label{
+    color:#333;
+    white-space:nowrap;
+    flex-shrink:0;
+    font-weight:700;
   }
-}
-{% endstyle %}
+
+  /* VALUE */
+  .stone-value{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  /* MOBILE */
+  @media (max-width:640px){
+
+    .stone-details-grid{
+      flex-direction:column;
+      gap:25px;
+    }
+
+    .ring-diagrams{
+      gap:32px;
+    }
+
+    .stone-row{
+      font-size:13px;
+    }
+
+  }
+</style>
 {% comment %}
   This file has been rewritten to preserve the original behavior.
 
