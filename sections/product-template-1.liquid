@@ -3761,22 +3761,26 @@
     display: block;
   }
 
-  /* ===== Salepoint: 2 columns ===== */
-  .product-single__meta .product-block.salepoint {
-    display: inline-flex !important;
-    align-items: center;
-    width: calc(50% - 4px);
-    vertical-align: top;
-    box-sizing: border-box;
-    padding-right: 8px;
-    margin-bottom: 10px;
-  }
 
-  @media (max-width: 480px) {
-    .product-single__meta .product-block.salepoint {
-      font-size: 13px;
-    }
+/* ===== Salepoint: 2 columns 
+.product-single__meta .product-block.salepoint {
+  float: left;
+  width: 50%;
+  box-sizing: border-box;
+  margin: 0 !important;
+  padding: 6px 8px 6px 0 !important;
+}
+
+/* salepoint ke turant baad wala block neeche se shuru ho */
+.product-single__meta .product-block.salepoint + :not(.salepoint) {
+  clear: both;
+}
+
+@media (max-width: 480px) {
+  .product-single__meta .product-block.salepoint {
+    font-size: 13px;
   }
+}
 {% endstyle %}
 {% comment %}
   This file has been rewritten to preserve the original behavior.
