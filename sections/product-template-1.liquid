@@ -3762,21 +3762,38 @@
   }
 
   /* ===== Salepoint: 2 columns ===== */
-  .product-single__meta .product-block.salepoint {
-    display: inline-flex !important;
-    align-items: center;
-    width: calc(50% - 4px);
-    vertical-align: top;
-    box-sizing: border-box;
-    padding-right: 8px;
-    margin-bottom: 10px;
-  }
+/* ===== Salepoint: 2 columns (flex-wrap) ===== */
+.product-single__meta {
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  column-gap: 0;
+  row-gap: 0;
+}
 
-  @media (max-width: 480px) {
-    .product-single__meta .product-block.salepoint {
-      font-size: 13px;
-    }
+/* baaki sab blocks pehle ki tarah poori width lein */
+.product-single__meta > * {
+  flex: 0 0 100%;
+  max-width: 100%;
+}
+
+/* sirf salepoint 2 column */
+.product-single__meta > .product-block.salepoint {
+  display: flex !important;
+  align-items: center;
+  flex: 0 0 50% !important;
+  max-width: 50% !important;
+  box-sizing: border-box;
+  margin: 0 !important;
+  padding: 6px 8px 6px 0 !important;
+}
+
+/* mobile par bhi 2 column, bas text chhota */
+@media (max-width: 480px) {
+  .product-single__meta > .product-block.salepoint {
+    font-size: 13px;
   }
+}
 {% endstyle %}
 {% comment %}
   This file has been rewritten to preserve the original behavior.
