@@ -789,29 +789,52 @@
                           - Gold    : hide + property nahi jayegi
                         {%- endcomment -%}
                         <div class="tone-picker" id="tone-picker" style="display:none;">
-                          <span class="tone-picker__label">
-                            Metal Tone: <b id="tone-selected-name"></b>
-                          </span>
+                          <span class="tone-picker__label"> Metal Tone: <b id="tone-selected-name"></b> </span>
 
                           <input type="hidden" name="properties[Metal Tone]" id="tone-input" value="" disabled>
 
                           <div class="tone-swatches">
                             {%- comment -%} SILVER ke 3 options {%- endcomment -%}
-                            <button type="button" class="tone-swatch" data-tone="White" data-for="silver" aria-label="White">
+                            <button
+                              type="button"
+                              class="tone-swatch"
+                              data-tone="White"
+                              data-for="silver"
+                              aria-label="White"
+                            >
                               <span class="tone-dot tone-white"></span>
                               <span class="tone-text">White</span>
                             </button>
-                            <button type="button" class="tone-swatch" data-tone="Rose" data-for="silver" aria-label="Rose">
+                            <button
+                              type="button"
+                              class="tone-swatch"
+                              data-tone="Rose"
+                              data-for="silver"
+                              aria-label="Rose"
+                            >
                               <span class="tone-dot tone-rose"></span>
                               <span class="tone-text">Rose</span>
                             </button>
-                            <button type="button" class="tone-swatch" data-tone="Yellow" data-for="silver" aria-label="Yellow">
+                            <button
+                              type="button"
+                              class="tone-swatch"
+                              data-tone="Yellow"
+                              data-for="silver"
+                              aria-label="Yellow"
+                            >
                               <span class="tone-dot tone-yellow"></span>
                               <span class="tone-text">Yellow</span>
                             </button>
 
                             {%- comment -%} PLATINUM ka sirf 1 option {%- endcomment -%}
-                            <button type="button" class="tone-swatch" data-tone="Platinum" data-for="platinum" aria-label="Platinum" style="display:none;">
+                            <button
+                              type="button"
+                              class="tone-swatch"
+                              data-tone="Platinum"
+                              data-for="platinum"
+                              aria-label="Platinum"
+                              style="display:none;"
+                            >
                               <span class="tone-dot tone-platinum"></span>
                               <span class="tone-text">Platinum</span>
                             </button>
@@ -865,7 +888,14 @@
                             }
                             function isActive(el) {
                               if (!el) return false;
-                              if (el.classList && (el.classList.contains('active') || el.classList.contains('selected') || el.classList.contains('is-selected') || el.classList.contains('checked'))) return true;
+                              if (
+                                el.classList &&
+                                (el.classList.contains('active') ||
+                                  el.classList.contains('selected') ||
+                                  el.classList.contains('is-selected') ||
+                                  el.classList.contains('checked'))
+                              )
+                                return true;
                               if (el.getAttribute && el.getAttribute('aria-pressed') === 'true') return true;
                               var inner = el.querySelector ? el.querySelector('input[type="radio"]') : null;
                               return !!(inner && inner.checked);
@@ -994,7 +1024,10 @@
                             if (form && window.MutationObserver) {
                               new MutationObserver(function (list) {
                                 for (var i = 0; i < list.length; i++) {
-                                  if (!picker.contains(list[i].target)) { queueSync(); return; }
+                                  if (!picker.contains(list[i].target)) {
+                                    queueSync();
+                                    return;
+                                  }
                                 }
                               }).observe(form, {
                                 subtree: true,
@@ -1019,21 +1052,29 @@
                               picker.classList.add('has-error');
                             }
 
-                            window.addEventListener('click', function (e) {
-                              var btn = e.target.closest(
-                                '.product-form__cart-submit, button[name="add"], .product-form__buynow, .shopify-payment-button'
-                              );
-                              if (!btn || !toneMissing()) return;
-                              e.preventDefault();
-                              showToneError();
-                            }, true);
+                            window.addEventListener(
+                              'click',
+                              function (e) {
+                                var btn = e.target.closest(
+                                  '.product-form__cart-submit, button[name="add"], .product-form__buynow, .shopify-payment-button'
+                                );
+                                if (!btn || !toneMissing()) return;
+                                e.preventDefault();
+                                showToneError();
+                              },
+                              true
+                            );
 
-                            window.addEventListener('submit', function (e) {
-                              if (!e.target.querySelector || !e.target.querySelector('#tone-input')) return;
-                              if (!toneMissing()) return;
-                              e.preventDefault();
-                              showToneError();
-                            }, true);
+                            window.addEventListener(
+                              'submit',
+                              function (e) {
+                                if (!e.target.querySelector || !e.target.querySelector('#tone-input')) return;
+                                if (!toneMissing()) return;
+                                e.preventDefault();
+                                showToneError();
+                              },
+                              true
+                            );
 
                             var tFetch = window.fetch;
                             if (tFetch) {
@@ -1056,7 +1097,9 @@
                             XMLHttpRequest.prototype.send = function () {
                               if (/\/cart\/add/.test(this.__toneUrl || '') && toneMissing()) {
                                 showToneError();
-                                try { this.abort(); } catch (er) {}
+                                try {
+                                  this.abort();
+                                } catch (er) {}
                                 return;
                               }
                               return tSend.apply(this, arguments);
