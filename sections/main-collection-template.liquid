@@ -812,12 +812,59 @@
           }
         }
 
-        /* TABLET */
-        @media screen and (min-width: 750px) and (max-width: 989px) {
-          #main-collection-filters {
-            top: 70px !important;
-          }
-        }
+       /* =========================================================
+   TABLET / PORTRAIT LAPTOP (750 - 991px): sidebar + grid side by side
+   ========================================================= */
+@media screen and (min-width: 750px) and (max-width: 991px) {
+  .main-collection .facets-vertical {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: flex-start !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .main-collection .facets-vertical > #main-collection-filters {
+    position: sticky !important;
+    top: 70px !important;
+    left: auto !important;
+    right: auto !important;
+    flex: 0 0 26% !important;
+    width: 26% !important;
+    max-width: 26% !important;
+    padding: 0 12px 0 15px !important;
+    margin: 0 !important;
+    transform: none !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .main-collection .facets-vertical > #main-collection-filters .facets-container {
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    width: 100% !important;
+    transform: none !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  .main-collection .facets-vertical #ProductGridContainer {
+    flex: 0 0 74% !important;
+    width: 74% !important;
+    max-width: 74% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding-left: 12px !important;
+    padding-right: 15px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* narrow sidebar me box thoda compact */
+  .why-lumera { padding: 14px 12px; }
+  .why-lumera__item p { font-size: 12.5px; }
+}
 
         /* =========================================================
            MOBILE - FILTER DRAWER RESET (0 - 749px)
