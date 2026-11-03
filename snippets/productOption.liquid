@@ -187,15 +187,19 @@
           {%- assign val_down = value | downcase -%}
           {% if val_down contains 'gold' %}
             {%- assign karat = value | split: ' ' | first | upcase -%}
-            {%- assign bg1 = '#e8c97a' -%}
-            {%- assign bg2 = '#c9a84c' -%}
+            {%- comment -%} Silver Metal Tone jaise same colors: Yellow / White / Rose {%- endcomment -%}
+            {%- assign tone_name = 'Yellow' -%}
+            {%- assign bg1 = '#efd780' -%}
+            {%- assign bg2 = '#c9a74a' -%}
             {%- if val_down contains 'white' -%}
-              {%- assign bg1 = '#efefef' -%}
-              {%- assign bg2 = '#a8a8a8' -%}
+              {%- assign tone_name = 'White' -%}
+              {%- assign bg1 = '#f6f6f6' -%}
+              {%- assign bg2 = '#bdbdbd' -%}
             {%- endif -%}
             {%- if val_down contains 'rose' -%}
-              {%- assign bg1 = '#f0b8a0' -%}
-              {%- assign bg2 = '#c97a5a' -%}
+              {%- assign tone_name = 'Rose' -%}
+              {%- assign bg1 = '#f2c4ae' -%}
+              {%- assign bg2 = '#c97b5f' -%}
             {%- endif -%}
             <button
               type="button"
@@ -204,9 +208,10 @@
               data-section="{{ section.id }}"
               title="{{ value }}"
             >
-              <span class="mat-circle" style="background:linear-gradient(135deg,{{ bg1 }} 50%,{{ bg2 }} 50%);">
+              <span class="mat-circle" style="background:linear-gradient(135deg,{{ bg1 }} 0%,{{ bg2 }} 100%);">
                 <span class="mat-karat-inside">{{ karat }}</span>
               </span>
+              <span class="mat-tone-name">{{ tone_name }}</span>
             </button>
           {% endif %}
         {% endfor %}
@@ -237,37 +242,41 @@
         }
         .mat-gold-sub {
           flex-wrap: nowrap;
-          gap: 4px;
+          gap: 16px;
           margin-top: 10px;
           overflow: visible;
-          align-items: center;
+          align-items: flex-start;
         }
         .mat-gold-btn {
           flex-shrink: 0;
           display: flex;
+          flex-direction: column;
           align-items: center;
-          justify-content: center;
+          gap: 6px;
           background: none;
-          border: 2.5px solid transparent;
-          border-radius: 50%;
-          padding: 2px;
+          border: 0;
+          padding: 0;
           cursor: pointer;
-          transition: border-color .2s;
-        }
-        .mat-gold-btn.active {
-          border-color: #1a1a2e;
         }
         .mat-circle {
-          width: 44px;
-          height: 44px;
+          width: 42px;
+          height: 42px;
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          border: 1px solid rgba(0,0,0,0.12);
+          border: 2px solid transparent;
+          box-shadow: inset 0 0 0 2px #fff;
+          transition: transform .2s ease, border-color .2s ease;
+        }
+        .mat-gold-btn:hover .mat-circle {
+          transform: scale(1.07);
+        }
+        .mat-gold-btn.active .mat-circle {
+          border-color: #17182a;
         }
         .mat-karat-inside {
-          font-size: 15px;
+          font-size: 12px;
           font-weight: 900;
           color: #111;
           text-shadow:
@@ -277,6 +286,12 @@
           letter-spacing: -0.3px;
           line-height: 1;
           pointer-events: none;
+        }
+        .mat-tone-name {
+          font-size: 12px;
+          font-weight: 600;
+          color: #171717;
+          line-height: 1;
         }
         .stone-size-wrapper{
           display:flex;
@@ -370,17 +385,12 @@
             display:none;
           }
 
+          .mat-gold-sub{
+            gap:12px;
+          }
+
           .mat-gold-btn{
             flex:0 0 auto;
-          }
-
-          .mat-circle{
-            width:42px;
-            height:42px;
-          }
-
-          .mat-karat-inside{
-            font-size:13px;
           }
 
         }
