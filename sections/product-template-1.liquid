@@ -233,7 +233,7 @@
                         {% assign show_ring_diagram = true %}
                         {% break %}
 
-                      {% when 'wedding-bands' %}
+                      {% when 'wedding-band', 'wedding-bands' %}
                         {% assign details_title = 'Wedding Band Details' %}
                         {% assign show_ring_diagram = true %}
                         {% break %}
@@ -682,6 +682,8 @@
 
                         Fix: "Diamond Size" / "Ring Size" par Size Guide nahi aayega.
                         Size Guide sirf bracelet jaise "Size" option par aayega.
+
+                        Metal Tone ka #tone-slot: Material option ke turant neeche (Stone size ke upar).
                       {%- endcomment -%}
                       {% unless product.has_only_default_variant %}
                         {% for option in product.options_with_values %}
@@ -751,25 +753,30 @@
                               enable_sibling: enable_sibling
                             %}
                           </div>
+
+                          {%- comment -%} Metal Tone yahan aayega (Material ke turant neeche) {%- endcomment -%}
+                          {%- if opt_lc contains 'material' -%}
+                            <div id="tone-slot"></div>
+                          {%- endif -%}
                         {% endfor %}
                       {% endunless %}
 
                       {%- comment -%}
-                        ===== SHOW ONLY FOR ENGAGEMENT RING PRODUCTS =====
+                        ===== SHOW FOR ENGAGEMENT RING + WEDDING BAND PRODUCTS =====
                         Block tab dikhega jab:
-                        - product "engagement-ring" collection me ho, YA
-                        - product par "Engagement Ring" tag ho
+                        - product "engagement-ring" ya "wedding-band" collection me ho, YA
+                        - product par "Engagement Ring" / "Wedding Band" tag ho
                       {%- endcomment -%}
-                     {%- assign show_ring_block = false -%}
-{%- for c in product.collections -%}
-  {%- if c.handle == 'engagement-ring' or c.handle == 'wedding-band' -%}
-    {%- assign show_ring_block = true -%}
-    {%- break -%}
-  {%- endif -%}
-{%- endfor -%}
-{%- if product.tags contains 'Engagement Ring' or product.tags contains 'Wedding Band' -%}
-  {%- assign show_ring_block = true -%}
-{%- endif -%}
+                      {%- assign show_ring_block = false -%}
+                      {%- for c in product.collections -%}
+                        {%- if c.handle == 'engagement-ring' or c.handle == 'wedding-band' or c.handle == 'wedding-bands' -%}
+                          {%- assign show_ring_block = true -%}
+                          {%- break -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                      {%- if product.tags contains 'Engagement Ring' or product.tags contains 'Wedding Band' -%}
+                        {%- assign show_ring_block = true -%}
+                      {%- endif -%}
 
                       {%- if show_ring_block -%}
                         {%- comment -%}
@@ -878,6 +885,11 @@
                             var nameEl = document.getElementById('tone-selected-name');
                             var err = document.getElementById('tone-error');
                             if (!picker || !input) return;
+
+                            // Metal Tone ko Material ke neeche (Stone size ke upar) le jao
+                            var slot = document.getElementById('tone-slot');
+                            if (slot) slot.appendChild(picker);
+
                             var swatches = picker.querySelectorAll('.tone-swatch');
 
                             function norm(t) {
