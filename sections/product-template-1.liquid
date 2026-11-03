@@ -812,27 +812,17 @@
                           Variant ID khali ho to ye poora feature hide rahega.
                         {%- endcomment -%}
                         {%- comment -%}
-                          Tiers: har line "max_price|variant_id|fee" (theme editor > Express tiers).
-                          Product ki dikh rahi price jis tier ke max tak ho, wahi tier lagta hai.
+                          Sirf 2 option: Standard (free) / Express (fixed fee).
+                          Theme editor > Product overview > "Express variant ID" me Express service charge product ka variant ID daalo.
                         {%- endcomment -%}
+                        {%- assign express_vid = section.settings.express_variant_id | strip -%}
+                        {%- assign express_fee = section.settings.express_fee | default: 99 -%}
                         {%- assign express_enabled = false -%}
-                        {%- assign first_t = true -%}
+                        {%- if express_vid != blank -%}
+                          {%- assign express_enabled = true -%}
+                        {%- endif -%}
                         {%- capture tiers_json -%}
-                          [
-                          {%- assign tier_lines = section.settings.express_tiers | newline_to_br | split: '<br />' -%}
-                          {%- for tl in tier_lines -%}
-                            {%- assign tl = tl | strip -%}
-                            {%- if tl != blank -%}
-                              {%- assign tp = tl | split: '|' -%}
-                              {%- if tp.size >= 3 -%}
-                                {%- unless first_t -%},{%- endunless -%}
-                                {"max":{{ tp[0] | strip | plus: 0 }},"id":"{{ tp[1] | strip }}","fee":{{ tp[2] | strip | plus: 0 }}}
-                                {%- assign first_t = false -%}
-                                {%- assign express_enabled = true -%}
-                              {%- endif -%}
-                            {%- endif -%}
-                          {%- endfor -%}
-                          ]
+                          [{"max":999999999,"id":"{{ express_vid }}","fee":{{ express_fee | plus: 0 }}}]
                         {%- endcapture -%}
                         {%- assign std_days = section.settings.standard_days | default: 14 -%}
                         {%- assign exp_days = section.settings.express_days | default: 7 -%}
@@ -3209,10 +3199,17 @@
       "content": "Production speed (Standard / Express)"
     },
     {
-      "type": "textarea",
-      "id": "express_tiers",
-      "label": "Express tiers",
-      "info": "Har line me: max_price|variant_id|fee. Example: 1000|1234567890|99 (product price $1000 tak Tier A, fee $99). Last line ka max bahut bada rakho (jaise 999999). Khali chhodne par Standard/Express hide rahega."
+      "type": "text",
+      "id": "express_variant_id",
+      "label": "Express variant ID",
+      "info": "'Express service charge' product ke Tier A variant ka ID (admin URL me /variants/ ke baad wala number). Khali chhodne par Standard/Express hide rahega."
+    },
+    {
+      "type": "number",
+      "id": "express_fee",
+      "label": "Express fee",
+      "info": "Variant ki price ke barabar rakho.",
+      "default": 99
     },
     {
       "type": "number",
