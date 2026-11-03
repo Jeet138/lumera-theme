@@ -704,7 +704,22 @@
                             comment
                               Size guide: option naam me 'size' ho, lekin 'diamond' ya 'ring' na ho
                             endcomment
-                            if opt_lc contains 'size'
+                            comment
+                              Size guide SIRF bracelet products par: collection handle / product type / tag me 'bracelet' ho
+                            endcomment
+                            assign is_bracelet = false
+                            for c in product.collections
+                              if c.handle contains 'bracelet'
+                                assign is_bracelet = true
+                                break
+                              endif
+                            endfor
+                            assign type_lc = product.type | downcase
+                            if type_lc contains 'bracelet' or product.tags contains 'Bracelet'
+                              assign is_bracelet = true
+                            endif
+
+                            if is_bracelet and opt_lc contains 'size'
                               unless opt_lc contains 'diamond' or opt_lc contains 'ring'
                                 assign show_size_guide = true
                               endunless
