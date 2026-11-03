@@ -804,6 +804,301 @@
                         {%- assign ring_sizes = ring_sizes_str | split: ',' -%}
 
                         {%- comment -%}
+                          ===== PRODUCTION SPEED (Standard free / Express paid) =====
+                          Theme editor > Product overview me ye settings bharo:
+                          - Express fee variant ID (hidden "Express Production" product ka variant ID)
+                          - Express fee (display ke liye, e.g. 99)
+                          - Standard / Express days
+                          Variant ID khali ho to ye poora feature hide rahega.
+                        {%- endcomment -%}
+                        {%- comment -%}
+                          Tiers: har line "max_price|variant_id|fee" (theme editor > Express tiers).
+                          Product ki dikh rahi price jis tier ke max tak ho, wahi tier lagta hai.
+                        {%- endcomment -%}
+                        {%- assign express_enabled = false -%}
+                        {%- assign first_t = true -%}
+                        {%- capture tiers_json -%}
+                          [
+                          {%- assign tier_lines = section.settings.express_tiers | newline_to_br | split: '<br />' -%}
+                          {%- for tl in tier_lines -%}
+                            {%- assign tl = tl | strip -%}
+                            {%- if tl != blank -%}
+                              {%- assign tp = tl | split: '|' -%}
+                              {%- if tp.size >= 3 -%}
+                                {%- unless first_t -%},{%- endunless -%}
+                                {"max":{{ tp[0] | strip | plus: 0 }},"id":"{{ tp[1] | strip }}","fee":{{ tp[2] | strip | plus: 0 }}}
+                                {%- assign first_t = false -%}
+                                {%- assign express_enabled = true -%}
+                              {%- endif -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+                          ]
+                        {%- endcapture -%}
+                        {%- assign std_days = section.settings.standard_days | default: 14 -%}
+                        {%- assign exp_days = section.settings.express_days | default: 7 -%}
+
+                        {%- if express_enabled -%}
+                          <div
+                            class="prod-speed"
+                            id="prod-speed"
+                            data-std-days="{{ std_days }}"
+                            data-exp-days="{{ exp_days }}"
+                          >
+                            <div class="prod-speed__label">Production Speed: <b id="prod-speed-name">Standard</b></div>
+
+                            <input type="hidden" name="properties[Production Speed]" id="prod-speed-input" value="Standard">
+
+                            <div class="prod-speed__grid">
+                              <button type="button" class="prod-speed__btn active" data-speed="Standard">
+                                <span class="ps-title">Standard</span>
+                                <span class="ps-sub">Free</span>
+                                <span class="ps-ships">Ships by <span data-ships="standard"></span></span>
+                              </button>
+                              <button type="button" class="prod-speed__btn" data-speed="Express">
+                                <span class="ps-title">Express</span>
+                                <span class="ps-sub" id="prod-express-fee"></span>
+                                <span class="ps-ships">Ships by <span data-ships="express"></span></span>
+                              </button>
+                            </div>
+                          </div>
+
+                          <script type="application/json" id="prod-speed-tiers">{{ tiers_json | strip_newlines }}</script>
+
+                          <style>
+                            .prod-speed{ margin:0 0 16px; }
+                            .prod-speed__label{ font-size:14px; margin:0 0 8px; color:#171717; }
+                            .prod-speed__label b{ color:#000; font-weight:700; }
+                            .prod-speed__grid{ display:flex; gap:10px; }
+                            .prod-speed__btn{
+                              flex:1; display:flex; flex-direction:column; align-items:center; gap:2px;
+                              padding:10px 8px; border:1px solid #d9d9d9; border-radius:6px;
+                              background:#fff; color:#111; cursor:pointer;
+                              transition:border-color .2s ease, background .2s ease;
+                            }
+                            .prod-speed__btn:hover{ border-color:#17182a; }
+                            .prod-speed__btn.active{ border:2px solid #17182a; padding:9px 7px; background:#fff; }
+                            .prod-speed__btn .ps-title{ font-size:14px; font-weight:700; }
+                            .prod-speed__btn .ps-sub{ font-size:13px; font-weight:600; }
+                            .prod-speed__btn .ps-ships{ font-size:11px; color:#888; }
+                            .prod-total{ text-align:center; margin:6px 0 16px; }
+                            .prod-total__label{ font-size:14px; font-weight:600; color:#171717; }
+                            .prod-total__amount{ font-size:28px; font-weight:600; color:#000; line-height:1.3; }
+                            .prod-total__ships{ font-size:13px; color:#555; }
+                          </style>
+
+                          <script>
+                            (function () {
+                              if (window.__prodSpeedInit) return;
+                              window.__prodSpeedInit = true;
+
+                              var root = document.getElementById('prod-speed');
+                              if (!root) return;
+
+                              var TIERS = [];
+                              try {
+                                TIERS = JSON.parse(document.getElementById('prod-speed-tiers').textContent || '[]');
+                              } catch (e) {}
+                              TIERS.sort(function (a, b) {
+                                return a.max - b.max;
+                              });
+                              if (!TIERS.length) {
+                                root.style.display = 'none';
+                                return;
+                              }
+                              var STD_DAYS = parseInt(root.getAttribute('data-std-days'), 10) || 14;
+                              var EXP_DAYS = parseInt(root.getAttribute('data-exp-days'), 10) || 7;
+                              var input = document.getElementById('prod-speed-input');
+                              var nameEl = document.getElementById('prod-speed-name');
+                              var btns = root.querySelectorAll('.prod-speed__btn');
+                              var speed = 'Standard';
+                              var busy = false;
+
+                              function shipDate(days) {
+                                var d = new Date();
+                                d.setDate(d.getDate() + days);
+                                return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                              }
+
+                              function fillDates() {
+                                root.querySelectorAll('[data-ships]').forEach(function (el) {
+                                  var days = el.getAttribute('data-ships') === 'express' ? EXP_DAYS : STD_DAYS;
+                                  el.textContent = shipDate(days);
+                                });
+                              }
+
+                              // Page par dikh rahi price (variant badalne par theme isse update karta hai)
+                              function priceNum() {
+                                var el = document.getElementById('ProductPrice-{{ section.id }}');
+                                if (!el) return 0;
+                                var n = parseFloat((el.textContent || '').replace(/[^0-9.]/g, ''));
+                                return isNaN(n) ? 0 : n;
+                              }
+
+                              function fmt(n) {
+                                var cur = (window.Shopify && Shopify.currency && Shopify.currency.active) || 'USD';
+                                try {
+                                  return new Intl.NumberFormat('en-US', { style: 'currency', currency: cur }).format(n);
+                                } catch (e) {
+                                  return '$' + n.toFixed(2);
+                                }
+                              }
+
+                              // Product ki price ke hisaab se tier (max price tak) chuno
+                              function tierNow() {
+                                var p = priceNum();
+                                for (var i = 0; i < TIERS.length; i++) {
+                                  if (p <= TIERS[i].max) return TIERS[i];
+                                }
+                                return TIERS[TIERS.length - 1];
+                              }
+
+                              function renderTotal() {
+                                var amt = document.getElementById('prod-total-amount');
+                                var ships = document.getElementById('prod-total-ships');
+                                var feeEl = document.getElementById('prod-express-fee');
+                                var fee = tierNow().fee;
+                                if (feeEl) {
+                                  var ft = '+' + fmt(fee).replace(/\.00$/, '');
+                                  if (feeEl.textContent !== ft) feeEl.textContent = ft;
+                                }
+                                if (!amt) return;
+                                var total = priceNum() + (speed === 'Express' ? fee : 0);
+                                var txt = fmt(total);
+                                if (amt.textContent !== txt) amt.textContent = txt;
+                                var sd = shipDate(speed === 'Express' ? EXP_DAYS : STD_DAYS);
+                                if (ships && ships.textContent !== sd) ships.textContent = sd;
+                              }
+
+                              function setSpeed(s) {
+                                speed = s;
+                                input.value = s;
+                                if (nameEl) nameEl.textContent = s;
+                                btns.forEach(function (b) {
+                                  b.classList.toggle('active', b.getAttribute('data-speed') === s);
+                                });
+                                // Express par PayPal / dynamic checkout button hide (fee us se add nahi ho sakti)
+                                document.querySelectorAll('.product-form__buynow, .shopify-payment-button').forEach(function (el) {
+                                  el.style.display = s === 'Express' ? 'none' : '';
+                                });
+                                renderTotal();
+                              }
+
+                              btns.forEach(function (b) {
+                                b.addEventListener('click', function () {
+                                  setSpeed(b.getAttribute('data-speed'));
+                                });
+                              });
+
+                              fillDates();
+                              renderTotal();
+                              document.addEventListener('DOMContentLoaded', function () {
+                                fillDates();
+                                renderTotal();
+                                var priceEl = document.getElementById('ProductPrice-{{ section.id }}');
+                                var scope =
+                                  (priceEl && priceEl.closest('.product-single__meta')) ||
+                                  document.getElementById('ProductSection-{{ section.id }}');
+                                if (scope && window.MutationObserver) {
+                                  new MutationObserver(renderTotal).observe(scope, {
+                                    childList: true,
+                                    characterData: true,
+                                    subtree: true,
+                                  });
+                                }
+                                setInterval(renderTotal, 1000);
+                              });
+
+                              /* ===== Express: main item + Express fee ek saath cart me ===== */
+                              function readForm() {
+                                var form = document.getElementById('AddToCartForm-{{ section.id }}');
+                                if (!form) return null;
+                                var fd = new FormData(form);
+                                var props = {};
+                                var id = null;
+                                var qty = 1;
+                                fd.forEach(function (v, k) {
+                                  if (k === 'id') id = v;
+                                  else if (k === 'quantity') qty = parseInt(v, 10) || 1;
+                                  else {
+                                    var m = k.match(/^properties\[(.*)\]$/);
+                                    if (m && String(v) !== '') props[m[1]] = v;
+                                  }
+                                });
+                                return { id: parseInt(id, 10), qty: qty, props: props };
+                              }
+
+                              function expressAdd() {
+                                if (busy) return;
+                                var d = readForm();
+                                var btn = document.getElementById('AddToCart-{{ section.id }}');
+                                if (!d || !d.id) return;
+                                busy = true;
+                                if (btn) btn.disabled = true;
+
+                                fetch('/cart/add.js', {
+                                  method: 'POST',
+                                  headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+                                  body: JSON.stringify({
+                                    items: [
+                                      { id: d.id, quantity: d.qty, properties: d.props },
+                                      { id: parseInt(tierNow().id, 10), quantity: d.qty },
+                                    ],
+                                  }),
+                                })
+                                  .then(function (r) {
+                                    return r.json().then(function (j) {
+                                      return { ok: r.ok, j: j };
+                                    });
+                                  })
+                                  .then(function (res) {
+                                    if (res.ok) {
+                                      window.location.href = '{{ routes.cart_url }}';
+                                    } else {
+                                      busy = false;
+                                      if (btn) btn.disabled = false;
+                                      alert((res.j && (res.j.description || res.j.message)) || 'Could not add to cart');
+                                    }
+                                  })
+                                  .catch(function () {
+                                    busy = false;
+                                    if (btn) btn.disabled = false;
+                                    alert('Could not add to cart. Please try again.');
+                                  });
+                              }
+
+                              // Document capture: productOption / ring size / metal tone ki validation ke BAAD chalta hai
+                              document.addEventListener(
+                                'click',
+                                function (e) {
+                                  if (speed !== 'Express' || e.defaultPrevented) return;
+                                  var btn = e.target.closest && e.target.closest('#AddToCart-{{ section.id }}');
+                                  if (!btn) return;
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  e.stopImmediatePropagation();
+                                  expressAdd();
+                                },
+                                true
+                              );
+
+                              document.addEventListener(
+                                'submit',
+                                function (e) {
+                                  var f = e.target;
+                                  if (speed !== 'Express' || e.defaultPrevented) return;
+                                  if (!f || f.id !== 'AddToCartForm-{{ section.id }}') return;
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                  e.stopImmediatePropagation();
+                                  expressAdd();
+                                },
+                                true
+                              );
+                            })();
+                          </script>
+                        {%- endif -%}
+
+                        {%- comment -%}
                           ===== METAL TONE =====
                           Ye variant nahi hai. Sirf line-item property ke roop me cart/checkout me jayega (Ring Size ki tarah).
                           - Silver  : 3 options  -> White | Rose | Yellow
@@ -1780,6 +2075,14 @@
                             ></div>
                           </div>
                         </span>
+                      {%- endif -%}
+
+                      {%- if show_ring_block and express_enabled -%}
+                        <div class="prod-total" id="prod-total">
+                          <div class="prod-total__label">Total Price</div>
+                          <div class="prod-total__amount" id="prod-total-amount"></div>
+                          <div class="prod-total__ships">Ships by <span id="prod-total-ships"></span></div>
+                        </div>
                       {%- endif -%}
 
                       <div class="product-form__quantity-submit pt-2 flex-column">
@@ -2900,6 +3203,28 @@
       "id": "cart_cl_hover",
       "label": "CTA Button Text Hover",
       "default": "#fff"
+    },
+    {
+      "type": "header",
+      "content": "Production speed (Standard / Express)"
+    },
+    {
+      "type": "textarea",
+      "id": "express_tiers",
+      "label": "Express tiers",
+      "info": "Har line me: max_price|variant_id|fee. Example: 1000|1234567890|99 (product price $1000 tak Tier A, fee $99). Last line ka max bahut bada rakho (jaise 999999). Khali chhodne par Standard/Express hide rahega."
+    },
+    {
+      "type": "number",
+      "id": "standard_days",
+      "label": "Standard ships in (days)",
+      "default": 14
+    },
+    {
+      "type": "number",
+      "id": "express_days",
+      "label": "Express ships in (days)",
+      "default": 7
     }
   ],
   "blocks": [
