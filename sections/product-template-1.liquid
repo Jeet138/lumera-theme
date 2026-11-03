@@ -760,9 +760,9 @@
                         - product "engagement-ring" collection me ho, YA
                         - product par "Engagement Ring" tag ho
                       {%- endcomment -%}
-                  {%- assign show_ring_block = false -%}
+              {%- assign show_ring_block = false -%}
 {%- for c in product.collections -%}
-  {%- if c.handle == 'engagement-ring' or c.handle == 'wedding-bands' -%}
+  {%- if c.handle == 'engagement-ring' or c.handle == 'wedding-band' -%}
     {%- assign show_ring_block = true -%}
     {%- break -%}
   {%- endif -%}
