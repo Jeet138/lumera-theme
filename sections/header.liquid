@@ -16,170 +16,6 @@
   type_sticky: type_sticky
 %}
 <!-- header.liquid -->
-<style>
-  /* ===== MEGA MENU HEADING ===== */
-  .site-nav .meganav .mega-heading a {
-    font-family: Georgia, serif;
-    font-size: 14px !important;
-    font-weight: 700 !important;
-    color: #000;
-    letter-spacing: 0.5px;
-    border-bottom: 2px solid #c9a227;
-    display: inline-block;
-    padding-bottom: 4px;
-  }
-
-  /* ===== STICKY (sirf CSS, koi JS position nahi badalta) ===== */
-  #shopify-section-{{ section.id }} {
-    position: sticky;
-    top: 0;
-    z-index: 99999;
-  }
-  /* Mobile menu drawer (#NavDrawer, z-index 9999) and its backdrop must cover the sticky header while open. */
-  .js-drawer-open .drawer { z-index: 100001; }
-  .js-drawer-open .page-container:after { z-index: 100000; }
-  .site-header {
-    position: relative !important;
-    top: auto !important;
-    transform: none !important;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-
-  /* ===== HEADER SIZE + KAHIN SE BHI CUT NA HO ===== */
-  .site-header .header-bottom {
-    padding-top: 8px;
-    padding-bottom: 8px;
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-  .site-header .row-header {
-    flex-wrap: nowrap;
-    max-width: 100%;
-  }
-  /* flex children ko shrink hone do, warna content screen se bahar jaata hai */
-  .site-header .row-header > *,
-  .site-header .row-header .container-fluid,
-  .site-header .row-header .container {
-    min-width: 0;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
-  /* sirf img: svg par max-width:100% lagane se header ke icons 0px tak shrink ho jaate the */
-  .site-header img { max-width: 100%; }
-
-  /* Layout, logo size aur menu font: snippets/header-logo-center-split.liquid me */
-  @media (min-width: 992px) {
-    .site-header .header-bottom {
-      padding-top: 6px;
-      padding-bottom: 6px;
-    }
-  }
-
-  @media (max-width: 991px) {
-    .meganav-preview { display: none !important; }
-  }
-</style>
-
-<style>
-  @media (min-width: 992px) and (hover: hover) {
-
-    /* container ki side spacing: content isi se align rahega */
-    .site-header {
-      --mega-side: max(24px, calc((100vw - 1320px) / 2));
-    }
-
-    /* ===== FULL WIDTH MEGA MENU ===== */
-    .site-header .menudesk-left .meganav,
-    .site-header .menudesk-right .meganav {
-      position: fixed !important;
-      left: 0 !important;
-      right: 0 !important;
-      width: auto !important;
-      min-width: 0 !important;
-      max-width: none !important;
-      margin: 0 !important;
-      transform: none !important;
-      box-sizing: border-box !important;
-      padding: 22px var(--mega-side) 26px !important;
-      min-height: 0 !important;
-      /* screen se bada ho to andar scroll, bahar cut nahi */
-      max-height: calc(100vh - var(--mega-top, 140px) - 16px);
-      overflow-y: auto;
-      overflow-x: hidden;
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
-    }
-
-    .site-header .meganav li > a {
-      padding-top: 4px !important;
-      padding-bottom: 4px !important;
-    }
-    .site-header .meganav li {
-      margin-bottom: 0 !important;
-    }
-
-    /* ===== Engagement Ring dropdown: preview image ===== */
-    .site-header .menudesk-left .meganav.has-hover-preview,
-    .site-header .menudesk-right .meganav.has-hover-preview {
-      --mp-w: clamp(150px, 13vw, 200px);
-      padding-right: calc(var(--mega-side) + var(--mp-w) + 40px) !important;
-    }
-
-    .meganav-preview {
-      position: absolute;
-      top: 22px;
-      right: var(--mega-side);
-      width: var(--mp-w);
-      text-align: center;
-      pointer-events: none;
-    }
-    .meganav-preview__frame {
-      aspect-ratio: 1 / 1;
-      overflow: hidden;
-    }
-    .meganav-preview__img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: opacity 0.25s ease;
-    }
-    .meganav-preview__img.is-fading { opacity: 0; }
-    .meganav-preview__caption {
-      margin-top: 10px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #222;
-    }
-
-    /* ===== Shop By Shape: 2 columns ===== */
-    .meganav .mega-two-col {
-      display: grid !important;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      column-gap: clamp(24px, 3vw, 50px);
-    }
-    .meganav .mega-two-col > .mega-title-li {
-      grid-column: 1 / -1;
-    }
-  }
-
-  /* chhote laptop pe preview image band: menu columns ko poori jagah mile */
-  @media (min-width: 992px) and (max-width: 1199px) {
-    .meganav-preview { display: none !important; }
-    .site-header .menudesk-left .meganav.has-hover-preview,
-    .site-header .menudesk-right .meganav.has-hover-preview {
-      padding-right: var(--mega-side) !important;
-    }
-  }
-
-  /* touch device pe preview nahi */
-  @media (hover: none) {
-    .meganav-preview { display: none !important; }
-  }
-</style>
-
 <header
   class="{% if section.settings.menu_active == 'thick-line' %} thick-lineactive {% endif %} {{ layout_header }} size-header-{{ height_header }} section-{{ section.id }} site-header page-element is-moved-by-drawer header-{{ type_sticky }} {% if type_sticky == 'sticky' or type_sticky == 'sticky-top' %} site-header--sticky {% endif %} {% if section.settings.enable_transparent %} site-header--transparent {% if section.settings.enable_white %} site-header-white {% endif %} {% endif %} site-header--full {% if template contains 'index' %} index-header {% endif %} "
   role="banner"
@@ -215,218 +51,408 @@
   {%- endif -%}
 </header>
 
-{%- render 'menu-mobile', menu: main_linklist -%}
-<script>
-  /* The drawer is fixed-position; keep it a direct child of <body> so it is not trapped in the sticky header's stacking context.
-     On a theme-editor reload of this section, the freshly rendered drawer replaces the old one. */
-  (function () {
-    var drawers = document.querySelectorAll('#NavDrawer');
-    var drawer = drawers[drawers.length - 1];
-    for (var i = 0; i < drawers.length - 1; i++) drawers[i].remove();
-    if (drawer && drawer.parentNode !== document.body) document.body.appendChild(drawer);
-  })();
-</script>
+<style>
+  /* ===== MEGA MENU HEADING ===== */
+  .site-nav .meganav .mega-heading a {
+    font-family: Georgia, serif;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #000;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #c9a227;
+    display: inline-block;
+    padding-bottom: 4px;
+  }
 
+  /* ===== STICKY: z-index kam rakha hai taaki drawers header ke upar khulein ===== */
+  #shopify-section-{{ section.id }} {
+    position: sticky;
+    top: 0;
+    z-index: 900;
+  }
 
-<script>
-  window.MENU_HOVER_IMAGES = {
-    /* Shop By Shape */
-    'round':    '{{ 'ring-round.jpg' | asset_url }}',
-    'oval':     '{{ 'ring-oval.jpg' | asset_url }}',
-    'radiant':  '{{ 'ring-radiant.jpg' | asset_url }}',
-    'pear':     '{{ 'ring-pear.jpg' | asset_url }}',
-    'marquise': '{{ 'ring-marquise.jpg' | asset_url }}',
-    'cushion':  '{{ 'ring-cushion.jpg' | asset_url }}',
-    'emerald':  '{{ 'ring-emerald.jpg' | asset_url }}',
-    'princess': '{{ 'ring-princess.jpg' | asset_url }}',
-    'heart':    '{{ 'ring-heart.jpg' | asset_url }}',
-    /* Shop By Style */
-    'solitaire rings': '{{ 'ring-solitaire.jpg' | asset_url }}',
-    'halo rings':      '{{ 'ring-halo.jpg' | asset_url }}',
-    'pave rings':      '{{ 'ring-pave.jpg' | asset_url }}',
-    'three stone ring':'{{ 'ring-three-stone.jpg' | asset_url }}',
-    'hidden halo':     '{{ 'ring-hidden-halo.jpg' | asset_url }}',
-    'bezel ring':      '{{ 'ring-bezel.jpg' | asset_url }}',
-    'toi et moi ring': '{{ 'ring-toi-et-moi.jpg' | asset_url }}',
-    'cathedral':       '{{ 'ring-cathedral.jpg' | asset_url }}'
-  };
+  .site-header {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .site-header .header-bottom {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  .site-header .row-header { flex-wrap: nowrap; max-width: 100%; }
+  .site-header .row-header > *,
+  .site-header .row-header .container-fluid,
+  .site-header .row-header .container { min-width: 0; max-width: 100%; box-sizing: border-box; }
 
-  document.addEventListener('DOMContentLoaded', function () {
-    var CONFIG = { parentMatch: /engagement/i, defaultKey: 'round' };
-    var SHAPE_KEYS = ['round','oval','radiant','pear','marquise','cushion','emerald','princess','heart'];
-    var images = window.MENU_HOVER_IMAGES || {};
-    if (!window.matchMedia('(min-width: 992px) and (hover: hover)').matches) return;
+  .site-header svg { flex-shrink: 0; }
 
-    var header = document.querySelector('.site-header');
-
-    function keyOf(a) {
-      return a.textContent.replace(/\s+/g, ' ').trim().toLowerCase();
+  /* ===== LAPTOP / DESKTOP (992px+) ===== */
+  @media (min-width: 992px) {
+    .site-header {
+      position: relative !important;
+      top: auto !important;
+      transform: none !important;
     }
 
-    /* ---- Mega menu ko header ke bilkul neeche rakho (scroll/resize par bhi) ---- */
-    var allMegas = document.querySelectorAll('.menudesk-left .meganav, .menudesk-right .meganav');
-
-    function placeAll() {
-      if (!header) return;
-      var bottom = Math.max(0, header.getBoundingClientRect().bottom);
-      document.documentElement.style.setProperty('--mega-top', bottom + 'px');
-      allMegas.forEach(function (mega) {
-        mega.style.setProperty('top', bottom + 'px', 'important');
-      });
+    #shopify-section-{{ section.id }}:hover,
+    #shopify-section-{{ section.id }}:focus-within {
+      z-index: 1100;
     }
 
-    allMegas.forEach(function (mega) {
-      var li = mega.closest('li');
-      if (!li || !header) return;
-      li.addEventListener('mouseenter', placeAll);
-      li.addEventListener('focusin', placeAll);
-    });
-    window.addEventListener('scroll', placeAll, { passive: true });
-    window.addEventListener('resize', placeAll);
-    placeAll();
+    .site-header .header-bottom {
+      padding: 6px clamp(10px, 1.6vw, 36px);
+    }
 
-    /* ---- Engagement Ring dropdown: 2 columns + preview image ---- */
-    allMegas.forEach(function (mega) {
-      var li = mega.closest('li') || mega.parentElement;
-      var topLink = li && li.querySelector('a');
-      if (!topLink || !CONFIG.parentMatch.test(topLink.textContent)) return;
+    .site-header .header-logo img {
+      width: auto;
+      max-height: 42px;
+      max-width: clamp(80px, 10vw, 180px);
+      object-fit: contain;
+    }
 
-      var links = Array.prototype.filter.call(mega.querySelectorAll('a'), function (a) {
-        return !a.closest('.mega-heading') && images[keyOf(a)];
-      });
-      if (!links.length) {
-        console.warn('[menu-preview] koi link match nahi hua');
-        return;
+    .site-header .menudesk-left > ul > li > a,
+    .site-header .menudesk-right > ul > li > a,
+    .site-header .site-nav > li > a {
+      font-size: clamp(10.5px, 0.95vw, 15px) !important;
+      letter-spacing: 0.01em !important;
+      padding-left: clamp(3px, 0.6vw, 14px) !important;
+      padding-right: clamp(3px, 0.6vw, 14px) !important;
+      white-space: nowrap;
+    }
+
+    /* ===== RIGHT SIDE ICONS ===== */
+    .site-header .header-bottom__right {
+      flex: 0 0 auto !important;
+      display: flex !important;
+      align-items: center;
+      gap: clamp(8px, 0.9vw, 16px);
+      min-width: max-content;
+    }
+    .site-header .header-bottom__right > *:not([class*="drawer"]):not([class*="mini-cart"]):not([class*="minicart"]):not([role="dialog"]):not(aside):not(.modal) {
+      flex: 0 0 auto !important;
+      min-width: max-content;
+    }
+    .site-header .header-bottom__right a:not(:is([class*="drawer"], [class*="mini-cart"], [class*="minicart"], [role="dialog"], aside, .modal) *),
+    .site-header .header-bottom__right button:not(:is([class*="drawer"], [class*="mini-cart"], [class*="minicart"], [role="dialog"], aside, .modal) *) {
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: auto !important;
+      min-width: 24px !important;
+      height: 24px;
+      overflow: visible !important;
+    }
+    .site-header .header-bottom__right svg:not(:is([class*="drawer"], [class*="mini-cart"], [class*="minicart"], [role="dialog"], aside, .modal) *),
+    .site-header .header-bottom__right img:not(:is([class*="drawer"], [class*="mini-cart"], [class*="minicart"], [role="dialog"], aside, .modal) *),
+    .site-header .header-bottom__right i:not(:is([class*="drawer"], [class*="mini-cart"], [class*="minicart"], [role="dialog"], aside, .modal) *) {
+      display: block !important;
+      width: 22px !important;
+      height: 22px !important;
+      min-width: 22px !important;
+      max-width: none !important;
+      flex-shrink: 0;
+    }
+  }
+
+  /* chhota laptop (992 - 1279) */
+  @media (min-width: 992px) and (max-width: 1279px) {
+    .site-header .header-logo img { max-height: 34px; }
+    .site-header [class*="currency"] [class*="name"],
+    .site-header [class*="currency"] [class*="code"] { display: none; }
+    .site-header .menudesk-left > ul > li > a,
+    .site-header .menudesk-right > ul > li > a,
+    .site-header .site-nav > li > a {
+      font-size: 11px !important;
+      padding-left: 4px !important;
+      padding-right: 4px !important;
+    }
+  }
+
+  /* ===== TABLET / MOBILE (991px tak) ===== */
+  @media (max-width: 991px) {
+    .site-header { overflow-x: clip; }
+    .site-header .header-bottom { padding-top: 4px; padding-bottom: 4px; }
+    .site-header .row-header { min-height: 0; padding-left: 10px; padding-right: 10px; }
+    .site-header .row-header .container-fluid,
+    .site-header .row-header .container { padding-left: 0; padding-right: 0; }
+    .site-header .row-header img:not([class*="flag"]):not([src*="flag"]) {
+      width: auto;
+      max-height: 34px;
+      max-width: min(140px, 36vw);
+      object-fit: contain;
+    }
+    .meganav-preview { display: none !important; }
+  }
+  @media (max-width: 480px) {
+    .site-header .row-header img:not([class*="flag"]):not([src*="flag"]) { max-height: 65px; }
+  }
+</style>
+
+<style>
+    @media (min-width: 992px) and (hover: hover) {
+
+      .site-header {
+        --mega-side: max(24px, calc((100vw - 1320px) / 2));
       }
 
-      /* Shop By Shape ko 2 columns mein karo */
-      links.forEach(function (a) {
-        if (SHAPE_KEYS.indexOf(keyOf(a)) === -1) return;
-        var ul = a.closest('ul');
-        if (!ul || ul.classList.contains('mega-two-col')) return;
-        ul.classList.add('mega-two-col');
-        Array.prototype.forEach.call(ul.children, function (child) {
-          if (child.classList.contains('mega-heading') || child.querySelector('.mega-heading')) {
-            child.classList.add('mega-title-li');
-          }
+      /* ===== FULL WIDTH MEGA MENU: header ke bottom se chipka hua (gap nahi) ===== */
+      .site-header .menudesk-left .meganav,
+      .site-header .menudesk-right .meganav {
+        position: absolute !important;
+        top: 100% !important;
+        bottom: auto !important;
+        left: 0 !important;
+        right: 0 !important;
+        width: auto !important;
+        min-width: 0 !important;
+        max-width: none !important;
+        margin: 0 !important;
+        transform: none !important;
+        box-sizing: border-box !important;
+        padding: 22px var(--mega-side) 26px !important;
+        min-height: 0 !important;
+        max-height: calc(100vh - 150px);
+         max-height: none !important;
+        overflow: visible !important;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+      }
+
+      /* invisible bridge: cursor header se menu tak jaate hue hover na khoye */
+     .site-header .menudesk-left .meganav::before,
+      .site-header .menudesk-right .meganav::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: -30px;
+        height: 30px;
+        background: transparent;
+      }
+
+      .site-header .meganav li > a {
+        padding-top: 4px !important;
+        padding-bottom: 4px !important;
+      }
+      .site-header .meganav li { margin-bottom: 0 !important; }
+
+      /* ===== Engagement Ring dropdown: preview image ===== */
+      .site-header .menudesk-left .meganav.has-hover-preview,
+      .site-header .menudesk-right .meganav.has-hover-preview {
+        --mp-w: clamp(150px, 13vw, 200px);
+        padding-right: calc(var(--mega-side) + var(--mp-w) + 40px) !important;
+      }
+      .meganav-preview {
+        position: absolute;
+        top: 22px;
+        right: var(--mega-side);
+        width: var(--mp-w);
+        text-align: center;
+        pointer-events: none;
+      }
+      .meganav-preview__frame { aspect-ratio: 1 / 1; overflow: hidden; }
+      .meganav-preview__img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: opacity 0.25s ease;
+      }
+      .meganav-preview__img.is-fading { opacity: 0; }
+      .meganav-preview__caption { margin-top: 10px; font-size: 14px; font-weight: 500; color: #222; }
+
+      /* ===== Shop By Shape: 2 columns ===== */
+      .meganav .mega-two-col {
+        display: grid !important;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: clamp(24px, 3vw, 50px);
+        margin-right: clamp(30px, 4vw, 70px);
+      }
+      .meganav .mega-two-col > .mega-title-li { grid-column: 1 / -1; }
+    }
+
+    /* chhote laptop pe preview band */
+    @media (min-width: 992px) and (max-width: 1199px) {
+      .meganav-preview { display: none !important; }
+      .site-header .menudesk-left .meganav.has-hover-preview,
+      .site-header .menudesk-right .meganav.has-hover-preview {
+        padding-right: var(--mega-side) !important;
+      }
+    }
+    @media (hover: none) {
+      .meganav-preview { display: none !important; }
+    }
+    /* ===== COMPACT DROPDOWN (Fine Jewelry, Gifts, Lumera's Exclusive) ===== */
+  .site-header li.mega-li-compact {
+    position: relative !important;
+  }
+
+  .site-header .menudesk-left .meganav.meganav-compact,
+  .site-header .menudesk-right .meganav.meganav-compact {
+    top: 100% !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    width: max-content !important;
+    min-width: 220px !important;
+    max-width: min(420px, 90vw) !important;
+    padding: 22px 30px 24px !important;
+    border-radius: 0 0 6px 6px;
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
+  }
+
+  /* bridge: hover na tute */
+  .site-header .meganav.meganav-compact::before {
+    top: -20px;
+    height: 20px;
+  }
+</style>
+
+<script>
+    window.MENU_HOVER_IMAGES = {
+      /* Shop By Shape */
+      'round':    '{{ 'ring-round.jpg' | asset_url }}',
+      'oval':     '{{ 'ring-oval.jpg' | asset_url }}',
+      'radiant':  '{{ 'ring-radiant.jpg' | asset_url }}',
+      'pear':     '{{ 'ring-pear.jpg' | asset_url }}',
+      'marquise': '{{ 'ring-marquise.jpg' | asset_url }}',
+      'cushion':  '{{ 'ring-cushion.jpg' | asset_url }}',
+      'emerald':  '{{ 'ring-emerald.jpg' | asset_url }}',
+      'princess': '{{ 'ring-princess.jpg' | asset_url }}',
+      'heart':    '{{ 'ring-heart.jpg' | asset_url }}',
+      /* Shop By Style */
+      'solitaire rings': '{{ 'ring-solitaire.jpg' | asset_url }}',
+      'halo rings':      '{{ 'ring-halo.jpg' | asset_url }}',
+      'pave rings':      '{{ 'ring-pave.jpg' | asset_url }}',
+      'three stone ring':'{{ 'ring-three-stone.jpg' | asset_url }}',
+      'hidden halo':     '{{ 'ring-hidden-halo.jpg' | asset_url }}',
+      'bezel ring':      '{{ 'ring-bezel.jpg' | asset_url }}',
+      'toi et moi ring': '{{ 'ring-toi-et-moi.jpg' | asset_url }}',
+      'cathedral':       '{{ 'ring-cathedral.jpg' | asset_url }}'
+    };
+
+    document.addEventListener('DOMContentLoaded', function () {
+      var CONFIG = { parentMatch: /engagement/i, defaultKey: 'round' };
+      var SHAPE_KEYS = ['round','oval','radiant','pear','marquise','cushion','emerald','princess','heart'];
+      var images = window.MENU_HOVER_IMAGES || {};
+      if (!window.matchMedia('(min-width: 992px) and (hover: hover)').matches) return;
+
+      var header = document.querySelector('.site-header');
+
+      function keyOf(a) {
+        return a.textContent.replace(/\s+/g, ' ').trim().toLowerCase();
+      }
+
+      var allMegas = document.querySelectorAll('.menudesk-left .meganav, .menudesk-right .meganav');
+
+     /* ---- Engagement = full width, baaki sab = compact dropdown ---- */
+  allMegas.forEach(function (mega) {
+    var li = mega.closest('li') || mega.parentElement;
+    var topLink = li && li.querySelector('a');
+    var isFull = topLink && CONFIG.parentMatch.test(topLink.textContent);
+
+    if (!isFull) {
+      mega.classList.add('meganav-compact');
+      if (li) li.classList.add('mega-li-compact');
+      return; /* parent li relative hi rahega */
+    }
+
+    var el = mega.parentElement;
+    while (el && el !== header && el !== document.body) {
+      if (window.getComputedStyle(el).position === 'relative') {
+        el.style.setProperty('position', 'static', 'important');
+      }
+      el = el.parentElement;
+    }
+  });
+
+      /* ---- Engagement Ring dropdown: 2 columns + preview image ---- */
+      allMegas.forEach(function (mega) {
+        var li = mega.closest('li') || mega.parentElement;
+        var topLink = li && li.querySelector('a');
+        if (!topLink || !CONFIG.parentMatch.test(topLink.textContent)) return;
+
+        var links = Array.prototype.filter.call(mega.querySelectorAll('a'), function (a) {
+          return !a.closest('.mega-heading') && images[keyOf(a)];
+        });
+        if (!links.length) {
+          console.warn('[menu-preview] koi link match nahi hua');
+          return;
+        }
+
+        links.forEach(function (a) {
+          if (SHAPE_KEYS.indexOf(keyOf(a)) === -1) return;
+          var ul = a.closest('ul');
+          if (!ul || ul.classList.contains('mega-two-col')) return;
+          ul.classList.add('mega-two-col');
+          Array.prototype.forEach.call(ul.children, function (child) {
+            if (child.classList.contains('mega-heading') || child.querySelector('.mega-heading')) {
+              child.classList.add('mega-title-li');
+            }
+          });
+        });
+
+        var panel = document.createElement('div');
+        panel.className = 'meganav-preview';
+        panel.setAttribute('aria-hidden', 'true');
+        panel.innerHTML =
+          '<div class="meganav-preview__frame"><img class="meganav-preview__img" alt=""></div>' +
+          '<div class="meganav-preview__caption"></div>';
+        mega.appendChild(panel);
+        mega.classList.add('has-hover-preview');
+
+        var img = panel.querySelector('img');
+        var caption = panel.querySelector('.meganav-preview__caption');
+        var timer;
+
+        function setNow(a) {
+          img.src = images[keyOf(a)];
+          caption.textContent = a.textContent.replace(/\s+/g, ' ').trim();
+        }
+
+        function show(a) {
+          var url = images[keyOf(a)];
+          if (img.getAttribute('src') === url) return;
+          clearTimeout(timer);
+          img.classList.add('is-fading');
+          timer = setTimeout(function () {
+            setNow(a);
+            img.classList.remove('is-fading');
+          }, 120);
+        }
+
+        var defaultLink = links.filter(function (a) { return keyOf(a) === CONFIG.defaultKey; })[0] || links[0];
+        setNow(defaultLink);
+
+        var preloaded = false;
+        function preload() {
+          if (preloaded) return;
+          preloaded = true;
+          links.forEach(function (a) { new Image().src = images[keyOf(a)]; });
+        }
+        li.addEventListener('mouseenter', preload);
+        li.addEventListener('focusin', preload);
+
+        links.forEach(function (a) {
+          a.addEventListener('mouseenter', function () { show(a); });
+          a.addEventListener('focus', function () { show(a); });
+        });
+
+        li.addEventListener('mouseleave', function () {
+          clearTimeout(timer);
+          img.classList.remove('is-fading');
+          setNow(defaultLink);
         });
       });
-
-      /* Preview panel */
-      var panel = document.createElement('div');
-      panel.className = 'meganav-preview';
-      panel.setAttribute('aria-hidden', 'true');
-      panel.innerHTML =
-        '<div class="meganav-preview__frame"><img class="meganav-preview__img" alt=""></div>' +
-        '<div class="meganav-preview__caption"></div>';
-      mega.appendChild(panel);
-      mega.classList.add('has-hover-preview');
-
-      var img = panel.querySelector('img');
-      var caption = panel.querySelector('.meganav-preview__caption');
-      var timer;
-
-      function setNow(a) {
-        img.src = images[keyOf(a)];
-        caption.textContent = a.textContent.replace(/\s+/g, ' ').trim();
-      }
-
-      function show(a) {
-        var url = images[keyOf(a)];
-        if (img.getAttribute('src') === url) return;
-        clearTimeout(timer);
-        img.classList.add('is-fading');
-        timer = setTimeout(function () {
-          setNow(a);
-          img.classList.remove('is-fading');
-        }, 120);
-      }
-
-      var defaultLink = links.filter(function (a) { return keyOf(a) === CONFIG.defaultKey; })[0] || links[0];
-      setNow(defaultLink);
-
-      var preloaded = false;
-      function preload() {
-        if (preloaded) return;
-        preloaded = true;
-        links.forEach(function (a) { new Image().src = images[keyOf(a)]; });
-      }
-      li.addEventListener('mouseenter', preload);
-      li.addEventListener('focusin', preload);
-
-      links.forEach(function (a) {
-        a.addEventListener('mouseenter', function () { show(a); });
-        a.addEventListener('focus', function () { show(a); });
-      });
-
-      li.addEventListener('mouseleave', function () {
-        clearTimeout(timer);
-        img.classList.remove('is-fading');
-        setNow(defaultLink);
-      });
     });
-  });
-</script>
-
-<script>
-  /* In-page anchors (e.g. menu link "/#about-us"): land just below the sticky header. */
-  (function () {
-    var sticky = document.getElementById('shopify-section-{{ section.id }}');
-    var root = document.documentElement;
-    if (!sticky) return;
-
-    function headerHeight() {
-      return Math.ceil(sticky.getBoundingClientRect().height);
-    }
-
-    /* Native jumps (and anything else that scrolls to an id) use this offset too. */
-    function syncOffset() {
-      root.style.scrollPaddingTop = headerHeight() + 'px';
-    }
-    syncOffset();
-    if (window.ResizeObserver) new ResizeObserver(syncOffset).observe(sticky);
-
-    function targetOf(hash) {
-      if (!hash || hash.length < 2) return null;
-      try {
-        return document.getElementById(decodeURIComponent(hash.slice(1)));
-      } catch (e) {
-        return null;
-      }
-    }
-
-    function scrollToTarget(el, smooth) {
-      var top = el.getBoundingClientRect().top + window.pageYOffset - headerHeight();
-      window.scrollTo({ top: Math.max(0, top), behavior: smooth ? 'smooth' : 'auto' });
-    }
-
-    /* Link to a section on the current page: scroll smoothly instead of reloading, and close the mobile menu. */
-    document.addEventListener('click', function (e) {
-      var a = e.target.closest && e.target.closest('a[href*="#"]');
-      if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-      var url = new URL(a.href, location.href);
-      if (url.origin !== location.origin || url.pathname !== location.pathname) return;
-      var el = targetOf(url.hash);
-      if (!el) return;
-      e.preventDefault();
-      if (window.theme && theme.NavDrawer && theme.NavDrawer.drawerIsOpen) theme.NavDrawer.close();
-      history.pushState(null, '', url.hash);
-      scrollToTarget(el, !window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-    });
-
-    /* Arriving from another page: sliders and images above the section change height while loading, so re-align once loaded. */
-    if (targetOf(location.hash)) {
-      window.addEventListener('load', function () {
-        var el = targetOf(location.hash);
-        if (el) scrollToTarget(el, false);
-      });
-    }
-  })();
 </script>
 
 <div class="group-fixed d-lg-flex d-none">
   {% render 'show-newlleter' %}
-  {%- if settings.enable_compare and settings.enable_popuptext -%}—{%- endif -%}
   {%- render 'block-compare' -%}
 </div>
 {%- if template != 'customers/login' -%}
