@@ -279,7 +279,7 @@
         "enable_menu_vertical": true,
         "sl_menu_vertical": "click-menu",
         "main_linklist_vertical": "main-menue-copy",
-        "link_list_search": "about",
+        "link_list_search": "",
         "sidebar_search": true,
         "e_hd_currency": false,
         "enable_image": false,
