@@ -20,7 +20,61 @@
     }
   }
 {%- endstyle -%}
+<style>
+  /* =========================================================
+     PRODUCT GRID SPACING + BIGGER CARDS
+     Sirf yahan values badalni hain:
+     --pg-gap     = products ke beech horizontal gap
+     --pg-row-gap = rows ke beech vertical gap
+     ========================================================= */
+  #ProductGridContainer {
+    --pg-gap: 14px;
+    --pg-row-gap: 20px;
+  }
 
+  #ProductGridContainer .product-grid.row {
+    margin-left: calc(var(--pg-gap) / -2) !important;
+    margin-right: calc(var(--pg-gap) / -2) !important;
+  }
+
+  #ProductGridContainer .product-grid > .grid__item {
+    padding-left: calc(var(--pg-gap) / 2) !important;
+    padding-right: calc(var(--pg-gap) / 2) !important;
+    margin-bottom: var(--pg-row-gap) !important;
+    box-sizing: border-box;
+  }
+
+  /* card ke andar ka extra neeche ka space hatao */
+  #ProductGridContainer .product-grid > .grid__item > * {
+    margin-bottom: 0 !important;
+  }
+
+  /* DESKTOP bada screen: side margin kam => products bade */
+  @media screen and (min-width: 1200px) {
+    .main-collection.container {
+      max-width: 1700px;
+      padding-left: 30px;
+      padding-right: 30px;
+    }
+  }
+
+  /* LAPTOP (992 - 1199px) */
+  @media screen and (min-width: 992px) and (max-width: 1199px) {
+    #ProductGridContainer { --pg-gap: 12px; --pg-row-gap: 18px; }
+    .main-collection.container { padding-left: 20px; padding-right: 20px; }
+  }
+
+  /* TABLET (750 - 991px) */
+  @media screen and (min-width: 750px) and (max-width: 991px) {
+    #ProductGridContainer { --pg-gap: 12px; --pg-row-gap: 16px; }
+  }
+
+  /* MOBILE (max 749px) - 2 products per row */
+  @media screen and (max-width: 749px) {
+    #ProductGridContainer { --pg-gap: 8px; --pg-row-gap: 14px; }
+    .main-collection { padding-left: 8px; padding-right: 8px; }
+  }
+</style>
 {%- liquid
   assign size_image_grid = settings.size_image_grid
   assign cover_contain = section.settings.cover_contain
