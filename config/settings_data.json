@@ -581,7 +581,7 @@
               "subheading": "",
               "subheading_color": "#ffffff",
               "button_label": "SHOP ENGAGEMENT RINGS",
-              "button_link": "https://lumerafinejewellery.com/collections/all",
+              "button_link": "shopify://collections/engagement-ring",
               "stylebtns": "btn-theme",
               "bg_button": "#053931",
               "color_button": "#ffffff",
