@@ -82,6 +82,7 @@
       z-index: 1;
     }
     .slideshow__image picture{ display: block; }
+    .slideshow .slideshow__image img{ opacity: 1 !important; }
     .slideshow__image img{
       position: absolute;
       top: 0;
@@ -593,7 +594,7 @@
                       {% if forloop.first -%}
                         loading="eager" fetchpriority="high"
                       {%- else -%}
-                        loading="lazy" decoding="async" class="scale-in"
+                        loading="lazy" decoding="async" class="lazyload scale-in"
                       {%- endif %}
                     >
                   </picture>
@@ -633,7 +634,7 @@
                         {% if forloop.first -%}
                           loading="eager"
                         {%- else -%}
-                          loading="lazy" decoding="async" class="scale-in"
+                          loading="lazy" decoding="async" class="lazyload scale-in"
                         {%- endif %}
                       >
                     </picture>
