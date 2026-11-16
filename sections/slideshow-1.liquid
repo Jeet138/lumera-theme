@@ -395,51 +395,20 @@
         aria-describedby="slideshow-info"
         tabindex="-1"
       >
-        <div
-          class="transit-{{ section.settings.anim_slideshow }} dot-{{ section.settings.slide_dot }} slideshow {% unless section.settings.slideshow_height_adapt == 'adapt' %} slideshow--desktop-{{ section.settings.slideshow_height_adapt }} {% endunless %} mobile--slideshow-{{ mobile_height_class }}"
-          id="Slideshow-{{ section.id }}"
-          data-arrow="{{ section.settings.e_arrow }}"
-          data-dot="{{ section.settings.e_dot }}"
-          data-autorotate="{{ section.settings.autorotate }}"
-          data-speed="{{ section.settings.autorotate_speed | times: 1000 }}"
-          data-adapt-height="{%- if section.settings.slideshow_height_adapt == 'adapt' -%}true{%- else -%}false{%- endif -%}"
-          data-slide-nav-a11y="{{ 'sections.slideshow.load_slide' | t: slide_number: '[slide_number]' }}"
-          data-transit="{{ section.settings.anim_slideshow }}"
-          {%- if section.settings.slideshow_height_adapt == 'adapt' -%}
-            data-min-aspect-ratio="{{ min_aspect_ratio }}" style="height: {{ wrapper_height }}vw"
-          {%- endif -%}
-        >
-          {%- for block in section.blocks -%}
-            {%- assign text_alignments = block.settings.text_alignment | split: ' ' -%}
-            {%- assign text_horizontal_alignment = text_alignments.first -%}
-            {%- assign text_vertical_alignment = text_alignments.last | strip -%}
-
-            {%- liquid
-              assign show_btn_1 = false
-              assign show_btn_2 = false
-              if block.settings.button_label != blank and block.settings.button_link != blank
-                assign show_btn_1 = true
-              endif
-              if block.settings.button_label_2 != blank and block.settings.button_link_2 != blank
-                assign show_btn_2 = true
-              endif
-              assign img_d = block.settings.image
-              assign img_d2 = block.settings.image2
-              assign img_m = block.settings.image_mobile
-              assign has_mobile = false
-              assign has_split = false
-              if img_m != blank
-                assign has_mobile = true
-              endif
-              if img_d2 != blank
-                assign has_split = true
-              endif
-              assign object_position = 'object-position:' | append: block.settings.alignment
-            -%}
-
-            {%- comment -%} Button styles: ek hi baar (desktop + mobile dono ke liye) {%- endcomment -%}
-            {%- if show_btn_1 or show_btn_2 -%}
-              <style>
+        {%- comment -%} Button styles: slider ke bahar, ek hi baar (desktop + mobile dono ke liye) {%- endcomment -%}
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign show_btn_1 = false
+            assign show_btn_2 = false
+            if block.settings.button_label != blank and block.settings.button_link != blank
+              assign show_btn_1 = true
+            endif
+            if block.settings.button_label_2 != blank and block.settings.button_link_2 != blank
+              assign show_btn_2 = true
+            endif
+          -%}
+          {%- if show_btn_1 or show_btn_2 -%}
+<style>
                 {%- if show_btn_1 -%}
                 .btn-theme.slideshow__btn{{ block.id }}{
                   color:{{ block.settings.color_button }};
@@ -505,7 +474,49 @@
                 }
                 {%- endif -%}
               </style>
-            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+        <div
+          class="transit-{{ section.settings.anim_slideshow }} dot-{{ section.settings.slide_dot }} slideshow {% unless section.settings.slideshow_height_adapt == 'adapt' %} slideshow--desktop-{{ section.settings.slideshow_height_adapt }} {% endunless %} mobile--slideshow-{{ mobile_height_class }}"
+          id="Slideshow-{{ section.id }}"
+          data-arrow="{{ section.settings.e_arrow }}"
+          data-dot="{{ section.settings.e_dot }}"
+          data-autorotate="{{ section.settings.autorotate }}"
+          data-speed="{{ section.settings.autorotate_speed | times: 1000 }}"
+          data-adapt-height="{%- if section.settings.slideshow_height_adapt == 'adapt' -%}true{%- else -%}false{%- endif -%}"
+          data-slide-nav-a11y="{{ 'sections.slideshow.load_slide' | t: slide_number: '[slide_number]' }}"
+          data-transit="{{ section.settings.anim_slideshow }}"
+          {%- if section.settings.slideshow_height_adapt == 'adapt' -%}
+            data-min-aspect-ratio="{{ min_aspect_ratio }}" style="height: {{ wrapper_height }}vw"
+          {%- endif -%}
+        >
+          {%- for block in section.blocks -%}
+            {%- assign text_alignments = block.settings.text_alignment | split: ' ' -%}
+            {%- assign text_horizontal_alignment = text_alignments.first -%}
+            {%- assign text_vertical_alignment = text_alignments.last | strip -%}
+
+            {%- liquid
+              assign show_btn_1 = false
+              assign show_btn_2 = false
+              if block.settings.button_label != blank and block.settings.button_link != blank
+                assign show_btn_1 = true
+              endif
+              if block.settings.button_label_2 != blank and block.settings.button_link_2 != blank
+                assign show_btn_2 = true
+              endif
+              assign img_d = block.settings.image
+              assign img_d2 = block.settings.image2
+              assign img_m = block.settings.image_mobile
+              assign has_mobile = false
+              assign has_split = false
+              if img_m != blank
+                assign has_mobile = true
+              endif
+              if img_d2 != blank
+                assign has_split = true
+              endif
+              assign object_position = 'object-position:' | append: block.settings.alignment
+            -%}
 
             <div
               class="slide {% if has_split %}slideshow__slide-split {% endif %} slideshow__slide slideshow__slide--{{ block.id }}"
@@ -812,6 +823,7 @@
     {%- endif -%}
   </div>
 {%- endif -%}
+
 
 {% schema %}
 {
