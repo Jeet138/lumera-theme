@@ -102,6 +102,9 @@
       max-width: none !important;
       margin: 0 !important;
       transform: none !important;
+      /* top ke saath koi animation/transition nahi, warna position galat measure hoti hai (gap ka issue) */
+      transition-property: opacity, visibility !important;
+      animation: none !important;
       box-sizing: border-box !important;
       padding: 22px var(--mega-side) 26px !important;
       min-height: 0 !important;
@@ -263,26 +266,54 @@
       return a.textContent.replace(/\s+/g, ' ').trim().toLowerCase();
     }
 
-    /* ---- Mega menu ko header ke bilkul neeche rakho (scroll/resize par bhi) ---- */
+    /* ---- Mega menu ko header ke bilkul neeche rakho (scroll/resize par bhi) ----
+       Fixed menu ki "top" kabhi kabhi kisi parent (sticky/transform/theme animation) ki wajah se
+       shift ho jaati hai, jisse header aur menu ke beech gap dikhta hai.
+       Isliye top set karne ke baad actual position naapte hain aur jitna farak ho utna correct kar dete hain. */
     var allMegas = document.querySelectorAll('.menudesk-left .meganav, .menudesk-right .meganav');
+
+    function isShown(mega) {
+      var r = mega.getBoundingClientRect();
+      return r.width > 0 && r.height > 0 && getComputedStyle(mega).visibility !== 'hidden';
+    }
+
+    function placeOne(mega, bottom) {
+      var off = mega._topOffset || 0;
+      mega.style.setProperty('top', (bottom - off) + 'px', 'important');
+      if (!isShown(mega)) return;
+      var delta = mega.getBoundingClientRect().top - bottom;
+      if (Math.abs(delta) > 0.5) {
+        mega._topOffset = off + delta;
+        mega.style.setProperty('top', (bottom - mega._topOffset) + 'px', 'important');
+      }
+    }
 
     function placeAll() {
       if (!header) return;
       var bottom = Math.max(0, header.getBoundingClientRect().bottom);
       document.documentElement.style.setProperty('--mega-top', bottom + 'px');
-      allMegas.forEach(function (mega) {
-        mega.style.setProperty('top', bottom + 'px', 'important');
-      });
+      allMegas.forEach(function (mega) { placeOne(mega, bottom); });
     }
 
     allMegas.forEach(function (mega) {
       var li = mega.closest('li');
       if (!li || !header) return;
-      li.addEventListener('mouseenter', placeAll);
-      li.addEventListener('focusin', placeAll);
+      function onOpen() {
+        placeAll();
+        /* agar theme ki animation chal rahi ho to uske baad dobara check */
+        requestAnimationFrame(placeAll);
+        setTimeout(placeAll, 120);
+        setTimeout(placeAll, 350);
+      }
+      li.addEventListener('mouseenter', onOpen);
+      li.addEventListener('focusin', onOpen);
     });
     window.addEventListener('scroll', placeAll, { passive: true });
-    window.addEventListener('resize', placeAll);
+    window.addEventListener('resize', function () {
+      allMegas.forEach(function (mega) { mega._topOffset = 0; });
+      placeAll();
+    });
+    window.addEventListener('load', placeAll);
     placeAll();
 
     /* ---- Engagement Ring dropdown: 2 columns + preview image ---- */
