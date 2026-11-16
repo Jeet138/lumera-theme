@@ -15,7 +15,7 @@
         "animation": "fade",
         "bgsection": "rgba(0,0,0,0)",
         "gradient_bg": "linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8) 100%)",
-        "layout_featured": "in-image",
+        "layout_featured": "first-image",
         "align": "left",
         "enable_image": true,
         "enable_full": true,
