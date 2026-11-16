@@ -768,8 +768,10 @@
                   #main-collection-filters {
                     position: -webkit-sticky !important;
                     position: sticky !important;
-
+                    top: 80px !important;
                     align-self: flex-start !important;
+                    /* start level with the product grid, below the "Filter By / Sort by" row (theme .v-col uses -2rem) */
+                    margin-top: 0 !important;
                     width: 100% !important;
                     height: auto !important;
                     min-height: 0 !important;
