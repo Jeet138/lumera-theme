@@ -201,12 +201,10 @@
       --mega-side: max(24px, calc((100vw - 1320px) / 2));
     }
 
-      /* ===== FULL WIDTH MEGA MENU: header ke bottom se chipka hua (gap nahi) ===== */
+    /* ===== FULL WIDTH MEGA MENU ===== */
     .site-header .menudesk-left .meganav,
     .site-header .menudesk-right .meganav {
-        position: absolute !important;
-        top: 100% !important;
-        bottom: auto !important;
+      position: fixed !important;
       left: 0 !important;
       right: 0 !important;
       width: auto !important;
@@ -217,29 +215,20 @@
       box-sizing: border-box !important;
       padding: 22px var(--mega-side) 26px !important;
       min-height: 0 !important;
-        max-height: calc(100vh - 150px);
-         max-height: none !important;
-        overflow: visible !important;
+      /* screen se bada ho to andar scroll, bahar cut nahi */
+      max-height: calc(100vh - var(--mega-top, 140px) - 16px);
+      overflow-y: auto;
+      overflow-x: hidden;
       box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
     }
-
-      /* invisible bridge: cursor header se menu tak jaate hue hover na khoye */
-     .site-header .menudesk-left .meganav::before,
-      .site-header .menudesk-right .meganav::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: -30px;
-        height: 30px;
-        background: transparent;
-      }
 
     .site-header .meganav li > a {
       padding-top: 4px !important;
       padding-bottom: 4px !important;
     }
-      .site-header .meganav li { margin-bottom: 0 !important; }
+    .site-header .meganav li {
+      margin-bottom: 0 !important;
+    }
 
     /* ===== Engagement Ring dropdown: preview image ===== */
     .site-header .menudesk-left .meganav.has-hover-preview,
@@ -256,7 +245,10 @@
       text-align: center;
       pointer-events: none;
     }
-      .meganav-preview__frame { aspect-ratio: 1 / 1; overflow: hidden; }
+    .meganav-preview__frame {
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+    }
     .meganav-preview__img {
       display: block;
       width: 100%;
@@ -265,19 +257,25 @@
       transition: opacity 0.25s ease;
     }
     .meganav-preview__img.is-fading { opacity: 0; }
-      .meganav-preview__caption { margin-top: 10px; font-size: 14px; font-weight: 500; color: #222; }
+    .meganav-preview__caption {
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #222;
+    }
 
     /* ===== Shop By Shape: 2 columns ===== */
     .meganav .mega-two-col {
       display: grid !important;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       column-gap: clamp(24px, 3vw, 50px);
-        margin-right: clamp(30px, 4vw, 70px);
     }
-      .meganav .mega-two-col > .mega-title-li { grid-column: 1 / -1; }
+    .meganav .mega-two-col > .mega-title-li {
+      grid-column: 1 / -1;
+    }
   }
 
-    /* chhote laptop pe preview band */
+  /* chhote laptop pe preview image band: menu columns ko poori jagah mile */
   @media (min-width: 992px) and (max-width: 1199px) {
     .meganav-preview { display: none !important; }
     .site-header .menudesk-left .meganav.has-hover-preview,
@@ -290,31 +288,55 @@
   @media (hover: none) {
     .meganav-preview { display: none !important; }
   }
-    /* ===== COMPACT DROPDOWN (Fine Jewelry, Gifts, Lumera's Exclusive) ===== */
-  .site-header li.mega-li-compact {
-    position: relative !important;
-  }
-
-  .site-header .menudesk-left .meganav.meganav-compact,
-  .site-header .menudesk-right .meganav.meganav-compact {
-    top: 100% !important;
-    left: 50% !important;
-    right: auto !important;
-    transform: translateX(-50%) !important;
-    width: max-content !important;
-    min-width: 220px !important;
-    max-width: min(420px, 90vw) !important;
-    padding: 22px 30px 24px !important;
-    border-radius: 0 0 6px 6px;
-    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.08);
-  }
-
-  /* bridge: hover na tute */
-  .site-header .meganav.meganav-compact::before {
-    top: -20px;
-    height: 20px;
-  }
 </style>
+
+<header
+  class="{% if section.settings.menu_active == 'thick-line' %} thick-lineactive {% endif %} {{ layout_header }} size-header-{{ height_header }} section-{{ section.id }} site-header page-element is-moved-by-drawer header-{{ type_sticky }} {% if type_sticky == 'sticky' or type_sticky == 'sticky-top' %} site-header--sticky {% endif %} {% if section.settings.enable_transparent %} site-header--transparent {% if section.settings.enable_white %} site-header-white {% endif %} {% endif %} site-header--full {% if template contains 'index' %} index-header {% endif %} "
+  role="banner"
+  data-section-id="{{ section.id }}"
+  data-section-type="header"
+  data-sticky="{{ type_sticky }}"
+>
+  <div class="header-bottom py-2 py-lg-0 ">
+    <div class="">
+      <div class="d-flex row-header align-items-center">
+        {%- liquid
+          case layout_header
+            when 'logo-center-navigation-center'
+              render 'header-logo-center-nav-center', container: container, enable_menu_vertical: enable_menu_vertical, sl_menu_vertical: sl_menu_vertical, main_linklist: main_linklist, blocks: blocks
+            when 'logo-left-navigation-underleft'
+              render 'header-logo-left-nav-left', container: container, enable_menu_vertical: enable_menu_vertical, sl_menu_vertical: sl_menu_vertical, main_linklist: main_linklist, blocks: blocks
+            when 'logo-center-navigation-split'
+              render 'header-logo-center-split', container: container, enable_menu_vertical: enable_menu_vertical, sl_menu_vertical: sl_menu_vertical, main_linklist: main_linklist, blocks: blocks
+            when 'logo-center-navigation-drawer'
+              render 'header-logo-center-drawer', container: container
+            else
+              render 'header-logo-left', container: container, layout_header: layout_header, enable_menu_vertical: enable_menu_vertical, sl_menu_vertical: sl_menu_vertical, main_linklist: main_linklist, blocks: blocks
+          endcase
+        -%}
+      </div>
+    </div>
+  </div>
+
+  {%- if enable_menu_vertical -%}
+    {% unless layout_header == 'logo-center-navigation-split' or layout_header == 'logo-center-navigation-drawer' %}
+      {% render 'slide-menu' %}
+    {% endunless %}
+  {%- endif -%}
+</header>
+
+{%- render 'menu-mobile', menu: main_linklist -%}
+<script>
+  /* The drawer is fixed-position; keep it a direct child of <body> so it is not trapped in the sticky header's stacking context.
+     On a theme-editor reload of this section, the freshly rendered drawer replaces the old one. */
+  (function () {
+    var drawers = document.querySelectorAll('#NavDrawer');
+    var drawer = drawers[drawers.length - 1];
+    for (var i = 0; i < drawers.length - 1; i++) drawers[i].remove();
+    if (drawer && drawer.parentNode !== document.body) document.body.appendChild(drawer);
+  })();
+</script>
+
 
 <script>
   window.MENU_HOVER_IMAGES = {
@@ -351,28 +373,27 @@
       return a.textContent.replace(/\s+/g, ' ').trim().toLowerCase();
     }
 
+    /* ---- Mega menu ko header ke bilkul neeche rakho (scroll/resize par bhi) ---- */
     var allMegas = document.querySelectorAll('.menudesk-left .meganav, .menudesk-right .meganav');
 
-     /* ---- Engagement = full width, baaki sab = compact dropdown ---- */
+    function placeAll() {
+      if (!header) return;
+      var bottom = Math.max(0, header.getBoundingClientRect().bottom);
+      document.documentElement.style.setProperty('--mega-top', bottom + 'px');
       allMegas.forEach(function (mega) {
-    var li = mega.closest('li') || mega.parentElement;
-    var topLink = li && li.querySelector('a');
-    var isFull = topLink && CONFIG.parentMatch.test(topLink.textContent);
-
-    if (!isFull) {
-      mega.classList.add('meganav-compact');
-      if (li) li.classList.add('mega-li-compact');
-      return; /* parent li relative hi rahega */
+        mega.style.setProperty('top', bottom + 'px', 'important');
+      });
     }
 
-    var el = mega.parentElement;
-    while (el && el !== header && el !== document.body) {
-      if (window.getComputedStyle(el).position === 'relative') {
-        el.style.setProperty('position', 'static', 'important');
-      }
-      el = el.parentElement;
-    }
-  });
+    allMegas.forEach(function (mega) {
+      var li = mega.closest('li');
+      if (!li || !header) return;
+      li.addEventListener('mouseenter', placeAll);
+      li.addEventListener('focusin', placeAll);
+    });
+    window.addEventListener('scroll', placeAll, { passive: true });
+    window.addEventListener('resize', placeAll);
+    placeAll();
 
     /* ---- Engagement Ring dropdown: 2 columns + preview image ---- */
     allMegas.forEach(function (mega) {
