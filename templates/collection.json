@@ -84,7 +84,7 @@
         "enable_viewcolumn": true,
         "enable_filtering": true,
         "enable_sorting": true,
-        "filter_type": "drawer-collapse-right",
+        "filter_type": "vertical",
         "first_group": true,
         "open_group": false,
         "enable_color": true,
