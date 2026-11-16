@@ -471,11 +471,7 @@
     {{ content_for_header }}
   </head>
 <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-NHKK8SZF"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-</script>
+
   <body class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }} body-theme {% if settings.productpage == 'product-2' or settings.productpage == 'product-6' or settings.productpage == 'product-7' %} product-hide-breadcrumb {% endif %}">
     {%- render 'site-loader' -%}
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
@@ -530,7 +526,11 @@
     -%}
 
   </body>
-
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+</script>
   <style>
     /* =========================================================
        PRODUCT GRID
