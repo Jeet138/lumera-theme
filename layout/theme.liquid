@@ -472,33 +472,7 @@
   </head>
 
   <body class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }} body-theme {% if settings.productpage == 'product-2' or settings.productpage == 'product-6' or settings.productpage == 'product-7' %} product-hide-breadcrumb {% endif %}">
-    <div id="site-loader" aria-hidden="true">
-      <div class="ld-wrap">
-        <span class="ld-ring"></span>
-        <span class="ld-ring ld-ring--2"></span>
-        <div class="ld-logo">
-          <img src="{{ 'diamond-logo.jpeg' | asset_url }}" alt="Lumera Fine Jewellery" width="96" height="96">
-        </div>
-        <i class="ld-spark s1"></i>
-        <i class="ld-spark s2"></i>
-        <i class="ld-spark s3"></i>
-        <i class="ld-spark s4"></i>
-      </div>
-      <div class="ld-brand">LUMERA</div>
-      <div class="ld-sub">FINE JEWELLERY</div>
-      <div class="ld-line"><span></span></div>
-    </div>
-    {% assign lazy = false %}
-    <img
-      {% if lazy %}
-        loading="lazy"
-      {% endif %}
-      width="99998"
-      height="99999"
-      alt="index"
-      style="pointer-events: none; position: absolute; top: 0; left: 0; width: 99vw; height: 99vh; max-width: 99vw; max-height: 99vh;"
-      src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHdpZHRoPSI5OTk5OXB4IiBoZWlnaHQ9Ijk5OTk5cHgiIHZpZXdCb3g9IjAgMCA5OTk5OSA5OTk5OSIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj48ZyBzdHJva2U9Im5vbmUiIGZpbGw9Im5vbmUiIGZpbGwtb3BhY2l0eT0iMCI+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9Ijk5OTk5IiBoZWlnaHQ9Ijk5OTk5Ij48L3JlY3Q+IDwvZz4gPC9zdmc+"
-    >
+    {%- render 'site-loader' -%}
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     {%- render 'loading' -%}
     {%- sections 'header-group' -%}
