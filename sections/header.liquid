@@ -51,6 +51,18 @@
   {%- endif -%}
 </header>
 
+{%- render 'menu-mobile', menu: main_linklist -%}
+<script>
+  /* The drawer is fixed-position; keep it a direct child of <body> so it is not trapped in the sticky header's stacking context.
+     On a theme-editor reload of this section, the freshly rendered drawer replaces the old one. */
+  (function () {
+    var drawers = document.querySelectorAll('#NavDrawer');
+    var drawer = drawers[drawers.length - 1];
+    for (var i = 0; i < drawers.length - 1; i++) drawers[i].remove();
+    if (drawer && drawer.parentNode !== document.body) document.body.appendChild(drawer);
+  })();
+</script>
+
 <style>
   /* ===== MEGA MENU HEADING ===== */
   .site-nav .meganav .mega-heading a {
@@ -64,132 +76,57 @@
     padding-bottom: 4px;
   }
 
-  /* ===== STICKY: z-index kam rakha hai taaki drawers header ke upar khulein ===== */
+  /* ===== STICKY (sirf CSS, koi JS position nahi badalta) ===== */
   #shopify-section-{{ section.id }} {
     position: sticky;
     top: 0;
-    z-index: 900;
+    z-index: 99999;
+  }
+  /* Mobile menu drawer (#NavDrawer, z-index 9999) and its backdrop must cover the sticky header while open. */
+  .js-drawer-open .drawer { z-index: 100001; }
+  .js-drawer-open .page-container:after { z-index: 100000; }
+  .site-header {
+    position: relative !important;
+    top: auto !important;
+    transform: none !important;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
-  .site-header {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-  }
+  /* ===== HEADER SIZE + KAHIN SE BHI CUT NA HO ===== */
   .site-header .header-bottom {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
     padding-top: 8px;
     padding-bottom: 8px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
   }
-  .site-header .row-header { flex-wrap: nowrap; max-width: 100%; }
+  .site-header .row-header {
+    flex-wrap: nowrap;
+    max-width: 100%;
+  }
+  /* flex children ko shrink hone do, warna content screen se bahar jaata hai */
   .site-header .row-header > *,
   .site-header .row-header .container-fluid,
-  .site-header .row-header .container { min-width: 0; max-width: 100%; box-sizing: border-box; }
+  .site-header .row-header .container {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  /* sirf img: svg par max-width:100% lagane se header ke icons 0px tak shrink ho jaate the */
+  .site-header img { max-width: 100%; }
 
-  .site-header svg { flex-shrink: 0; }
-
-  /* ===== LAPTOP / DESKTOP (992px+) ===== */
+  /* Layout, logo size aur menu font: snippets/header-logo-center-split.liquid me */
   @media (min-width: 992px) {
-    .site-header {
-      position: relative !important;
-      top: auto !important;
-      transform: none !important;
-    }
-
-    #shopify-section-{{ section.id }}:hover,
-    #shopify-section-{{ section.id }}:focus-within {
-      z-index: 1100;
-    }
-
     .site-header .header-bottom {
-      padding: 6px clamp(10px, 1.6vw, 36px);
-    }
-
-    .site-header .header-logo img {
-      width: auto;
-      max-height: 42px;
-      max-width: clamp(80px, 10vw, 180px);
-      object-fit: contain;
-    }
-
-    .site-header .menudesk-left > ul > li > a,
-    .site-header .menudesk-right > ul > li > a,
-    .site-header .site-nav > li > a {
-      font-size: clamp(10.5px, 0.95vw, 15px) !important;
-      letter-spacing: 0.01em !important;
-      padding-left: clamp(3px, 0.6vw, 14px) !important;
-      padding-right: clamp(3px, 0.6vw, 14px) !important;
-      white-space: nowrap;
-    }
-
-    /* ===== RIGHT SIDE ICONS ===== */
-    .site-header .header-bottom__right {
-      flex: 0 0 auto !important;
-      display: flex !important;
-      align-items: center;
-      gap: clamp(8px, 0.9vw, 16px);
-      min-width: max-content;
-    }
-    .site-header .header-bottom__right > *:not([class*="drawer"]):not([class*="mini-cart"]):not([class*="minicart"]):not([role="dialog"]):not(aside):not(.modal) {
-      flex: 0 0 auto !important;
-      min-width: max-content;
-    }
-    .site-header .header-bottom__right a:not(:is([class*="drawer"], [class*="mini-cart"], [class*="minicart"], [role="dialog"], aside, .modal) *),
-    .site-header .header-bottom__right button:not(:is([class*="drawer"], [class*="mini-cart"], [class*="minicart"], [role="dialog"], aside, .modal) *) {
-      display: inline-flex !important;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      width: auto !important;
-      min-width: 24px !important;
-      height: 24px;
-      overflow: visible !important;
-    }
-    .site-header .header-bottom__right svg:not(:is([class*="drawer"], [class*="mini-cart"], [class*="minicart"], [role="dialog"], aside, .modal) *),
-    .site-header .header-bottom__right img:not(:is([class*="drawer"], [class*="mini-cart"], [class*="minicart"], [role="dialog"], aside, .modal) *),
-    .site-header .header-bottom__right i:not(:is([class*="drawer"], [class*="mini-cart"], [class*="minicart"], [role="dialog"], aside, .modal) *) {
-      display: block !important;
-      width: 22px !important;
-      height: 22px !important;
-      min-width: 22px !important;
-      max-width: none !important;
-      flex-shrink: 0;
+      padding-top: 6px;
+      padding-bottom: 6px;
     }
   }
 
-  /* chhota laptop (992 - 1279) */
-  @media (min-width: 992px) and (max-width: 1279px) {
-    .site-header .header-logo img { max-height: 34px; }
-    .site-header [class*="currency"] [class*="name"],
-    .site-header [class*="currency"] [class*="code"] { display: none; }
-    .site-header .menudesk-left > ul > li > a,
-    .site-header .menudesk-right > ul > li > a,
-    .site-header .site-nav > li > a {
-      font-size: 11px !important;
-      padding-left: 4px !important;
-      padding-right: 4px !important;
-    }
-  }
-
-  /* ===== TABLET / MOBILE (991px tak) ===== */
   @media (max-width: 991px) {
-    .site-header { overflow-x: clip; }
-    .site-header .header-bottom { padding-top: 4px; padding-bottom: 4px; }
-    .site-header .row-header { min-height: 0; padding-left: 10px; padding-right: 10px; }
-    .site-header .row-header .container-fluid,
-    .site-header .row-header .container { padding-left: 0; padding-right: 0; }
-    .site-header .row-header img:not([class*="flag"]):not([src*="flag"]) {
-      width: auto;
-      max-height: 34px;
-      max-width: min(140px, 36vw);
-      object-fit: contain;
-    }
     .meganav-preview { display: none !important; }
-  }
-  @media (max-width: 480px) {
-    .site-header .row-header img:not([class*="flag"]):not([src*="flag"]) { max-height: 65px; }
   }
 </style>
 
@@ -289,54 +226,6 @@
     .meganav-preview { display: none !important; }
   }
 </style>
-
-<header
-  class="{% if section.settings.menu_active == 'thick-line' %} thick-lineactive {% endif %} {{ layout_header }} size-header-{{ height_header }} section-{{ section.id }} site-header page-element is-moved-by-drawer header-{{ type_sticky }} {% if type_sticky == 'sticky' or type_sticky == 'sticky-top' %} site-header--sticky {% endif %} {% if section.settings.enable_transparent %} site-header--transparent {% if section.settings.enable_white %} site-header-white {% endif %} {% endif %} site-header--full {% if template contains 'index' %} index-header {% endif %} "
-  role="banner"
-  data-section-id="{{ section.id }}"
-  data-section-type="header"
-  data-sticky="{{ type_sticky }}"
->
-  <div class="header-bottom py-2 py-lg-0 ">
-    <div class="">
-      <div class="d-flex row-header align-items-center">
-        {%- liquid
-          case layout_header
-            when 'logo-center-navigation-center'
-              render 'header-logo-center-nav-center', container: container, enable_menu_vertical: enable_menu_vertical, sl_menu_vertical: sl_menu_vertical, main_linklist: main_linklist, blocks: blocks
-            when 'logo-left-navigation-underleft'
-              render 'header-logo-left-nav-left', container: container, enable_menu_vertical: enable_menu_vertical, sl_menu_vertical: sl_menu_vertical, main_linklist: main_linklist, blocks: blocks
-            when 'logo-center-navigation-split'
-              render 'header-logo-center-split', container: container, enable_menu_vertical: enable_menu_vertical, sl_menu_vertical: sl_menu_vertical, main_linklist: main_linklist, blocks: blocks
-            when 'logo-center-navigation-drawer'
-              render 'header-logo-center-drawer', container: container
-            else
-              render 'header-logo-left', container: container, layout_header: layout_header, enable_menu_vertical: enable_menu_vertical, sl_menu_vertical: sl_menu_vertical, main_linklist: main_linklist, blocks: blocks
-          endcase
-        -%}
-      </div>
-    </div>
-  </div>
-
-  {%- if enable_menu_vertical -%}
-    {% unless layout_header == 'logo-center-navigation-split' or layout_header == 'logo-center-navigation-drawer' %}
-      {% render 'slide-menu' %}
-    {% endunless %}
-  {%- endif -%}
-</header>
-
-{%- render 'menu-mobile', menu: main_linklist -%}
-<script>
-  /* The drawer is fixed-position; keep it a direct child of <body> so it is not trapped in the sticky header's stacking context.
-     On a theme-editor reload of this section, the freshly rendered drawer replaces the old one. */
-  (function () {
-    var drawers = document.querySelectorAll('#NavDrawer');
-    var drawer = drawers[drawers.length - 1];
-    for (var i = 0; i < drawers.length - 1; i++) drawers[i].remove();
-    if (drawer && drawer.parentNode !== document.body) document.body.appendChild(drawer);
-  })();
-</script>
-
 
 <script>
   window.MENU_HOVER_IMAGES = {
