@@ -482,30 +482,6 @@
     "ring-details-section": {
       "type": "ring-details",
       "settings": {}
-    },
-    "178048571463fe2137": {
-      "type": "apps",
-      "settings": {
-        "animation": "",
-        "setwidth": "container",
-        "paddingsection": "0px 0px 0px 0px",
-        "paddingmobile": "60px 0px 60px 0px",
-        "marginsection": "0px 0px 0px 0px",
-        "marginmobile": "0px 0px 0px 0px",
-        "bgsection": "#ffffff"
-      }
-    },
-    "178487651713bfa556": {
-      "type": "apps",
-      "settings": {
-        "animation": "",
-        "setwidth": "container",
-        "paddingsection": "0px 0px 0px 0px",
-        "paddingmobile": "60px 0px 60px 0px",
-        "marginsection": "0px 0px 0px 0px",
-        "marginmobile": "0px 0px 0px 0px",
-        "bgsection": "#ffffff"
-      }
     }
   },
   "order": [
@@ -514,8 +490,6 @@
     "17839384792fc401e4",
     "blocks_m3DbPD",
     "product-content",
-    "ring-details-section",
-    "178048571463fe2137",
-    "178487651713bfa556"
+    "ring-details-section"
   ]
 }
