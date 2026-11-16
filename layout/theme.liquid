@@ -22,7 +22,7 @@
     <link rel="canonical" href="{{ canonical_url }}">
     <link rel="dns-prefetch" href="https://{{shop.domain }}" crossorigin>
     <link rel="dns-prefetch" href="https://{{shop.permanent_domain }}" crossorigin>
-<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-NHKK8SZF"></script>
+    <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-NHKK8SZF"></script>
     <link rel="dns-prefetch" href="https://cdn.shopify.com" crossorigin>
     <link rel="dns-prefetch" href="https://fonts.shopifycdn.com" crossorigin>
     <link rel="preconnect" href="https//fonts.shopifycdn.com/" crossorigin>
@@ -470,7 +470,7 @@
     </style>
     {{ content_for_header }}
   </head>
-<script async src="https://www.googletagmanager.com/gtm.js?id=GTM-NHKK8SZF"></script>
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-NHKK8SZF"></script>
 
   <body class="template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }} body-theme {% if settings.productpage == 'product-2' or settings.productpage == 'product-6' or settings.productpage == 'product-7' %} product-hide-breadcrumb {% endif %}">
     {%- render 'site-loader' -%}
@@ -490,6 +490,13 @@
         if (carousel) root.setProperty('--height-announbar', carousel.offsetHeight + 'px');
       })();
     </script>
+     <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+  </script>
     <div class="page-container page-element is-moved-by-drawer">
       {%- render 'breadcrumb' -%}
       <main class="main-content" id="MainContent" role="main">
@@ -524,13 +531,8 @@
       render 'popup-compare'
       render 'header-js'
     -%}
-
   </body>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-</script>
+ 
   <style>
     /* =========================================================
        PRODUCT GRID
