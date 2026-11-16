@@ -50,7 +50,16 @@
     {% endunless %}
   {%- endif -%}
 </header>
-
+{%- render 'menu-mobile', menu: main_linklist -%}
+<script>
+  /* Drawer fixed-position hai; isse <body> ka direct child rakho taaki sticky header ke stacking context me fasa na rahe. */
+  (function () {
+    var drawers = document.querySelectorAll('#NavDrawer');
+    var drawer = drawers[drawers.length - 1];
+    for (var i = 0; i < drawers.length - 1; i++) drawers[i].remove();
+    if (drawer && drawer.parentNode !== document.body) document.body.appendChild(drawer);
+  })();
+</script>
 <style>
   /* ===== MEGA MENU HEADING ===== */
   .site-nav .meganav .mega-heading a {
@@ -70,7 +79,8 @@
     top: 0;
     z-index: 900;
   }
-
+ .js-drawer-open .drawer { z-index: 100001; }
+  .js-drawer-open .page-container:after { z-index: 100000; }
   .site-header {
     width: 100%;
     max-width: 100%;
