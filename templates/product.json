@@ -321,7 +321,7 @@
             "shipping_q5": "Is delivery free?",
             "shipping_a5": "<p>Yes. We offer free delivery to your address.<br/>However, any applicable customs duties, import taxes, or local charges are the customer’s responsibility.</p>",
             "shipping_q6": "What happens if I request changes to my product before shipment?",
-            "shipping_a6": "<p>Any product changes requested before shipment will restart the manufacturing timeline from day one.</p>",
+            "shipping_a6": "<p>Any changes to your order must be requested within 24 hours of placing the order. Requests received after 24 hours cannot be accommodated, as manufacturing will have already begun.</p>",
             "shipping_q7": "Do you offer urgent processing?",
             "shipping_a7": "<p>We prioritize timely delivery and may offer urgent processing where possible. However, Lumera Fine Jewellery is not responsible for delays caused by shipping partners.</p>",
             "shipping_q8": "How will I track my order?",
